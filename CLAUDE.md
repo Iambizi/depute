@@ -237,6 +237,51 @@ npm test -- ComponentName  # Run specific test
 - `SESSION-NOTES.md` - Development session history and decisions
 - `README.md` - User-facing documentation (to be created)
 
+## Vibe Coding Orchestration System
+
+This project uses a step-based orchestration system via slash commands. PRD documentation lives in `docs/vibe-coding/` and progress is tracked in `docs/vibe-coding/progress.json`.
+
+### Available Commands
+
+**Status:**
+- `/vibe-status` — Dashboard showing what's done, current, and next
+
+**Foundation (run once, in order):**
+1. `/vibe-step-1-ideation` — Creates 7 PRD docs + progress.json
+2. `/vibe-step-1b-init-project` — Scaffolds Vite+React+TS, Storybook, Vitest
+3. `/vibe-step-2-design-tokens` — CSS custom properties (can parallel with step 3)
+4. `/vibe-step-3-shared-types` — Shared TypeScript types (can parallel with step 2)
+
+**Per-component (run for each of the 4 components):**
+5. `/vibe-step-4-component [Name]` — Component folder: .tsx, .types.ts, .module.css, index.ts
+6. `/vibe-step-5-mock-data [Name]` — Mock data generators (depends on step 4)
+7. `/vibe-step-6-stories [Name]` — Storybook stories (depends on step 5)
+8. `/vibe-step-7-tests [Name]` — Vitest tests (depends on step 4, parallel with step 5)
+
+**Finish (after all components):**
+9. `/vibe-step-8-docs` — README.md, examples/, quick starts
+10. `/vibe-step-9-validate` — Full audit: TS, tests, build, exports, a11y
+
+**Utilities:**
+- `/vibe-clean` — Reset progress.json (optionally per-component)
+- `/vibe-skip-to [step]` — Mark prior steps as complete (for testing)
+
+### Component Names (for per-component steps)
+- `AgentProgressTracker`
+- `ConfidenceScoreBadge`
+- `AgentStatusIndicator`
+- `BasicHumanApprovalGate`
+
+### PRD Documentation
+The 7 numbered docs in `docs/vibe-coding/` contain the full specification:
+- `01-project-specification.md` — Goals, audiences, roadmap
+- `02-technical-architecture.md` — Stack, configs, structure
+- `03-ux-design.md` — Interaction patterns, animations
+- `04-design-system.md` — CSS tokens, colors, typography
+- `05-interface-states.md` — State matrices per component
+- `06-technical-specifications.md` — TypeScript APIs, mock data APIs
+- `07-universal-format-standards.md` — Code style, naming, test format
+
 ## Important Context
 
 - CSS Modules are preferred over Tailwind to avoid external dependencies

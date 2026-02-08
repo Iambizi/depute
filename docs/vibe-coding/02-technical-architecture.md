@@ -1,0 +1,226 @@
+# 02 - Technical Architecture
+
+## Tech Stack
+
+| Technology | Purpose | Version |
+|-----------|---------|---------|
+| React | UI framework | 18+ |
+| TypeScript | Type safety | 5.x |
+| Vite | Build tooling + dev server | 6.x |
+| CSS Modules | Component styling (NOT Tailwind) | Native |
+| Storybook | Component documentation + live examples | 8.x |
+| Vitest | Unit + component testing | 2.x |
+| @testing-library/react | Component test utilities | 16.x |
+
+## Key Constraints
+
+- **No external UI library dependencies** - we are building primitives
+- **No Tailwind CSS** - use CSS Modules for zero-dependency styling
+- **No AI backend coupling** - components work with any agent backend
+- **React 18+** - leverage concurrent features where appropriate
+
+## Project Structure
+
+```
+ax-components-react/
+├── src/
+│   ├── components/                    # All React components
+│   │   ├── AgentProgressTracker/
+│   │   │   ├── AgentProgressTracker.tsx
+│   │   │   ├── AgentProgressTracker.types.ts
+│   │   │   ├── AgentProgressTracker.module.css
+│   │   │   ├── AgentProgressTracker.test.tsx
+│   │   │   └── index.ts
+│   │   ├── ConfidenceScoreBadge/
+│   │   │   └── ... (same pattern)
+│   │   ├── AgentStatusIndicator/
+│   │   │   └── ... (same pattern)
+│   │   ├── BasicHumanApprovalGate/
+│   │   │   └── ... (same pattern)
+│   │   └── index.ts                   # Barrel export
+│   ├── types/
+│   │   └── common.ts                  # Shared TypeScript types
+│   ├── utils/
+│   │   └── mockData.ts                # Mock data generators for prototyping
+│   └── index.ts                       # Library entry point
+├── stories/
+│   ├── AgentProgressTracker.stories.tsx
+│   ├── ConfidenceScoreBadge.stories.tsx
+│   ├── AgentStatusIndicator.stories.tsx
+│   └── BasicHumanApprovalGate.stories.tsx
+├── examples/
+│   ├── prototype-setup/               # Quick start for prototyping
+│   └── production-setup/              # Integration guide for production
+├── docs/
+│   └── vibe-coding/                   # PRD docs (this directory)
+├── package.json
+├── tsconfig.json
+├── tsconfig.node.json
+├── vite.config.ts
+├── vitest.config.ts
+├── .storybook/
+│   ├── main.ts
+│   └── preview.ts
+└── README.md
+```
+
+## Build Configuration
+
+### Vite Library Mode
+
+The project builds as a library using Vite's library mode:
+
+```typescript
+// vite.config.ts
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+import { resolve } from 'path';
+
+export default defineConfig({
+  plugins: [react()],
+  build: {
+    lib: {
+      entry: resolve(__dirname, 'src/index.ts'),
+      name: 'AXComponents',
+      formats: ['es', 'cjs'],
+      fileName: (format) => `ax-components.${format}.js`,
+    },
+    rollupOptions: {
+      external: ['react', 'react-dom'],
+      output: {
+        globals: {
+          react: 'React',
+          'react-dom': 'ReactDOM',
+        },
+      },
+    },
+  },
+});
+```
+
+### TypeScript Configuration
+
+```jsonc
+// tsconfig.json
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "jsx": "react-jsx",
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "declaration": true,
+    "declarationDir": "./dist/types",
+    "outDir": "./dist",
+    "skipLibCheck": true
+  },
+  "include": ["src"],
+  "exclude": ["node_modules", "dist", "**/*.test.tsx", "**/*.stories.tsx"]
+}
+```
+
+### Package.json Key Fields
+
+```jsonc
+{
+  "name": "ax-components-react",
+  "version": "0.1.0",
+  "type": "module",
+  "main": "./dist/ax-components.cjs.js",
+  "module": "./dist/ax-components.es.js",
+  "types": "./dist/types/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/ax-components.es.js",
+      "require": "./dist/ax-components.cjs.js",
+      "types": "./dist/types/index.d.ts"
+    },
+    "./utils": {
+      "import": "./dist/utils.es.js",
+      "require": "./dist/utils.cjs.js",
+      "types": "./dist/types/utils/mockData.d.ts"
+    }
+  },
+  "files": ["dist"],
+  "peerDependencies": {
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0"
+  }
+}
+```
+
+## Development Scripts
+
+```jsonc
+{
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "lint": "eslint . --ext ts,tsx",
+    "type-check": "tsc --noEmit"
+  }
+}
+```
+
+## Component File Pattern
+
+Every component follows this exact structure:
+
+```
+[ComponentName]/
+├── [ComponentName].tsx          # Component implementation
+├── [ComponentName].types.ts     # TypeScript interfaces
+├── [ComponentName].module.css   # CSS Module styles
+├── [ComponentName].test.tsx     # Vitest tests
+└── index.ts                     # Re-export: export { ComponentName } from './ComponentName';
+```
+
+## Export Strategy
+
+```typescript
+// src/index.ts - Library entry point
+export { AgentProgressTracker } from './components/AgentProgressTracker';
+export { ConfidenceScoreBadge } from './components/ConfidenceScoreBadge';
+export { AgentStatusIndicator } from './components/AgentStatusIndicator';
+export { BasicHumanApprovalGate } from './components/BasicHumanApprovalGate';
+
+// Re-export types
+export type { AgentStep, AgentStatus, ConfidenceLevel } from './types/common';
+export type { AgentProgressTrackerProps } from './components/AgentProgressTracker';
+export type { ConfidenceScoreBadgeProps } from './components/ConfidenceScoreBadge';
+export type { AgentStatusIndicatorProps } from './components/AgentStatusIndicator';
+export type { BasicHumanApprovalGateProps } from './components/BasicHumanApprovalGate';
+
+// Mock data utilities (also available via 'ax-components-react/utils')
+export { generateMockSteps, simulateAgentProgress } from './utils/mockData';
+```
+
+## CI/CD Pipeline (GitHub Actions)
+
+```yaml
+# .github/workflows/ci.yml
+name: CI
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 20 }
+      - run: npm ci
+      - run: npm run type-check
+      - run: npm test
+      - run: npm run build
+      - run: npm run build-storybook
+```
