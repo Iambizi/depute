@@ -4,6 +4,39 @@
 
 ---
 
+## Session 2 - February 7, 2026
+
+### Overview
+Evaluated Claude Code Agent Teams as an alternative orchestration approach, decided to keep the current skill-based system, and added a new `/vibe-validate-step` utility command for early issue detection.
+
+### Accomplishments
+- ✅ Evaluated Agent Teams feature against current Vibe Coding orchestration system
+  - Compared on 5 dimensions: dependency chain, file safety, stability, token cost, reproducibility
+  - Concluded current skill-based approach is better fit for sequential component library builds with shared files
+- ✅ Created `/vibe-validate-step [step]` skill — lightweight per-step validation
+  - Runs targeted checks after any step completes (TypeScript compiles, files exist, no `any` types, exports correct, ARIA attributes present)
+  - Auto-detects last completed step if no argument given
+  - Diagnostic only — does not update progress.json
+- ✅ Updated `VC-ORCHESTRATION.md` — added new command to listings, updated count to 14
+- ✅ Updated `CLAUDE.md` — added `/vibe-validate-step` to utilities section
+
+### Key Decisions Made
+1. **Keep skill-based orchestration** over Agent Teams — sequential dependency chain, shared files, and reproducibility favor the current approach
+2. **Agent Teams better suited for** parallel read-heavy tasks (e.g., multi-angle code review), not sequential builds
+3. **Validate-step is diagnostic only** — does not mutate progress.json, each step owns its own progress updates
+
+### Next Steps
+- [ ] Run `/vibe-status` to verify system works
+- [ ] Run `/vibe-step-1b-init-project` to scaffold React project
+- [ ] Begin component development workflow
+
+### Notes
+- Agent Teams is still experimental (disabled by default) with known limitations around session resumption
+- The only real parallelism windows in our dependency graph are step 2+3 and cross-component step 4-7, both too small or conflict-prone to justify Agent Teams overhead
+- `/vibe-validate-step` fills the gap between per-step exit criteria and the full step-9 audit
+
+---
+
 ## Session 1 (Continued) - February 7, 2026
 
 ### Overview

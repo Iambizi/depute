@@ -40,7 +40,7 @@ Each doc is a durable reference that slash commands read at execution time:
 
 **Plus:** `progress.json` — tracks which steps are completed per component
 
-### 2. Thirteen Slash Commands (`.claude/skills/`)
+### 2. Fourteen Slash Commands (`.claude/skills/`)
 
 #### Foundation (run once)
 
@@ -64,6 +64,7 @@ Each doc is a durable reference that slash commands read at execution time:
 
 #### Utilities (development/testing helpers)
 
+- `/vibe-validate-step [step]` — Runs targeted checks after a step completes (e.g. TypeScript compiles, files exist, no `any` types, exports correct). Lighter than step 9's full audit. Accepts step number and optional component name.
 - `/vibe-clean` — Resets progress.json (optionally for specific component or all)
 - `/vibe-skip-to [step]` — Marks all previous steps as complete, useful for testing specific steps
 
@@ -115,7 +116,7 @@ The system will be created in this sequence:
 2. **Create `docs/vibe-coding/progress.json`**
    - Initialize with all steps as `not_started`
 
-3. **Create all 13 skill files in `.claude/skills/`**
+3. **Create all 14 skill files in `.claude/skills/`**
    - Each with prerequisite checks
    - Doc references
    - Step-by-step execution instructions
@@ -150,6 +151,7 @@ docs/vibe-coding/
   vibe-step-7-tests/SKILL.md
   vibe-step-8-docs/SKILL.md
   vibe-step-9-validate/SKILL.md
+  vibe-validate-step/SKILL.md
   vibe-clean/SKILL.md
   vibe-skip-to/SKILL.md
 ```

@@ -263,6 +263,7 @@ This project uses a step-based orchestration system via slash commands. PRD docu
 10. `/vibe-step-9-validate` — Full audit: TS, tests, build, exports, a11y
 
 **Utilities:**
+- `/vibe-validate-step [step]` — Run targeted checks after a step completes (catches issues early)
 - `/vibe-clean` — Reset progress.json (optionally per-component)
 - `/vibe-skip-to [step]` — Mark prior steps as complete (for testing)
 
