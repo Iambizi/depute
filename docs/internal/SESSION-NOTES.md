@@ -4,6 +4,57 @@
 
 ---
 
+## Session 3 - February 8, 2026
+
+### Overview
+Reviewed project status after running `/vibe-status`. Discussed the foundational AX research phase and whether project scaffolding can proceed before research is complete.
+
+### Current Status
+- 🟡 **AX Research Phase** — In progress (Notion notes + reading books on AX concepts)
+- ✅ **PRD Docs (01-07)** — Exist on disk but not marked complete in `progress.json`
+- ⏳ **Vibe Coding Orchestration** — Ready to launch once research informs final component list
+
+### Key Discussion: Research → Ideation → Build
+
+The goal is to capture as much foundational knowledge as possible before launching the orchestration system. This ensures:
+- Complete component list (not just the initial 4)
+- Well-defined primitives and composition patterns
+- Thorough AX concept glossary informing all design decisions
+
+**Proposed workflow:**
+1. Complete AX research (Notion + external sources)
+2. Bring notes into repo → Create `docs/vibe-coding/00-ax-concepts.md`
+3. Update PRD docs (01-06) if needed
+4. Mark Step 1 complete → Proceed to Step 1b+
+
+### Key Decision: Scaffolding Before Research?
+
+**Question:** Can we run `/vibe-step-1b-init-project` while research is ongoing?
+
+**Analysis:**
+
+| Step | Depends on Research? | Safe to Run Now? |
+|------|---------------------|------------------|
+| 1b: Init Project | ❌ No — tooling is fixed (Vite, React, TS, Storybook, Vitest) | ✅ Yes |
+| 2: Design Tokens | ✅ Yes — colors, spacing may change based on concepts | ⚠️ Wait |
+| 3: Shared Types | ✅ Yes — types depend on final component list | ⚠️ Wait |
+| 4+: Component Build | ✅ Yes — fully dependent on research | ⚠️ Wait |
+
+**Recommendation:** Step 1b (scaffolding) is safe to run now. It sets up infrastructure that won't change regardless of research outcomes. Steps 2-9 should wait for research completion.
+
+### Next Steps
+- [ ] Complete AX research in Notion
+- [ ] (Optional) Run `/vibe-step-1b-init-project` to scaffold project now
+- [ ] Import notes into `docs/vibe-coding/00-ax-concepts.md`
+- [ ] Update PRD docs as needed
+- [ ] Resume orchestration workflow from Step 2
+
+### Notes
+- Progress.json shows Step 1 as `not_started` despite PRD docs existing — will fix when research is complete
+- Scaffolding now would allow testing the dev environment while research continues
+
+---
+
 ## Session 2 - February 7, 2026
 
 ### Overview
