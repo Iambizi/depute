@@ -60,41 +60,29 @@ Every component serves TWO distinct audiences:
 
 ## Component Roadmap
 
-### Free Tier (Open Source, MIT License)
+> **Strategy:** Open source first (MIT License). All primitives are free. See `MONETIZATION-MODEL.md` for revenue strategy via consulting, content, and enterprise support.
 
-| # | Component | AX Problem Solved |
-|---|-----------|-------------------|
-| 1 | `AgentProgressTracker` | Probabilistic, dynamic multi-step workflows with confidence scores |
-| 2 | `ConfidenceScoreBadge` | Communicating probabilistic outcomes visually |
-| 3 | `AgentStatusIndicator` | Real-time agent state transparency |
-| 4 | `BasicHumanApprovalGate` | Human-in-the-loop decision points |
+### Core Primitives (Open Source, MIT License)
 
-### Paid Tier: Production Pack ($79)
+The library includes 48+ primitives across 8 categories. See `docs/internal/research/AX-Primitives-starter.md` for the complete list.
 
-| Component | AX Problem Solved |
-|-----------|-------------------|
-| `MultiStepHumanApprovalWorkflow` | Complex multi-gate approval chains |
-| `AgentErrorRecoveryUI` | Graceful error handling with recovery paths |
-| `ConfidenceThresholdControl` | User-configurable confidence thresholds |
-| `ParallelAgentCoordinator` | Multiple concurrent agent visualization |
-| `AgentAuditLog` | Full agent action history and transparency |
-| `TokenUsageDisplay` | Resource consumption visibility |
-| `AgentContextViewer` | Agent context/memory inspection |
-| `RetryStrategySelector` | User-controlled retry behavior |
+**Priority Categories for Initial Release:**
 
-### Paid Tier: Prototype Pack ($29)
+| Category | Example Primitives | AX Problem Solved |
+|----------|-------------------|-------------------|
+| Intent & Delegation | `IntentBar`, `PlanCard`, `StepList` | Moving from "talking" to "committing work" |
+| Trust & Approval | `ApprovalGate`, `RiskBadge`, `ConfidenceMeter` | Boundaries, consent, and confidence |
+| Transparency & Trace | `ToolTrace`, `ReasonPanel`, `ProgressStream` | Making the system legible while working |
+| Control & Steering | `RunControls`, `ModeSwitch`, `Checkpoint` | Steering agents without breaking flow |
 
-- 3 Prototype Templates (Chat Interface, Agent Dashboard, Document Analysis UI)
-- Mock Data Library with pre-built generators
-- Rapid Setup Guide with 10-minute quickstart
+### Library Architecture
 
-### Paid Tier: Complete Bundle ($99)
+Three-layer structure:
 
-- Everything in both packs
-- AX Design Patterns Handbook (50+ pages)
-- 6 Complete Application Templates
-- Monthly component additions (first 6 months)
-- 1-on-1 office hours
+1. **Headless Primitives** — State machines and hooks (`useRun()`, `useApprovalGate()`, `useTrace()`)
+2. **Composable UI Primitives** — The visual components
+3. **Reference Recipes** — Small demos combining primitives into flows
+
 
 ## Success Criteria
 

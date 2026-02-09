@@ -1,438 +1,233 @@
 # AX Components for React - Monetization Strategy
 
-## Overview
+## Strategy Revision (February 2026)
 
-**Core Strategy:** Freemium model with prototype-to-production positioning. Free tier drives adoption and validates market fit. Paid tiers unlock advanced components, templates, and deployment resources.
+> **Previous approach:** Freemium with paid tiers ($29-99) starting Month 1
+> **New approach:** Open source first, monetize through expertise once established
 
-- **Target Monthly Revenue (Month 3):** $2,000-5,000
-- **Price Points:** $29 (Prototype Pack), $79 (Production Pack), $99 (Complete Bundle)
+### Why the Shift?
 
-## Tier Structure
+AX (Agentic Experience) is an emerging category. Trying to monetize too early limits adoption and slows the network effects needed to define the standard. Open source builds trust, community, and authority — all of which convert to larger opportunities later.
 
-### Free Tier (Open Source Core)
+---
 
-#### What's Included
+## Phase 1: Open Source Foundation (Months 1-6)
 
-**3-4 core AX components:**
-- `AgentProgressTracker`
-- `ConfidenceScoreBadge`
-- `AgentStatusIndicator`
-- `BasicHumanApprovalGate`
+### What's Open Source (MIT License)
 
-**Additional features:**
+**Everything.** All 48+ primitives across 8 categories:
+
+- Intent & Delegation primitives
+- Trust & Approval primitives
+- Transparency & Trace primitives
+- Memory primitives
+- Adaptive Canvas primitives
+- Control & Steering primitives
+- Output primitives
+- Social & Shared-Work primitives
+
+Plus:
 - Full TypeScript types
-- Basic Storybook stories
-- MIT License
-- Community support (GitHub issues)
+- Storybook stories and documentation
+- Reference recipes and examples
+- Headless hooks layer
 
-#### Purpose
+### Goals
 
-- Drive adoption and prove value
-- Build community and GitHub stars
-- Validate product-market fit
-- Generate leads for paid tiers
-- Establish you as AX authority
+| Metric | Month 3 Target | Month 6 Target |
+|--------|---------------|----------------|
+| GitHub stars | 500+ | 2,000+ |
+| npm weekly downloads | 1,000+ | 5,000+ |
+| Contributors | 5+ | 15+ |
+| Email subscribers | 500+ | 2,000+ |
+| Twitter/LinkedIn followers | 1,000+ | 5,000+ |
 
-#### Target Users
+### Activities
 
-- Indie hackers trying AX for the first time
-- Students/learners
-- Small side projects
-- Proof-of-concept builders
-
----
-
-### Paid Tier 1: Prototype Pack ($29 one-time)
-
-**Positioning:** "Ship functional AI prototypes in hours, not days"
-
-#### Target Audience
-
-- Designers building functional prototypes
-- Product managers validating AI features
-- Teams using pencil.dev or similar workflows
-- Consultants pitching AI product concepts
-
-#### What's Included
-
-**Everything in Free +**
-
-**3 Prototype Templates:**
-- AI Assistant Chat Interface
-- Agent Dashboard with Multiple Workflows
-- Document Analysis UI
-
-**Mock Data Library:**
-- Pre-built agent response generators
-- Realistic confidence score patterns
-- Error state simulations
-- Timing/delay utilities
-
-**Rapid Setup Guide:**
-- 10-minute quickstart
-- Integration with pencil.dev
-- Figma design tokens
-
-**Additional features:**
-- 5 Advanced Storybook Stories with interactive controls
-- Video Tutorial: "Prototype to Demo in 2 Hours"
-- Email support (48hr response time)
-
-#### Value Proposition
-
-> "Stop mocking up static screens. Build interactive AI prototypes that actually respond, fail gracefully, and show probabilistic behavior. Ship client demos before lunch."
-
-**Expected Conversion Rate:** 2-3% of free users  
-**Target:** 15-20 purchases in Month 3 = $435-580/month
+- Build in public (weekly progress posts)
+- Engage with AI/agent developer communities
+- Publish AX design thinking articles
+- Respond to issues and PRs quickly
+- Create video content showing primitives in action
 
 ---
 
-### Paid Tier 2: Production Pack ($79 one-time)
+## Phase 2: Authority Building (Months 3-9)
 
-**Positioning:** "Production-ready components for shipping agent experiences"
+### Revenue Stream 1: Consulting & Workshops
 
-#### Target Audience
+**Target:** AI startups and product teams building agent interfaces
 
-- Engineering teams at AI startups
-- Developers building AI features into existing products
-- Technical founders shipping MVPs
-- Companies moving from prototype to production
+| Offering | Price | Target |
+|----------|-------|--------|
+| AX Design Audit (async) | $500-1,000 | Startups reviewing agent UX |
+| 2-hour Workshop | $1,500-2,500 | Teams learning AX patterns |
+| Full-day Training | $3,000-5,000 | Engineering teams adopting library |
 
-#### What's Included
+**Revenue Target:** $2,000-5,000/month by Month 6
 
-**Everything in Free +**
+### Revenue Stream 2: Content & Education
 
-**8 Advanced Components:**
-- `MultiStepHumanApprovalWorkflow`
-- `AgentErrorRecoveryUI`
-- `ConfidenceThresholdControl`
-- `ParallelAgentCoordinator`
-- `AgentAuditLog`
-- `TokenUsageDisplay`
-- `AgentContextViewer`
-- `RetryStrategySelector`
+| Offering | Price | Timing |
+|----------|-------|--------|
+| "AX Design Patterns" eBook | $29-49 | Month 6 |
+| Video Course: "Building Agent UIs" | $99-149 | Month 9 |
+| Premium Newsletter | $10/month | Month 6 |
 
-**Production Integration Guides:**
-- OpenAI integration examples
-- Anthropic Claude integration
-- Custom agent backend setup
-- State management patterns (Zustand, Redux)
-- Real-time updates with WebSockets
+### Revenue Stream 3: Sponsorships
 
-**Additional features:**
-- Performance Optimization Guide
-- Accessibility Audit Checklist
-- TypeScript Advanced Patterns
-- Testing Utilities for agent interactions
-- Priority email support (24hr response time)
-- Access to private Discord community
-
-#### Value Proposition
-
-> "Don't reinvent agent UX patterns. Ship production-grade agent experiences with components that handle edge cases, accessibility, and performance out of the box."
-
-**Expected Conversion Rate:** 1-2% of free users  
-**Target:** 10-15 purchases in Month 3 = $790-1,185/month
+Once you have traction:
+- GitHub Sponsors
+- Newsletter sponsorships
+- Conference speaking (travel + fee)
 
 ---
 
-### Paid Tier 3: Complete Bundle ($99 one-time)
+## Phase 3: Enterprise & Premium (Month 9+)
 
-**Positioning:** "Everything you need from prototype to production"
+### Enterprise Support
 
-#### Target Audience
+| Tier | Price | Includes |
+|------|-------|----------|
+| Pro Support | $500/month | Priority issues, 24hr response, private Discord |
+| Enterprise | $2,000-5,000/month | Dedicated support, custom components, SLA |
 
-- Product teams building AI products end-to-end
-- Agencies building for clients
-- Startups that need both prototyping and production
-- Solo founders doing design + engineering
+### Premium Add-ons (Optional)
 
-#### What's Included
+These are **not** paywalled core features — they're convenience/acceleration layers:
 
-**Everything in Prototype Pack +**  
-**Everything in Production Pack +**
-
-**Exclusive Bonuses:**
-
-**"AX Design Patterns Handbook"** (PDF, 50+ pages)
-
-**6 Complete Application Templates:**
-- AI Customer Support Dashboard
-- Document Processing Pipeline UI
-- Multi-Agent Orchestration Console
-- AI Research Assistant
-- Code Generation IDE Extension UI
-- Data Analysis Agent Interface
-
-**Additional perks:**
-- Monthly component additions (first 6 months)
-- 1-on-1 office hours (30 min, scheduled within first month)
-- Early access to new components
-- License for unlimited projects
-
-#### Value Proposition
-
-> "The complete toolkit for AI product teams. Prototype fast, ship faster, and never hit a wall when you need an advanced pattern."
-
-**Discount:** Save $9 vs buying separately ($29 + $79 = $108)  
-**Expected Conversion Rate:** 0.5-1% of free users  
-**Target:** 8-12 purchases in Month 3 = $792-1,188/month
+| Add-on | Price | Description |
+|--------|-------|-------------|
+| Figma Plugin | $49 | AX component library for designers |
+| Pro Templates | $99 | 10+ production-ready app templates |
+| Migration Kit | $299 | Tools for migrating existing UIs to AX patterns |
 
 ---
 
-## Revenue Projections
+## Revenue Projections (Revised)
 
-### Month 3 Targets (Realistic)
+### Conservative Path
 
-**Assumptions:**
-- 500 npm installs/downloads
-- 1,000 GitHub repo visits
-- 200 engaged users (starred repo, read docs)
+| Month | Primary Revenue | Secondary Revenue | Total |
+|-------|-----------------|-------------------|-------|
+| 1-3 | $0 (building) | $0 | $0 |
+| 4-6 | $2,000 (consulting) | $500 (content) | $2,500/mo |
+| 7-9 | $4,000 (consulting) | $1,500 (content + sponsors) | $5,500/mo |
+| 10-12 | $5,000 (consulting + enterprise) | $3,000 (content + sponsors) | $8,000/mo |
 
-**Conversions:**
-- Prototype Pack: 15 × $29 = $435
-- Production Pack: 10 × $79 = $790
-- Complete Bundle: 10 × $99 = $990
+### Optimistic Path (Viral Adoption)
 
-**Total Revenue:** $2,215/month
-
-### Month 3 Targets (Optimistic)
-
-**Assumptions:**
-- 1,000 npm installs/downloads
-- Viral LinkedIn post or Theo/LCA mention
-- 2,000 GitHub repo visits
-- 500 engaged users
-
-**Conversions:**
-- Prototype Pack: 25 × $29 = $725
-- Production Pack: 20 × $79 = $1,580
-- Complete Bundle: 20 × $99 = $1,980
-
-**Total Revenue:** $4,285/month
+| Month | Primary Revenue | Secondary Revenue | Total |
+|-------|-----------------|-------------------|-------|
+| 1-3 | $0 (building) | $0 | $0 |
+| 4-6 | $5,000 (consulting) | $2,000 (content) | $7,000/mo |
+| 7-9 | $10,000 (consulting + enterprise) | $5,000 (content + sponsors) | $15,000/mo |
+| 10-12 | $15,000 (enterprise) | $10,000 (content + course sales) | $25,000/mo |
 
 ---
 
-## 90-Day Rollout Plan
+## Why This Works Better
 
-### Month 1: Build + Free Launch
+### Open Source Advantages
 
-#### Weeks 1-2
+| Factor | Paywall Approach | Open Source First |
+|--------|-----------------|-------------------|
+| Adoption speed | Slow (friction) | Fast (no friction) |
+| Community | Minimal | Active contributors |
+| Trust | Transactional | Authentic |
+| Category definition | Competing | Leading |
+| Long-term value | Capped | Compounding |
 
-- Build 4 core components (free tier)
-- Set up Storybook, documentation
-- Create GitHub repo (public)
-- Write README with dual Quick Starts
-- Record initial demo video
+### Comparable Success Stories
 
-#### Weeks 3-4
-
-- Launch on GitHub
-- Post on LinkedIn, Threads, X
-- Submit to React newsletters
-- Create dev.to article
-- Set up Gumroad for paid products (coming soon)
-
-**Goal:** 100-200 GitHub stars, validate core components work
-
-### Month 2: Build Paid Tiers + Lead Magnet
-
-#### Weeks 5-6
-
-- Build Prototype Pack components and templates
-- Create mock data utilities
-- Record "Prototype in 2 Hours" video
-- Write integration guides
-
-#### Weeks 7-8
-
-- Build Production Pack advanced components
-- Write production integration guides
-- Create testing utilities
-- Build 2-3 complete templates for bundle
-- Set up Gumroad product pages
-
-#### Content Marketing
-
-- Free Lead Magnet: "10 AX Patterns Every AI Product Needs" (PDF)
-- Email capture on GitHub README
-- Weekly posts showing component builds
-- Engage with AI product builders on Twitter/LinkedIn
-
-**Goal:** 500+ email subscribers, 300+ GitHub stars
-
-### Month 3: Launch Paid Tiers + Push
-
-#### Weeks 9-10
-
-- Finalize all paid tier content
-- Polish documentation
-- Create sales page with clear tier comparison
-- Set up payment processing (Gumroad or Lemon Squeezy)
-- Beta test with 3-5 early users (free access for feedback)
-
-#### Weeks 11-12
-
-- Public launch of paid tiers
-- Email announcement to subscribers
-- Major LinkedIn post with demo
-- Post in relevant communities (React, AI dev)
-- Reach out to Theo/LCA team (show what you built)
-- Submit to Product Hunt
-
-#### Aggressive Promotion
-
-- Daily posts showing use cases
-- Case studies from beta users
-- "Building in Public" thread on Twitter
-- Live streams building with components
-- Guest posts on AI/React blogs
-
-**Goal:** $2,000-5,000 revenue, 1,000+ GitHub stars
+| Project | Model | Outcome |
+|---------|-------|---------|
+| **Tailwind CSS** | Open source → Tailwind UI ($10M+) | Became the standard |
+| **Shadcn/ui** | Fully open source → Vercel hire | Authority → opportunity |
+| **React Query** | Open source → TanStack → sponsorships | Community → sustainability |
+| **Zod** | Open source → widespread adoption | De facto standard |
 
 ---
 
-## Pricing Rationale
+## 90-Day Rollout (Revised)
 
-### Why One-Time Pricing (Not Subscription)?
+### Month 1: Build & Ship
 
-- Lower barrier to purchase
-- Aligns with how developers buy tools (Tailwind UI, Shadcn Pro)
-- Easier to manage as solo founder
-- Can add subscription later for updates/support
+- Complete core primitives (prioritize Intent, Trust, Transparency categories)
+- Set up GitHub, npm, documentation site
+- Launch publicly — no paywall, no "coming soon"
+- Start building-in-public content
 
-### Why These Price Points?
+### Month 2: Grow & Engage
 
-- **$29:** Impulse buy territory, less than one hour of freelance rate
-- **$79:** Professional tool pricing, justified by time savings
-- **$99:** Premium but accessible for indies, cheap for companies
+- Respond to every issue and PR
+- Weekly progress posts (LinkedIn, Twitter, dev.to)
+- Engage in AI product communities
+- Start email newsletter
+- Release more primitive categories
 
-### Competitive Comparison
+### Month 3: Establish Authority
 
-- **Tailwind UI:** $299 (but mature, comprehensive)
-- **Shadcn Pro:** Free (but generic, not AX-specific)
-- **Your positioning:** More affordable than Tailwind UI, more specialized than Shadcn
-
----
-
-## Future Monetization Opportunities (Month 6+)
-
-### Potential Additions
-
-#### 1. Enterprise License ($499/year)
-
-- Unlimited team seats
-- Priority support (4hr response)
-- Custom component requests
-- Private Slack channel
-
-#### 2. Component Update Subscription ($19/month or $199/year)
-
-- Monthly new components
-- Early access to features
-- Ongoing updates to existing components
-
-#### 3. Consulting/Agency Services
-
-- Custom component development
-- AX design audits
-- Team workshops
-
-#### 4. Course/Book
-
-- "Building Agentic Experiences with React"
-- $99-149
-
-#### 5. Figma Plugin
-
-- AX component variants for Figma
-- Auto-generate React code
-- $29 add-on
+- Publish "AX Design Principles" article series
+- First consulting clients (reach out to AI startups using your library)
+- Guest posts on relevant blogs
+- Submit to React/AI newsletters
+- Conference CFP submissions
 
 ---
 
-## Success Metrics to Track
+## Key Metrics to Track
 
-### Free Tier
+### Adoption (Primary)
 
-- GitHub stars
-- npm weekly downloads
+- GitHub stars and forks
+- npm downloads (weekly/monthly)
 - Documentation page views
-- Email signups
+- Issues and PRs (engagement signal)
 
-### Paid Tiers
+### Authority (Secondary)
 
-- Conversion rate by tier
-- Average revenue per user (ARPU)
-- Refund rate
-- Support ticket volume
+- Newsletter subscribers
+- Social media followers
+- Inbound consulting inquiries
+- Speaking invitations
 
-### Content
+### Revenue (Phase 2+)
 
-- LinkedIn post engagement
-- Blog post traffic
-- Video view counts
-- Email open rates
+- Consulting bookings
+- Content sales
+- Sponsorship income
+- Enterprise inquiries
 
 ---
 
 ## Risk Mitigation
 
-### Risk: No one pays, everyone just uses free tier
+### Risk: No one uses it (even for free)
 
-**Mitigation:**
-- Free tier is intentionally limited (only 4 basic components)
-- Paid components solve real pain (error handling, complex workflows)
-- Clear value gap between tiers
+**Mitigation:** Validate primitives solve real problems before building all 48. Start with top 10 most requested.
 
-### Risk: Market too niche, not enough buyers
+### Risk: Can't convert to revenue
 
-**Mitigation:**
-- Validate with free tier first
-- Build in public, gauge interest
-- Pivot positioning if needed (more generic React, less AX-specific)
+**Mitigation:** Build audience before monetizing. Email list and social following are the conversion engine.
 
-### Risk: Competitors copy your work (it's open source)
+### Risk: Someone else monetizes your work
 
-**Mitigation:**
-- You're building community, not just code
-- Speed of iteration matters
-- Your content/teaching is differentiator
-- Advanced paid components stay private
+**Mitigation:** Your authority, content, and relationships are the moat — not the code.
 
----
+### Risk: Burnout without revenue
 
-## Key Decisions to Make
-
-### 1. Payment Platform: Gumroad vs Lemon Squeezy vs Stripe?
-
-**Recommendation:** Gumroad (easiest for solo founder, handles EU VAT)
-
-### 2. License Type for Paid Tiers: Can buyers use in client projects?
-
-**Recommendation:** Yes, unlimited projects (encourages agencies to buy)
-
-### 3. Refund Policy: 30-day money back?
-
-**Recommendation:** Yes (builds trust, low risk for digital products)
-
-### 4. Updates: Do paid customers get free updates forever?
-
-**Recommendation:** Yes for first 6 months, then optional subscription
+**Mitigation:** Set clear timeline. If no traction by Month 6, reassess or pivot.
 
 ---
 
 ## Bottom Line
 
-- **Free tier:** Drives adoption, builds credibility
-- **Prototype Pack ($29):** Captures designers/PMs in the prototyping workflow
-- **Production Pack ($79):** Captures engineers shipping to production
-- **Complete Bundle ($99):** Captures teams doing both
+**Old strategy:** Extract value early via $29-99 product sales
+**New strategy:** Create value first via open source, extract later via expertise
 
-### Revenue Targets
+The AX space is too nascent for product sales to work at scale. Your competitive advantage is being *first* and *definitive*, not being *profitable immediately*. Open source accelerates both.
 
-- **Month 3:** $2,000-5,000
-- **Month 6:** $5,000-10,000
-- **Month 12:** $10,000-20,000 (with expanded library + potential subscriptions)
+Once you're the recognized authority on AX design, monetization options multiply: consulting, enterprise, content, tools, hiring opportunities, acquisitions.
 
-This is a proven model (Tailwind UI, Shadcn Pro templates) applied to an emerging need (AX components). Your timing is perfect, and the prototype-to-production positioning differentiates you from generic component libraries.
+**Play the long game.**

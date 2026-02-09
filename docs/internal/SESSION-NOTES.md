@@ -4,6 +4,51 @@
 
 ---
 
+## Session 3 (Continued) - February 9, 2026
+
+### Overview
+Imported initial AX primitives research, analyzed Storybook limitations, and pivoted monetization strategy from freemium to open-source-first.
+
+### Accomplishments
+
+#### 1. AX Primitives Research
+- ✅ Created `docs/internal/research/AX-Primitives-starter.md`
+  - 48 primitives across 8 categories
+  - Categories: Intent & Delegation, Trust & Approval, Transparency & Trace, Memory, Adaptive Canvas, Control & Steering, Output, Social & Shared-Work
+  - Proposed 3-layer architecture: headless primitives, UI components, reference recipes
+
+#### 2. Storybook Analysis
+- ⚠️ Identified Storybook limitations for dual-audience (designers + engineers) goals
+- Storybook good for development, not ideal for marketing/sales
+- Recommendation: Keep Storybook for dev, add lightweight marketing site for demos
+
+#### 3. Monetization Strategy Pivot
+- ✅ Rewrote `MONETIZATION-MODEL.md` with open-source-first approach
+- **Old:** Freemium with $29-99 paid tiers starting Month 1
+- **New:** All primitives MIT licensed, monetize via expertise later
+- Phase 1 (Months 1-6): Pure open source, build community
+- Phase 2 (Months 3-9): Consulting/workshops ($2-5k/mo target)
+- Phase 3 (Month 9+): Enterprise support, premium add-ons
+- Updated `01-project-specification.md` to reflect new roadmap
+
+### Key Decisions Made
+1. **Open source everything** — 48+ primitives, no paywall
+2. **Delay monetization** — Build trust and adoption first
+3. **Revenue via expertise** — Consulting, workshops, content, enterprise support
+4. **Category leadership over quick revenue** — Become "the standard" for AX
+
+### Next Steps
+- [ ] Continue AX research in Notion
+- [ ] Expand primitives documentation
+- [ ] Decide on marketing site approach (simple Next.js?)
+- [ ] Proceed with project scaffolding when research complete
+
+### Notes
+- Comparable models: Tailwind (open source → Tailwind UI), Shadcn (fully open → authority)
+- Playing long game: adoption → authority → monetization
+
+---
+
 ## Session 3 - February 8, 2026
 
 ### Overview
