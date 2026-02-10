@@ -4,9 +4,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-**AX Components for React** is a React component library for Agentic Experience (AX) design - building user interfaces that work seamlessly with AI agents performing autonomous, multi-step tasks.
+**AX Components for React** is an open-source (MIT) React component library for Agentic Experience (AX) design — building user interfaces for AI agents performing autonomous, multi-step tasks.
 
-**Key Positioning:** "From prototype to production" - The same components designers use to build functional prototypes that engineers use to ship production features.
+**Key Positioning:** A catalog-first AX design system. Not a chat widget library — a complete set of primitives for delegation, trust, transparency, and control.
+
+**Strategy:** Open source first, monetize through expertise once established. All 48+ primitives are MIT licensed. See `MONETIZATION-MODEL.md` for details.
 
 ## What is Agentic Experience (AX)?
 
@@ -17,11 +19,54 @@ AX is the design discipline for interfaces where AI agents act on behalf of user
 - **Transparency requirements**: Users need to see what agents are doing and why
 - **Human-in-the-loop patterns**: Critical decisions require human approval
 - **Asynchronous operations**: Agent tasks may take seconds or minutes to complete
+- **Safe delegation**: Users need scoped, bounded, revocable control over what agents can do
+
+## Primitive Catalog (48+ across 8 categories)
+
+The library provides primitives organized into 8 functional categories:
+
+| Category | Examples | Purpose |
+|----------|----------|---------|
+| **Intent & Delegation** | `IntentBar`, `PlanCard`, `StepList` | Move from talking to committing work |
+| **Trust & Approval** | `ApprovalGate`, `RiskBadge`, `PermissionScope` | Boundaries, consent, confidence |
+| **Transparency & Trace** | `ToolTrace`, `ReasonPanel`, `ProgressStream` | Make the system legible |
+| **Memory** | `MemoryPanel`, `MemoryChip`, `MemoryConsentToggle` | Visible, editable memory |
+| **Adaptive Canvas** | `AdaptiveCanvas`, `DiffViewer`, `VersionRail` | Where work gets finalized |
+| **Control & Steering** | `RunControls`, `ThrottleControl`, `Checkpoint` | Steer without breaking flow |
+| **Output** | `ArtifactCard`, `ValidationSummary`, `NextActionBar` | Shippable, integrated outputs |
+| **Social & Shared-Work** | `ShareContext`, `AuditLog`, `RoleBadges` | Team collaboration |
+
+Full catalog: `docs/internal/research/AX-Primitives-starter.md`
+
+## Architecture: 3 Layers
+
+The library is structured as 3 independent layers:
+
+**Layer A: Pure AX Primitives**
+- Just React components + typed props
+- No agent runtime assumptions
+- Can be used in normal (non-agent) apps
+
+**Layer B: Catalog + Schemas**
+- JSON schema / Zod schema per primitive
+- Event schemas and policy flags (`requiresApproval`, `writesState`, `externalAction`)
+- Versioned catalog export
+
+**Layer C: Renderer + Adapter (optional)**
+- Adapter for A2UI protocol compatibility (optional, not a dependency)
+- Event bridge back to agent runtimes
+- Validation + safety gates
+
+Layer A is always useful standalone. Layer C is optional.
+
+## A2UI Protocol Relationship
+
+Google's A2UI is a **compatibility target**, not a dependency. Our only real dependency is React. The project is spec-aligned with A2UI but does not require it. See `docs/internal/research/A2UI-Implications.md` for full analysis.
 
 ## Tech Stack
 
 - React 18+ with TypeScript
-- Modern CSS (CSS Modules - NOT Tailwind)
+- Modern CSS (CSS Modules — NOT Tailwind)
 - Storybook for component documentation and live examples
 - Vitest for testing
 - Vite for build tooling
@@ -54,127 +99,55 @@ ax-components-react/
 
 ### Dual-Audience Approach
 
-Every component must serve TWO distinct audiences:
+Every component serves TWO audiences:
 
-1. **Designers/PMs (Prototyping)**: Need functional prototypes with mock data that respond, fail gracefully, and show probabilistic behavior
-2. **Engineers (Production)**: Need production-ready components that handle real agent APIs, edge cases, and performance
+1. **Designers/PMs (Prototyping)**: Functional prototypes with mock data that respond, fail gracefully, and show probabilistic behavior
+2. **Engineers (Production)**: Production-ready components for real agent APIs, edge cases, and performance
 
-The same code must work in both contexts with minimal changes.
-
-### Code Quality Requirements
-
-- **Fully typed TypeScript** - No `any` types allowed
-- **Accessible components** - ARIA labels, keyboard navigation, screen reader support
-- **Responsive design** - Works across device sizes
-- **Props should be intuitive** for React developers
-- **Components work with mock data AND live data**
-- **Clean, commented code** explaining AX-specific design decisions
+The same code works in both contexts with minimal changes.
 
 ### Design Principles
 
 - **Transparency First**: Always show what the agent is doing and why
+- **Safe Delegation**: Scoped, bounded, revocable permissions — not binary approve/reject
 - **Confidence Communication**: Make probabilistic nature visible but not overwhelming
 - **Graceful Degradation**: Work well even with minimal information
 - **Human Control**: Enable oversight without requiring constant attention
 - **Familiar Patterns**: Build on React conventions developers know
 - **Prototype-to-Production Path**: Components work identically in both contexts
+- **Catalog-First**: Primitives designed as schema-renderable contracts
+
+### Code Quality Requirements
+
+- **Fully typed TypeScript** — No `any` types allowed
+- **Accessible components** — ARIA labels, keyboard navigation, screen reader support (WCAG 2.1 AA)
+- **Responsive design** — Works across device sizes
+- **Props should be intuitive** for React developers
+- **Components work with mock data AND live data**
+- **Clean, commented code** explaining AX-specific design decisions
 
 ### Anti-Patterns to Avoid
 
 - Do NOT over-engineer solutions
 - Do NOT add features beyond what's specified
-- Do NOT add error handling for scenarios that can't happen
-- Do NOT create abstractions for one-time operations
 - Do NOT use Tailwind CSS (use CSS Modules)
 - Do NOT make components dependent on specific AI backends
+- Do NOT treat approvals as binary yes/no — support scoped, bounded grants
 
 ## Component Development Checklist
 
 When building a new component:
 
-1. **TypeScript Types** - Define all interfaces in `[Component].types.ts`
-2. **Component Implementation** - Build in `[Component].tsx` with full features
-3. **Styling** - Create CSS modules in `[Component].module.css`
-4. **Mock Data Utilities** - Add helpers in `src/utils/mockData.ts`
-5. **Tests** - Write Vitest tests in `[Component].test.tsx`
-6. **Storybook Stories** - Create stories serving BOTH audiences:
+1. **TypeScript Types** — Define all interfaces in `[Component].types.ts`
+2. **Component Implementation** — Build in `[Component].tsx` with full features
+3. **Styling** — Create CSS modules in `[Component].module.css`
+4. **Mock Data Utilities** — Add helpers in `src/utils/mockData.ts`
+5. **Tests** — Write Vitest tests in `[Component].test.tsx`
+6. **Storybook Stories** — Create stories serving BOTH audiences:
    - Prototyping Stories (auto-advancing mock data, interactive controls)
    - Production Stories (real API data shape, error handling)
    - Shared Stories (default states, variations)
-7. **Documentation** - Include AX problem solved and usage examples
-
-## Storybook Story Requirements
-
-Stories must demonstrate both prototyping and production use cases:
-
-**Prototyping Stories:**
-- "Quick Start: Prototype [Feature] Flow" with auto-advancing mock data
-- "Test Different [Variations]" with interactive controls
-- "Simulate Real-Time Updates" with live state changes
-
-**Production Stories:**
-- "Basic Usage" with minimal integration example
-- "With Real API Data" showing expected data shape
-- "Error Handling" demonstrating edge cases
-
-**Shared Stories:**
-- Default state
-- All major feature variations
-- Accessibility demonstrations
-
-## Mock Data Philosophy
-
-Mock data utilities (`src/utils/mockData.ts`) are critical for prototyping:
-
-- Generate realistic agent steps with confidence scores
-- Simulate timing delays and async behavior
-- Include error state generators
-- Provide auto-animation helpers
-- Must be simple to use (ideally one function call)
-
-Example pattern:
-```typescript
-simulateAgentProgress({
-  totalSteps: 4,
-  onUpdate: setSteps,
-  delayMs: 2000,
-});
-```
-
-## First Component: AgentProgressTracker
-
-The initial component solves a core AX problem: Traditional progress indicators assume deterministic workflows, but AI agents operate probabilistically with dynamic workflows where steps may be discovered during execution, each with confidence levels.
-
-Key features:
-- Display current agent activity with reasoning
-- Show completed steps with timestamps
-- Indicate active step with dynamic status
-- Display confidence scores (0-100%)
-- Handle unknown total steps gracefully
-- Support determinate and indeterminate modes
-- Show error states with recovery information
-
-## Monetization Model
-
-This is a freemium product with paid tiers:
-
-- **Free Tier**: 3-4 core AX components (open source, MIT)
-- **Prototype Pack** ($29): Templates, mock data library, rapid setup guides
-- **Production Pack** ($79): 8 advanced components, integration guides, testing utilities
-- **Complete Bundle** ($99): Everything plus templates, handbook, office hours
-
-Keep paid components separate from free tier. Advanced features stay in paid packages.
-
-## Accessibility Standards
-
-All components must meet WCAG 2.1 AA standards:
-
-- Screen reader announces step changes and state updates
-- Keyboard navigable for all interactive elements
-- Color is never the only indicator of status
-- Proper ARIA roles and labels
-- Focus management for dynamic content
-- Sufficient color contrast ratios
+7. **Documentation** — Include AX problem solved and usage examples
 
 ## TypeScript Patterns
 
@@ -190,25 +163,14 @@ interface ComponentProps {
   // Feature flags (default false)
   showFeature?: boolean;
 
+  // Policy flags
+  policyFlags?: ('requiresApproval' | 'writesState' | 'externalAction')[];
+
   // Callbacks
   onEvent?: (item: DataType) => void;
 
   // Styling
   className?: string;
-}
-```
-
-### Agent Step Pattern
-```typescript
-interface AgentStep {
-  id: string;
-  status: 'pending' | 'active' | 'completed' | 'failed';
-  label: string;
-  description?: string;
-  confidence?: number; // 0-100
-  timestamp?: Date;
-  reasoning?: string; // Why the agent took this action
-  errorMessage?: string;
 }
 ```
 
@@ -232,10 +194,11 @@ npm test -- ComponentName  # Run specific test
 
 ## Key Files Reference
 
-- `BUILDER-SPEC.md` - Complete technical specification for implementation
-- `MONETIZATION-MODEL.md` - Business model and tier structure
-- `SESSION-NOTES.md` - Development session history and decisions
-- `README.md` - User-facing documentation (to be created)
+- `BUILDER-SPEC.md` — Technical specification and implementation guide
+- `MONETIZATION-MODEL.md` — Open-source-first business strategy
+- `SESSION-NOTES.md` — Development session history and decisions
+- `VC-ORCHESTRATION.md` — Vibe Coding orchestration system plan
+- `research/` — AX research: A2UI analysis, Stripe patterns, primitive catalog
 
 ## Vibe Coding Orchestration System
 
@@ -252,7 +215,7 @@ This project uses a step-based orchestration system via slash commands. PRD docu
 3. `/vibe-step-2-design-tokens` — CSS custom properties (can parallel with step 3)
 4. `/vibe-step-3-shared-types` — Shared TypeScript types (can parallel with step 2)
 
-**Per-component (run for each of the 4 components):**
+**Per-component (run for each component):**
 5. `/vibe-step-4-component [Name]` — Component folder: .tsx, .types.ts, .module.css, index.ts
 6. `/vibe-step-5-mock-data [Name]` — Mock data generators (depends on step 4)
 7. `/vibe-step-6-stories [Name]` — Storybook stories (depends on step 5)
@@ -263,15 +226,9 @@ This project uses a step-based orchestration system via slash commands. PRD docu
 10. `/vibe-step-9-validate` — Full audit: TS, tests, build, exports, a11y
 
 **Utilities:**
-- `/vibe-validate-step [step]` — Run targeted checks after a step completes (catches issues early)
+- `/vibe-validate-step [step]` — Run targeted checks after a step completes
 - `/vibe-clean` — Reset progress.json (optionally per-component)
 - `/vibe-skip-to [step]` — Mark prior steps as complete (for testing)
-
-### Component Names (for per-component steps)
-- `AgentProgressTracker`
-- `ConfidenceScoreBadge`
-- `AgentStatusIndicator`
-- `BasicHumanApprovalGate`
 
 ### PRD Documentation
 The 7 numbered docs in `docs/vibe-coding/` contain the full specification:
@@ -285,8 +242,10 @@ The 7 numbered docs in `docs/vibe-coding/` contain the full specification:
 
 ## Important Context
 
-- CSS Modules are preferred over Tailwind to avoid external dependencies
+- CSS Modules preferred over Tailwind to avoid external dependencies
 - Components should never be tied to specific AI backends (OpenAI, Anthropic, etc.)
 - The "prototype to production" positioning is core to the value proposition
 - Mock data utilities are just as important as the components themselves
 - Every component should solve a specific AX design problem (document which one)
+- Approvals should be scoped, bounded, and revocable — not binary yes/no (see Stripe research)
+- Agent flows are state machines with approval gates at trust boundaries

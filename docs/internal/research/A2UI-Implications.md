@@ -1,5 +1,7 @@
 # A2UI Notes — Implications for AX Components (React)
 
+**Type:** 🏗️ Architecture & Protocol Analysis
+**Source:** Google (A2UI v0.8, Apache 2.0)
 **Status:** Research notes (not a commitment)  
 **Goal:** Extract what A2UI implies for how AX Components should be designed: schemas, catalogs, renderer boundaries, and event/state contracts.
 
@@ -131,6 +133,7 @@ Some primitives should declare they require special handling:
 - A2UI-like renderer that takes messages and renders surfaces
 - Event bridge back to the agent runtime
 - Validation + safety gates
+- Should implement adjacency-list diffing + message buffering because A2UI updates are incremental
 
 This keeps the OSS library useful even for teams not using A2UI.
 
@@ -253,28 +256,95 @@ A minimal “A2UI-like” demo app can become a perfect receipt:
 
 ---
 
-## Strategic Opportunity: Reference React Renderer
+## Strategic Opportunity: Where AX Components Fits
 
-A2UI (v0.8, Apache 2.0) is a Google-backed open spec with existing renderers for **Angular and Flutter**, but **no mature React renderer** exists yet.
+### Renderer Landscape (as of Feb 2026)
 
-Building the reference React renderer for A2UI could:
+| Renderer | Status | Source |
+|----------|--------|--------|
+| Lit (Web Components) | ✅ Stable | Google |
+| Angular | ✅ Stable | Google |
+| Flutter (GenUI SDK) | ✅ Stable | Google |
+| **React** | **🟡 In progress (roadmap: Q1 2026)** | Google |
+| Svelte/Kit | 🔵 Community interest | Community |
+| SwiftUI / Jetpack Compose | 📋 Planned Q2 2026 | Google |
 
-| Benefit | Why |
-|---------|-----|
-| **Instant legitimacy** | Google-backed spec gives credibility to a new library |
-| **Open-source alignment** | Apache 2.0 + MIT is fully compatible with our strategy |
-| **Ecosystem positioning** | Puts AX Components at the center of an emerging standard |
-| **Community pull** | React devs looking for A2UI support will find us |
-| **Contribution opportunity** | Direct collaboration with Google and CopilotKit teams |
+Google's own React renderer is planned with `useA2UI` hook, TypeScript support, theming, and custom components. **We are not racing to build what Google is already building.**
 
-**What this would look like:**
-- Layer A (pure AX primitives) stays the same
-- Layer B (catalog + schemas) maps directly to A2UI component catalog
-- Layer C becomes the official A2UI React renderer/adapter
+### Our Actual Wedge
 
-**Risk:** A2UI is still v0.8 and evolving. Tight coupling could mean rework. Mitigation: keep Layer A independent so primitives are useful without A2UI.
+A2UI's React renderer will handle the plumbing: parsing messages, rendering surfaces, data binding. What it **won't** ship is:
 
-> **Decision needed (not now):** Should AX Components aim to become the reference A2UI React renderer, or stay conceptually aligned but independent?
+| What Google ships (renderer) | What we ship (AX layer) |
+|------------------------------|-------------------------|
+| Generic component mapping | **AX-native catalog**: trust, approval, trace, control primitives |
+| Basic event handling | **Safety patterns**: policy flags, approval gates, audit logging |
+| Theming support | **Opinionated UX**: designed for delegation, not just rendering |
+| Message parsing | **Composable recipes**: reference flows for common agent patterns |
+
+**The wedge is not the renderer — it's the catalog, the safety layer, and the AX design opinion on top.**
+
+Think of it like this:
+- A2UI React renderer = **UIKit** (generic rendering engine)
+- AX Components = **a design system built on top** (opinionated, domain-specific)
+
+### Relationship to A2UI
+
+We should be **spec-aligned and compatible**, not competing:
+
+1. **Layer A** (pure AX primitives) — works standalone, no A2UI dependency
+2. **Layer B** (catalog + schemas) — export A2UI-compatible component catalog so our primitives can be rendered by any A2UI renderer
+3. **Layer C** (adapter) — thin adapter that bridges AX Components with Google's React renderer once it ships
+
+### Ecosystem Alignment
+
+- **Google** — builds the protocol + renderers (infrastructure)
+- **CopilotKit** — builds the agent UI toolkit layer (AG-UI alignment)
+- **AX Components** — builds the **AX design system** (domain-specific)
+
+We complement, not compete. Potential collaboration through ecosystem alignment, not a direct pipeline.
+
+> **Decision needed (not now):** Should we (a) stay spec-aligned and ship an A2UI-compatible catalog/adapter, or (b) actively track Google's React renderer and focus on AX primitives + safety patterns as our differentiator? (Leaning toward b.)
+
+### Timing
+
+Monitor, don't commit yet. Wait until:
+- Google's React renderer lands (Q1 2026) or slips
+- We've defined Catalog v0 and event vocabulary (our actual compounding asset)
+- A2UI stabilizes toward v1.0 (roadmap: Q4 2026)
+
+---
+
+### Dependency Independence
+
+A2UI is a **compatibility target**, not a dependency. Our only real dependency is React.
+
+```
+┌─────────────────────────────────────────┐
+│  A2UI Protocol (optional transport)     │
+│  ┌───────────────────────────────────┐  │
+│  │  AX Components (your library)    │  │
+│  │  ┌─────────────────────────────┐  │  │
+│  │  │  React (the actual dep)     │  │  │
+│  │  └─────────────────────────────┘  │  │
+│  └───────────────────────────────────┘  │
+└─────────────────────────────────────────┘
+```
+
+Like a CSS library being "Bootstrap-compatible" without importing Bootstrap.
+
+**What A2UI research gives us (design insights, not dependencies):**
+
+| Hard problem Google solved | What it validates for us |
+|----------------------------|-------------------------|
+| How do you represent agent UI as data? | Schema-first approach |
+| How do you separate structure from state? | Shape props vs bound props split |
+| How do you handle streaming? | Primitives must handle partial data |
+| How do you keep things safe? | Policy flags pattern |
+
+We'd arrive at similar patterns without A2UI — they confirmed the direction.
+
+**Bottom line:** Build primitives, catalog, safety patterns. If A2UI dominates, a thin adapter makes us compatible. If it doesn't, we've lost nothing. Our compounding asset is the **AX design opinion** — not any transport layer.
 
 ---
 
@@ -283,6 +353,7 @@ Building the reference React renderer for A2UI could:
 - Do we want to align naming with A2UI conventions (`surfaceUpdate`, `dataModelUpdate`) or keep our own internal naming and just remain compatible in concept?
 - How do we version the catalog so apps can safely support multiple versions?
 - What's the minimal "agent runtime" adapter we want to support first (custom, LangGraph, Claude agent SDK, etc.)?
-- Should we engage with the A2UI GitHub repo early (issues, discussions) to signal intent before building?
+- Should we engage with the A2UI GitHub repo early (issues, discussions) to signal intent?
+- Once Google's React renderer ships, how thin should our Layer C adapter be?
 
 ---

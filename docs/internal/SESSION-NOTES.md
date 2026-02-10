@@ -4,6 +4,44 @@
 
 ---
 
+## Session 5 - February 10, 2026
+
+### Overview
+Corrected A2UI strategic positioning, expanded Stripe research doc, and audited all internal docs for accuracy and relevance.
+
+### Accomplishments
+
+#### 1. A2UI Strategy Correction
+- ✅ Verified A2UI roadmap: Google is building their own React renderer (Q1 2026 with `useA2UI` hook)
+- ✅ Reframed strategic opportunity: AX Components is a **design system on top**, not a competing renderer
+- ✅ Added renderer landscape table, "Our Actual Wedge" section, and ecosystem alignment framing
+- ✅ Added "Dependency Independence" section — A2UI is a compatibility target, not a dependency
+
+#### 2. Stripe Research Expansion
+- ✅ Expanded `AX-STRIPE-CHECKOUT-INSIGHTS.md` from 26-line stub to ~170-line analysis
+- ✅ Extracted 7 design patterns: layered architecture, SPTs (trust pattern), function calling, authorization chains, auditability, full primitive mapping, and design principles
+- ✅ Key insight: `ApprovalGate` should support scoped/bounded/revocable grants, not binary approve/reject
+
+#### 3. Internal Docs Audit
+- ✅ Audited all files in `docs/internal/` and `docs/internal/research/`
+- ✅ Rewrote `CLAUDE.md` — now reflects 48-primitive catalog, open-source-first, 3-layer architecture, A2UI compatibility
+- ✅ Rewrote `BUILDER-SPEC.md` — from single-component spec to full catalog-first specification
+- ✅ Added content to `README.md` — now has table of contents and orientation guide
+- ✅ Confirmed `SESSION-NOTES.md`, `MONETIZATION-MODEL.md`, and `VC-ORCHESTRATION.md` are current
+
+### Key Decisions
+1. **Not competing with Google's renderer** — our wedge is the AX catalog + safety patterns layer above
+2. **Approval model is nuanced** — support scoped grants, time-bounded grants, resource caps (from Stripe)
+3. **All internal docs now consistent** — no more references to old 4-component/paid-tier model
+
+### Next Steps
+- [ ] Define Catalog v0 (6-10 primitives from the 48)
+- [ ] Continue AX research in Notion
+- [ ] Proceed with project scaffolding when catalog is defined
+- [ ] Consider engaging A2UI GitHub repo
+
+---
+
 ## Session 4 - February 10, 2026
 
 ### Overview

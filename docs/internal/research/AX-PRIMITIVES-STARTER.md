@@ -1,5 +1,8 @@
 # AX Primitives - Starter Reference
 
+**Type:** 🧩 Primitive Catalog
+**Scope:** 48+ primitives across 8 categories
+
 > **Purpose:** UI building blocks for delegation, trust, and visibility — not "chat components."
 
 This document catalogs foundational primitives for Agentic Experience (AX) design. These are the atomic building blocks that compose into complete agent interfaces.

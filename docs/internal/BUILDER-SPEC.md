@@ -1,45 +1,173 @@
-# Updated Spec: AX Components for React - Prototype to Production
+# AX Components for React — Builder Specification
 
 ## Project Context
 
-You are building a React component library for Agentic Experience (AX) design - a new field focused on creating user interfaces that work seamlessly with AI agents performing autonomous, multi-step tasks.
+You are building an open-source (MIT) React component library for Agentic Experience (AX) design — a new field focused on creating user interfaces for AI agents performing autonomous, multi-step tasks.
 
-**Positioning:** "From prototype to production" - The same components designers use to build functional prototypes and engineers use to ship production features.
+**Positioning:** Catalog-first AX design system. The same components designers use to prototype and engineers use to ship production features.
+
+**Strategy:** Open source first. All primitives are MIT licensed. Revenue comes from expertise (consulting, workshops, content) once the library has traction. See `MONETIZATION-MODEL.md`.
 
 ### What is Agentic Experience (AX)?
 
-AX is the design discipline for interfaces where AI agents act on behalf of users. Unlike traditional UX where humans click through interfaces, AX addresses challenges like:
+AX is the design discipline for interfaces where AI agents act on behalf of users. Unlike traditional UX where humans click through interfaces, AX addresses:
 
 - **Probabilistic outcomes**: Agent actions have confidence scores, not binary success/failure
 - **Autonomous multi-step workflows**: Agents execute complex tasks without constant human input
 - **Transparency requirements**: Users need to see what agents are doing and why
 - **Human-in-the-loop patterns**: Critical decisions require human approval
-- **Asynchronous operations**: Agent tasks may take seconds or minutes to complete
+- **Safe delegation**: Users need scoped, bounded, revocable control — not binary yes/no
+- **State machine flows**: Agent work has defined transitions, pause points, and rollback paths
 
 ### Why This Library Exists
 
-**The Problem:** Traditional UI components assume deterministic workflows. Figma prototypes can't handle AI's probabilistic nature. Teams need functional prototypes that can respond to real agent behavior, then ship those same components to production.
+**The Problem:** Traditional UI components assume deterministic workflows. Figma prototypes can't handle AI's probabilistic nature. No existing library provides a complete AX design system.
 
-**The Solution:** Production-ready React components specifically designed for agentic interactions. Use them to prototype agent experiences, then deploy the same code to production. No translation layer, no rebuild.
+**The Solution:** A catalog of 48+ production-ready React primitives organized by AX function — not by visual type. Use them to prototype, then deploy the same code to production.
 
-## Project Goals
+---
 
-- Build production-ready React components that solve core AX design patterns
-- Serve both prototyping workflows (designers building functional prototypes) and production engineering
-- Provide TypeScript types for full type safety
-- Create reusable, customizable components that work with any AI agent backend
-- Document AX design principles each component addresses
-- Enable rapid prototyping AND production deployment
+## Primitive Catalog (48+ across 8 categories)
+
+These are the building blocks. Not chat components — primitives for delegation, trust, and visibility.
+
+### 1. Intent & Delegation
+Help users move from "talking" to "committing work."
+
+| Primitive | Description |
+|-----------|-------------|
+| `IntentBar` | Compact control for defining goal, scope, mode |
+| `PlanCard` | Proposed plan with steps, assumptions, expected outputs |
+| `StepList` | Executable checklist with per-step status and logs |
+| `CommandPalette` | Fast action launcher for tools, templates, recent actions |
+| `PromptToSpec` | Transforms natural language into structured spec |
+| `ConstraintChips` | Explicit constraints like "no Fridays", "budget <$X" |
+| `ContextPicker` | Select what context the agent can access |
+
+### 2. Trust & Approval
+Boundaries, consent, and confidence.
+
+| Primitive | Description |
+|-----------|-------------|
+| `ApprovalGate` | Approve, reject, or edit before an action runs |
+| `RiskBadge` | Labels actions by risk level with reasoning |
+| `PermissionScope` | Defines what the agent can touch |
+| `ConfirmationModal` | Confirm with diff/preview, not just "are you sure?" |
+| `ConfidenceMeter` | Confidence score + reasoning |
+| `AssumptionList` | Explicit assumptions with confirm/correct toggles |
+| `PolicyBanner` | Non-negotiable rules |
+
+> **Key design insight (from Stripe research):** Approvals should support scoped grants (approve with limits), time-bounded grants (approve for 10 minutes), and resource-bounded grants (up to $500) — not binary approve/reject.
+
+### 3. Transparency & Trace
+Make the system legible while it's working.
+
+| Primitive | Description |
+|-----------|-------------|
+| `ToolTrace` | Timeline of tool calls with input, output, duration, errors |
+| `ReasonPanel` | Explains "why I'm doing this" |
+| `EvidenceStack` | Sources used with snippets and timestamps |
+| `StateInspector` | Current internal state |
+| `ProgressStream` | Streaming progress events |
+| `ErrorExplainer` | Rewrites errors into user choices |
+
+### 4. Memory
+Visible and editable in the moment, not buried in settings.
+
+| Primitive | Description |
+|-----------|-------------|
+| `MemoryPanel` | Shows what memory is being used right now |
+| `MemoryChip` | Single memory item with edit/remove/disable |
+| `MemoryConsentToggle` | "This session only" vs "always remember" |
+| `PreferenceTokens` | Formatting/tone/depth preferences |
+| `RecencyControls` | Filters like "only use last 30 days" |
+
+### 5. Adaptive Canvas
+Where work gets finalized.
+
+| Primitive | Description |
+|-----------|-------------|
+| `AdaptiveCanvas` | Container that morphs into doc/table/form/timeline |
+| `StructuredEditor` | Rich editor with agent insertions and locked regions |
+| `TableCanvas` | Spreadsheet-like with agent fill and validations |
+| `FormCanvas` | Form generator with inline agent suggestions |
+| `DiffViewer` | Shows edits with accept/reject per hunk |
+| `VersionRail` | Version history with snapshots and restore points |
+
+### 6. Control & Steering
+Steer an agent during execution without breaking flow.
+
+| Primitive | Description |
+|-----------|-------------|
+| `RunControls` | Pause, resume, stop, retry |
+| `ModeSwitch` | Toggle between brainstorm, draft, execute, review |
+| `ThrottleControl` | "Ask before each step" to "run until checkpoint" |
+| `Checkpoint` | Automatic stopping points |
+| `UndoStack` | Reversible actions with clear restore semantics |
+| `HumanTakeover` | "I'll do this part" handoff |
+
+### 7. Output
+Make outputs shippable and easy to integrate.
+
+| Primitive | Description |
+|-----------|-------------|
+| `ArtifactCard` | Output summary with export options |
+| `SnippetBlock` | Copyable chunks with provenance |
+| `ValidationSummary` | Checks passed/failed |
+| `NextActionBar` | Suggested next steps |
+
+### 8. Social & Shared-Work
+Team collaboration — design as extension points even if built later.
+
+| Primitive | Description |
+|-----------|-------------|
+| `ShareContext` | Share a run with someone |
+| `CommentLayer` | Comments on steps, diffs, decisions |
+| `AuditLog` | Immutable history for teams |
+| `RoleBadges` | Who approved what |
+
+---
+
+## Architecture: 3 Layers
+
+### Layer A: Pure AX Primitives (State Machines / Hooks)
+- Just React components + typed props
+- No agent runtime assumptions
+- Can be used in normal apps
+
+```typescript
+useRun()
+useApprovalGate()
+useTrace()
+useMemory()
+```
+
+### Layer B: Catalog + Schemas
+- JSON schema / Zod schema per primitive
+- Event schemas for inter-component communication
+- Policy flags: `requiresApproval`, `writesState`, `revealsMemory`, `externalAction`
+- Versioned catalog export
+
+### Layer C: Renderer + Adapter (optional)
+- A2UI-compatible adapter (optional, not a hard dependency)
+- Event bridge back to agent runtimes
+- Validation + safety gates
+- Adjacency-list diffing + message buffering
+
+Layer A is always useful standalone. Layer C is optional. See `research/A2UI-Implications.md` for protocol details.
+
+---
 
 ## Technical Specifications
 
 ### Stack
 
 - React 18+ with TypeScript
-- Modern CSS (CSS Modules)
-- No external UI library dependencies (we're building primitives)
+- Modern CSS (CSS Modules — not Tailwind)
+- No external UI library dependencies (building primitives)
 - Storybook for component documentation and live examples
 - Vitest for testing
+- Vite for build tooling
 
 ### Project Structure
 
@@ -47,23 +175,21 @@ AX is the design discipline for interfaces where AI agents act on behalf of user
 ax-components-react/
 ├── src/
 │   ├── components/
-│   │   ├── AgentProgressTracker/
-│   │   │   ├── AgentProgressTracker.tsx
-│   │   │   ├── AgentProgressTracker.types.ts
-│   │   │   ├── AgentProgressTracker.module.css
-│   │   │   ├── AgentProgressTracker.test.tsx
-│   │   │   └── index.ts
-│   │   └── index.ts
+│   │   └── [ComponentName]/
+│   │       ├── [ComponentName].tsx
+│   │       ├── [ComponentName].types.ts
+│   │       ├── [ComponentName].module.css
+│   │       ├── [ComponentName].test.tsx
+│   │       └── index.ts
 │   ├── types/
 │   │   └── common.ts
 │   ├── utils/
-│   │   └── mockData.ts  // Mock agent data for prototyping
+│   │   └── mockData.ts
 │   └── index.ts
 ├── stories/
-│   └── AgentProgressTracker.stories.tsx
 ├── examples/
-│   ├── prototype-setup/     // Quick start for prototyping
-│   └── production-setup/    // Integration guide for production
+│   ├── prototype-setup/
+│   └── production-setup/
 ├── package.json
 ├── tsconfig.json
 ├── vite.config.ts
@@ -73,238 +199,81 @@ ax-components-react/
 ### Code Quality Standards
 
 - Fully typed TypeScript (no `any` types)
-- Accessible components (ARIA labels, keyboard navigation)
+- Accessible components (ARIA labels, keyboard navigation, WCAG 2.1 AA)
 - Responsive design
 - Clean, commented code explaining AX-specific decisions
 - Props should be intuitive for React developers
 - Components work with mock data (prototyping) and live data (production)
 
-## First Component: AgentProgressTracker
+---
 
-### The AX Problem It Solves
+## Implementation Approach
 
-Traditional progress indicators assume deterministic, linear workflows (e.g., "Step 2 of 5"). AI agents operate probabilistically with dynamic workflows where:
+### Catalog v0 (recommended starting set)
 
-- Steps may be discovered during execution
-- Each step has a confidence level
-- The total number of steps may be unknown
-- Some steps may fail and trigger alternate paths
+Pick primitives that are:
+- Core to AX (trust/transparency/control)
+- Naturally representable as schemas
+- Useful in demos and reference flows
 
-**Prototyping Use Case:** Designers need to test how agent progress feels with different confidence levels, error states, and dynamic step additions without building backend logic.
+**Recommended v0 set (6-10 primitives):**
+1. `ApprovalGate` — approve/reject/request-change with scoped grants
+2. `MemoryPanel` — shows what the agent is using right now
+3. `ToolTrace` — timeline of everything the agent called
+4. `PlanCard` — proposed plan before execution
+5. `ProgressStream` — streaming progress events
+6. `RunControls` — pause, resume, stop, retry
+7. `ConfidenceMeter` — confidence score + reasoning
+8. `DiffViewer` — accept/reject per hunk
 
-**Production Use Case:** Engineers need a component that can handle real agent outputs, unknown workflow lengths, and graceful error handling.
+### Build Order
 
-### Component Requirements
+1. Define catalog v0 (primitives, props, events, policy flags)
+2. Write schemas for each primitive (Zod + JSON Schema)
+3. Define surface registry (`main`, `rightPanel`, `modal`, `tray`)
+4. Scaffold library and Storybook
+5. Build primitives with mock data utilities
+6. Write stories and tests
+7. Document AX problem each primitive solves
 
-#### Core Features
+---
 
-- Display current agent activity with reasoning/explanation
-- Show completed steps with timestamps
-- Indicate active step with dynamic status
-- Display confidence scores (0-100%) for probabilistic steps
-- Handle unknown total steps gracefully
-- Support both determinate (known steps) and indeterminate (unknown) modes
-- Show error states with recovery information
-- Include mock data utilities for rapid prototyping
-
-#### Component API (TypeScript Interface)
-
-```typescript
-interface AgentStep {
-  id: string;
-  status: 'pending' | 'active' | 'completed' | 'failed';
-  label: string;
-  description?: string;
-  confidence?: number; // 0-100
-  timestamp?: Date;
-  reasoning?: string; // Why the agent took this action
-  errorMessage?: string;
-}
-
-interface AgentProgressTrackerProps {
-  steps: AgentStep[];
-  mode?: 'determinate' | 'indeterminate';
-  currentStepId?: string;
-  totalSteps?: number;
-  showConfidence?: boolean;
-  showReasoning?: boolean;
-  showTimestamps?: boolean;
-  onStepClick?: (step: AgentStep) => void;
-  className?: string;
-}
-```
-
-#### Visual Design Guidelines
-
-- Clean, modern appearance
-- Completed steps: muted/subtle styling
-- Active step: prominent with animated indicator
-- Failed steps: clear error state, not alarming
-- Confidence scores: visual indicator (progress bar, badge, or color gradient)
-- Reasoning text: collapsible/expandable to avoid clutter
-- Smooth animations for step transitions (important for prototyping feel)
-
-#### Accessibility
-
-- Screen reader announces step changes
-- Keyboard navigable if interactive
-- Color is not the only indicator of status
-- Proper ARIA roles and labels
-
-## Implementation Tasks
-
-1. **Setup project structure**
-   - Initialize with Vite + React + TypeScript
-   - Configure Storybook
-   - Set up testing with Vitest
-   - Create `examples/` folder for both use cases
-
-2. **Create TypeScript types**
-   - Define all interfaces in `AgentProgressTracker.types.ts`
-   - Create common types in `src/types/common.ts`
-
-3. **Build component**
-   - Implement `AgentProgressTracker.tsx` with all features
-   - Create CSS modules for styling
-   - Add proper TypeScript types and JSDoc comments
-
-4. **Create mock data utilities** (in `src/utils/mockData.ts`)
-   - `generateMockSteps()` - creates realistic agent steps
-   - `simulateAgentProgress()` - animates through steps over time
-   - These help designers prototype quickly
-
-5. **Write Storybook stories** (serve BOTH audiences)
-   
-   **Prototyping Stories:**
-   - "Quick Start: Prototype Agent Flow" - with auto-advancing mock data
-   - "Test Different Confidence Levels" - interactive controls
-   - "Simulate Real-Time Updates" - live step additions
-   
-   **Production Stories:**
-   - "Basic Usage" - minimal integration example
-   - "With Real API Data" - shows data shape from actual agent
-   - "Error Handling" - edge cases and failures
-   
-   **Shared Stories:**
-   - Default state
-   - With confidence scores
-   - With reasoning text
-   - Indeterminate mode
-
-6. **Add tests**
-   - Renders all states correctly
-   - Handles step updates
-   - Accessibility checks
-   - Mock data utilities work correctly
-
-7. **Documentation** (dual-audience README)
-   - Overview: What AX problem this solves
-   - Quick Start: Prototyping (5-minute setup with mock data)
-   - Quick Start: Production (integration with real agents)
-   - Installation instructions
-   - Component API documentation
-   - Design rationale
-   - Migration path from prototype to production
-
-## Example Usage - Two Paths
-
-### Path 1: Prototyping (Designers/PMs)
-
-```typescript
-import { AgentProgressTracker } from 'ax-components-react';
-import { simulateAgentProgress } from 'ax-components-react/utils';
-
-function AgentPrototype() {
-  const [steps, setSteps] = useState<AgentStep[]>([]);
-
-  useEffect(() => {
-    // Automatically simulates an agent workflow
-    simulateAgentProgress({
-      totalSteps: 4,
-      onUpdate: setSteps,
-      delayMs: 2000,
-    });
-  }, []);
-
-  return (
-    <AgentProgressTracker
-      steps={steps}
-      showConfidence
-      showReasoning
-      mode="determinate"
-    />
-  );
-}
-```
-
-### Path 2: Production (Engineers)
-
-```typescript
-import { AgentProgressTracker } from 'ax-components-react';
-import { useAgentWorkflow } from './hooks/useAgentWorkflow';
-
-function ProductionAgentInterface() {
-  const { steps, currentStepId } = useAgentWorkflow({
-    agentId: 'my-agent-123',
-    taskId: 'analyze-document',
-  });
-
-  return (
-    <AgentProgressTracker
-      steps={steps}
-      currentStepId={currentStepId}
-      showConfidence
-      showReasoning
-      mode="determinate"
-    />
-  );
-}
-```
-
-## Design Principles to Embed
+## Design Principles
 
 - **Transparency First**: Always show what the agent is doing and why
+- **Safe Delegation**: Scoped, bounded, revocable permissions
 - **Confidence Communication**: Make probabilistic nature visible but not overwhelming
 - **Graceful Degradation**: Work well even with minimal information
 - **Human Control**: Enable oversight without requiring constant attention
 - **Familiar Patterns**: Build on React conventions developers know
-- **Prototype-to-Production Path**: Components work identically in both contexts
+- **Catalog-First**: Primitives designed as schema-renderable contracts
+- **State Machine Flows**: Agent work has defined transitions, pause points, and rollback paths
 
-## Getting Started
-
-Please:
-
-1. Set up the project with the specified tech stack
-2. Implement the `AgentProgressTracker` component with all features
-3. Create mock data utilities in `src/utils/mockData.ts`
-4. Create at least 7 Storybook stories showing both prototyping and production use cases
-5. Write dual-audience README with separate Quick Start sections
-6. Create example setups in `examples/` folder for both paths
-7. Ensure code is production-ready with proper TypeScript types
-
-Focus on making this feel like a professional component library that serves both rapid prototyping AND production deployment.
-
-## Key Questions to Address in Implementation
-
-- How should confidence scores be visualized? (color gradient, badge, mini progress bar?)
-- Should reasoning text be collapsed by default or always visible?
-- How to handle real-time step updates smoothly (animations/transitions)?
-- What's the best way to show indeterminate progress that still feels informative?
-- What mock data patterns are most useful for prototyping?
-- How to make the transition from mock to real data seamless?
+---
 
 ## Success Criteria
 
 ### A designer should be able to:
-
-- Install the library
-- Import `AgentProgressTracker` and `simulateAgentProgress`
+- Install the library and import primitives
 - Have a working, interactive prototype in under 5 minutes
 - Test different agent behaviors without backend setup
 
 ### An engineer should be able to:
-
-- Use the same component in production
+- Use the same components in production
 - Connect to real agent APIs with minimal code changes
-- Trust the component to handle edge cases
+- Trust the components to handle edge cases
 - Ship to production with confidence
+
+### The library should:
+- Be useful without A2UI (Layer A standalone)
+- Be compatible with A2UI when desired (Layer C adapter)
+- Support any agent runtime (not tied to OpenAI, Anthropic, etc.)
+- Have a clear catalog with versioned schemas
+
+---
+
+## Key Research References
+
+- `research/A2UI-Implications.md` — Google A2UI protocol analysis and strategic positioning
+- `research/AX-STRIPE-CHECKOUT-INSIGHTS.md` — Stripe's agentic patterns mapped to AX primitives
+- `research/AX-Primitives-starter.md` — Full 48-primitive catalog definition

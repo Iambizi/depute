@@ -8,11 +8,31 @@ These documents capture foundational concepts, external case studies, and primit
 
 ## What's in here?
 
-| File | Purpose |
-|------|---------|
-| `AX-PRIMITIVES-STARTER.md` | Catalog of 48+ UI primitives across 8 categories (intent, trust, transparency, memory, canvas, control, output, social). Defines the building blocks for agent interfaces. |
-| `AX-STRIPE-CHECKOUT-INSIGHTS.md` | Research memo extracting reusable patterns from Stripe's "Agentic Checkout" — protocol/event stream, permissions, stateful auditable flows. |
-| `A2UI-Implications.md` | Analysis of Google's A2UI spec (v0.8). Implications for schema-first design, catalog architecture, and the strategic opportunity of building the reference React renderer. |
+Documents are classified by type so it's clear what kind of insight each provides.
+
+### 🔬 Real-World Case Studies
+
+External examples of companies solving AX problems — patterns to learn from, not copy.
+
+| File | Source | Key Insight |
+|------|--------|-------------|
+| `AX-STRIPE-CHECKOUT-INSIGHTS.md` | Stripe | Agentic checkout as protocol + event stream, permissions + approvals, stateful auditable flows |
+
+### 🏗️ Architecture & Protocol Analysis
+
+Specs and protocols that inform how our library should be structured.
+
+| File | Source | Key Insight |
+|------|--------|-------------|
+| `A2UI-Implications.md` | Google (A2UI v0.8) | Catalog-first, schema-first, event-first design. Strategic opportunity: no mature React renderer exists yet |
+
+### 🧩 Primitive Catalogs
+
+Component inventories and building block definitions.
+
+| File | Scope | Key Insight |
+|------|-------|-------------|
+| `AX-PRIMITIVES-STARTER.md` | 48+ primitives, 8 categories | Intent, trust, transparency, memory, canvas, control, output, social — with 3-layer architecture proposal |
 
 ## How should an AI use these docs?
 
@@ -20,6 +40,7 @@ These documents capture foundational concepts, external case studies, and primit
 2. **Cross-reference with specs.** The finalized component specs live in `docs/vibe-coding/01-07`. Research here feeds into those specs.
 3. **Primitives are candidates, not commitments.** Not all 48 primitives will ship. Research is ongoing and the list will be refined.
 4. **Look for patterns, not just components.** The value is in the categories and relationships (e.g., trust primitives always pair with transparency primitives).
+5. **Check the document type.** Case studies provide real-world validation. Architecture docs inform structural decisions. Primitive catalogs define the component space.
 
 ## Project context
 
