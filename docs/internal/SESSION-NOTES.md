@@ -4,6 +4,50 @@
 
 ---
 
+## Session 4 - February 10, 2026
+
+### Overview
+Continued AX research phase. Imported Stripe Agentic Checkout insights and A2UI protocol analysis. Identified a major strategic opportunity: building the reference React renderer for Google's A2UI spec.
+
+### Accomplishments
+
+#### 1. Research Documents
+- ✅ Created `docs/internal/research/AX-STRIPE-CHECKOUT-INSIGHTS.md`
+  - Stripe's approach: protocol + event stream, permissions + approvals, stateful replayable/auditable flows
+- ✅ Created `docs/internal/research/A2UI-Implications.md`
+  - Analyzed Google's A2UI spec (v0.8, Apache 2.0) for implications on AX Components
+  - Key takeaways: catalog-first, schema-first, event-first design
+  - Extracted surface model, adjacency list structure, 4 message types, JSON Pointer data binding
+  - Proposed 3-layer architecture: pure primitives → catalog/schemas → renderer/adapter
+
+#### 2. Research Folder Organization
+- ✅ Created `docs/internal/research/README.md` — context prompt for AI agents reading the folder
+
+#### 3. A2UI Strategic Opportunity Identified
+- 🔥 **A2UI has renderers for Angular and Flutter, but no mature React renderer**
+- Building the reference React renderer would give AX Components instant legitimacy
+- Aligns perfectly with open-source-first strategy (Apache 2.0 + MIT compatible)
+- Opens door to collaboration with Google and CopilotKit teams
+- Documented in `A2UI-Implications.md` § "Strategic Opportunity"
+
+### Key Decisions Made
+1. **Catalog-first design** — Even without adopting A2UI directly, design primitives as schema-renderable contracts
+2. **3-layer library split** — Pure primitives (Layer A), catalog/schemas (Layer B), renderer/adapter (Layer C)
+3. **React renderer opportunity** — Noted for future decision, not a commitment yet
+
+### Next Steps
+- [ ] Continue AX research in Notion
+- [ ] Evaluate feasibility of A2UI React renderer approach
+- [ ] Engage with A2UI GitHub repo to signal interest
+- [ ] Finalize Catalog v0 primitive selection (6-10 components)
+- [ ] Proceed with project scaffolding when research is complete
+
+### Notes
+- A2UI is v0.8 and still evolving — tight coupling risk, mitigated by keeping Layer A independent
+- Stripe + A2UI research converge on same themes: schemas, state machines, approval flows, auditability
+
+---
+
 ## Session 3 (Continued) - February 9, 2026
 
 ### Overview
