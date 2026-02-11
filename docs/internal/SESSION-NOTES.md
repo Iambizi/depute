@@ -4,6 +4,44 @@
 
 ---
 
+## Session 6 - February 11, 2026
+
+### Overview
+Created Claude Cowork case study from live workshop screenshots. Added AX Book reading notes. Cross-referenced Cowork patterns with AX Book's 6 foundational patterns.
+
+### Accomplishments
+
+#### 1. Claude Cowork Case Study
+- ✅ Analyzed two states: **landing page** (idle) and **active task view** (working)
+- ✅ Identified 11 AX patterns across both views
+- ✅ Mapped all patterns to our primitives catalog — ~80-85% coverage
+- ✅ Found gaps: `TaskQueue`, `TaskSuggestions`/`StarterCards`, inline reasoning mode, `ModelBadge`
+- ✅ Connected landing page to AX Book's Generative Momentum pattern (Pattern 6)
+- ✅ Key finding: Cowork optimizes for simplicity; we optimize for trust/control — both valid, different audiences
+
+#### 2. AX Book Notes
+- ✅ Added reading notes from *AX: The Rise of Agentic Experience* (Theo Tabah / LCA)
+- ✅ Structured under the 4 parts from the book index, with placeholder sections for unread chapters
+- ✅ Confirmed our primitives catalog maps cleanly to all 6 AX patterns from Chapter 4
+- ✅ Noted that Chapter 8 (8 AX Principles) and Chapter 9 (Safe & Ethical Design) are most likely to reveal gaps
+
+#### 3. Research Documentation
+- ✅ Updated `research/README.md` with new entries (Cowork analysis, AX Book)
+- ✅ Added new 📖 Book Notes category to research index
+
+### Key Decisions
+1. **Wait to formalize AX Book analysis** until complete (through Chapter 12) — notes are raw research for now
+2. **Generative Momentum validated** as a pattern we should support — consider `TaskSuggestions` primitive
+3. **Two-phase UI** (idle → active) is a smart Adaptive Canvas application worth considering
+
+### Next Steps
+- [ ] Finish reading AX Book (Chapters 7-12)
+- [ ] Define Catalog v0 (6-10 primitives)
+- [ ] Scaffold the library
+- [ ] Consider adding `TaskQueue` and `TaskSuggestions` to primitives catalog
+
+---
+
 ## Session 5 - February 10, 2026
 
 ### Overview

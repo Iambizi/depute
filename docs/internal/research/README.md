@@ -16,7 +16,8 @@ External examples of companies solving AX problems — patterns to learn from, n
 
 | File | Source | Key Insight |
 |------|--------|-------------|
-| `AX-STRIPE-CHECKOUT-INSIGHTS.md` | Stripe | Agentic checkout as protocol + event stream, permissions + approvals, stateful auditable flows |
+| `AX-STRIPE-CHECKOUT-INSIGHTS.md` | Stripe | Scoped approval grants (SPTs), authorization chains as state machines, auditability as feature |
+| `AX-CLAUDE-COWORK-ANALYSIS.md` | Anthropic (Claude Cowork) | Plan-first execution, generative momentum in onboarding, two-phase UI (idle → active), inline reasoning, trust-once access model |
 
 ### 🏗️ Architecture & Protocol Analysis
 
@@ -24,7 +25,7 @@ Specs and protocols that inform how our library should be structured.
 
 | File | Source | Key Insight |
 |------|--------|-------------|
-| `A2UI-Implications.md` | Google (A2UI v0.8) | Catalog-first, schema-first, event-first design. Strategic opportunity: no mature React renderer exists yet |
+| `A2UI-Implications.md` | Google (A2UI v0.8) | Catalog-first, schema-first design. AX Components = design system layer above A2UI renderer (compatibility target, not dependency) |
 
 ### 🧩 Primitive Catalogs
 
@@ -33,6 +34,14 @@ Component inventories and building block definitions.
 | File | Scope | Key Insight |
 |------|-------|-------------|
 | `AX-PRIMITIVES-STARTER.md` | 48+ primitives, 8 categories | Intent, trust, transparency, memory, canvas, control, output, social — with 3-layer architecture proposal |
+
+### 📖 Book Notes
+
+Notes from foundational AX reading — in progress.
+
+| File | Source | Key Insight |
+|------|--------|-------------|
+| `AX-BOOK.md` | Theo Tabah / LCA — *AX: The Rise of Agentic Experience* | 6 AX patterns (intent handshake, confidence cues, adaptive canvas, escape hatch, memory in motion, generative momentum), AX evolution curve with defensibility line, NL as interface |
 
 ## How should an AI use these docs?
 
