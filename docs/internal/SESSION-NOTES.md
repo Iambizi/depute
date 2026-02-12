@@ -29,16 +29,27 @@ Created Claude Cowork case study from live workshop screenshots. Added AX Book r
 - ✅ Updated `research/README.md` with new entries (Cowork analysis, AX Book)
 - ✅ Added new 📖 Book Notes category to research index
 
+#### 4. AX Book Chapter 6 — Generative UI (Feb 12)
+- ✅ Integrated Chapter 6 notes into `AX-BOOK.md` — Generative UI as precision, not vibes
+- ✅ Key concepts: "generative within guardrails," stable spine + contextual surfaces, conversational discovery
+- ✅ Cross-referenced 7 implied primitives against catalog — 1 genuinely new (`CapabilityGlossary`)
+
+#### 5. Primitives Research Tracker (Feb 12)
+- ✅ Added "📋 Candidates from Research" appendix to `AX-PRIMITIVES-STARTER.md`
+- ✅ Centralized 6 candidates from Cowork + AX Book: `TaskQueue`, `TaskSuggestions`, `ModelBadge`, `CapabilityGlossary`, `ContextViewer`, `WhyThisUI`
+- ✅ Decision: wait to revise catalog until book is finished (Ch 7-12 still pending)
+
 ### Key Decisions
 1. **Wait to formalize AX Book analysis** until complete (through Chapter 12) — notes are raw research for now
 2. **Generative Momentum validated** as a pattern we should support — consider `TaskSuggestions` primitive
 3. **Two-phase UI** (idle → active) is a smart Adaptive Canvas application worth considering
+4. **Centralize primitive candidates** — tracking appendix in `AX-PRIMITIVES-STARTER.md` rather than scattered across research docs
 
 ### Next Steps
 - [ ] Finish reading AX Book (Chapters 7-12)
 - [ ] Define Catalog v0 (6-10 primitives)
 - [ ] Scaffold the library
-- [ ] Consider adding `TaskQueue` and `TaskSuggestions` to primitives catalog
+- [ ] Revise primitives catalog with all research findings
 
 ---
 

@@ -345,7 +345,87 @@ These will ensure that your users stay in control as your agents get smarter and
 
 ## Chapter 6: Generative UI as the Opportunity
 
-*(Notes in progress)*
+**Core thesis:** Static interfaces were designed for software that couldn't "understand." In an agentic world, interfaces don't have to be fully designed upfront.
+
+Generative UI is about **precision** (not vibes): generating the right interface for the right moment based on role, task, device/screen, expertise, and context.
+
+### What Changes in How We Design
+
+- The question shifts from layout placement ("where does this button go?") to **situational relevance** ("what does this user need to see right now?").
+- Instead of "one UI serves everyone poorly," you can build a system that adapts the UI to the user's current intent + constraints.
+
+### The Predictability Problem (and the Fix)
+
+The common critique is valid:
+- Users want consistency
+- Muscle memory matters
+- People want to know where things are
+
+**The rebuttal:** Generative UI does not have to mean "random UI." The best generative UIs can feel **more predictable** than static because they're contextually aware:
+- They reduce overwhelm by showing what matters now
+- They surface relevant actions instead of burying them in menus
+
+> **Key rule: Generative within guardrails.**
+> - Keep core navigation stable
+> - Keep primary actions consistent
+> - Allow content, layout, and secondary features to adapt based on what the system knows
+
+### When to Generate vs When to Stay Fixed
+
+**Generate UI when:**
+1. **Context varies significantly** — role-based dashboards, device-responsive layouts
+2. **Information density is high** — medical records, financial data, research tools
+3. **User expertise ranges widely** — beginner vs power user modes
+4. **Task complexity is unpredictable** — investigative workflows, creative projects
+
+**Keep UI fixed when:**
+1. **Physical safety is paramount** — medical devices, industrial controls
+2. **Regulatory compliance demands consistency** — trading terminals, aviation systems
+3. **Muscle memory is a competitive advantage** — pro tools where speed = revenue
+
+> ⚠️ **Pressure statement:** Even "static UI domains" are under pressure. If you can map every user need to predetermined screens, you risk building something AI **replaces** instead of enhances.
+
+### Discoverability in a Generated World
+
+**Problem:** If the interface changes with context, how do users learn what's possible?
+
+**Answer: conversational discovery.**
+- Instead of hunting menus, users ask: "What can I do with this data?" / "Show me advanced options for video editing"
+- The system becomes **self-documenting through dialogue**
+
+**Implication:** capabilities + documentation become part of the interface.
+- Your **capability model** matters
+- Your **documentation quality becomes UX**, not an afterthought
+
+### Practical AX Takeaways (How to Build This)
+
+**1) Build a "stable spine"**
+- Persistent nav / home locations
+- Consistent primary actions (create, run, export, share, undo)
+- Predictable placement for critical controls
+
+**2) Let everything else be "contextual surfaces"**
+- Dynamic panels
+- Relevant actions surfaced inline
+- Condensed or expanded views depending on expertise + task phase
+
+**3) Treat "capability communication" as product**
+- Smart suggestions ("You can also…")
+- "Ask about this" affordances
+- Example prompts that are context-aware
+- Tooltips that explain why an option is being shown
+
+### AX Primitives Implied by Chapter 6
+
+| Implied Primitive | Description | Maps to Our Catalog? |
+|---|---|---|
+| Guardrailed Generative Layout | Fixed nav + variable content regions | ✅ `AdaptiveCanvas` |
+| Contextual Action Shelf | "What you can do next" actions surfaced based on state | ⚠️ `NextActionBar` (partial — ours suggests steps, this is broader) |
+| Mode Ladder | Beginner → intermediate → power (progressive disclosure) | ⚠️ `ModeSwitch` (different axis — ours is task-phase, this is expertise-based) |
+| Conversational Discoverability Panel | "Ask what's possible" + suggested queries | ⚠️ `CommandPalette` (partial — ours is a launcher, this is exploratory) |
+| Capability Glossary / Skills List | Browsable, searchable list of what the agent can do | ❌ New — not in catalog |
+| Why This UI | "Showing this because you're editing X / you usually do Y" | ⚠️ `ReasonPanel` (partial — ours explains reasoning, this explains UI choices) |
+| Stability Anchors | Guarantees like "Export is always top right," "Undo is always here" | ✅ Design guideline, not a component |
 
 ---
 

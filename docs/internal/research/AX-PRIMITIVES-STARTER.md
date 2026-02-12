@@ -150,3 +150,25 @@ Small demos combining primitives into flows:
 - **Plan → Approve → Execute** — Basic delegation flow
 - **Execute → Diff → Undo** — Reversible action pattern
 - **Memory → Consent → Preferences** — Memory management flow
+
+---
+
+## 📋 Candidates from Research
+
+*New primitive candidates discovered during research. These are NOT finalized — they'll be evaluated when we revise the catalog after the research phase is complete.*
+
+| Candidate | Description | Source | Overlaps With | Priority |
+|---|---|---|---|---|
+| `TaskQueue` | Queue follow-up instructions for a running agent without interrupting | Cowork Analysis | — | 🟡 Medium |
+| `TaskSuggestions` | Starter task cards — concrete proposals the user can pick to begin | Cowork Landing Page, AX Book Ch 6 | `CommandPalette`, `NextActionBar` (partial) | 🟡 Medium |
+| `ModelBadge` | Display which AI model is running the current task | Cowork Analysis | Could be `IntentBar` prop | 🟢 Low |
+| `CapabilityGlossary` | Browsable, searchable list of what the agent can do | AX Book Ch 6 | — | 🟡 Medium |
+| `ContextViewer` | Read-only reference list showing what files/data the agent has loaded | Cowork Analysis | `ContextPicker` (read-only variant) | 🟢 Low |
+| `WhyThisUI` | Explains why the interface is showing specific content ("because you're editing X") | AX Book Ch 6 | `ReasonPanel` (partial — explains agent reasoning, not UI choices) | 🟢 Low |
+
+### Notes
+- **`ModeSwitch` gap:** Our current `ModeSwitch` covers task phases (brainstorm/draft/execute/review). Chapter 6 implies an expertise axis (beginner → power user). May need a `ModeLadder` variant or an additional prop.
+- **Inline reasoning:** Cowork mixes natural language reasoning inline with `ToolTrace` entries. Our `ReasonPanel` is separate. Consider a composite mode rather than a new primitive.
+- **Stability Anchors:** Chapter 6's concept of guaranteeing "Export is always here, Undo is always here" is a design guideline, not a component.
+
+*Last updated: Feb 12, 2026 — through AX Book Ch 6 + Cowork Analysis*
