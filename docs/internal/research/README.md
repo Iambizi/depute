@@ -46,7 +46,7 @@ Notes from foundational AX reading — in progress.
 ## How should an AI use these docs?
 
 1. **Treat as source material, not instructions.** These inform what to build, not how to build it.
-2. **Cross-reference with specs.** The finalized component specs live in `docs/vibe-coding/01-07`. Research here feeds into those specs.
+2. **Cross-reference with specs.** The finalized component specs live in `docs/orchestration/01-07`. Research here feeds into those specs.
 3. **Primitives are candidates, not commitments.** Not all 48 primitives will ship. Research is ongoing and the list will be refined.
 4. **Look for patterns, not just components.** The value is in the categories and relationships (e.g., trust primitives always pair with transparency primitives).
 5. **Check the document type.** Case studies provide real-world validation. Architecture docs inform structural decisions. Primitive catalogs define the component space.
@@ -60,4 +60,4 @@ Notes from foundational AX reading — in progress.
   - `docs/internal/BUILDER-SPEC.md` — Full builder specification
   - `docs/internal/MONETIZATION-MODEL.md` — Revenue strategy
   - `docs/internal/SESSION-NOTES.md` — Session-by-session progress log
-  - `docs/vibe-coding/01-07` — PRD specs for orchestration system
+  - `docs/orchestration/01-07` — PRD specs for orchestration system

@@ -202,7 +202,7 @@ npm test -- ComponentName  # Run specific test
 
 ## Vibe Coding Orchestration System
 
-This project uses a step-based orchestration system via slash commands. PRD documentation lives in `docs/vibe-coding/` and progress is tracked in `docs/vibe-coding/progress.json`.
+This project uses a step-based orchestration system via slash commands. PRD documentation lives in `docs/orchestration/` and progress is tracked in `docs/orchestration/progress.json`.
 
 ### Available Commands
 
@@ -231,7 +231,7 @@ This project uses a step-based orchestration system via slash commands. PRD docu
 - `/vibe-skip-to [step]` — Mark prior steps as complete (for testing)
 
 ### PRD Documentation
-The 7 numbered docs in `docs/vibe-coding/` contain the full specification:
+The 7 numbered docs in `docs/orchestration/` contain the full specification:
 - `01-project-specification.md` — Goals, audiences, roadmap
 - `02-technical-architecture.md` — Stack, configs, structure
 - `03-ux-design.md` — Interaction patterns, animations

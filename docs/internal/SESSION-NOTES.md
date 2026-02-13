@@ -53,6 +53,11 @@ Created Claude Cowork case study from live workshop screenshots. Added AX Book r
 - ✅ Noted: `HumanTakeover` should expand to `ExpertRouter` (sub-agents + APIs, not just humans)
 - ✅ Tracker now at 14 total candidates
 
+#### 8. Folder Rename: vibe-coding → orchestration (Feb 13)
+- ✅ Renamed `docs/vibe-coding/` to `docs/orchestration/`
+- ✅ Updated all 15 references across 5 files (`CLAUDE.md`, `SESSION-NOTES.md`, `VC-ORCHESTRATION.md`, `research/README.md`, `02-technical-architecture.md`)
+- ✅ Verified zero remaining references with full repo grep
+
 ### Key Decisions
 1. **Wait to formalize AX Book analysis** until complete (through Chapter 12) — notes are raw research for now
 2. **Generative Momentum validated** as a pattern we should support — consider `TaskSuggestions` primitive
@@ -215,7 +220,7 @@ The goal is to capture as much foundational knowledge as possible before launchi
 
 **Proposed workflow:**
 1. Complete AX research (Notion + external sources)
-2. Bring notes into repo → Create `docs/vibe-coding/00-ax-concepts.md`
+2. Bring notes into repo → Create `docs/orchestration/00-ax-concepts.md`
 3. Update PRD docs (01-06) if needed
 4. Mark Step 1 complete → Proceed to Step 1b+
 
@@ -237,7 +242,7 @@ The goal is to capture as much foundational knowledge as possible before launchi
 ### Next Steps
 - [ ] Complete AX research in Notion
 - [ ] (Optional) Run `/vibe-step-1b-init-project` to scaffold project now
-- [ ] Import notes into `docs/vibe-coding/00-ax-concepts.md`
+- [ ] Import notes into `docs/orchestration/00-ax-concepts.md`
 - [ ] Update PRD docs as needed
 - [ ] Resume orchestration workflow from Step 2
 
@@ -295,7 +300,7 @@ Implemented the complete Vibe Coding orchestration system - a structured workflo
   - Added utility commands (`/vibe-clean`, `/vibe-skip-to`)
   - Included verification steps
 
-#### 2. PRD Documentation (docs/vibe-coding/)
+#### 2. PRD Documentation (docs/orchestration/)
 - ✅ Created all 7 numbered specification documents:
   - `01-project-specification.md` (4.6KB) - Project identity, goals, roadmap
   - `02-technical-architecture.md` (6.7KB) - Stack, pipeline, structure
@@ -331,7 +336,7 @@ Implemented the complete Vibe Coding orchestration system - a structured workflo
 ### Files Created This Session
 
 ```
-docs/vibe-coding/
+docs/orchestration/
 ├── 01-project-specification.md
 ├── 02-technical-architecture.md
 ├── 03-ux-design.md

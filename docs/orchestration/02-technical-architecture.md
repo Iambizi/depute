@@ -52,7 +52,7 @@ ax-components-react/
 │   ├── prototype-setup/               # Quick start for prototyping
 │   └── production-setup/              # Integration guide for production
 ├── docs/
-│   └── vibe-coding/                   # PRD docs (this directory)
+│   └── orchestration/                   # PRD docs (this directory)
 ├── package.json
 ├── tsconfig.json
 ├── tsconfig.node.json

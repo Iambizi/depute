@@ -6,7 +6,7 @@ This document outlines a "Vibe Coding" system — a structured approach where a 
 
 ## What Gets Created
 
-### 1. Seven Numbered PRD Docs (`docs/vibe-coding/`)
+### 1. Seven Numbered PRD Docs (`docs/orchestration/`)
 
 Each doc is a durable reference that slash commands read at execution time:
 
@@ -109,11 +109,11 @@ To add `ConfidenceScoreBadge` after `AgentProgressTracker` is complete:
 
 The system will be created in this sequence:
 
-1. **Create `docs/vibe-coding/` directory and all 7 numbered PRD docs**
+1. **Create `docs/orchestration/` directory and all 7 numbered PRD docs**
    - Extract from BUILDER-SPEC.md
    - Fill gaps for design system, interface states, and additional component APIs
 
-2. **Create `docs/vibe-coding/progress.json`**
+2. **Create `docs/orchestration/progress.json`**
    - Initialize with all steps as `not_started`
 
 3. **Create all 14 skill files in `.claude/skills/`**
@@ -124,12 +124,12 @@ The system will be created in this sequence:
    - Includes 2 utility commands for development/testing
 
 4. **Update `CLAUDE.md`**
-   - Add section about the vibe-coding system and available commands
+   - Add section about the orchestration system and available commands
 
 ## Files to Create
 
 ```
-docs/vibe-coding/
+docs/orchestration/
   01-project-specification.md
   02-technical-architecture.md
   03-ux-design.md
@@ -158,7 +158,7 @@ docs/vibe-coding/
 
 ## Files to Modify
 
-- `CLAUDE.md` — add vibe-coding system documentation
+- `CLAUDE.md` — add orchestration system documentation
 
 ## Verification
 
