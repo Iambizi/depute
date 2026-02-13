@@ -168,6 +168,11 @@ Small demos combining primitives into flows:
 | `AmbientNudge` | Proactive, contextual notification from agent (with snooze + dismiss) | AX Book Ch 7 | — | 🟡 Medium |
 | `ExceptionInbox` | Curated list of only the items that require human judgment | AX Book Ch 7 | — | 🟡 Medium |
 | `QuietMode` | User controls frequency + channels of agent interruptions (attention budget) | AX Book Ch 7 | — | 🟡 Medium |
+| `TransparencyDial` | Brief ↔ detailed slider for agent verbosity (remembered per user + task type) | AX Book Ch 8 | — | 🟡 Medium |
+| `TrustMeter` | Relationship trust level indicator (functional → contextual → judgment → advocacy) | AX Book Ch 8 | `ConfidenceMeter` (different — per-action vs relationship) | 🟢 Low |
+| `PushbackCard` | Agent's tactful alternative recommendation ("I can do X, but I'd recommend Z") | AX Book Ch 8 | — | 🟡 Medium |
+| `TeamPanel` | Multi-agent visibility — who's involved, responsibilities, handoffs | AX Book Ch 8 | — | 🟡 Medium |
+| `PreferenceDefaults` | Stored user preferences for pace, format, tone, definitions | AX Book Ch 8 | `MemoryPanel` (adjacent but distinct — preferences vs memories) | 🟢 Low |
 
 ### Notes
 - **`ModeSwitch` gap:** Our current `ModeSwitch` covers task phases (brainstorm/draft/execute/review). Chapter 6 implies an expertise axis (beginner → power user). May need a `ModeLadder` variant or an additional prop.
@@ -175,5 +180,8 @@ Small demos combining primitives into flows:
 - **Stability Anchors:** Chapter 6's concept of guaranteeing "Export is always here, Undo is always here" is a design guideline, not a component.
 - **Confidence Threshold Router (Ch 7):** The auto → confirm → escalate routing maps to `ThrottleControl` + `ConfidenceMeter` combined — not a new primitive, but a useful composite pattern to document.
 - **Autopilot with Guardrails (Ch 7):** Covered by `ThrottleControl` (max autonomy) + `PolicyBanner` + `UndoStack` — a recipe, not a new primitive.
+- **`HumanTakeover` expansion (Ch 8):** Principle 6 ("Loop In Other Experts") implies extending `HumanTakeover` to also route to sub-agents and external APIs, not just humans. Consider renaming to `ExpertRouter` or adding agent/API variants.
+- **`RiskBadge` expansion (Ch 8):** Principle 4 ("Pushback Is Professional") implies a richer version — not just a badge but a full callout with reasoning and alternative. `PushbackCard` may be a separate primitive or a `RiskBadge` variant.
+- **Ch 8 validated ~12 existing primitives** — strongest confirmation yet that the catalog was well-designed.
 
-*Last updated: Feb 13, 2026 — through AX Book Ch 7 + Cowork Analysis*
+*Last updated: Feb 13, 2026 — through AX Book Ch 8 + Cowork Analysis*

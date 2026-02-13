@@ -46,15 +46,23 @@ Created Claude Cowork case study from live workshop screenshots. Added AX Book r
 - ✅ These are the first primitives for the **ambient/invisible side** of AX — a new category
 - ✅ Tracker now at 9 total candidates
 
+#### 7. AX Book Chapter 8 — The 8 AX Principles (Feb 13)
+- ✅ Integrated all 8 principles + trust framework (4 stages: functional → contextual → judgment → advocacy)
+- ✅ **Most validating chapter yet** — ~12 existing primitives got direct confirmation
+- ✅ 5 new candidates: `TransparencyDial`, `TrustMeter`, `PushbackCard`, `TeamPanel`, `PreferenceDefaults`
+- ✅ Noted: `HumanTakeover` should expand to `ExpertRouter` (sub-agents + APIs, not just humans)
+- ✅ Tracker now at 14 total candidates
+
 ### Key Decisions
 1. **Wait to formalize AX Book analysis** until complete (through Chapter 12) — notes are raw research for now
 2. **Generative Momentum validated** as a pattern we should support — consider `TaskSuggestions` primitive
 3. **Two-phase UI** (idle → active) is a smart Adaptive Canvas application worth considering
 4. **Centralize primitive candidates** — tracking appendix in `AX-PRIMITIVES-STARTER.md` rather than scattered across research docs
 5. **Ambient/invisible primitives** are a new category emerging from Ch 7 — agent-initiated notifications, attention budgets, exception-only workflows
+6. **Catalog validated by Ch 8** — 12 of 48 primitives directly confirmed by the book's 8 principles. Catalog was well-designed from the start
 
 ### Next Steps
-- [ ] Finish reading AX Book (Chapters 8-12)
+- [ ] Finish reading AX Book (Chapters 9-12)
 - [ ] Define Catalog v0 (6-10 primitives)
 - [ ] Scaffold the library
 - [ ] Revise primitives catalog with all research findings

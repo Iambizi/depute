@@ -2,7 +2,7 @@
 
 **Type:** 📖 Book Notes (in progress)
 **Source:** Theo Tabah / LCA (Late Checkout Agency)
-**Status:** 🟡 Reading — through Chapter 7 of 12
+**Status:** 🟡 Reading — through Chapter 8 of 12
 
 ---
 
@@ -24,7 +24,7 @@
 - [Chapter 5: Natural Language as the Interface](#chapter-5-natural-language-as-the-interface)
 - [Chapter 6: Generative UI as the Opportunity](#chapter-6-generative-ui-as-the-opportunity)
 - [Chapter 7: Invisible UI as an Option](#chapter-7-invisible-ui-as-an-option)
-- Chapter 8: The 8 AX Principles *(not yet read)*
+- [Chapter 8: The 8 AX Principles](#chapter-8-the-8-ax-principles)
 - Chapter 9: Safe and Ethical Relationship Design *(not yet read)*
 
 ### Part 04 — Today and The Future
@@ -516,7 +516,161 @@ The builder's job: make interfaces **optional over time** by building systems so
 
 ## Chapter 8: The 8 AX Principles
 
-*(Not yet read)*
+**Framing:** These are behavioral heuristics that separate "shallow AI features" from mature AX systems. Agentic products should: (1) act with intent, (2) evolve with use, (3) earn trust by behaving like competent collaborators.
+
+### Principle 1: Transparency, Tapered Over Time
+
+**Idea:** New collaborators over-communicate. Mature collaborators simplify.
+
+- Early AX should lean transparent: full rationale, visible sources, clear decision trees, "here's how I got there"
+- Over time, as trust builds: verbosity should fade, the system learns when to summarize vs when to show depth
+- Depth stays available on demand
+
+> **Transparency isn't static. It adapts to the relationship arc.**
+
+**Design implications:**
+- Default "show work" for new users / new workflows / high-stakes actions
+- Add a **Transparency Dial**: Brief ↔ Detailed (remembered per user + per task type)
+- "Explain" should be a first-class affordance, not a support article
+
+### Principle 2: Prompting Goes Both Ways
+
+**Idea:** A passive assistant waits. A great teammate gets ahead.
+
+- Agents should: ask clarifying questions, surface uncertainties, propose smart next steps, nudge — not just react
+
+> **In AX, dialogue is design.**
+
+**Design implications:**
+- "Next step suggestions" should be contextual, not generic
+- Ask fewer questions, but better ones: pick the highest-leverage unknown, offer defaults + quick choices
+
+### Principle 3: Clarify Before You Commit
+
+**Idea:** Initiative is powerful, but commitment requires care.
+
+- Before high-stakes actions (sending, updating systems, triggering workflows): pause to confirm intent
+- This is **"intelligent friction"**: protects time/reputation/trust, signals respect, checks in unless explicitly told otherwise
+
+**Design implications:**
+- Create a **Commit Gate**: preview → confirm → execute, with a clear "what will happen" summary
+- Support "always do this without asking" only after trust is earned + scope is explicit
+
+### Principle 4: Pushback Is Professional
+
+**Idea:** Great collaborators don't just obey. They interpret intent and push back.
+
+- If the user asks for something suboptimal, the agent should: do the asked thing (if safe), then recommend the better alternative
+- Requires tact: pushback without tone awareness feels arrogant; done well, the product becomes respected, not just helpful
+
+**Design implications:**
+- Add a **Pushback Pattern**: "I can do X. Quick check: based on Y, I'd recommend Z instead."
+- Make pushback proportional: stronger only when stakes/risk are higher
+
+### Principle 5: Multimodal for the Moment
+
+**Idea:** Clarity is the goal; the medium is a tool.
+
+- Agents should shift fluidly between: text, voice, visuals, summaries, interactive demos — depending on what the moment calls for
+- AX is not forcing a modality, it's choosing the one that best supports understanding
+- "Feels human" comes from responsiveness, not personality
+
+**Design implications:**
+- Build a **Modality Router**: explanation → diagram, delegation → quick voice confirm, comparison → table, progress → timeline / checklist
+
+### Principle 6: Loop In Other Experts
+
+**Idea:** No one wants a know-it-all. Mature systems know their limits.
+
+- Hand off when needed: escalate to a human, call a specialized sub-agent, pull from another app's API
+- This is the start of **multi-agent collaboration**: agents act as orchestrators, not silos — like a good project manager assembling the right team
+
+> **The future isn't one agent, but many working in sync.**
+
+**Design implications:**
+- Add an **Escalation + Expert Router**: "I can draft it, but legal should review" / "Looping in billing agent for the invoice step"
+- Show the "team" clearly (who is doing what)
+
+### Principle 7: Learn Context, Build Memory
+
+**Idea:** Repetition kills trust.
+
+- If users must restate preferences, tone, workflow, goals every time, they leave
+- Agentic systems should accumulate memory: ethically, transparently, with boundaries
+- Users must know what's remembered and how to shape it
+
+**Payoff:** Memory compounds value; every project feels more tailored. This is where agents move from "efficient" to "indispensable."
+
+**Design implications:**
+- "Should I remember this?" (session / always / never)
+- Editable memory before save
+- Memory ledger: view, delete, revise
+- Scoped memory (per project/workspace)
+
+### Principle 8: Personalization Is the Moat
+
+**Idea:** Over time, a great agent should feel like it "gets you."
+
+- It learns your: voice + pace, what "keep it brief" means for you, your defaults ("next week" usually Monday, unless holiday)
+- This personalization can't be cloned quickly: it's a product of time, trust, accumulated context
+- In a world where features get copied fast, **relationship becomes the moat**
+
+**Design implications:**
+- Treat "relationship data" as an asset: preferences + norms + decision history + approved patterns
+- Personalization must be: controllable, legible, reversible
+
+---
+
+### Trust Is the Foundation
+
+> **In AX, trust isn't a feature. It is the product.**
+
+Because agents interpret intent, take action, and sometimes decide without explicit requests, trust becomes less about perfect outputs and more about: **clarity of judgment, humility in action, consistency in behavior.**
+
+**Trust grows in four stages:**
+
+| Stage | Name | What It Means |
+|---|---|---|
+| 1 | Functional trust | Can it do basic tasks reliably? |
+| 2 | Contextual trust | Does it understand nuance, preferences, history? |
+| 3 | Judgment trust | Can it make good calls in ambiguity? |
+| 4 | Advocacy trust | Will it act in my best interest even when incentives misalign? |
+
+**Fastest ways to break trust:**
+- Overconfidence
+- Inconsistency
+- Acting beyond authorization
+- Optimizing company metrics over user success
+- Mishandling complexity when a human handoff was better
+- Pretending it doesn't need help
+
+> **In commoditized AI, trust becomes the moat. Features are replaceable; relationships aren't.** The most trusted agents: verify before acting, admit they don't always know.
+
+---
+
+### AX Primitives Implied by Chapter 8
+
+| Category | Implied Primitive | Maps to Our Catalog? |
+|---|---|---|
+| **Trust + transparency** | Transparency Dial (brief ↔ deep) | ❌ New — no verbosity control |
+| | Explain / Sources / Decision Tree | ✅ `ReasonPanel` + `EvidenceStack` |
+| | Trust Meter (relationship trust level) | ❌ New — distinct from `ConfidenceMeter` (per-action) |
+| | Consistency Contract | ✅ Design guideline, not a component |
+| **Dialogue + intent** | Clarifying Question Builder | ⚠️ `IntentBar` (partial) — pattern, not primitive |
+| | Next-Step Nudge Cards | ✅ `NextActionBar` |
+| | Intent Summary + editable plan | ✅ `PlanCard` |
+| **Commitment + safety** | Commit Gate (preview → confirm → execute) | ✅ `ApprovalGate` |
+| | Authorization Boundaries | ✅ `PermissionScope` |
+| | Undo + Rollback + Audit Log | ✅ `UndoStack` + `AuditLog` |
+| **Pushback + judgment** | Pushback Card (tactful alternative) | ❌ New |
+| | Risk/Tradeoff Callout | ⚠️ `RiskBadge` (partial — badge vs full callout) |
+| **Multimodal** | Modality Router | ⚠️ Platform concern, not a UI primitive |
+| **Experts + orchestration** | Expert Router (sub-agent/human/API) | ⚠️ `HumanTakeover` (partial — human only) |
+| | Team Panel (who's doing what) | ❌ New |
+| **Memory + personalization** | Memory Consent Toggle | ✅ `MemoryConsentToggle` |
+| | Memory Ledger (view/edit/delete) | ✅ `MemoryPanel` |
+| | Scoped memory | ⚠️ `MemoryPanel` prop |
+| | Preference Defaults (pace, format, tone) | ❌ New |
 
 ---
 
