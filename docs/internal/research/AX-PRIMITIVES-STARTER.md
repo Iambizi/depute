@@ -165,10 +165,15 @@ Small demos combining primitives into flows:
 | `CapabilityGlossary` | Browsable, searchable list of what the agent can do | AX Book Ch 6 | — | 🟡 Medium |
 | `ContextViewer` | Read-only reference list showing what files/data the agent has loaded | Cowork Analysis | `ContextPicker` (read-only variant) | 🟢 Low |
 | `WhyThisUI` | Explains why the interface is showing specific content ("because you're editing X") | AX Book Ch 6 | `ReasonPanel` (partial — explains agent reasoning, not UI choices) | 🟢 Low |
+| `AmbientNudge` | Proactive, contextual notification from agent (with snooze + dismiss) | AX Book Ch 7 | — | 🟡 Medium |
+| `ExceptionInbox` | Curated list of only the items that require human judgment | AX Book Ch 7 | — | 🟡 Medium |
+| `QuietMode` | User controls frequency + channels of agent interruptions (attention budget) | AX Book Ch 7 | — | 🟡 Medium |
 
 ### Notes
 - **`ModeSwitch` gap:** Our current `ModeSwitch` covers task phases (brainstorm/draft/execute/review). Chapter 6 implies an expertise axis (beginner → power user). May need a `ModeLadder` variant or an additional prop.
 - **Inline reasoning:** Cowork mixes natural language reasoning inline with `ToolTrace` entries. Our `ReasonPanel` is separate. Consider a composite mode rather than a new primitive.
 - **Stability Anchors:** Chapter 6's concept of guaranteeing "Export is always here, Undo is always here" is a design guideline, not a component.
+- **Confidence Threshold Router (Ch 7):** The auto → confirm → escalate routing maps to `ThrottleControl` + `ConfidenceMeter` combined — not a new primitive, but a useful composite pattern to document.
+- **Autopilot with Guardrails (Ch 7):** Covered by `ThrottleControl` (max autonomy) + `PolicyBanner` + `UndoStack` — a recipe, not a new primitive.
 
-*Last updated: Feb 12, 2026 — through AX Book Ch 6 + Cowork Analysis*
+*Last updated: Feb 13, 2026 — through AX Book Ch 7 + Cowork Analysis*

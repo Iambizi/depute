@@ -2,7 +2,7 @@
 
 **Type:** 📖 Book Notes (in progress)
 **Source:** Theo Tabah / LCA (Late Checkout Agency)
-**Status:** 🟡 Reading — through Chapter 6 of 12
+**Status:** 🟡 Reading — through Chapter 7 of 12
 
 ---
 
@@ -23,7 +23,7 @@
 ### Part 03 — AX Design
 - [Chapter 5: Natural Language as the Interface](#chapter-5-natural-language-as-the-interface)
 - [Chapter 6: Generative UI as the Opportunity](#chapter-6-generative-ui-as-the-opportunity)
-- Chapter 7: Invisible UI as an Option *(not yet read)*
+- [Chapter 7: Invisible UI as an Option](#chapter-7-invisible-ui-as-an-option)
 - Chapter 8: The 8 AX Principles *(not yet read)*
 - Chapter 9: Safe and Ethical Relationship Design *(not yet read)*
 
@@ -431,7 +431,86 @@ The common critique is valid:
 
 ## Chapter 7: Invisible UI as an Option
 
-*(Not yet read)*
+**Core thesis:** The best tech "disappears" cognitively — it becomes so integrated into behavior that it feels natural. As machine intelligence rises, the interface detail required can drop.
+
+The trajectory: Terminal → early web → heavy GUI (peak UI) → natural language UI → ambient/invisible UI
+
+With agentic systems that can understand intent, maintain context, and act, the need for explicit UI diminishes. The interface should **appear at the moment of interaction and dissolve when the task is complete.**
+
+### Interface Detail vs Machine Intelligence
+
+- Heavy GUI is a historical peak because computers needed explicit structure
+- The smarter the machine gets, the more the UI can become: **lighter**, **more language-driven**, eventually **ambient** (proactive, peripheral, minimal)
+
+### What "Invisible UI" Actually Means
+
+Not "no interface." More like:
+- Fewer dashboards
+- Fewer manual queries
+- More proactive surfacing ("here's what matters")
+- Interaction becomes the **exception**, not the default
+- You don't need to open a dashboard if the system tells you what's important at the right time
+
+### Industries Ready for Interface Minimization
+
+1. **Logistics & operations** — workers don't want to stop and use screens; prefer anticipation + comms via audio, haptics, peripheral cues
+2. **Healthcare** — clinicians need information, not interfaces; decision support should nudge, not demand attention
+3. **Financial services** — routine work handled invisibly; only escalate decisions needing human judgment
+
+### Competitive Implications
+
+When UI becomes invisible, differentiation shifts to:
+- **Depth of customer understanding**
+- **Quality of product judgment**
+
+Brand becomes "behavior over time," not visual polish.
+
+> **Trust becomes everything** because users can't evaluate the product by looking at it. They have to **experience its decisions.**
+
+Winners will have deep workflow knowledge such that software anticipates needs before users consciously recognize them. This defensibility comes from: **cultural fluency, behavioral insight, domain expertise** — hard to copy overnight.
+
+### The Gradual Fade
+
+Interfaces won't disappear overnight. They'll fade gradually:
+- Smarter about when to surface
+- Smarter about when to stay hidden
+
+The builder's job: make interfaces **optional over time** by building systems so intelligent + reliable that users prefer less visible interaction because it's better.
+
+> **Ultimate expression of AX:** Technology understands you well enough that explicit interaction becomes the exception, not the rule.
+
+### Practical Product Heuristics
+
+**1) Default to "ambient unless needed"**
+- Automate routine
+- Surface only exceptions + high-signal changes
+- "No news" is a valid state
+
+**2) Escalate with thresholds**
+- Confidence high → auto-handle quietly
+- Confidence medium → ask lightweight confirmation
+- Confidence low or high stakes → require explicit review/approval
+
+**3) Design the "moment of interaction"**
+- When the UI appears, it should be: **short, specific, decision-oriented, reversible**
+
+**4) Make the system legible even when it's quiet**
+- Change logs
+- "Why this happened"
+- Controls for nudges/notifications
+- Easy override
+
+### AX Primitives Implied by Chapter 7
+
+| Implied Primitive | Description | Maps to Our Catalog? |
+|---|---|---|
+| Ambient Nudge | Proactive, contextual notification (with snooze + dismiss) | ❌ New — nothing for agent-initiated notifications |
+| Exception Inbox | Only the items that require human judgment | ❌ New — curated escalation list |
+| Confidence Threshold Router | Decides auto vs confirm vs escalate | ⚠️ `ThrottleControl` + `ConfidenceMeter` (combo covers this) |
+| Just-in-time Panel | UI appears only when needed, then collapses | ✅ `AdaptiveCanvas` behavior |
+| Why/Reason Trace | "Why I surfaced this" + "why I did that" | ✅ `ReasonPanel` |
+| Quiet Mode / Attention Budget | User controls frequency + channels of agent interruptions | ❌ New — not in catalog |
+| Autopilot with Guardrails | Automation + clear boundaries + undo | ✅ `ThrottleControl` + `PolicyBanner` + `UndoStack` |
 
 ---
 

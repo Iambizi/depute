@@ -39,14 +39,22 @@ Created Claude Cowork case study from live workshop screenshots. Added AX Book r
 - ✅ Centralized 6 candidates from Cowork + AX Book: `TaskQueue`, `TaskSuggestions`, `ModelBadge`, `CapabilityGlossary`, `ContextViewer`, `WhyThisUI`
 - ✅ Decision: wait to revise catalog until book is finished (Ch 7-12 still pending)
 
+#### 6. AX Book Chapter 7 — Invisible UI (Feb 13)
+- ✅ Integrated Chapter 7 notes into `AX-BOOK.md` — invisible UI as "ambient unless needed"
+- ✅ Key concepts: interface detail vs machine intelligence, gradual fade, escalation thresholds, "trust becomes everything"
+- ✅ Cross-referenced 7 implied primitives — 3 genuinely new: `AmbientNudge`, `ExceptionInbox`, `QuietMode`
+- ✅ These are the first primitives for the **ambient/invisible side** of AX — a new category
+- ✅ Tracker now at 9 total candidates
+
 ### Key Decisions
 1. **Wait to formalize AX Book analysis** until complete (through Chapter 12) — notes are raw research for now
 2. **Generative Momentum validated** as a pattern we should support — consider `TaskSuggestions` primitive
 3. **Two-phase UI** (idle → active) is a smart Adaptive Canvas application worth considering
 4. **Centralize primitive candidates** — tracking appendix in `AX-PRIMITIVES-STARTER.md` rather than scattered across research docs
+5. **Ambient/invisible primitives** are a new category emerging from Ch 7 — agent-initiated notifications, attention budgets, exception-only workflows
 
 ### Next Steps
-- [ ] Finish reading AX Book (Chapters 7-12)
+- [ ] Finish reading AX Book (Chapters 8-12)
 - [ ] Define Catalog v0 (6-10 primitives)
 - [ ] Scaffold the library
 - [ ] Revise primitives catalog with all research findings
