@@ -65,6 +65,17 @@ Created Claude Cowork case study from live workshop screenshots. Added AX Book r
 - ✅ Part 03 (AX Design, Ch 5-9) now complete
 - ✅ Tracker now at 17 total candidates
 
+#### 10. AX Book Chapter 10 — The Business Case (Feb 14)
+- ✅ Integrated Chapter 10 notes — "Relationship as Moat" + "3 Key User Questions"
+- ✅ Identified 5 new candidates: `RelationshipHealth`, `LearningChangelog`, `IncentiveDisclosure`, `BehaviorContract`, `WorkflowTemplate`
+- ✅ Tracker now at 22 total candidates
+
+#### 11. Real-World Research: Coinbase Agentic Wallets (Feb 14)
+- ✅ Analyzed Coinbase "Agentic Wallets" launch (Feb 10, 2026)
+- ✅ Validated "Trust & Safety" layer: need for `BudgetCap` and `TransactionGate`
+- ✅ Added 2 financial primitives to tracker (`AgentWallet`, `BudgetCap`) — total 24 candidates
+- ✅ Added `COINBASE-AGENTIC-WALLETS.md` research note
+
 ### Key Decisions
 1. **Wait to formalize AX Book analysis** until complete (through Chapter 12) — notes are raw research for now
 2. **Generative Momentum validated** as a pattern we should support — consider `TaskSuggestions` primitive

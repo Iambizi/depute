@@ -18,6 +18,7 @@ External examples of companies solving AX problems — patterns to learn from, n
 |------|--------|-------------|
 | `AX-STRIPE-CHECKOUT-INSIGHTS.md` | Stripe | Scoped approval grants (SPTs), authorization chains as state machines, auditability as feature |
 | `AX-CLAUDE-COWORK-ANALYSIS.md` | Anthropic (Claude Cowork) | Plan-first execution, generative momentum in onboarding, two-phase UI (idle → active), inline reasoning, trust-once access model |
+| `COINBASE-AGENTIC-WALLETS.md` | Coinbase | x402 machine-to-machine protocol, session spending caps, transaction guardrails, authorization vs autonomy |
 
 ### 🏗️ Architecture & Protocol Analysis
 

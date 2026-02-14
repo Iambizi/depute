@@ -176,6 +176,13 @@ Small demos combining primitives into flows:
 | `RelationshipCard` | Agent role + boundaries disclosure — "What I am / What I'm not / What I can do / When I hand off" | AX Book Ch 9 | `CapabilityGlossary` (adjacent — skills vs role/boundaries) | 🟡 Medium |
 | `EscapeHatchBar` | Unified safety controls bar (Pause · Undo · Reset · Export · Manual · Human). Auto-surfaces when stakes rise | AX Book Ch 9 | `UndoStack` + `HumanTakeover` + `ThrottleControl` (parts exist, bar is new) | 🟡 Medium |
 | `OveruseNudge` | Detect unhealthy usage patterns and nudge breaks without shaming | AX Book Ch 9 | — | 🟢 Low |
+| `RelationshipHealth` | Dashboard of "what the system thinks it knows" + "what it's optimizing for" | AX Book Ch 10 | — | 🟡 Medium |
+| `LearningChangelog` | "What changed/learned since last session" (distinct from action log) | AX Book Ch 10 | `AuditLog` (actions vs learning) | 🟡 Medium |
+| `IncentiveDisclosure` | Card showing "what I'm optimizing for" and why (alignment transparency) | AX Book Ch 10 | — | 🟢 Low |
+| `BehaviorContract` | UI for explicit promises, prohibited behaviors, and boundary definitions | AX Book Ch 10 | — | 🟡 Medium |
+| `WorkflowTemplate` | "Run this playbook again" — user-saved agent sequence templates | AX Book Ch 10 | — | 🟡 Medium |
+| `AgentWallet` | Visual component showing agent's balance, address, and recent spend | Coinbase Report | — | 🟢 Low (but high for fintech) |
+| `BudgetCap` | "Spend up to X this session" — precise financial throttle | Coinbase Report | `ThrottleControl` (financial variant) | 🟢 Low (but high for fintech) |
 
 ### Notes
 - **`ModeSwitch` gap:** Our current `ModeSwitch` covers task phases (brainstorm/draft/execute/review). Chapter 6 implies an expertise axis (beginner → power user). May need a `ModeLadder` variant or an additional prop.
@@ -183,11 +190,12 @@ Small demos combining primitives into flows:
 - **Stability Anchors:** Chapter 6's concept of guaranteeing "Export is always here, Undo is always here" is a design guideline, not a component.
 - **Confidence Threshold Router (Ch 7):** The auto → confirm → escalate routing maps to `ThrottleControl` + `ConfidenceMeter` combined — not a new primitive, but a useful composite pattern to document.
 - **Autopilot with Guardrails (Ch 7):** Covered by `ThrottleControl` (max autonomy) + `PolicyBanner` + `UndoStack` — a recipe, not a new primitive.
-- **`HumanTakeover` expansion (Ch 8):** Principle 6 ("Loop In Other Experts") implies extending `HumanTakeover` to also route to sub-agents and external APIs, not just humans. Consider renaming to `ExpertRouter` or adding agent/API variants.
+- **`HumanTakeover` expansion (Ch 8/9):** Principle 6 ("Loop In Other Experts") implies extending `HumanTakeover` to also route to sub-agents and external APIs. Ch 9 adds "what will be shared + why" as a required prop.
 - **`RiskBadge` expansion (Ch 8):** Principle 4 ("Pushback Is Professional") implies a richer version — not just a badge but a full callout with reasoning and alternative. `PushbackCard` may be a separate primitive or a `RiskBadge` variant.
 - **Ch 8 validated ~12 existing primitives** — strongest confirmation yet that the catalog was well-designed.
 - **3I Lens (Ch 9):** Industry × Intent × Individual is a calibration framework, not a primitive — should inform our props/config system (e.g., `strictness` prop on safety primitives).
-- **`HumanTakeover` enhancement (Ch 9):** Add "what will be shared + why" as a prop — the Escalation Gate pattern from Ch 9.
 - **Ethics Rubric (Ch 9):** 9-point design review checklist — not a primitive but a useful design guideline to include in docs.
+- **Relationship Moat (Ch 10):** Trust is the only moat that compounds. Primitives should emphasize *cumulative* value (learning logs, behavior contracts) over just task completion.
+- **Financial Autonomy (Val):** Coinbase report validates the need for strict, specialized throttles (`BudgetCap`, `TransactionGate`) — matching our "Trust & Safety" category perfectly.
 
-*Last updated: Feb 14, 2026 — through AX Book Ch 9 + Cowork Analysis*
+*Last updated: Feb 14, 2026 — through AX Book Ch 10 + Cowork Analysis + Coinbase Report*

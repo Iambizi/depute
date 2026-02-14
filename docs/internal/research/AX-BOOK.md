@@ -2,7 +2,7 @@
 
 **Type:** 📖 Book Notes (in progress)
 **Source:** Theo Tabah / LCA (Late Checkout Agency)
-**Status:** 🟡 Reading — through Chapter 9 of 12
+**Status:** 🟡 Reading — through Chapter 10 of 12
 
 ---
 
@@ -28,7 +28,7 @@
 - [Chapter 9: Safe and Ethical Relationship Design](#chapter-9-safe-and-ethical-relationship-design)
 
 ### Part 04 — Today and The Future
-- Chapter 10: The Business Case for AX *(not yet read)*
+- [Chapter 10: The Business Case for AX](#chapter-10-the-business-case-for-ax)
 - Chapter 11: Potential Futures *(not yet read)*
 - Chapter 12: Conclusion — A New Discipline for the AI Age *(not yet read)*
 
@@ -754,7 +754,67 @@ Use this lens to decide how strict your guardrails need to be:
 
 ## Chapter 10: The Business Case for AX
 
-*(Not yet read)*
+**Core claim:** As models become table stakes, differentiation shifts to how the product behaves over time. **Trust is the only moat that compounds.**
+
+Users aren't just judging pixel polish; they're judging judgment, alignment, and trustworthiness.
+
+### The 3 Questions Users Actually Ask
+
+When users interact with an agent, they evaluate:
+1. Does this system understand me?
+2. Does it learn from me?
+3. Can I trust it to act in my interest?
+
+**Implication:** The answers determine retention vs quiet churn.
+
+### AX Is Alignment Over Time
+
+Traditional UX optimizes task completion. **AX optimizes relationship depth.**
+- Each interaction makes the system more useful
+- Compounding behavior becomes strategic value
+- "Starting over" should feel rarer over time
+
+> **Key theme:** The more a product remembers and adapts, the harder it is to abandon.
+
+### Drivers of Value
+
+**1) Context through Conversation**
+- Conversation isn't just input, it's context capture (preferences, constraints, vocabulary)
+- Business payoff: Switching costs aren't data exports, they're **relationship loss**
+- Design implication: Treat conversations like structured context streams (confirm, name, store with scope)
+
+**2) Increased Efficiency**
+- System moves faster because it carries state forward & anticipates steps
+- Efficiency becomes retention only when paired with safety (previews, checkpoints, undo)
+
+**3) Better User Understanding**
+- Capture behavioral signals: edits made after generation, approvals vs reversals, "preferred formats" inferred from history
+- Reflect understanding back: "I noticed you prefer X, want me to default to that?"
+
+**4) Differentiation through Behavior**
+- In commoditized AI, behavior is the brand: consistency, humility, risk posture, verification habits
+- Make behavior observable: action logs, rationale on demand, confidence cues
+
+### Organization Readiness
+
+You don't "buy" AX by integrating a model. You sustain it by committing to a multi-phase build: product + design + engineering discipline + ongoing tuning.
+
+> **The moat is real, but so is the cost of building it.**
+
+### AX Primitives Implied by Chapter 10
+
+| Implied Primitive | Description | Maps to Our Catalog? |
+|---|---|---|
+| Relationship Health Panel | Dashboard of "what the system thinks it knows" + "what it's optimizing for" | ❌ New — high-level trust panel |
+| "Understand Me" Snapshot | Preferences, constraints, definitions, vocabulary | ✅ `MemoryPanel` (covers this exactly) |
+| Learning Changelog | "What changed/learned since last session" | ❌ New — distinct from action log (AuditLog) |
+| Trust Gate | Delegation levels unlocked by consistency | ✅ `ApprovalGate` (functional equivalent) |
+| Incentive Disclosure Card | "What I'm optimizing for" and why | ❌ New — transparency for agent alignment |
+| Verification Before Action | Default check patterns for high-stakes actions | ✅ `ApprovalGate` + `RiskBadge` (pattern) |
+| Context Extractor | Turn conversation into structured fields | ⚠️ Logic, not UI (maybe a "confirmed" toast?) |
+| Behavior Contract | Explicit promises + prohibited behaviors + boundary definitions | ❌ New — explicit agreement UI |
+| Repeatable Workflow Blocks | "Run this playbook again" — saved sequences | ❌ New — user-saved agent templates |
+| Progress Surface | Timeline/checklist that tracks agent work | ✅ `StepList` / `ProgressStream` |
 
 ---
 
