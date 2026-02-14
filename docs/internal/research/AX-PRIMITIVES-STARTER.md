@@ -173,6 +173,9 @@ Small demos combining primitives into flows:
 | `PushbackCard` | Agent's tactful alternative recommendation ("I can do X, but I'd recommend Z") | AX Book Ch 8 | — | 🟡 Medium |
 | `TeamPanel` | Multi-agent visibility — who's involved, responsibilities, handoffs | AX Book Ch 8 | — | 🟡 Medium |
 | `PreferenceDefaults` | Stored user preferences for pace, format, tone, definitions | AX Book Ch 8 | `MemoryPanel` (adjacent but distinct — preferences vs memories) | 🟢 Low |
+| `RelationshipCard` | Agent role + boundaries disclosure — "What I am / What I'm not / What I can do / When I hand off" | AX Book Ch 9 | `CapabilityGlossary` (adjacent — skills vs role/boundaries) | 🟡 Medium |
+| `EscapeHatchBar` | Unified safety controls bar (Pause · Undo · Reset · Export · Manual · Human). Auto-surfaces when stakes rise | AX Book Ch 9 | `UndoStack` + `HumanTakeover` + `ThrottleControl` (parts exist, bar is new) | 🟡 Medium |
+| `OveruseNudge` | Detect unhealthy usage patterns and nudge breaks without shaming | AX Book Ch 9 | — | 🟢 Low |
 
 ### Notes
 - **`ModeSwitch` gap:** Our current `ModeSwitch` covers task phases (brainstorm/draft/execute/review). Chapter 6 implies an expertise axis (beginner → power user). May need a `ModeLadder` variant or an additional prop.
@@ -183,5 +186,8 @@ Small demos combining primitives into flows:
 - **`HumanTakeover` expansion (Ch 8):** Principle 6 ("Loop In Other Experts") implies extending `HumanTakeover` to also route to sub-agents and external APIs, not just humans. Consider renaming to `ExpertRouter` or adding agent/API variants.
 - **`RiskBadge` expansion (Ch 8):** Principle 4 ("Pushback Is Professional") implies a richer version — not just a badge but a full callout with reasoning and alternative. `PushbackCard` may be a separate primitive or a `RiskBadge` variant.
 - **Ch 8 validated ~12 existing primitives** — strongest confirmation yet that the catalog was well-designed.
+- **3I Lens (Ch 9):** Industry × Intent × Individual is a calibration framework, not a primitive — should inform our props/config system (e.g., `strictness` prop on safety primitives).
+- **`HumanTakeover` enhancement (Ch 9):** Add "what will be shared + why" as a prop — the Escalation Gate pattern from Ch 9.
+- **Ethics Rubric (Ch 9):** 9-point design review checklist — not a primitive but a useful design guideline to include in docs.
 
-*Last updated: Feb 13, 2026 — through AX Book Ch 8 + Cowork Analysis*
+*Last updated: Feb 14, 2026 — through AX Book Ch 9 + Cowork Analysis*

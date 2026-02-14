@@ -58,6 +58,13 @@ Created Claude Cowork case study from live workshop screenshots. Added AX Book r
 - ✅ Updated all 15 references across 5 files (`CLAUDE.md`, `SESSION-NOTES.md`, `VC-ORCHESTRATION.md`, `research/README.md`, `02-technical-architecture.md`)
 - ✅ Verified zero remaining references with full repo grep
 
+#### 9. AX Book Chapter 9 — Safe & Ethical Relationship Design (Feb 14)
+- ✅ Integrated Chapter 9 notes — ethics as product design, not compliance
+- ✅ Key frameworks: 3I Lens (Industry × Intent × Individual), Ethics Rubric (9-point checklist), Ethics Playbook (6 operational steps)
+- ✅ 3 new candidates: `RelationshipCard`, `EscapeHatchBar`, `OveruseNudge`
+- ✅ Part 03 (AX Design, Ch 5-9) now complete
+- ✅ Tracker now at 17 total candidates
+
 ### Key Decisions
 1. **Wait to formalize AX Book analysis** until complete (through Chapter 12) — notes are raw research for now
 2. **Generative Momentum validated** as a pattern we should support — consider `TaskSuggestions` primitive
@@ -65,9 +72,10 @@ Created Claude Cowork case study from live workshop screenshots. Added AX Book r
 4. **Centralize primitive candidates** — tracking appendix in `AX-PRIMITIVES-STARTER.md` rather than scattered across research docs
 5. **Ambient/invisible primitives** are a new category emerging from Ch 7 — agent-initiated notifications, attention budgets, exception-only workflows
 6. **Catalog validated by Ch 8** — 12 of 48 primitives directly confirmed by the book's 8 principles. Catalog was well-designed from the start
+7. **3I Lens as config model** — Industry × Intent × Individual should inform props/config (e.g., `strictness` prop on safety primitives)
 
 ### Next Steps
-- [ ] Finish reading AX Book (Chapters 9-12)
+- [ ] Finish reading AX Book (Chapters 10-12)
 - [ ] Define Catalog v0 (6-10 primitives)
 - [ ] Scaffold the library
 - [ ] Revise primitives catalog with all research findings
