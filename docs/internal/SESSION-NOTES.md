@@ -4,7 +4,7 @@
 
 ---
 
-## Session 6 - February 11, 2026
+## Session 6 - February 11–14, 2026
 
 ### Overview
 Created Claude Cowork case study from live workshop screenshots. Added AX Book reading notes. Cross-referenced Cowork patterns with AX Book's 6 foundational patterns.
