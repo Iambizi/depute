@@ -79,7 +79,7 @@ Created Claude Cowork case study from live workshop screenshots. Added AX Book r
 #### 12. Strategic Vision: The "AX Playbook" (Feb 14)
 - ✅ Captured growing sentiment that research > just library specs
 - ✅ Created `docs/internal/research/AX-META-STRATEGY.md`
-- ✅ Documented "Trust Architect Bot" concept (using this folder as training data)
+- ✅ Documented "Trust Architect Agent" concept (using this folder as training data)
 - ✅ Documented "3I Lens" as a consulting framework
 
 ### Key Decisions

@@ -65,4 +65,4 @@ Notes from foundational AX reading — in progress.
 
 ## 🔮 Strategic Vision
 
-- [The AX Playbook & Meta-Strategy](./AX-META-STRATEGY.md) - Using this research as training data for a "Trust Architect Bot" and future product offerings.
+- [The AX Playbook & Meta-Strategy](./AX-META-STRATEGY.md) - Using this research as training data for a "Trust Architect Agent" and future product offerings.

@@ -26,7 +26,7 @@ Our research artifacts map directly to high-value strategic assets:
 | **"Relationship as Moat"** (Chapter 10) | Investment thesis / Keynote theme | VCs / Founders |
 | **Primitives Catalog** | Industry standard design system | Designers / Engineers |
 
-## 3. The "Trust Architect Bot" (AI Training Data)
+## 3. The "Trust Architect Agent" (AI Training Data)
 
 **The Big Idea:**
 Use this repository (`docs/internal/research/`) as the ground-truth training dataset for a specialized AI model.
@@ -52,4 +52,4 @@ Use this repository (`docs/internal/research/`) as the ground-truth training dat
 **Future Focus (Phase 2):**
 - Package the research as "The AX Playbook"
 - Export the dataset for fine-tuning / RAG
-- Launch the "Trust Architect" bot as a dev tool accompanying the library
+- Launch the "Trust Architect" agent as a dev tool accompanying the library
