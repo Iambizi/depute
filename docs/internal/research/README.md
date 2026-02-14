@@ -62,3 +62,7 @@ Notes from foundational AX reading — in progress.
   - `docs/internal/MONETIZATION-MODEL.md` — Revenue strategy
   - `docs/internal/SESSION-NOTES.md` — Session-by-session progress log
   - `docs/orchestration/01-07` — PRD specs for orchestration system
+
+## 🔮 Strategic Vision
+
+- [The AX Playbook & Meta-Strategy](./AX-META-STRATEGY.md) - Using this research as training data for a "Trust Architect Bot" and future product offerings.
