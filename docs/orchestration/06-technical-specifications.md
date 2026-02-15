@@ -36,6 +36,12 @@ export interface ToolCall {
   duration?: number;
   error?: string;
   timestamp: string;
+  /** Policy flags declared by the tool (v1 — A2UI compatibility) */
+  policyFlags?: {
+    requiresApproval?: boolean;
+    writesState?: boolean;
+    externalAction?: boolean;
+  };
 }
 
 /** An artifact produced by agent execution */
@@ -46,6 +52,10 @@ export interface Artifact {
   content: string;
   metadata?: Record<string, string>;
   timestamp: string;
+  /** ID of the plan step that produced this artifact (provenance) */
+  sourceStepId?: string;
+  /** IDs of tool calls involved in producing this artifact (provenance) */
+  toolCallIds?: string[];
 }
 
 /** Utility: map a confidence score to a level */
@@ -137,6 +147,16 @@ export interface ApprovalGateProps {
   /** Optional timeout in seconds */
   timeoutSeconds?: number;
 
+  /** Scoped constraints for the approval (per Stripe's SPT pattern) */
+  scope?: {
+    /** Resource/spend limit (e.g. "$500", "10 API calls") */
+    resourceLimit?: string;
+    /** Time-bounded grant duration in seconds */
+    durationSeconds?: number;
+    /** What specifically is being granted */
+    target?: string;
+  };
+
   /** Additional metadata to display */
   metadata?: Record<string, string>;
 
@@ -161,6 +181,7 @@ export interface ApprovalGateProps {
 - Staged mode renders a step indicator (Preview → Confirm → Execute)
 - Metadata rendered as a key-value table
 - Countdown timer uses `aria-live="polite"` for accessibility
+- When `scope` is provided, render a "Grant Details" section showing resource limits, time window, and target
 
 ---
 

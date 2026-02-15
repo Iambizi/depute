@@ -67,6 +67,34 @@ type ConfidenceLevel = 'high' | 'medium' | 'low';
 | <10s | Red countdown, urgent styling |
 | 0s | Auto-transitions to expired state |
 
+### Scoped Approval Display
+
+When `scope` is provided, render a "Grant Details" section:
+
+| Scope Field | Visual |
+|---|---|
+| `resourceLimit` | Badge showing limit (e.g. "Up to $500") |
+| `durationSeconds` | Timer showing grant window (e.g. "Valid for 10 min") |
+| `target` | Label showing scope target (e.g. "Stripe API only") |
+
+### Multi-Gate Flows
+
+`ApprovalGate` can appear **multiple times** in a single agent flow. Each gate operates independently at a different trust boundary:
+
+```
+PlanCard ──► ApprovalGate (plan approval)
+                │
+         RunControls ──► ToolTrace ──► ApprovalGate (high-risk action)
+                                          │
+                                   ToolTrace ──► ArtifactCard
+```
+
+**Rules:**
+- Each gate manages its own `status` independently
+- A rejected gate does NOT retroactively reject prior gates
+- Downstream components pause while any gate is pending
+- Staged mode gates can also appear mid-flow (e.g. "preview this API call before executing")
+
 ### Action Flow
 
 ```
@@ -155,6 +183,14 @@ idle ──> running ──> completed
 | Completed | Green, checkmark | "Tool call [name]: completed in [duration]" |
 | Failed | Red, error icon | "Tool call [name]: failed: [error]" |
 
+### Default Expand/Collapse Behavior
+
+- Entries **start collapsed** (show name + status + duration only)
+- Click to expand reveals input/output JSON
+- The **currently running** entry auto-expands
+- When a running entry completes, it **auto-collapses** and the next running entry auto-expands
+- If `expandable={false}`, entries are always collapsed (summary only)
+
 ---
 
 ## Component 6: ArtifactCard
@@ -200,3 +236,24 @@ When components are used together in a typical agent workflow:
 | RunControls | Disabled buttons with gray indicator |
 | ToolTrace | Empty timeline with "waiting..." |
 | ArtifactCard | Gray card placeholder |
+
+---
+
+## Streaming / Partial Data Behavior
+
+All components must handle **incremental data arrival** gracefully:
+
+| Component | Streaming Behavior |
+|---|---|
+| PlanCard | Steps can arrive one at a time. Render each step as it appears. Use `mode="indeterminate"` when total is unknown. |
+| ApprovalGate | Appears fully-formed (no streaming). Gate is rendered only when the full approval context is available. |
+| ConfidenceMeter | Value can update in real-time. Animate transitions between values. |
+| RunControls | State transitions are instant (not streamed). |
+| ToolTrace | **Primary streaming component.** Entries append as they arrive. Auto-scroll keeps latest visible. |
+| ArtifactCard | Content can stream progressively. Show partial preview with a "generating..." indicator until complete. |
+
+**General rules:**
+- Never show an error state during normal streaming delays
+- Use skeleton/placeholder states (above) until first data arrives
+- Components should be **mountable before data exists** — empty states are valid initial renders
+
