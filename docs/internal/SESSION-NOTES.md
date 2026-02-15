@@ -84,6 +84,7 @@ Created Claude Cowork case study from live workshop screenshots. Added AX Book r
 
 #### 13. Distribution Strategy: The shadcn Model (Feb 14)
 - ✅ Analyzed shadcn/ui's "copy-paste" architecture as the ideal model for AX components
+- ✅ Analyzed technical anatomy (Radix + Tailwind + CVA + CLI) based on manupa.dev
 - ✅ Created `docs/internal/research/DISTRIBUTION-STRATEGY-SHADCN.md`
 - ✅ Strategic benefit: "Code Ownership" is critical for agents to read/edit their own UI
 
@@ -97,8 +98,13 @@ Created Claude Cowork case study from live workshop screenshots. Added AX Book r
 7. **Catalog validated by Ch 8** — 12 of 48 primitives directly confirmed by the book's 8 principles. Catalog was well-designed from the start
 8. **3I Lens as config model** — Industry × Intent × Individual should inform props/config (e.g., `strictness` prop on safety primitives)
 
+#### 14. AX Book Complete (Ch 11-12)
+- ✅ Integrated "Potential Futures" (Ch 11) & "A New Discipline" (Ch 12)
+- ✅ Added 8 new primitives to catalog (Total: ~34 candidates)
+- ✅ **Key Insight:** Trust is moved upstream (Browser, OS, or Vertical Agent). We must build "Agent-Readable" interfaces.
+
 ### Next Steps
-- [ ] Finish reading AX Book (Chapters 10-12)
+- [x] Finish reading AX Book (Chapters 10-12)
 - [ ] Define Catalog v0 (6-10 primitives)
 - [ ] Scaffold the library
 - [ ] Revise primitives catalog with all research findings

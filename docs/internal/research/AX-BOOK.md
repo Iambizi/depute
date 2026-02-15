@@ -2,7 +2,7 @@
 
 **Type:** 📖 Book Notes (in progress)
 **Source:** Theo Tabah / LCA (Late Checkout Agency)
-**Status:** 🟡 Reading — through Chapter 10 of 12
+**Status:** ✅ Complete — Read 12 of 12 Chapters
 
 ---
 
@@ -29,8 +29,8 @@
 
 ### Part 04 — Today and The Future
 - [Chapter 10: The Business Case for AX](#chapter-10-the-business-case-for-ax)
-- Chapter 11: Potential Futures *(not yet read)*
-- Chapter 12: Conclusion — A New Discipline for the AI Age *(not yet read)*
+- [Chapter 11: Potential Futures](#chapter-11-potential-futures)
+- [Chapter 12: A New Discipline](#chapter-12-conclusion--a-new-discipline-for-the-ai-age)
 
 ---
 
@@ -820,10 +820,69 @@ You don't "buy" AX by integrating a model. You sustain it by committing to a mul
 
 ## Chapter 11: Potential Futures
 
-*(Not yet read)*
+**"Win the agent, or you do not get access to the user."**
+
+Trust is moving upstream. The race is to own the **Relationship Layer** — the trusted interface that users rely on to manage all other apps.
+
+### 4 Potential Futures
+1.  **Bring Your Own Agent (BYOA):** Personal agent is the user's representative. Apps become utilities. Design for API affordances and "safe actions," not just pixels.
+2.  **Agentic Browser:** Browser unifies history/logins/context. Browser war becomes a Trust War.
+3.  **OS-Level AI:** Invisible, always-there assistance. Wins on deep context (calendar, location).
+4.  **Vertical AI:** Specialized agents (Finance, Legal, Health) win on depth, compliance, and reliability.
+
+### Design Implications
+*   **Trust Legibility:** Make permissions, storage, and deletion clear to the agent, not just the human.
+*   **Agent Readability:** Stable structure, clear semantics, explicit confirmation points.
+*   **System Intents:** Expose what you do and what you *never* do (boundaries).
+
+### Implied Primitives (Library-Ready)
+
+| Implied Primitive | Description |
+|---|---|
+| **`CapabilitiesRegistry`** | Machine-readable list of what this agent/app can actually do (for other agents to read). |
+| **`IntentContract`** | Structured input/output definition for an action (schema + side effects). |
+| **`PermissionBroker`** | Manages scopes, time limits, and spend caps for agents. |
+| **`CommitGate`** | Explicit "Preview → Confirm → Execute" state machine for high-stakes actions. |
+| **`AuditLog`** | Immutable history of "what happened, when, why" (Receipts). |
+| **`TrustProfile`** | Dashboard showing "what the system knows about me" and "what it's allowed to do." |
+| **`HandoffProtocol`** | Standardized UI for passing context from Orchestrator → Specialist → Human. |
 
 ---
 
 ## Chapter 12: Conclusion — A New Discipline for the AI Age
 
-*(Not yet read)*
+**"Trust is the business engine."**
+
+AX does not replace UX; it extends it. It is a new discipline focused on **delegation, autonomy, and relationship design.**
+
+### Key Principles
+1.  **Relationship Layer is the Battlefield:** Features can be copied; relationships are the moat.
+2.  **Trust Compounds:** It drives retention and margin.
+3.  **AX is a Discipline:** Requires new standards for "autonomy," "safety," and "recovery."
+4.  **Shipping is the Work:** Principles must turn into primitives.
+
+### "Trust Operations" (Trust Ops)
+Build systems to measure and maintain trust:
+*   **Confidence Cues:** Are we over-confident?
+*   **Verification Loops:** Did the user correct us?
+*   **Refusal Quality:** Did we say "no" helpfully?
+*   **Incident Playbooks:** How do we recover from a bad hallucination?
+
+### Implied Primitives
+
+| Implied Primitive | Description |
+|---|---|
+| **`TrustScoreboard`** | Admin view of signals over time: reversals, corrections, escalations. |
+| **`UncertaintyBadge`** | Distinct component for "I'm guessing here" vs "I know this." |
+| **`RecoveryFlow`** | Standardized pattern for "Admit Mistake → Fix → Verify." |
+| **`MaturityChecklist`** | Design-time artifact: "Are we ready to ship this autonomy?" |
+
+---
+
+# 🏁 Completion Status
+**Date:** Feb 15, 2026
+**Status:** Read 12/12 Chapters.
+**Next Steps:**
+1.  Finalize the **Primitive Catalog**.
+2.  Build the **Reference App** (Taxonomy).
+3.  Launch the **Trust Architect Agent** (dataset).

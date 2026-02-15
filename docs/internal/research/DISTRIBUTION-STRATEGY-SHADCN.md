@@ -46,7 +46,32 @@ If our components are distributed as code, user's AI assistants can read them.
 
 ---
 
-## 4. Architecture Plan (The "AX-CN" Model)
+## 4. Technical Anatomy (The Stack)
+
+Based on [Manupa's Anatomy of shadcn/ui](https://manupa.dev/blog/anatomy-of-shadcn-ui), the architecture has 4 distinct layers:
+
+### Layer A: Structure & Behavior (Headless)
+- Uses **Radix UI** for complex interactions (Dialog, Popover, Switch).
+- Uses **React Hook Form** for form state.
+- Uses **Tanstack Table** for data grids.
+- **Key Pattern:** Components use `forwardRef` to ensure they work with form libraries and focus management.
+
+### Layer B: Style (Tailwind + CSS Vars)
+- **Tailwind** for atomic classes.
+- **CSS Variables** (`global.css`) for theming (radius, colors) — allows changing the "brand" without touching component code.
+- **`cn` Utility:** A wrapper around `clsx` and `tailwind-merge` to handle class conflicts dynamically.
+
+### Layer C: Variance (CVA)
+- Uses **Class Variance Authority (cva)** to define component variants (e.g., `button({ variant: "destructive", size: "sm" })`).
+- This decouples "style logic" from "render logic."
+
+### Layer D: Distribution (CLI)
+- `registry.json`: The "database" of available components.
+- CLI downloads the code + dependencies for the specific component requested.
+
+---
+
+## 5. Architecture Plan (The "AX-CN" Model)
 
 We should structure the library similarly:
 1.  **Headless Logic:** Hook-based state machines (`useAgent`, `useApproval`).

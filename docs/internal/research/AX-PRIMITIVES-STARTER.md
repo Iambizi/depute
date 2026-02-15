@@ -186,6 +186,14 @@ Small demos combining primitives into flows:
 | `BudgetMeter` | Visual gauge of remaining session budget vs cap | Coinbase Deep Dive | `ThrottleControl` (financial variant) | 🟡 Medium |
 | `TransactionReceipt` | Rich receipt card linking payment ↔ task reason | Coinbase Deep Dive | — | 🟡 Medium |
 | `SpendApprovalInbox` | Queue for transactions exceeding auto-limits | Coinbase Deep Dive | `ApprovalGate` list view | 🟡 Medium |
+| `CommitGate` | Explicit "Preview → Confirm → Execute" state machine for high-stakes actions | AX Book Ch 11 | `ApprovalGate` (stateful variant) | 🟡 Medium |
+| `PermissionBroker` | Manages scopes, time limits, and spend caps for agents | AX Book Ch 11 | `ThrottleControl` (backend logic) | 🟡 Medium |
+| `TrustProfile` | Dashboard showing "what the system knows about me" and "what it's allowed to do" | AX Book Ch 11 | `RelationshipHealth` + `MemoryPanel` | 🟡 Medium |
+| `HandoffProtocol` | Standardized UI for passing context from Orchestrator → Specialist → Human | AX Book Ch 11 | `HumanTakeover` (expanded) | 🟡 Medium |
+| `TrustScoreboard` | Admin view of signals over time: reversals, corrections, escalations | AX Book Ch 12 | — | 🟢 Low |
+| `UncertaintyBadge` | Distinct component for "I'm guessing here" vs "I know this" | AX Book Ch 12 | `ConfidenceMeter` (inverse) | 🟡 Medium |
+| `RecoveryFlow` | Standardized pattern for "Admit Mistake → Fix → Verify" | AX Book Ch 12 | — | 🟡 Medium |
+| `MaturityChecklist` | Design-time artifact: "Are we ready to ship this autonomy?" | AX Book Ch 12 | — | 🟢 Low |
 
 ### Notes
 - **`ModeSwitch` gap:** Our current `ModeSwitch` covers task phases (brainstorm/draft/execute/review). Chapter 6 implies an expertise axis (beginner → power user). May need a `ModeLadder` variant or an additional prop.
