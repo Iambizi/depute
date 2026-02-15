@@ -145,12 +145,28 @@ Created Claude Cowork case study from live workshop screenshots. Added AX Book r
   5. **ToolTrace defaults** → entries start collapsed, running entry auto-expands
   6. **Policy flags** → added `policyFlags` to `ToolCall` type (v1 A2UI compatibility)
 
+#### 20. Second AI Review — AX-CN Model Hardened (Feb 15)
+- ✅ Another AI reviewed all PRD docs and added AX-CN distribution context
+- ✅ `01` — added v0 catalog status, distribution model, scoped roadmap to 6 primitives
+- ✅ `02` — added `registry/` + `packages/headless/` to structure, AX-CN constraint
+- ✅ `03` — added v0 scope lock + AX-CN ownership implication
+- ✅ `04` — noted tokens are copied into consumer repos
+- ✅ `05` — added v0 scope note
+- ✅ `06` — added AX-CN distribution notes section
+- ✅ `07` — added AX-CN distribution conventions
+- ⚠️ Fixed: `progress.json` step-1b was incorrectly reset to `not_started` — restored to `completed`
+
+#### 21. Primitives Catalog v0 Status (Feb 15)
+- ✅ Added v0 Implementation Key to `AX-PRIMITIVES-STARTER.md`
+- ✅ All 48+ primitives now have a `v0 Status` column: 🔨 v0 / ⏳ v1 / ⏳ v2 / —
+
 ### Key Decisions
 9. **v0 = 6 primitives** — PlanCard, ApprovalGate, ConfidenceMeter, RunControls, ToolTrace, ArtifactCard
 10. **CommitGate absorbed** — becomes `ApprovalGate mode="staged"`
 11. **UncertaintyBadge absorbed** — becomes `ConfidenceMeter display="badge"`
 12. **Scoped approvals** — `ApprovalGate` supports resource-bounded + time-bounded grants (Stripe SPT pattern)
 13. **Artifact provenance** — outputs trace back to plan steps and tool calls
+14. **AX-CN model hardened** — all PRDs now explicitly reference copy-paste distribution
 
 ### Next Steps
 - [x] Finish reading AX Book (Chapters 10-12)
@@ -159,6 +175,8 @@ Created Claude Cowork case study from live workshop screenshots. Added AX Book r
 - [x] Reset `progress.json` to match v0
 - [x] Scaffold the library (`/vibe-step-1b-init-project`)
 - [x] Research synthesis audit (6 gaps closed)
+- [x] Second AI review + AX-CN hardening
+- [x] Primitives catalog v0 status tracking
 - [ ] Design tokens (`/vibe-step-2-design-tokens`)
 - [ ] Shared types (`/vibe-step-3-shared-types`)
 - [ ] Begin building primitives (PlanCard first)
