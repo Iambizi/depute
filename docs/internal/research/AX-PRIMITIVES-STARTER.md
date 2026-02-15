@@ -182,7 +182,10 @@ Small demos combining primitives into flows:
 | `BehaviorContract` | UI for explicit promises, prohibited behaviors, and boundary definitions | AX Book Ch 10 | — | 🟡 Medium |
 | `WorkflowTemplate` | "Run this playbook again" — user-saved agent sequence templates | AX Book Ch 10 | — | 🟡 Medium |
 | `AgentWallet` | Visual component showing agent's balance, address, and recent spend | Coinbase Report | — | 🟢 Low (but high for fintech) |
-| `BudgetCap` | "Spend up to X this session" — precise financial throttle | Coinbase Report | `ThrottleControl` (financial variant) | 🟢 Low (but high for fintech) |
+| `MandateEditor` | Configuration UI for "Spend up to $X, max $Y/tx" (Policy creation) | Coinbase Deep Dive | — | 🟡 Medium |
+| `BudgetMeter` | Visual gauge of remaining session budget vs cap | Coinbase Deep Dive | `ThrottleControl` (financial variant) | 🟡 Medium |
+| `TransactionReceipt` | Rich receipt card linking payment ↔ task reason | Coinbase Deep Dive | — | 🟡 Medium |
+| `SpendApprovalInbox` | Queue for transactions exceeding auto-limits | Coinbase Deep Dive | `ApprovalGate` list view | 🟡 Medium |
 
 ### Notes
 - **`ModeSwitch` gap:** Our current `ModeSwitch` covers task phases (brainstorm/draft/execute/review). Chapter 6 implies an expertise axis (beginner → power user). May need a `ModeLadder` variant or an additional prop.
@@ -197,5 +200,6 @@ Small demos combining primitives into flows:
 - **Ethics Rubric (Ch 9):** 9-point design review checklist — not a primitive but a useful design guideline to include in docs.
 - **Relationship Moat (Ch 10):** Trust is the only moat that compounds. Primitives should emphasize *cumulative* value (learning logs, behavior contracts) over just task completion.
 - **Financial Autonomy (Val):** Coinbase report validates the need for strict, specialized throttles (`BudgetCap`, `TransactionGate`) — matching our "Trust & Safety" category perfectly.
+- **Safe Autonomy Wedge:** User analysis identifies "Safe Autonomy" (Mandate + Guardrails) as the killer use case. Financial primitives should be prioritized as a "Spend Controls Kit."
 
-*Last updated: Feb 14, 2026 — through AX Book Ch 10 + Cowork Analysis + Coinbase Report*
+*Last updated: Feb 14, 2026 — through AX Book Ch 10 + Cowork Analysis + Coinbase Deep Dive*

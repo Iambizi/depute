@@ -72,9 +72,9 @@ Created Claude Cowork case study from live workshop screenshots. Added AX Book r
 
 #### 11. Real-World Research: Coinbase Agentic Wallets (Feb 14)
 - ✅ Analyzed Coinbase "Agentic Wallets" launch (Feb 10, 2026)
-- ✅ Validated "Trust & Safety" layer: need for `BudgetCap` and `TransactionGate`
-- ✅ Added 2 financial primitives to tracker (`AgentWallet`, `BudgetCap`) — total 24 candidates
-- ✅ Added `COINBASE-AGENTIC-WALLETS.md` research note
+- ✅ **Deep Dive Update:** Integrated "Safe Autonomy" wedge, Mandate+Guardrails pattern, and Receipts UI analysis
+- ✅ Added 4 financial primitives to tracker: `MandateEditor`, `BudgetMeter`, `TransactionReceipt`, `SpendApprovalInbox` (26 total candidates)
+- ✅ Validated "Spend Controls Kit" as a key library use case
 
 #### 12. Strategic Vision: The "AX Playbook" (Feb 14)
 - ✅ Captured growing sentiment that research > just library specs
