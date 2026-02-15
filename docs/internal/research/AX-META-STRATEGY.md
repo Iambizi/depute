@@ -48,6 +48,7 @@ Use this repository (`docs/internal/research/`) as the ground-truth training dat
 **Current Focus (Phase 1):**
 - Finish the Research (AX Book Ch 11-12)
 - Build the Library (The "Body" that proves the "Brain" works)
+- **Adopt the "AX-CN" Model:** Distribution via CLI copy-paste (Study: `DISTRIBUTION-STRATEGY-SHADCN.md`)
 
 **Future Focus (Phase 2):**
 - Package the research as "The AX Playbook"

@@ -21,6 +21,7 @@ External examples of companies solving AX problems — patterns to learn from, n
 | `COINBASE-AGENTIC-WALLETS.md` | Coinbase | x402 machine-to-machine protocol, session spending caps, transaction guardrails, authorization vs autonomy |
 
 ### 🏗️ Architecture & Protocol Analysis
+- [Distribution Strategy: The shadcn Model](./DISTRIBUTION-STRATEGY-SHADCN.md) - CLI-based component distribution vs npm packages
 
 Specs and protocols that inform how our library should be structured.
 

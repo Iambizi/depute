@@ -82,14 +82,20 @@ Created Claude Cowork case study from live workshop screenshots. Added AX Book r
 - ✅ Documented "Trust Architect Agent" concept (using this folder as training data)
 - ✅ Documented "3I Lens" as a consulting framework
 
+#### 13. Distribution Strategy: The shadcn Model (Feb 14)
+- ✅ Analyzed shadcn/ui's "copy-paste" architecture as the ideal model for AX components
+- ✅ Created `docs/internal/research/DISTRIBUTION-STRATEGY-SHADCN.md`
+- ✅ Strategic benefit: "Code Ownership" is critical for agents to read/edit their own UI
+
 ### Key Decisions
-1. **Wait to formalize AX Book analysis** until complete (through Chapter 12) — notes are raw research for now
-2. **Generative Momentum validated** as a pattern we should support — consider `TaskSuggestions` primitive
-3. **Two-phase UI** (idle → active) is a smart Adaptive Canvas application worth considering
-4. **Centralize primitive candidates** — tracking appendix in `AX-PRIMITIVES-STARTER.md` rather than scattered across research docs
-5. **Ambient/invisible primitives** are a new category emerging from Ch 7 — agent-initiated notifications, attention budgets, exception-only workflows
-6. **Catalog validated by Ch 8** — 12 of 48 primitives directly confirmed by the book's 8 principles. Catalog was well-designed from the start
-7. **3I Lens as config model** — Industry × Intent × Individual should inform props/config (e.g., `strictness` prop on safety primitives)
+1. **Adopt "AX-CN" model** — Distribute via CLI copy-paste (Headless hooks + Tailwind UI), not strict npm packages.
+2. **Wait to formalize AX Book analysis** until complete (through Chapter 12) — notes are raw research for now
+3. **Generative Momentum validated** as a pattern we should support — consider `TaskSuggestions` primitive
+4. **Two-phase UI** (idle → active) is a smart Adaptive Canvas application worth considering
+5. **Centralize primitive candidates** — tracking appendix in `AX-PRIMITIVES-STARTER.md` rather than scattered across research docs
+6. **Ambient/invisible primitives** are a new category emerging from Ch 7 — agent-initiated notifications, attention budgets, exception-only workflows
+7. **Catalog validated by Ch 8** — 12 of 48 primitives directly confirmed by the book's 8 principles. Catalog was well-designed from the start
+8. **3I Lens as config model** — Industry × Intent × Individual should inform props/config (e.g., `strictness` prop on safety primitives)
 
 ### Next Steps
 - [ ] Finish reading AX Book (Chapters 10-12)
