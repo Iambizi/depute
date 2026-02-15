@@ -129,7 +129,28 @@ Created Claude Cowork case study from live workshop screenshots. Added AX Book r
 - ✅ Created `stories/`, `examples/` directories
 - ✅ Installed 246 npm packages (0 vulnerabilities)
 - ✅ Verified: `tsc --noEmit` ✅, `vite build` ✅ (74ms, 0 warnings)
-- ⚠️ Node v20.10.0 — some packages want 20.19+, works for now
+
+#### 18. Node Upgrade + Clean Install (Feb 15)
+- ✅ Upgraded to Node v24.13.1 (LTS) via nvm — zero engine warnings
+- ✅ Upgraded Storybook to v10 (essentials now built into core)
+- ✅ Clean `npm install` — all deps resolve without `--legacy-peer-deps`
+
+#### 19. Research Synthesis Audit (Feb 15)
+- ✅ Audited all 10 research files against PRD docs 01-07
+- ✅ Found 6 gaps, closed all:
+  1. **Scoped approvals** → added `scope` prop to `ApprovalGateProps` (resource/time-bounded grants)
+  2. **Artifact provenance** → added `sourceStepId` + `toolCallIds` to `Artifact` type
+  3. **Multi-gate flows** → documented in `05-interface-states.md`
+  4. **Streaming behavior** → new section in `05` for all 6 components
+  5. **ToolTrace defaults** → entries start collapsed, running entry auto-expands
+  6. **Policy flags** → added `policyFlags` to `ToolCall` type (v1 A2UI compatibility)
+
+### Key Decisions
+9. **v0 = 6 primitives** — PlanCard, ApprovalGate, ConfidenceMeter, RunControls, ToolTrace, ArtifactCard
+10. **CommitGate absorbed** — becomes `ApprovalGate mode="staged"`
+11. **UncertaintyBadge absorbed** — becomes `ConfidenceMeter display="badge"`
+12. **Scoped approvals** — `ApprovalGate` supports resource-bounded + time-bounded grants (Stripe SPT pattern)
+13. **Artifact provenance** — outputs trace back to plan steps and tool calls
 
 ### Next Steps
 - [x] Finish reading AX Book (Chapters 10-12)
@@ -137,6 +158,7 @@ Created Claude Cowork case study from live workshop screenshots. Added AX Book r
 - [x] Update PRD docs (01-07) to reflect v0 + AX-CN model
 - [x] Reset `progress.json` to match v0
 - [x] Scaffold the library (`/vibe-step-1b-init-project`)
+- [x] Research synthesis audit (6 gaps closed)
 - [ ] Design tokens (`/vibe-step-2-design-tokens`)
 - [ ] Shared types (`/vibe-step-3-shared-types`)
 - [ ] Begin building primitives (PlanCard first)
