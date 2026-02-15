@@ -1,0 +1,56 @@
+{
+  "name": "ax-components-react",
+  "version": "0.1.0",
+  "type": "module",
+  "main": "./dist/ax-components.cjs.js",
+  "module": "./dist/ax-components.es.js",
+  "types": "./dist/types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/types/index.d.ts",
+      "import": "./dist/ax-components.es.js",
+      "require": "./dist/ax-components.cjs.js"
+    },
+    "./utils": {
+      "types": "./dist/types/utils/mockData.d.ts",
+      "import": "./dist/utils.es.js",
+      "require": "./dist/utils.cjs.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "peerDependencies": {
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "lint": "eslint . --ext ts,tsx",
+    "type-check": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@storybook/addon-essentials": "^8.6.14",
+    "@storybook/blocks": "^8.6.14",
+    "@storybook/react": "^10.2.8",
+    "@storybook/react-vite": "^10.2.8",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.1",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^5.1.4",
+    "jsdom": "^28.1.0",
+    "storybook": "^10.2.8",
+    "typescript": "^5.9.3",
+    "vite": "^7.3.1",
+    "vitest": "^4.0.18"
+  }
+}

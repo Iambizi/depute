@@ -11,10 +11,10 @@
     },
     "step-1b-init-project": {
       "name": "Initialize Project",
-      "status": "not_started",
+      "status": "completed",
       "command": "/vibe-step-1b-init-project",
       "dependsOn": ["step-1-ideation"],
-      "completedAt": null
+      "completedAt": "2026-02-15T15:00:00Z"
     },
     "step-2-design-tokens": {
       "name": "Design Tokens",

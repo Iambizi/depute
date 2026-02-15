@@ -119,19 +119,26 @@ Created Claude Cowork case study from live workshop screenshots. Added AX Book r
 - ✅ Updated `07-universal-format-standards.md` — naming conventions, commit examples, import examples
 - ✅ Fixed `VC-ORCHESTRATION.md` — example flow uses v0 component names
 - ✅ Reset `progress.json` — v2.0.0 with 6 v0 components, `step-1-ideation` marked completed
-- ✅ Confirmed `CLAUDE.md` was already clean (no old references)
-
-### Key Decisions
-9. **v0 = 6 primitives** — PlanCard, ApprovalGate, ConfidenceMeter, RunControls, ToolTrace, ArtifactCard
-10. **CommitGate absorbed** — becomes `ApprovalGate mode="staged"`
-11. **UncertaintyBadge absorbed** — becomes `ConfidenceMeter display="badge"`
+#### 17. Project Scaffolded — `/vibe-step-1b-init-project` (Feb 15)
+- ✅ Created `package.json` — library mode exports (ES + CJS), React peer deps, all scripts
+- ✅ Created `vite.config.ts` — library build with React externalized
+- ✅ Created `tsconfig.json` — strict mode, declarations to `dist/types`
+- ✅ Created `vitest.config.ts` — jsdom environment, global test setup
+- ✅ Created `.storybook/main.ts` + `preview.ts` — React + Vite framework
+- ✅ Created `src/` structure: `index.ts`, `types/common.ts`, `utils/mockData.ts`, `test-setup.ts`
+- ✅ Created `stories/`, `examples/` directories
+- ✅ Installed 246 npm packages (0 vulnerabilities)
+- ✅ Verified: `tsc --noEmit` ✅, `vite build` ✅ (74ms, 0 warnings)
+- ⚠️ Node v20.10.0 — some packages want 20.19+, works for now
 
 ### Next Steps
 - [x] Finish reading AX Book (Chapters 10-12)
 - [x] Define Catalog v0 (6-10 primitives)
 - [x] Update PRD docs (01-07) to reflect v0 + AX-CN model
 - [x] Reset `progress.json` to match v0
-- [ ] Scaffold the library (`/vibe-step-1b-init-project`)
+- [x] Scaffold the library (`/vibe-step-1b-init-project`)
+- [ ] Design tokens (`/vibe-step-2-design-tokens`)
+- [ ] Shared types (`/vibe-step-3-shared-types`)
 - [ ] Begin building primitives (PlanCard first)
 
 ---
