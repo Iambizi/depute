@@ -1,5 +1,11 @@
 # 07 - Universal Format Standards
 
+## AX-CN Distribution Conventions
+
+- UI primitives are shipped as source via CLI into user repos (no `node_modules` UI package).
+- Each primitive must be self-contained and readable by code assistants.
+- Registry entries map component names to source files and dependencies.
+
 ## Code Style
 
 ### TypeScript

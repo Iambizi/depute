@@ -2,10 +2,21 @@
 
 **Type:** 🧩 Primitive Catalog
 **Scope:** 48+ primitives across 8 categories
+**v0 Status:** 6 primitives locked for build (Feb 15, 2026) — see `CATALOG-v0.md`
 
 > **Purpose:** UI building blocks for delegation, trust, and visibility — not "chat components."
 
 This document catalogs foundational primitives for Agentic Experience (AX) design. These are the atomic building blocks that compose into complete agent interfaces.
+
+### v0 Implementation Key
+
+| Icon | Meaning |
+|---|---|
+| 🔨 **v0** | Locked for current build |
+| 🔀 **Absorbed** | Merged into a v0 primitive as a mode/variant |
+| ⏳ v1 | Deferred to v1 |
+| ⏳ v2 | Deferred to v2 |
+| — | Not yet scheduled |
 
 ---
 
@@ -13,15 +24,15 @@ This document catalogs foundational primitives for Agentic Experience (AX) desig
 
 Help users move from "talking" to "committing work."
 
-| Primitive | Description |
-|-----------|-------------|
-| `IntentBar` | Compact control for defining what you want to do (goal, scope, mode) |
-| `PlanCard` | Displays a proposed plan with steps, assumptions, and expected outputs |
-| `StepList` | Executable checklist with per-step status and logs |
-| `CommandPalette` | Fast action launcher for tools, templates, and recent actions |
-| `PromptToSpec` | Transforms natural language into structured spec with fields and defaults |
-| `ConstraintChips` | Explicit constraints like "no Fridays", "don't touch prod", "budget <$X" |
-| `ContextPicker` | Selects what context the agent can access (docs, projects, repos) |
+| Primitive | Description | v0 Status |
+|-----------|-------------|:---------:|
+| `IntentBar` | Compact control for defining what you want to do (goal, scope, mode) | ⏳ v1 |
+| `PlanCard` | Displays a proposed plan with steps, assumptions, and expected outputs | 🔨 **v0** |
+| `StepList` | Executable checklist with per-step status and logs | — |
+| `CommandPalette` | Fast action launcher for tools, templates, and recent actions | — |
+| `PromptToSpec` | Transforms natural language into structured spec with fields and defaults | — |
+| `ConstraintChips` | Explicit constraints like "no Fridays", "don't touch prod", "budget <$X" | — |
+| `ContextPicker` | Selects what context the agent can access (docs, projects, repos) | — |
 
 ---
 
@@ -29,15 +40,15 @@ Help users move from "talking" to "committing work."
 
 The "relationship design" pieces: boundaries, consent, and confidence.
 
-| Primitive | Description |
-|-----------|-------------|
-| `ApprovalGate` | Approve, reject, or edit before an action runs |
-| `RiskBadge` | Labels actions by risk level (low/medium/high) with reasoning |
-| `PermissionScope` | Defines what the agent can touch (files, APIs, accounts) |
-| `ConfirmationModal` | Confirm with a diff/preview, not just "are you sure?" |
-| `ConfidenceMeter` | Shows confidence score plus reasoning (signals, missing info, ambiguities) |
-| `AssumptionList` | Explicit assumptions with confirm/correct toggles |
-| `PolicyBanner` | Non-negotiable rules like "never email clients", "no deletion without approval" |
+| Primitive | Description | v0 Status |
+|-----------|-------------|:---------:|
+| `ApprovalGate` | Approve, reject, or edit before an action runs | 🔨 **v0** |
+| `RiskBadge` | Labels actions by risk level (low/medium/high) with reasoning | ⏳ v1 |
+| `PermissionScope` | Defines what the agent can touch (files, APIs, accounts) | — |
+| `ConfirmationModal` | Confirm with a diff/preview, not just "are you sure?" | — |
+| `ConfidenceMeter` | Shows confidence score plus reasoning (signals, missing info, ambiguities) | 🔨 **v0** |
+| `AssumptionList` | Explicit assumptions with confirm/correct toggles | — |
+| `PolicyBanner` | Non-negotiable rules like "never email clients", "no deletion without approval" | — |
 
 ---
 
@@ -45,14 +56,14 @@ The "relationship design" pieces: boundaries, consent, and confidence.
 
 Make the system legible while it's working.
 
-| Primitive | Description |
-|-----------|-------------|
-| `ToolTrace` | Timeline of tool calls showing input, output, duration, and errors |
-| `ReasonPanel` | Explains "why I'm doing this" and "what I'm optimizing for" |
-| `EvidenceStack` | Shows sources used with snippets, doc links, and timestamps |
-| `StateInspector` | Displays current internal state (selected goal, constraints, memory used) |
-| `ProgressStream` | Streaming progress events (like build logs, but human-readable) |
-| `ErrorExplainer` | Rewrites errors into user choices (retry, change scope, grant access) |
+| Primitive | Description | v0 Status |
+|-----------|-------------|:---------:|
+| `ToolTrace` | Timeline of tool calls showing input, output, duration, and errors | 🔨 **v0** |
+| `ReasonPanel` | Explains "why I'm doing this" and "what I'm optimizing for" | — |
+| `EvidenceStack` | Shows sources used with snippets, doc links, and timestamps | — |
+| `StateInspector` | Displays current internal state (selected goal, constraints, memory used) | — |
+| `ProgressStream` | Streaming progress events (like build logs, but human-readable) | — |
+| `ErrorExplainer` | Rewrites errors into user choices (retry, change scope, grant access) | — |
 
 ---
 
@@ -60,13 +71,13 @@ Make the system legible while it's working.
 
 Memory should be visible and editable in the moment, not buried in settings.
 
-| Primitive | Description |
-|-----------|-------------|
-| `MemoryPanel` | Shows what memory is being used right now |
-| `MemoryChip` | Single memory item with edit/remove/disable controls |
-| `MemoryConsentToggle` | Toggle between "this session only" vs "always remember" |
-| `PreferenceTokens` | User formatting/tone/depth preferences (bullets, concise, technical level) |
-| `RecencyControls` | Filters like "only use last 30 days" or "don't use personal context" |
+| Primitive | Description | v0 Status |
+|-----------|-------------|:---------:|
+| `MemoryPanel` | Shows what memory is being used right now | ⏳ v1 |
+| `MemoryChip` | Single memory item with edit/remove/disable controls | — |
+| `MemoryConsentToggle` | Toggle between "this session only" vs "always remember" | — |
+| `PreferenceTokens` | User formatting/tone/depth preferences (bullets, concise, technical level) | — |
+| `RecencyControls` | Filters like "only use last 30 days" or "don't use personal context" | — |
 
 ---
 
@@ -74,14 +85,14 @@ Memory should be visible and editable in the moment, not buried in settings.
 
 The "canvas is for commitment" layer — where work gets finalized.
 
-| Primitive | Description |
-|-----------|-------------|
-| `AdaptiveCanvas` | Container that morphs into doc/table/form/timeline as needed |
-| `StructuredEditor` | Rich editor supporting agent insertions and locked regions |
-| `TableCanvas` | Spreadsheet-like view with agent fill and validations |
-| `FormCanvas` | Form generator with inline agent suggestions |
-| `DiffViewer` | Shows edits to doc/code/config with accept/reject per hunk |
-| `VersionRail` | Version history with snapshots and restore points |
+| Primitive | Description | v0 Status |
+|-----------|-------------|:---------:|
+| `AdaptiveCanvas` | Container that morphs into doc/table/form/timeline as needed | ⏳ v2 |
+| `StructuredEditor` | Rich editor supporting agent insertions and locked regions | — |
+| `TableCanvas` | Spreadsheet-like view with agent fill and validations | — |
+| `FormCanvas` | Form generator with inline agent suggestions | — |
+| `DiffViewer` | Shows edits to doc/code/config with accept/reject per hunk | — |
+| `VersionRail` | Version history with snapshots and restore points | — |
 
 ---
 
@@ -89,14 +100,14 @@ The "canvas is for commitment" layer — where work gets finalized.
 
 Let users steer an agent during execution without breaking flow.
 
-| Primitive | Description |
-|-----------|-------------|
-| `RunControls` | Pause, resume, stop, and retry buttons |
-| `ModeSwitch` | Toggle between brainstorm, draft, execute, and review modes |
-| `ThrottleControl` | Slider from "ask before each step" to "run until checkpoint" |
-| `Checkpoint` | Automatic stopping points (after plan, before send, before write) |
-| `UndoStack` | Reversible actions with clear restore semantics |
-| `HumanTakeover` | "I'll do this part" handoff with step export and payload copy |
+| Primitive | Description | v0 Status |
+|-----------|-------------|:---------:|
+| `RunControls` | Pause, resume, stop, and retry buttons | 🔨 **v0** |
+| `ModeSwitch` | Toggle between brainstorm, draft, execute, and review modes | — |
+| `ThrottleControl` | Slider from "ask before each step" to "run until checkpoint" | ⏳ v1 |
+| `Checkpoint` | Automatic stopping points (after plan, before send, before write) | — |
+| `UndoStack` | Reversible actions with clear restore semantics | — |
+| `HumanTakeover` | "I'll do this part" handoff with step export and payload copy | — |
 
 ---
 
@@ -104,12 +115,12 @@ Let users steer an agent during execution without breaking flow.
 
 Make outputs shippable and easy to integrate.
 
-| Primitive | Description |
-|-----------|-------------|
-| `ArtifactCard` | Output summary with export options (MD, JSON, CSV, PR) |
-| `SnippetBlock` | Copyable chunks with provenance (where it came from) |
-| `ValidationSummary` | Checks passed/failed (schema, lint, unit tests) |
-| `NextActionBar` | Suggested next steps like ship, share, schedule, or open PR |
+| Primitive | Description | v0 Status |
+|-----------|-------------|:---------:|
+| `ArtifactCard` | Output summary with export options (MD, JSON, CSV, PR) | 🔨 **v0** |
+| `SnippetBlock` | Copyable chunks with provenance (where it came from) | — |
+| `ValidationSummary` | Checks passed/failed (schema, lint, unit tests) | — |
+| `NextActionBar` | Suggested next steps like ship, share, schedule, or open PR | — |
 
 ---
 
@@ -117,12 +128,12 @@ Make outputs shippable and easy to integrate.
 
 For team collaboration — design as extension points even if built later.
 
-| Primitive | Description |
-|-----------|-------------|
-| `ShareContext` | Share a run with someone (what they see, what's redacted) |
-| `CommentLayer` | Comments attached to steps, diffs, and decisions |
-| `AuditLog` | Immutable history for teams |
-| `RoleBadges` | Shows who approved what (owner/reviewer/agent) |
+| Primitive | Description | v0 Status |
+|-----------|-------------|:---------:|
+| `ShareContext` | Share a run with someone (what they see, what's redacted) | — |
+| `CommentLayer` | Comments attached to steps, diffs, and decisions | — |
+| `AuditLog` | Immutable history for teams | — |
+| `RoleBadges` | Shows who approved what (owner/reviewer/agent) | — |
 
 ---
 
@@ -210,4 +221,4 @@ Small demos combining primitives into flows:
 - **Financial Autonomy (Val):** Coinbase report validates the need for strict, specialized throttles (`BudgetCap`, `TransactionGate`) — matching our "Trust & Safety" category perfectly.
 - **Safe Autonomy Wedge:** User analysis identifies "Safe Autonomy" (Mandate + Guardrails) as the killer use case. Financial primitives should be prioritized as a "Spend Controls Kit."
 
-*Last updated: Feb 14, 2026 — through AX Book Ch 10 + Cowork Analysis + Coinbase Deep Dive*
+*Last updated: Feb 15, 2026 — v0 status added; through AX Book Ch 12 + Cowork Analysis + Coinbase Deep Dive*

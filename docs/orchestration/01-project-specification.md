@@ -5,6 +5,8 @@
 **Name:** AX Components for React
 **Tagline:** "From prototype to production"
 **Domain:** Agentic Experience (AX) Design
+**Catalog Status:** v0 locked (Feb 15, 2026)
+**Distribution Model:** AX-CN (CLI copy-paste, shadcn-style)
 
 ## What is Agentic Experience (AX)?
 
@@ -23,6 +25,11 @@ Traditional UI components assume deterministic workflows. Figma prototypes can't
 ## The Solution
 
 Production-ready React components specifically designed for agentic interactions. Use them to prototype agent experiences, then deploy the same code to production.
+
+**AX-CN Model (shadcn-style):**
+- UI primitives are **copied into the user's repo** via a CLI (no npm black box).
+- Headless hooks can be published as a small package, but UI code is owned by the user.
+- A registry defines available primitives and variants.
 
 ## Project Goals
 
@@ -58,30 +65,30 @@ Every component serves TWO distinct audiences:
 5. **Familiar Patterns**: Build on React conventions developers know
 6. **Prototype-to-Production Path**: Components work identically in both contexts
 
-## Component Roadmap
+## Component Roadmap (v0)
 
 > **Strategy:** Open source first (MIT License). All primitives are free. See `MONETIZATION-MODEL.md` for revenue strategy via consulting, content, and enterprise support.
 
 ### Core Primitives (Open Source, MIT License)
 
-The library includes 48+ primitives across 8 categories. See `docs/internal/research/AX-Primitives-starter.md` for the complete list.
+v0 ships **6 primitives across 4 categories**:
 
-**Priority Categories for Initial Release:**
+| Category | Primitives (v0) | AX Problem Solved |
+|----------|-----------------|-------------------|
+| Intent & Delegation | `PlanCard` | Moving from "talking" to "committing work" |
+| Trust & Approval | `ApprovalGate`, `ConfidenceMeter` | Boundaries, consent, and confidence |
+| Transparency & Trace | `ToolTrace`, `ArtifactCard` | Making the system legible while working + clear outputs |
+| Control & Steering | `RunControls` | Steering agents without breaking flow |
 
-| Category | Example Primitives | AX Problem Solved |
-|----------|-------------------|-------------------|
-| Intent & Delegation | `IntentBar`, `PlanCard`, `StepList` | Moving from "talking" to "committing work" |
-| Trust & Approval | `ApprovalGate`, `RiskBadge`, `ConfidenceMeter` | Boundaries, consent, and confidence |
-| Transparency & Trace | `ToolTrace`, `ReasonPanel`, `ProgressStream` | Making the system legible while working |
-| Control & Steering | `RunControls`, `ModeSwitch`, `Checkpoint` | Steering agents without breaking flow |
+Deferred primitives (v1+): `IntentBar`, `MemoryPanel`, `ThrottleControl`, `RiskBadge`, `AdaptiveCanvas`, financial primitives.
 
-### Library Architecture
+### Architecture Overview
 
-Three-layer structure:
+Three-layer structure (AX-CN):
 
-1. **Headless Primitives** — State machines and hooks (`useRun()`, `useApprovalGate()`, `useTrace()`)
-2. **Composable UI Primitives** — The visual components
-3. **Reference Recipes** — Small demos combining primitives into flows
+1. **Headless Hooks** — State machines and hooks (`useRun()`, `useApprovalGate()`, `useTrace()`)
+2. **Styled UI Primitives** — Copy-paste React components owned by the user
+3. **Registry + CLI** — Distribute primitives and variants into user repos
 
 
 ## Success Criteria

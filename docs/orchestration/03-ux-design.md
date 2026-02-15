@@ -4,6 +4,11 @@
 
 AX components bridge the gap between traditional deterministic UIs and the probabilistic nature of AI agents. Every design decision must account for uncertainty, transparency, and human oversight.
 
+## v0 Scope (Locked Feb 15, 2026)
+
+v0 focuses on six primitives only: `PlanCard`, `ApprovalGate`, `ConfidenceMeter`, `RunControls`, `ToolTrace`, and `ArtifactCard`.
+All UX guidance in this doc must map directly to these primitives and their composition flow.
+
 ## Dual-Audience UX Patterns
 
 ### Prototyping Audience (Designers/PMs)
@@ -25,6 +30,8 @@ AX components bridge the gap between traditional deterministic UIs and the proba
 | Performance | Minimal re-renders, CSS animations over JS |
 | Accessibility | WCAG 2.1 AA compliance |
 | Customization | className prop + CSS custom properties |
+
+**AX-CN implication:** Components are owned by the consumer repo, so designs must be easy to tweak locally (clear markup, predictable class names, minimal magic).
 
 ## Interaction Patterns
 

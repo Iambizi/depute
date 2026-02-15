@@ -1,5 +1,7 @@
 # 05 - Interface States
 
+**v0 Scope:** Only the six locked primitives are specified here. Deferred primitives (v1+) are intentionally omitted.
+
 ## Shared Types
 
 All components use the `RunState` type for execution tracking:
@@ -256,4 +258,3 @@ All components must handle **incremental data arrival** gracefully:
 - Never show an error state during normal streaming delays
 - Use skeleton/placeholder states (above) until first data arrives
 - Components should be **mountable before data exists** — empty states are valid initial renders
-

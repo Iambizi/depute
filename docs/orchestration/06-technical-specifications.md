@@ -1,5 +1,11 @@
 # 06 - Technical Specifications
 
+## AX-CN Distribution Notes
+
+- UI primitives are copied into the consumer repo via CLI (no npm package for UI).
+- Headless hooks may be published separately, but are optional for v0.
+- All interfaces below are stable contracts for copy-paste components.
+
 ## Shared Types (`src/types/common.ts`)
 
 ```typescript
