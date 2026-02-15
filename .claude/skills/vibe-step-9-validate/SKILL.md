@@ -11,7 +11,7 @@ Run a comprehensive audit of the entire project.
 
 ## Prerequisites
 
-Read `docs/vibe-coding/progress.json` and verify:
+Read `docs/orchestration/progress.json` and verify:
 - `step-8-docs` status is `completed`
 
 If not, tell the user to run `/vibe-step-8-docs` first.
@@ -56,11 +56,13 @@ npm run build-storybook
 
 ### 5. Export Verification
 
-Read `src/index.ts` and verify all 4 components and their types are exported:
-- `AgentProgressTracker` + `AgentProgressTrackerProps`
-- `ConfidenceScoreBadge` + `ConfidenceScoreBadgeProps`
-- `AgentStatusIndicator` + `AgentStatusIndicatorProps`
-- `BasicHumanApprovalGate` + `BasicHumanApprovalGateProps`
+Read `src/index.ts` and verify all 6 components and their types are exported:
+- `PlanCard` + `PlanCardProps`
+- `ApprovalGate` + `ApprovalGateProps`
+- `ConfidenceMeter` + `ConfidenceMeterProps`
+- `RunControls` + `RunControlsProps`
+- `ToolTrace` + `ToolTraceProps`
+- `ArtifactCard` + `ArtifactCardProps`
 - All shared types from `types/common.ts`
 - Mock data utilities
 
@@ -125,7 +127,7 @@ Display a results table:
 
 ## Update Progress
 
-If ALL checks pass: Read `docs/vibe-coding/progress.json`, set `globalSteps.step-9-validate.status` to `"completed"`, set `completedAt` to current ISO timestamp, update `lastUpdated`, write back.
+If ALL checks pass: Read `docs/orchestration/progress.json`, set `globalSteps.step-9-validate.status` to `"completed"`, set `completedAt` to current ISO timestamp, update `lastUpdated`, write back.
 
 If any checks fail: Keep status as `in_progress` and list what needs fixing.
 

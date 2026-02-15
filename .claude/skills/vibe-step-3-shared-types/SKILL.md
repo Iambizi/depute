@@ -11,7 +11,7 @@ Define all shared TypeScript types that components will consume.
 
 ## Prerequisites
 
-Read `docs/vibe-coding/progress.json` and verify:
+Read `docs/orchestration/progress.json` and verify:
 - `step-1b-init-project` status is `completed`
 
 If not, tell the user to run `/vibe-step-1b-init-project` first.
@@ -19,7 +19,7 @@ If not, tell the user to run `/vibe-step-1b-init-project` first.
 ## Reference Docs
 
 Read this for type definitions:
-- `docs/vibe-coding/06-technical-specifications.md` — Shared types section
+- `docs/orchestration/06-technical-specifications.md` — Shared types section
 
 ## Step 1: Write Common Types
 
@@ -69,7 +69,7 @@ export { getConfidenceLevel } from './types/common';
 
 ## Step 3: Update Progress
 
-Read `docs/vibe-coding/progress.json`, set `globalSteps.step-3-shared-types.status` to `"completed"`, set `completedAt` to current ISO timestamp, update `lastUpdated`, write back.
+Read `docs/orchestration/progress.json`, set `globalSteps.step-3-shared-types.status` to `"completed"`, set `completedAt` to current ISO timestamp, update `lastUpdated`, write back.
 
 ## Exit Criteria
 
@@ -78,4 +78,4 @@ Read `docs/vibe-coding/progress.json`, set `globalSteps.step-3-shared-types.stat
 - No `any` types used
 - All types have JSDoc comments
 - Progress updated
-- Confirm to user: "Shared types created. If step 2 is also done, run `/vibe-step-4-component AgentProgressTracker` next."
+- Confirm to user: "Shared types created. If step 2 is also done, run `/vibe-step-4-component PlanCard` next."

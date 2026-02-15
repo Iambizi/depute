@@ -30,7 +30,7 @@ Examples:
 
 ## Step 1: Read Progress
 
-Read `docs/vibe-coding/progress.json`.
+Read `docs/orchestration/progress.json`.
 
 If the file doesn't exist, tell the user to run `/vibe-step-1-ideation` first.
 
@@ -58,7 +58,7 @@ Update `lastUpdated` to current ISO timestamp.
 
 ## Step 4: Write Back
 
-Write updated `docs/vibe-coding/progress.json`.
+Write updated `docs/orchestration/progress.json`.
 
 ## Step 5: Confirm
 

@@ -25,17 +25,21 @@
 ax-components-react/
 ├── src/
 │   ├── components/                    # All React components
-│   │   ├── AgentProgressTracker/
-│   │   │   ├── AgentProgressTracker.tsx
-│   │   │   ├── AgentProgressTracker.types.ts
-│   │   │   ├── AgentProgressTracker.module.css
-│   │   │   ├── AgentProgressTracker.test.tsx
+│   │   ├── PlanCard/
+│   │   │   ├── PlanCard.tsx
+│   │   │   ├── PlanCard.types.ts
+│   │   │   ├── PlanCard.module.css
+│   │   │   ├── PlanCard.test.tsx
 │   │   │   └── index.ts
-│   │   ├── ConfidenceScoreBadge/
+│   │   ├── ApprovalGate/
 │   │   │   └── ... (same pattern)
-│   │   ├── AgentStatusIndicator/
+│   │   ├── ConfidenceMeter/
 │   │   │   └── ... (same pattern)
-│   │   ├── BasicHumanApprovalGate/
+│   │   ├── RunControls/
+│   │   │   └── ... (same pattern)
+│   │   ├── ToolTrace/
+│   │   │   └── ... (same pattern)
+│   │   ├── ArtifactCard/
 │   │   │   └── ... (same pattern)
 │   │   └── index.ts                   # Barrel export
 │   ├── types/
@@ -44,10 +48,12 @@ ax-components-react/
 │   │   └── mockData.ts                # Mock data generators for prototyping
 │   └── index.ts                       # Library entry point
 ├── stories/
-│   ├── AgentProgressTracker.stories.tsx
-│   ├── ConfidenceScoreBadge.stories.tsx
-│   ├── AgentStatusIndicator.stories.tsx
-│   └── BasicHumanApprovalGate.stories.tsx
+│   ├── PlanCard.stories.tsx
+│   ├── ApprovalGate.stories.tsx
+│   ├── ConfidenceMeter.stories.tsx
+│   ├── RunControls.stories.tsx
+│   ├── ToolTrace.stories.tsx
+│   └── ArtifactCard.stories.tsx
 ├── examples/
 │   ├── prototype-setup/               # Quick start for prototyping
 │   └── production-setup/              # Integration guide for production
@@ -189,20 +195,24 @@ Every component follows this exact structure:
 
 ```typescript
 // src/index.ts - Library entry point
-export { AgentProgressTracker } from './components/AgentProgressTracker';
-export { ConfidenceScoreBadge } from './components/ConfidenceScoreBadge';
-export { AgentStatusIndicator } from './components/AgentStatusIndicator';
-export { BasicHumanApprovalGate } from './components/BasicHumanApprovalGate';
+export { PlanCard } from './components/PlanCard';
+export { ApprovalGate } from './components/ApprovalGate';
+export { ConfidenceMeter } from './components/ConfidenceMeter';
+export { RunControls } from './components/RunControls';
+export { ToolTrace } from './components/ToolTrace';
+export { ArtifactCard } from './components/ArtifactCard';
 
 // Re-export types
-export type { AgentStep, AgentStatus, ConfidenceLevel } from './types/common';
-export type { AgentProgressTrackerProps } from './components/AgentProgressTracker';
-export type { ConfidenceScoreBadgeProps } from './components/ConfidenceScoreBadge';
-export type { AgentStatusIndicatorProps } from './components/AgentStatusIndicator';
-export type { BasicHumanApprovalGateProps } from './components/BasicHumanApprovalGate';
+export type { PlanStep, RunState, ConfidenceLevel } from './types/common';
+export type { PlanCardProps } from './components/PlanCard';
+export type { ApprovalGateProps } from './components/ApprovalGate';
+export type { ConfidenceMeterProps } from './components/ConfidenceMeter';
+export type { RunControlsProps } from './components/RunControls';
+export type { ToolTraceProps } from './components/ToolTrace';
+export type { ArtifactCardProps } from './components/ArtifactCard';
 
 // Mock data utilities (also available via 'ax-components-react/utils')
-export { generateMockSteps, simulateAgentProgress } from './utils/mockData';
+export { generateMockPlan, simulatePlanExecution } from './utils/mockData';
 ```
 
 ## CI/CD Pipeline (GitHub Actions)

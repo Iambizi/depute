@@ -281,7 +281,7 @@ For discrete confidence levels:
 Components consume tokens via CSS custom properties:
 
 ```css
-/* AgentProgressTracker.module.css */
+/* PlanCard.module.css */
 .tracker {
   font-family: var(--ax-font-family);
   border: var(--ax-border-width) solid var(--ax-border-color);

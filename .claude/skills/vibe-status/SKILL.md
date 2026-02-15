@@ -11,13 +11,13 @@ Display the current state of the vibe-coding orchestration system.
 
 ## Step 1: Read Progress File
 
-Read `docs/vibe-coding/progress.json` to get the current state of all steps.
+Read `docs/orchestration/progress.json` to get the current state of all steps.
 
 ## Step 2: Check Filesystem State
 
 Verify actual filesystem state to cross-reference against progress.json:
 
-- Check if `docs/vibe-coding/` exists and which docs are present
+- Check if `docs/orchestration/` exists and which docs are present
 - Check if `package.json` exists (project initialized)
 - Check if `src/styles/tokens.css` exists (design tokens)
 - Check if `src/types/common.ts` exists (shared types)
@@ -43,10 +43,12 @@ Format and display a dashboard with this structure:
 ### Component Steps
 | Component | Step 4 | Step 5 | Step 6 | Step 7 |
 |-----------|--------|--------|--------|--------|
-| AgentProgressTracker | [s4] | [s5] | [s6] | [s7] |
-| ConfidenceScoreBadge | [s4] | [s5] | [s6] | [s7] |
-| AgentStatusIndicator | [s4] | [s5] | [s6] | [s7] |
-| BasicHumanApprovalGate | [s4] | [s5] | [s6] | [s7] |
+| PlanCard       | [s4] | [s5] | [s6] | [s7] |
+| ApprovalGate   | [s4] | [s5] | [s6] | [s7] |
+| ConfidenceMeter| [s4] | [s5] | [s6] | [s7] |
+| RunControls    | [s4] | [s5] | [s6] | [s7] |
+| ToolTrace      | [s4] | [s5] | [s6] | [s7] |
+| ArtifactCard   | [s4] | [s5] | [s6] | [s7] |
 
 ### Finish Steps
 | Step | Command | Status |

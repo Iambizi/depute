@@ -11,11 +11,11 @@ Create the component implementation files for a specific component.
 
 **Usage:** `/vibe-step-4-component [ComponentName]`
 
-Valid component names: `AgentProgressTracker`, `ConfidenceScoreBadge`, `AgentStatusIndicator`, `BasicHumanApprovalGate`
+Valid component names: `PlanCard`, `ApprovalGate`, `ConfidenceMeter`, `RunControls`, `ToolTrace`, `ArtifactCard`
 
 ## Prerequisites
 
-Read `docs/vibe-coding/progress.json` and verify:
+Read `docs/orchestration/progress.json` and verify:
 - `step-2-design-tokens` status is `completed`
 - `step-3-shared-types` status is `completed`
 
@@ -24,10 +24,10 @@ If either is not done, tell the user which step to run first.
 ## Reference Docs
 
 Read ALL of these before building:
-- `docs/vibe-coding/05-interface-states.md` — State matrix for this component
-- `docs/vibe-coding/06-technical-specifications.md` — TypeScript interface and implementation details
-- `docs/vibe-coding/04-design-system.md` — Design tokens to consume
-- `docs/vibe-coding/07-universal-format-standards.md` — File structure, naming, CSS conventions
+- `docs/orchestration/05-interface-states.md` — State matrix for this component
+- `docs/orchestration/06-technical-specifications.md` — TypeScript interface and implementation details
+- `docs/orchestration/04-design-system.md` — Design tokens to consume
+- `docs/orchestration/07-universal-format-standards.md` — File structure, naming, CSS conventions
 
 ## Step 1: Identify Component
 
@@ -97,7 +97,7 @@ export type { ComponentNameProps } from './components/ComponentName';
 
 ## Step 8: Update Progress
 
-Read `docs/vibe-coding/progress.json`, set `components.[ComponentName].step-4-component.status` to `"completed"`, set `completedAt` to current ISO timestamp, update `lastUpdated`, write back.
+Read `docs/orchestration/progress.json`, set `components.[ComponentName].step-4-component.status` to `"completed"`, set `completedAt` to current ISO timestamp, update `lastUpdated`, write back.
 
 ## Exit Criteria
 

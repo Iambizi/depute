@@ -15,7 +15,7 @@ Valid steps: `1`, `1b`, `2`, `3`, `4 [ComponentName]`, `5 [ComponentName]`, `6 [
 
 ## Step 1: Parse Arguments
 
-Extract the step number (and component name if applicable) from the user's command arguments. If no step provided, read `docs/vibe-coding/progress.json` and find the most recently completed step (latest `completedAt` timestamp) and validate that one. Tell the user which step you're validating.
+Extract the step number (and component name if applicable) from the user's command arguments. If no step provided, read `docs/orchestration/progress.json` and find the most recently completed step (latest `completedAt` timestamp) and validate that one. Tell the user which step you're validating.
 
 ## Step 2: Run Checks for That Step
 
@@ -24,14 +24,14 @@ Extract the step number (and component name if applicable) from the user's comma
 Verify all 7 PRD docs exist and are non-empty:
 
 ```
-docs/vibe-coding/01-project-specification.md
-docs/vibe-coding/02-technical-architecture.md
-docs/vibe-coding/03-ux-design.md
-docs/vibe-coding/04-design-system.md
-docs/vibe-coding/05-interface-states.md
-docs/vibe-coding/06-technical-specifications.md
-docs/vibe-coding/07-universal-format-standards.md
-docs/vibe-coding/progress.json
+docs/orchestration/01-project-specification.md
+docs/orchestration/02-technical-architecture.md
+docs/orchestration/03-ux-design.md
+docs/orchestration/04-design-system.md
+docs/orchestration/05-interface-states.md
+docs/orchestration/06-technical-specifications.md
+docs/orchestration/07-universal-format-standards.md
+docs/orchestration/progress.json
 ```
 
 ---

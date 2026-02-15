@@ -16,7 +16,7 @@ Reset progress tracking in `progress.json`.
 
 ## Step 1: Read Current Progress
 
-Read `docs/vibe-coding/progress.json`.
+Read `docs/orchestration/progress.json`.
 
 If the file doesn't exist, tell the user to run `/vibe-step-1-ideation` first.
 
@@ -26,9 +26,9 @@ Parse the command argument:
 
 - **No argument or `all`**: Reset ALL steps (global + all components) to `not_started` with `completedAt: null`
 - **`global`**: Reset only `globalSteps` entries
-- **Component name** (e.g., `AgentProgressTracker`): Reset only that component's 4 steps
+- **Component name** (e.g., `PlanCard`): Reset only that component's 4 steps
 
-Valid component names: `AgentProgressTracker`, `ConfidenceScoreBadge`, `AgentStatusIndicator`, `BasicHumanApprovalGate`
+Valid component names: `PlanCard`, `ApprovalGate`, `ConfidenceMeter`, `RunControls`, `ToolTrace`, `ArtifactCard`
 
 ## Step 3: Reset
 
@@ -40,7 +40,7 @@ Update `lastUpdated` to current ISO timestamp.
 
 ## Step 4: Write Back
 
-Write the updated `docs/vibe-coding/progress.json`.
+Write the updated `docs/orchestration/progress.json`.
 
 ## Step 5: Confirm
 

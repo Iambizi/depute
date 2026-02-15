@@ -1,12 +1,13 @@
 {
-  "version": "1.0.0",
-  "lastUpdated": "",
+  "version": "2.0.0",
+  "lastUpdated": "2026-02-15",
+  "catalogVersion": "v0",
   "globalSteps": {
     "step-1-ideation": {
       "name": "Create PRD Docs",
-      "status": "not_started",
+      "status": "completed",
       "command": "/vibe-step-1-ideation",
-      "completedAt": null
+      "completedAt": "2026-02-15T14:55:00Z"
     },
     "step-1b-init-project": {
       "name": "Initialize Project",
@@ -45,25 +46,51 @@
     }
   },
   "components": {
-    "AgentProgressTracker": {
+    "PlanCard": {
+      "buildOrder": 1,
+      "hook": "usePlan",
       "step-4-component": { "status": "not_started", "completedAt": null },
       "step-5-mock-data": { "status": "not_started", "completedAt": null },
       "step-6-stories": { "status": "not_started", "completedAt": null },
       "step-7-tests": { "status": "not_started", "completedAt": null }
     },
-    "ConfidenceScoreBadge": {
+    "ApprovalGate": {
+      "buildOrder": 2,
+      "hook": "useApprovalGate",
+      "modes": ["simple", "staged"],
       "step-4-component": { "status": "not_started", "completedAt": null },
       "step-5-mock-data": { "status": "not_started", "completedAt": null },
       "step-6-stories": { "status": "not_started", "completedAt": null },
       "step-7-tests": { "status": "not_started", "completedAt": null }
     },
-    "AgentStatusIndicator": {
+    "ConfidenceMeter": {
+      "buildOrder": 3,
+      "hook": "useConfidence",
+      "displays": ["meter", "badge"],
       "step-4-component": { "status": "not_started", "completedAt": null },
       "step-5-mock-data": { "status": "not_started", "completedAt": null },
       "step-6-stories": { "status": "not_started", "completedAt": null },
       "step-7-tests": { "status": "not_started", "completedAt": null }
     },
-    "BasicHumanApprovalGate": {
+    "RunControls": {
+      "buildOrder": 4,
+      "hook": "useRun",
+      "step-4-component": { "status": "not_started", "completedAt": null },
+      "step-5-mock-data": { "status": "not_started", "completedAt": null },
+      "step-6-stories": { "status": "not_started", "completedAt": null },
+      "step-7-tests": { "status": "not_started", "completedAt": null }
+    },
+    "ToolTrace": {
+      "buildOrder": 5,
+      "hook": "useTrace",
+      "step-4-component": { "status": "not_started", "completedAt": null },
+      "step-5-mock-data": { "status": "not_started", "completedAt": null },
+      "step-6-stories": { "status": "not_started", "completedAt": null },
+      "step-7-tests": { "status": "not_started", "completedAt": null }
+    },
+    "ArtifactCard": {
+      "buildOrder": 6,
+      "hook": null,
       "step-4-component": { "status": "not_started", "completedAt": null },
       "step-5-mock-data": { "status": "not_started", "completedAt": null },
       "step-6-stories": { "status": "not_started", "completedAt": null },

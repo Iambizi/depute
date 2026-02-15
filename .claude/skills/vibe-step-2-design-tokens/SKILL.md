@@ -11,7 +11,7 @@ Create the CSS custom properties token system that all components will consume.
 
 ## Prerequisites
 
-Read `docs/vibe-coding/progress.json` and verify:
+Read `docs/orchestration/progress.json` and verify:
 - `step-1b-init-project` status is `completed`
 
 If not, tell the user to run `/vibe-step-1b-init-project` first.
@@ -19,7 +19,7 @@ If not, tell the user to run `/vibe-step-1b-init-project` first.
 ## Reference Docs
 
 Read this for the complete token specification:
-- `docs/vibe-coding/04-design-system.md` — All CSS custom properties, colors, typography, spacing, animations
+- `docs/orchestration/04-design-system.md` — All CSS custom properties, colors, typography, spacing, animations
 
 ## Step 1: Create Tokens File
 
@@ -66,7 +66,7 @@ import './styles/index.css';
 
 ## Step 5: Update Progress
 
-Read `docs/vibe-coding/progress.json`, set `globalSteps.step-2-design-tokens.status` to `"completed"`, set `completedAt` to current ISO timestamp, update `lastUpdated`, write back.
+Read `docs/orchestration/progress.json`, set `globalSteps.step-2-design-tokens.status` to `"completed"`, set `completedAt` to current ISO timestamp, update `lastUpdated`, write back.
 
 ## Exit Criteria
 
@@ -77,4 +77,4 @@ Read `docs/vibe-coding/progress.json`, set `globalSteps.step-2-design-tokens.sta
 - All token names use the `--ax-` prefix
 - `prefers-reduced-motion` media query included
 - Progress updated
-- Confirm to user: "Design tokens created. If step 3 is also done, run `/vibe-step-4-component AgentProgressTracker` next."
+- Confirm to user: "Design tokens created. If step 3 is also done, run `/vibe-step-4-component PlanCard` next."

@@ -20,12 +20,12 @@ Read all three files to gather source content.
 ## Step 1: Create Directory
 
 ```bash
-mkdir -p docs/vibe-coding
+mkdir -p docs/orchestration
 ```
 
 ## Step 2: Create PRD Documents
 
-Create all 7 documents in `docs/vibe-coding/` by extracting and organizing content from the source files:
+Create all 7 documents in `docs/orchestration/` by extracting and organizing content from the source files:
 
 ### Doc 01: `01-project-specification.md`
 **Sources:** BUILDER-SPEC.md (Project Context, Goals, Design Principles), MONETIZATION-MODEL.md (component roadmap, tier structure)
@@ -48,7 +48,7 @@ Create all 7 documents in `docs/vibe-coding/` by extracting and organizing conte
 **Content:** State matrix for each of the 4 components listing every possible state with visual description and screen reader text. Props interaction matrices. Status lifecycle diagrams. Cross-component state interactions.
 
 ### Doc 06: `06-technical-specifications.md`
-**Sources:** BUILDER-SPEC.md (AgentProgressTracker API), new interfaces for other 3 components
+**Sources:** CATALOG-v0.md (6 primitives: PlanCard, ApprovalGate, ConfidenceMeter, RunControls, ToolTrace, ArtifactCard)
 **Content:** Shared types (common.ts), full TypeScript interface for each component with JSDoc, key implementation details per component, mock data utility API with function signatures
 
 ### Doc 07: `07-universal-format-standards.md`
@@ -57,7 +57,7 @@ Create all 7 documents in `docs/vibe-coding/` by extracting and organizing conte
 
 ## Step 3: Create Progress File
 
-Create `docs/vibe-coding/progress.json` with this structure:
+Create `docs/orchestration/progress.json` with this structure:
 
 ```json
 {
@@ -72,26 +72,28 @@ Create `docs/vibe-coding/progress.json` with this structure:
     "step-9-validate": { "name": "Final Validation", "status": "not_started", "command": "/vibe-step-9-validate", "dependsOn": ["step-8-docs"], "completedAt": null }
   },
   "components": {
-    "AgentProgressTracker": {
+    "PlanCard": {
       "step-4-component": { "status": "not_started", "completedAt": null },
       "step-5-mock-data": { "status": "not_started", "completedAt": null },
       "step-6-stories": { "status": "not_started", "completedAt": null },
       "step-7-tests": { "status": "not_started", "completedAt": null }
     },
-    "ConfidenceScoreBadge": { ... same pattern ... },
-    "AgentStatusIndicator": { ... same pattern ... },
-    "BasicHumanApprovalGate": { ... same pattern ... }
+    "ApprovalGate": { ... same pattern ... },
+    "ConfidenceMeter": { ... same pattern ... },
+    "RunControls": { ... same pattern ... },
+    "ToolTrace": { ... same pattern ... },
+    "ArtifactCard": { ... same pattern ... }
   }
 }
 ```
 
 ## Step 4: Update Progress
 
-Read `docs/vibe-coding/progress.json`, set `globalSteps.step-1-ideation.status` to `"completed"`, set `globalSteps.step-1-ideation.completedAt` to the current ISO timestamp, update `lastUpdated`, and write it back.
+Read `docs/orchestration/progress.json`, set `globalSteps.step-1-ideation.status` to `"completed"`, set `globalSteps.step-1-ideation.completedAt` to the current ISO timestamp, update `lastUpdated`, and write it back.
 
 ## Exit Criteria
 
-- All 7 docs exist in `docs/vibe-coding/` with substantive content (not placeholder)
+- All 7 docs exist in `docs/orchestration/` with substantive content (not placeholder)
 - `progress.json` exists with all steps initialized
 - `step-1-ideation` is marked as `completed` in progress.json
 - Confirm to user: "Step 1 complete. Run `/vibe-step-1b-init-project` next."

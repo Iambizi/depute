@@ -11,7 +11,7 @@ Create the user-facing README, example setups, and quick-start guides.
 
 ## Prerequisites
 
-Read `docs/vibe-coding/progress.json` and verify:
+Read `docs/orchestration/progress.json` and verify:
 - ALL four components have `step-4-component`, `step-5-mock-data`, `step-6-stories`, `step-7-tests` status `completed`
 
 If any component steps are incomplete, tell the user which steps to complete first.
@@ -19,9 +19,9 @@ If any component steps are incomplete, tell the user which steps to complete fir
 ## Reference Docs
 
 Read these:
-- `docs/vibe-coding/01-project-specification.md` — Project identity, goals, audiences
-- `docs/vibe-coding/06-technical-specifications.md` — Component APIs for documentation
-- `docs/vibe-coding/02-technical-architecture.md` — Installation, scripts
+- `docs/orchestration/01-project-specification.md` — Project identity, goals, audiences
+- `docs/orchestration/06-technical-specifications.md` — Component APIs for documentation
+- `docs/orchestration/02-technical-architecture.md` — Installation, scripts
 - `src/index.ts` — Actual exports to document
 
 ## Step 1: Create README.md
@@ -71,7 +71,7 @@ Write `examples/production-setup/App.tsx`:
 
 ## Step 4: Update Progress
 
-Read `docs/vibe-coding/progress.json`, set `globalSteps.step-8-docs.status` to `"completed"`, set `completedAt` to current ISO timestamp, update `lastUpdated`, write back.
+Read `docs/orchestration/progress.json`, set `globalSteps.step-8-docs.status` to `"completed"`, set `completedAt` to current ISO timestamp, update `lastUpdated`, write back.
 
 ## Exit Criteria
 

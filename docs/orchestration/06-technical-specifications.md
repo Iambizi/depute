@@ -3,31 +3,52 @@
 ## Shared Types (`src/types/common.ts`)
 
 ```typescript
-/** Status of an individual agent step */
-export type AgentStepStatus = 'pending' | 'active' | 'completed' | 'failed';
+/** Status of an individual plan step */
+export type PlanStepStatus = 'pending' | 'active' | 'completed' | 'failed';
 
-/** Overall agent operational status */
-export type AgentStatus = 'idle' | 'running' | 'completed' | 'failed' | 'waiting' | 'connecting';
+/** Execution state for RunControls */
+export type RunState = 'idle' | 'running' | 'paused' | 'completed' | 'failed';
 
-/** Semantic confidence level derived from numeric score */
-export type ConfidenceLevel = 'low' | 'medium' | 'high';
-
-/** Status of a human approval gate */
+/** Approval gate status */
 export type ApprovalStatus = 'pending' | 'approved' | 'rejected' | 'expired';
 
-/** Represents a single step in an agent workflow */
-export interface AgentStep {
+/** Confidence level thresholds */
+export type ConfidenceLevel = 'high' | 'medium' | 'low';
+
+/** A single step in a plan */
+export interface PlanStep {
   id: string;
-  status: AgentStepStatus;
   label: string;
   description?: string;
-  confidence?: number; // 0-100
-  timestamp?: Date;
+  status: PlanStepStatus;
+  confidence?: number;
   reasoning?: string;
-  errorMessage?: string;
+  timestamp?: string;
 }
 
-/** Utility: derive confidence level from numeric score */
+/** A single tool call entry */
+export interface ToolCall {
+  id: string;
+  name: string;
+  input?: Record<string, unknown>;
+  output?: Record<string, unknown>;
+  status: 'pending' | 'running' | 'completed' | 'failed';
+  duration?: number;
+  error?: string;
+  timestamp: string;
+}
+
+/** An artifact produced by agent execution */
+export interface Artifact {
+  id: string;
+  title: string;
+  type: 'markdown' | 'json' | 'csv' | 'code' | 'other';
+  content: string;
+  metadata?: Record<string, string>;
+  timestamp: string;
+}
+
+/** Utility: map a confidence score to a level */
 export function getConfidenceLevel(score: number): ConfidenceLevel {
   if (score >= 80) return 'high';
   if (score >= 40) return 'medium';
@@ -37,40 +58,40 @@ export function getConfidenceLevel(score: number): ConfidenceLevel {
 
 ---
 
-## Component 1: AgentProgressTracker
+## Component 1: PlanCard
 
 ### TypeScript Interface
 
 ```typescript
-// AgentProgressTracker.types.ts
+// PlanCard.types.ts
 
-import { AgentStep } from '../../types/common';
+import { PlanStep } from '../../types/common';
 
-export interface AgentProgressTrackerProps {
-  /** Array of agent steps to display */
-  steps: AgentStep[];
+export interface PlanCardProps {
+  /** Title of the plan */
+  title: string;
 
-  /** Whether total steps are known */
+  /** Array of plan steps to display */
+  steps: PlanStep[];
+
+  /** Plan mode — determinate (known total) or indeterminate */
   mode?: 'determinate' | 'indeterminate';
 
+  /** Assumptions the agent made */
+  assumptions?: string[];
+
+  /** Agent's overall reasoning for this plan */
+  reasoning?: string;
+
   /** Override which step appears active (by step ID) */
-  currentStepId?: string;
+  activeStepId?: string;
 
-  /** Total expected steps (determinate mode) */
-  totalSteps?: number;
+  /** Called when a step is clicked */
+  onStepClick?: (step: PlanStep) => void;
 
-  /** Show confidence score badges on steps */
+  /** Show confidence per step */
   showConfidence?: boolean;
 
-  /** Show agent reasoning text */
-  showReasoning?: boolean;
-
-  /** Show timestamps on steps */
-  showTimestamps?: boolean;
-
-  /** Callback when a step is clicked */
-  onStepClick?: (step: AgentStep) => void;
-
   /** Additional CSS class */
   className?: string;
 }
@@ -78,132 +99,23 @@ export interface AgentProgressTrackerProps {
 
 ### Key Implementation Details
 
-- Renders a vertical timeline of steps
-- Active step has a pulsing indicator via CSS animation
-- New steps animate in with `ax-slide-in` keyframe
-- Reasoning text is collapsible (click to toggle)
-- Confidence scores rendered via `ConfidenceScoreBadge` internally
-- Uses `aria-live="polite"` region for step status announcements
-- `role="list"` with `role="listitem"` for each step
+- Steps render as a vertical list with status icons
+- Active step has expand/collapse for reasoning
+- Indeterminate mode shows "..." after last step
+- Uses `aria-label` on step list for screen reader context
 
 ---
 
-## Component 2: ConfidenceScoreBadge
+## Component 2: ApprovalGate
 
 ### TypeScript Interface
 
 ```typescript
-// ConfidenceScoreBadge.types.ts
+// ApprovalGate.types.ts
 
-import { ConfidenceLevel } from '../../types/common';
+import { ApprovalStatus, ConfidenceLevel } from '../../types/common';
 
-export type ConfidenceBadgeVariant = 'badge' | 'bar' | 'minimal' | 'ring';
-export type ConfidenceBadgeSize = 'sm' | 'md' | 'lg';
-
-export interface ConfidenceScoreBadgeProps {
-  /** Confidence score from 0-100 */
-  value?: number;
-
-  /** Visual variant */
-  variant?: ConfidenceBadgeVariant;
-
-  /** Size of the badge */
-  size?: ConfidenceBadgeSize;
-
-  /** Show numeric percentage */
-  showValue?: boolean;
-
-  /** Show confidence level label (Low/Medium/High) */
-  showLabel?: boolean;
-
-  /** Animate value changes */
-  animate?: boolean;
-
-  /** Text to show when value is undefined */
-  emptyText?: string;
-
-  /** Additional CSS class */
-  className?: string;
-}
-```
-
-### Key Implementation Details
-
-- Pure presentational component (no internal state)
-- Color derived from value using `getConfidenceLevel()`
-- `badge` variant: pill-shaped with colored background
-- `bar` variant: horizontal progress bar with fill
-- `minimal` variant: colored dot + number
-- `ring` variant: SVG circular progress
-- CSS transition on width/color for animated value changes
-- `aria-label` describes confidence level and value
-
----
-
-## Component 3: AgentStatusIndicator
-
-### TypeScript Interface
-
-```typescript
-// AgentStatusIndicator.types.ts
-
-import { AgentStatus } from '../../types/common';
-
-export type StatusIndicatorVariant = 'dot' | 'dot-label' | 'banner' | 'chip';
-export type StatusIndicatorSize = 'sm' | 'md' | 'lg';
-
-export interface AgentStatusIndicatorProps {
-  /** Current agent status */
-  status: AgentStatus;
-
-  /** Visual variant */
-  variant?: StatusIndicatorVariant;
-
-  /** Size of the indicator */
-  size?: StatusIndicatorSize;
-
-  /** Custom label text (overrides default status label) */
-  label?: string;
-
-  /** Additional description (shown in banner variant) */
-  description?: string;
-
-  /** Show text label alongside dot */
-  showLabel?: boolean;
-
-  /** Override default pulse behavior */
-  pulse?: boolean;
-
-  /** Additional CSS class */
-  className?: string;
-}
-```
-
-### Key Implementation Details
-
-- `dot` variant is the default (colored circle)
-- Pulse animation auto-enabled for `running` and `waiting` statuses
-- Banner variant shows icon + label + description in a full-width bar
-- Status text defaults: idle="Idle", running="Running", completed="Completed", failed="Failed", waiting="Waiting for input", connecting="Connecting"
-- Uses `aria-live="polite"` for status changes
-- `role="status"` on the component root
-
----
-
-## Component 4: BasicHumanApprovalGate
-
-### TypeScript Interface
-
-```typescript
-// BasicHumanApprovalGate.types.ts
-
-import { ApprovalStatus } from '../../types/common';
-
-export interface ApprovalMetadata {
-  [key: string]: string;
-}
-
-export interface BasicHumanApprovalGateProps {
+export interface ApprovalGateProps {
   /** Title of the approval request */
   title: string;
 
@@ -213,32 +125,29 @@ export interface BasicHumanApprovalGateProps {
   /** Agent's reasoning for this request */
   agentReasoning?: string;
 
-  /** Confidence score for this action (0-100) */
-  confidence?: number;
-
   /** Current approval status */
   status?: ApprovalStatus;
 
-  /** Callback when approved */
+  /** Approval mode — simple (approve/reject) or staged (preview → confirm → execute) */
+  mode?: 'simple' | 'staged';
+
+  /** Confidence score (0-100) for this action */
+  confidence?: number;
+
+  /** Optional timeout in seconds */
+  timeoutSeconds?: number;
+
+  /** Additional metadata to display */
+  metadata?: Record<string, string>;
+
+  /** Called on approval */
   onApprove?: () => void;
 
-  /** Callback when rejected */
-  onReject?: () => void;
+  /** Called on rejection */
+  onReject?: (reason?: string) => void;
 
-  /** Custom approve button text */
-  approveLabel?: string;
-
-  /** Custom reject button text */
-  rejectLabel?: string;
-
-  /** Timeout in seconds (0 = no timeout) */
-  timeout?: number;
-
-  /** Key-value metadata to display as context */
-  metadata?: ApprovalMetadata;
-
-  /** Show loading state on buttons */
-  loading?: boolean;
+  /** Called on timeout */
+  onTimeout?: () => void;
 
   /** Additional CSS class */
   className?: string;
@@ -247,14 +156,185 @@ export interface BasicHumanApprovalGateProps {
 
 ### Key Implementation Details
 
-- Renders as a card with prominent visual break
-- Buttons disabled when `status` is not `'pending'` or when `loading` is true
-- Timeout countdown managed via `useEffect` + `setInterval`
-- Expired state triggered when countdown reaches 0
-- `ConfidenceScoreBadge` shown when `confidence` prop provided
-- Metadata rendered as a key-value table
 - Uses `role="alertdialog"` for screen reader urgency
 - Focus trapped within gate when pending (keyboard accessible)
+- Staged mode renders a step indicator (Preview → Confirm → Execute)
+- Metadata rendered as a key-value table
+- Countdown timer uses `aria-live="polite"` for accessibility
+
+---
+
+## Component 3: ConfidenceMeter
+
+### TypeScript Interface
+
+```typescript
+// ConfidenceMeter.types.ts
+
+import { ConfidenceLevel } from '../../types/common';
+
+export type ConfidenceDisplay = 'meter' | 'badge';
+export type ConfidenceMeterSize = 'sm' | 'md' | 'lg';
+
+export interface ConfidenceMeterProps {
+  /** Confidence score from 0-100 */
+  value?: number;
+
+  /** Display variant — meter (bar) or badge (compact inline) */
+  display?: ConfidenceDisplay;
+
+  /** Size of the component */
+  size?: ConfidenceMeterSize;
+
+  /** Show numeric percentage */
+  showValue?: boolean;
+
+  /** Show label (High/Medium/Low) */
+  showLabel?: boolean;
+
+  /** Reasoning for the confidence score */
+  reasoning?: string;
+
+  /** Whether to animate value changes */
+  animate?: boolean;
+
+  /** Additional CSS class */
+  className?: string;
+}
+```
+
+### Key Implementation Details
+
+- Color maps to confidence level: green (high), amber (medium), red (low)
+- Badge display is compact for inline use
+- Meter display shows a horizontal bar with fill percentage
+- Animated transitions on value change (respects `prefers-reduced-motion`)
+
+---
+
+## Component 4: RunControls
+
+### TypeScript Interface
+
+```typescript
+// RunControls.types.ts
+
+import { RunState } from '../../types/common';
+
+export interface RunControlsProps {
+  /** Current execution state */
+  state: RunState;
+
+  /** Called when user clicks start/resume */
+  onStart?: () => void;
+
+  /** Called when user clicks pause */
+  onPause?: () => void;
+
+  /** Called when user clicks stop */
+  onStop?: () => void;
+
+  /** Called when user clicks retry (after failure) */
+  onRetry?: () => void;
+
+  /** Whether to show a status label */
+  showLabel?: boolean;
+
+  /** Slot for additional action buttons */
+  actions?: React.ReactNode;
+
+  /** Additional CSS class */
+  className?: string;
+}
+```
+
+### Key Implementation Details
+
+- Button visibility changes based on `state`
+- Running state shows pulsing indicator
+- `actions` slot enables extensibility (for v1 features like EscapeHatchBar)
+- Buttons use `aria-label` for accessibility
+
+---
+
+## Component 5: ToolTrace
+
+### TypeScript Interface
+
+```typescript
+// ToolTrace.types.ts
+
+import { ToolCall } from '../../types/common';
+
+export interface ToolTraceProps {
+  /** Array of tool calls to display */
+  calls: ToolCall[];
+
+  /** Whether to auto-scroll to latest entry */
+  autoScroll?: boolean;
+
+  /** Maximum height before scrolling */
+  maxHeight?: string;
+
+  /** Called when a tool call entry is clicked */
+  onEntryClick?: (call: ToolCall) => void;
+
+  /** Whether entries are expandable to show input/output */
+  expandable?: boolean;
+
+  /** Additional CSS class */
+  className?: string;
+}
+```
+
+### Key Implementation Details
+
+- Renders as a vertical timeline
+- Each entry shows: tool name, status icon, duration
+- Expandable entries reveal input/output JSON
+- Auto-scroll keeps latest entry visible during streaming
+- Uses `aria-live="polite"` for new entries
+
+---
+
+## Component 6: ArtifactCard
+
+### TypeScript Interface
+
+```typescript
+// ArtifactCard.types.ts
+
+import { Artifact } from '../../types/common';
+
+export type ExportFormat = 'markdown' | 'json' | 'csv' | 'pr';
+
+export interface ArtifactCardProps {
+  /** The artifact to display */
+  artifact: Artifact;
+
+  /** Available export formats */
+  exportFormats?: ExportFormat[];
+
+  /** Called when an export button is clicked */
+  onExport?: (format: ExportFormat) => void;
+
+  /** Whether to show a content preview */
+  showPreview?: boolean;
+
+  /** Maximum preview height before truncation */
+  maxPreviewHeight?: string;
+
+  /** Additional CSS class */
+  className?: string;
+}
+```
+
+### Key Implementation Details
+
+- Content preview truncated with "Show more" expand
+- Export buttons show format-specific icons
+- Loading state on export button during export
+- Uses semantic HTML (`<article>`) for the card
 
 ---
 
@@ -263,41 +343,48 @@ export interface BasicHumanApprovalGateProps {
 ### API
 
 ```typescript
-/** Generate an array of mock agent steps */
-export function generateMockSteps(options?: {
-  count?: number;           // Default: 4
-  includeConfidence?: boolean; // Default: true
-  includeReasoning?: boolean;  // Default: false
-  failAtStep?: number;       // Step index to fail at (optional)
-}): AgentStep[];
-
-/** Simulate agent progress over time */
-export function simulateAgentProgress(options: {
-  totalSteps?: number;       // Default: 4
-  onUpdate: (steps: AgentStep[]) => void;
-  delayMs?: number;          // Default: 2000
+/** Generate a mock plan with steps */
+export function generateMockPlan(options?: {
+  title?: string;
+  stepCount?: number;
   includeConfidence?: boolean;
   includeReasoning?: boolean;
-  failAtStep?: number;
-  onComplete?: () => void;
+}): { title: string; steps: PlanStep[]; assumptions: string[] };
+
+/** Simulate plan execution (auto-advances steps) */
+export function simulatePlanExecution(options: {
+  steps: PlanStep[];
+  onUpdate: (steps: PlanStep[]) => void;
+  intervalMs?: number;
 }): { cancel: () => void };
 
-/** Generate a single mock step */
-export function generateMockStep(overrides?: Partial<AgentStep>): AgentStep;
+/** Generate mock approval scenario */
+export function generateMockApproval(overrides?: Partial<ApprovalGateProps>): ApprovalGateProps;
 
-/** Generate mock approval gate data */
-export function generateMockApproval(overrides?: {
-  title?: string;
-  description?: string;
-  confidence?: number;
-  timeout?: number;
-}): BasicHumanApprovalGateProps;
+/** Generate a random confidence score */
+export function generateRandomConfidence(): number;
 
-/** Realistic step label bank */
+/** Generate mock tool calls */
+export function generateMockToolCalls(count?: number): ToolCall[];
+
+/** Simulate streaming tool calls */
+export function simulateToolStream(options: {
+  onCall: (call: ToolCall) => void;
+  count?: number;
+  intervalMs?: number;
+}): { cancel: () => void };
+
+/** Generate a mock artifact */
+export function generateMockArtifact(overrides?: Partial<Artifact>): Artifact;
+
+/** Realistic plan step label bank */
 export const MOCK_STEP_LABELS: string[];
 
-/** Realistic reasoning text bank */
-export const MOCK_REASONING_TEXTS: string[];
+/** Realistic tool name bank */
+export const MOCK_TOOL_NAMES: string[];
+
+/** Realistic approval scenario bank */
+export const MOCK_APPROVAL_SCENARIOS: Array<{ title: string; description: string }>;
 ```
 
 ### Mock Step Labels (realistic agent actions)
@@ -311,20 +398,8 @@ const MOCK_STEP_LABELS = [
   'Validating output accuracy',
   'Formatting response',
   'Searching knowledge base',
-  'Processing natural language query',
-  'Evaluating confidence scores',
+  'Applying business rules',
+  'Running compliance checks',
   'Preparing final output',
-];
-```
-
-### Mock Reasoning Texts
-
-```typescript
-const MOCK_REASONING_TEXTS = [
-  'Multiple data sources confirm this approach has the highest accuracy.',
-  'Previous similar queries showed best results with this method.',
-  'Document structure suggests a hierarchical extraction strategy.',
-  'Confidence score below threshold; flagging for human review.',
-  'Cross-referencing with 3 independent sources for verification.',
 ];
 ```

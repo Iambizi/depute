@@ -103,11 +103,36 @@ Created Claude Cowork case study from live workshop screenshots. Added AX Book r
 - ✅ Added 8 new primitives to catalog (Total: ~34 candidates)
 - ✅ **Key Insight:** Trust is moved upstream (Browser, OS, or Vertical Agent). We must build "Agent-Readable" interfaces.
 
+#### 15. Catalog v0 Locked (Feb 15)
+- ✅ Selected 6 primitives: `PlanCard`, `ApprovalGate`, `ConfidenceMeter`, `RunControls`, `ToolTrace`, `ArtifactCard`
+- ✅ Triaged 3 overlapping candidates: `CommitGate` absorbed into ApprovalGate, `UncertaintyBadge` absorbed into ConfidenceMeter, `EscapeHatchBar` deferred to v1
+- ✅ Created `docs/internal/research/CATALOG-v0.md`
+- ✅ Documented master roadmap in `VC-ORCHESTRATION.md`
+
+#### 16. v0 Migration — Full Repo Update (Feb 15)
+- ✅ Updated all 14 skill files: replaced old component names + fixed `docs/vibe-coding/` → `docs/orchestration/` paths
+- ✅ Rewrote `05-interface-states.md` — new state matrices for all 6 v0 primitives
+- ✅ Rewrote `06-technical-specifications.md` — new TypeScript interfaces, shared types, mock data API for v0
+- ✅ Updated `02-technical-architecture.md` — directory structure + exports for 6 primitives
+- ✅ Updated `03-ux-design.md` — layout patterns for PlanCard, ConfidenceMeter, RunControls, ApprovalGate
+- ✅ Updated `04-design-system.md` — CSS module example renamed
+- ✅ Updated `07-universal-format-standards.md` — naming conventions, commit examples, import examples
+- ✅ Fixed `VC-ORCHESTRATION.md` — example flow uses v0 component names
+- ✅ Reset `progress.json` — v2.0.0 with 6 v0 components, `step-1-ideation` marked completed
+- ✅ Confirmed `CLAUDE.md` was already clean (no old references)
+
+### Key Decisions
+9. **v0 = 6 primitives** — PlanCard, ApprovalGate, ConfidenceMeter, RunControls, ToolTrace, ArtifactCard
+10. **CommitGate absorbed** — becomes `ApprovalGate mode="staged"`
+11. **UncertaintyBadge absorbed** — becomes `ConfidenceMeter display="badge"`
+
 ### Next Steps
 - [x] Finish reading AX Book (Chapters 10-12)
-- [ ] Define Catalog v0 (6-10 primitives)
-- [ ] Scaffold the library
-- [ ] Revise primitives catalog with all research findings
+- [x] Define Catalog v0 (6-10 primitives)
+- [x] Update PRD docs (01-07) to reflect v0 + AX-CN model
+- [x] Reset `progress.json` to match v0
+- [ ] Scaffold the library (`/vibe-step-1b-init-project`)
+- [ ] Begin building primitives (PlanCard first)
 
 ---
 

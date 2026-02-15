@@ -15,21 +15,21 @@
 
 | Item | Convention | Example |
 |------|-----------|---------|
-| Components | PascalCase | `AgentProgressTracker` |
-| Props interfaces | PascalCase + "Props" | `AgentProgressTrackerProps` |
-| Type interfaces | PascalCase | `AgentStep` |
-| Type aliases | PascalCase | `AgentStepStatus` |
-| Functions | camelCase | `generateMockSteps` |
+| Components | PascalCase | `PlanCard` |
+| Props interfaces | PascalCase + "Props" | `PlanCardProps` |
+| Type interfaces | PascalCase | `PlanStep` |
+| Type aliases | PascalCase | `RunState` |
+| Functions | camelCase | `generateMockPlan` |
 | Variables | camelCase | `currentStep` |
-| Constants | UPPER_SNAKE_CASE | `MOCK_STEP_LABELS` |
+| Constants | UPPER_SNAKE_CASE | `MOCK_TOOL_NAMES` |
 | CSS classes | camelCase (CSS Modules) | `.stepActive` |
 | CSS custom properties | kebab-case with `ax-` prefix | `--ax-color-blue-500` |
-| Files: components | PascalCase | `AgentProgressTracker.tsx` |
-| Files: types | PascalCase + `.types` | `AgentProgressTracker.types.ts` |
-| Files: styles | PascalCase + `.module.css` | `AgentProgressTracker.module.css` |
-| Files: tests | PascalCase + `.test` | `AgentProgressTracker.test.tsx` |
-| Files: stories | PascalCase + `.stories` | `AgentProgressTracker.stories.tsx` |
-| Directories | PascalCase (components) | `AgentProgressTracker/` |
+| Files: components | PascalCase | `PlanCard.tsx` |
+| Files: types | PascalCase + `.types` | `PlanCard.types.ts` |
+| Files: styles | PascalCase + `.module.css` | `PlanCard.module.css` |
+| Files: tests | PascalCase + `.test` | `PlanCard.test.tsx` |
+| Files: stories | PascalCase + `.stories` | `PlanCard.stories.tsx` |
+| Directories | PascalCase (components) | `PlanCard/` |
 
 ## File Structure Per Component
 
@@ -246,11 +246,11 @@ Co-Authored-By: Claude <noreply@anthropic.com>
 ### Examples
 
 ```
-feat: add ConfidenceScoreBadge component with 4 variants
+feat: add ConfidenceMeter component with meter and badge displays
 
 fix: resolve pulse animation not respecting prefers-reduced-motion
 
-test: add accessibility tests for BasicHumanApprovalGate
+test: add accessibility tests for ApprovalGate
 
 docs: add prototyping quick-start guide to README
 ```
@@ -264,10 +264,10 @@ import { useState, useEffect } from 'react';
 // 2. External libraries (if any)
 
 // 3. Internal types
-import { AgentStep } from '../../types/common';
+import { PlanStep } from '../../types/common';
 
 // 4. Internal components
-import { ConfidenceScoreBadge } from '../ConfidenceScoreBadge';
+import { ConfidenceMeter } from '../ConfidenceMeter';
 
 // 5. Local types
 import { ComponentNameProps } from './ComponentName.types';

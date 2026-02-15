@@ -11,11 +11,11 @@ Write Vitest tests for a specific component covering all states and interactions
 
 **Usage:** `/vibe-step-7-tests [ComponentName]`
 
-Valid component names: `AgentProgressTracker`, `ConfidenceScoreBadge`, `AgentStatusIndicator`, `BasicHumanApprovalGate`
+Valid component names: `PlanCard`, `ApprovalGate`, `ConfidenceMeter`, `RunControls`, `ToolTrace`, `ArtifactCard`
 
 ## Prerequisites
 
-Read `docs/vibe-coding/progress.json` and verify:
+Read `docs/orchestration/progress.json` and verify:
 - `components.[ComponentName].step-4-component` status is `completed`
 
 If not, tell the user to run `/vibe-step-4-component [ComponentName]` first.
@@ -23,8 +23,8 @@ If not, tell the user to run `/vibe-step-4-component [ComponentName]` first.
 ## Reference Docs
 
 Read these:
-- `docs/vibe-coding/07-universal-format-standards.md` — Test format template
-- `docs/vibe-coding/05-interface-states.md` — All states to test
+- `docs/orchestration/07-universal-format-standards.md` — Test format template
+- `docs/orchestration/05-interface-states.md` — All states to test
 - `src/components/[ComponentName]/[ComponentName].types.ts` — Props to test
 - `src/components/[ComponentName]/[ComponentName].tsx` — Implementation to test
 
@@ -85,7 +85,7 @@ If tests fail, fix the issues in the test file or flag component bugs.
 
 ## Step 7: Update Progress
 
-Read `docs/vibe-coding/progress.json`, set `components.[ComponentName].step-7-tests.status` to `"completed"`, set `completedAt` to current ISO timestamp, update `lastUpdated`, write back.
+Read `docs/orchestration/progress.json`, set `components.[ComponentName].step-7-tests.status` to `"completed"`, set `completedAt` to current ISO timestamp, update `lastUpdated`, write back.
 
 ## Exit Criteria
 

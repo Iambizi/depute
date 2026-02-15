@@ -1,5 +1,32 @@
 # Vibe Coding Orchestration System - Implementation Plan
 
+## Master Roadmap
+
+```
+Research Phase ✅ DONE
+  └── AX Book (12/12 chapters)
+  └── Case Studies: Stripe, Coinbase, Claude Cowork
+  └── Distribution Strategy: shadcn/ui (AX-CN model)
+  └── Primitive Catalog: 48 core + 34 candidates
+
+Transition Step 🟡 NOW
+  └── Define Catalog v0 (pick 6-10 primitives)
+  └── Update PRD docs (01-07) to reflect new catalog + AX-CN model
+
+Build Phase (VC-ORCHESTRATION)
+  └── /vibe-step-1b-init-project   → Scaffold repo
+  └── /vibe-step-2-design-tokens   → Colors, spacing, CSS vars
+  └── /vibe-step-3-shared-types    → TypeScript interfaces
+  └── /vibe-step-4-component       → Build each primitive (×6-10)
+  └── /vibe-step-5-mock-data       → Demo data
+  └── /vibe-step-6-stories         → Storybook
+  └── /vibe-step-7-tests           → Vitest
+  └── /vibe-step-8-docs            → API docs
+  └── /vibe-step-9-validate        → Final audit
+```
+
+---
+
 ## Context
 
 This document outlines a "Vibe Coding" system — a structured approach where a PRD is broken into numbered docs, then parsed into step-based slash commands that orchestrate AI-driven implementation. This system will power the AX Components React library build from `BUILDER-SPEC.md`.
@@ -94,12 +121,12 @@ step-6
 
 ### 4. Adding New Components Later
 
-To add `ConfidenceScoreBadge` after `AgentProgressTracker` is complete:
+To add `ApprovalGate` after `PlanCard` is complete:
 
-1. Run `/vibe-step-4-component ConfidenceScoreBadge`
-2. Run `/vibe-step-5-mock-data ConfidenceScoreBadge`
-3. Run `/vibe-step-6-stories ConfidenceScoreBadge`
-4. Run `/vibe-step-7-tests ConfidenceScoreBadge`
+1. Run `/vibe-step-4-component ApprovalGate`
+2. Run `/vibe-step-5-mock-data ApprovalGate`
+3. Run `/vibe-step-6-stories ApprovalGate`
+4. Run `/vibe-step-7-tests ApprovalGate`
 5. Run `/vibe-step-8-docs` (updates README)
 6. Run `/vibe-step-9-validate` (re-validates all)
 

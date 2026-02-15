@@ -11,11 +11,11 @@ Create mock data generators and simulation utilities for a specific component.
 
 **Usage:** `/vibe-step-5-mock-data [ComponentName]`
 
-Valid component names: `AgentProgressTracker`, `ConfidenceScoreBadge`, `AgentStatusIndicator`, `BasicHumanApprovalGate`
+Valid component names: `PlanCard`, `ApprovalGate`, `ConfidenceMeter`, `RunControls`, `ToolTrace`, `ArtifactCard`
 
 ## Prerequisites
 
-Read `docs/vibe-coding/progress.json` and verify:
+Read `docs/orchestration/progress.json` and verify:
 - `components.[ComponentName].step-4-component` status is `completed`
 
 If not, tell the user to run `/vibe-step-4-component [ComponentName]` first.
@@ -23,8 +23,8 @@ If not, tell the user to run `/vibe-step-4-component [ComponentName]` first.
 ## Reference Docs
 
 Read these:
-- `docs/vibe-coding/06-technical-specifications.md` — Mock data utility API section
-- `docs/vibe-coding/05-interface-states.md` — All states that mock data should cover
+- `docs/orchestration/06-technical-specifications.md` — Mock data utility API section
+- `docs/orchestration/05-interface-states.md` — All states that mock data should cover
 - `src/types/common.ts` — Types to use
 
 ## Step 1: Read Existing Mock Data File
@@ -35,26 +35,33 @@ Read `src/utils/mockData.ts` to see what already exists. New utilities should be
 
 Add the mock data functions specified in doc 06 for this component. The utilities should:
 
-### For AgentProgressTracker:
-- `generateMockSteps(options?)` — generates array of `AgentStep[]`
-- `simulateAgentProgress(options)` — auto-advances steps over time, returns `{ cancel }` handle
-- `generateMockStep(overrides?)` — single step generator
-- `MOCK_STEP_LABELS` — bank of realistic step labels
-- `MOCK_REASONING_TEXTS` — bank of reasoning strings
+### For PlanCard:
+- `generateMockPlan(overrides?)` — generates a plan with steps, assumptions, and outputs
+- `generateMockSteps(options?)` — generates array of plan steps
+- `simulatePlanExecution(options)` — auto-advances steps over time, returns `{ cancel }` handle
 
-### For ConfidenceScoreBadge:
+### For ApprovalGate:
+- `generateMockApproval(overrides?)` — generates approval gate props with context
+- `simulateApprovalTimeout(options)` — simulates countdown timer
+- `MOCK_APPROVAL_SCENARIOS` — bank of realistic approval scenarios (simple + staged modes)
+
+### For ConfidenceMeter:
 - `generateRandomConfidence()` — returns 0-100
-- `generateConfidenceSet(count)` — array of varied scores
+- `generateConfidenceSet(count)` — array of varied scores with reasoning
 - `simulateConfidenceChange(options)` — animates score changes over time
 
-### For AgentStatusIndicator:
-- `simulateStatusCycle(options)` — cycles through statuses over time
-- `AGENT_STATUS_SEQUENCE` — typical status lifecycle array
+### For RunControls:
+- `simulateRunLifecycle(options)` — cycles through idle → running → paused → complete
+- `RUN_STATE_SEQUENCE` — typical run lifecycle array
 
-### For BasicHumanApprovalGate:
-- `generateMockApproval(overrides?)` — generates approval gate props
-- `simulateApprovalTimeout(options)` — simulates countdown timer
-- `MOCK_APPROVAL_SCENARIOS` — bank of realistic approval scenarios
+### For ToolTrace:
+- `generateMockToolCalls(count?)` — generates tool call entries with input/output/duration
+- `simulateToolStream(options)` — streams tool calls over time
+- `MOCK_TOOL_NAMES` — bank of realistic tool names
+
+### For ArtifactCard:
+- `generateMockArtifact(overrides?)` — generates artifact with content and export options
+- `MOCK_ARTIFACT_TYPES` — bank of output types (markdown, JSON, CSV, code)
 
 ## Step 3: Update Library Exports
 
@@ -65,7 +72,7 @@ export { generateMockSteps, simulateAgentProgress, ... } from './utils/mockData'
 
 ## Step 4: Update Progress
 
-Read `docs/vibe-coding/progress.json`, set `components.[ComponentName].step-5-mock-data.status` to `"completed"`, set `completedAt` to current ISO timestamp, update `lastUpdated`, write back.
+Read `docs/orchestration/progress.json`, set `components.[ComponentName].step-5-mock-data.status` to `"completed"`, set `completedAt` to current ISO timestamp, update `lastUpdated`, write back.
 
 ## Exit Criteria
 

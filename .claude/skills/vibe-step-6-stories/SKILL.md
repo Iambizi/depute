@@ -11,11 +11,11 @@ Create Storybook stories for a specific component covering prototyping, producti
 
 **Usage:** `/vibe-step-6-stories [ComponentName]`
 
-Valid component names: `AgentProgressTracker`, `ConfidenceScoreBadge`, `AgentStatusIndicator`, `BasicHumanApprovalGate`
+Valid component names: `PlanCard`, `ApprovalGate`, `ConfidenceMeter`, `RunControls`, `ToolTrace`, `ArtifactCard`
 
 ## Prerequisites
 
-Read `docs/vibe-coding/progress.json` and verify:
+Read `docs/orchestration/progress.json` and verify:
 - `components.[ComponentName].step-5-mock-data` status is `completed`
 
 If not, tell the user to run `/vibe-step-5-mock-data [ComponentName]` first.
@@ -23,9 +23,9 @@ If not, tell the user to run `/vibe-step-5-mock-data [ComponentName]` first.
 ## Reference Docs
 
 Read these:
-- `docs/vibe-coding/07-universal-format-standards.md` — Story format and categories
-- `docs/vibe-coding/05-interface-states.md` — All states to demonstrate
-- `docs/vibe-coding/03-ux-design.md` — Interaction patterns to showcase
+- `docs/orchestration/07-universal-format-standards.md` — Story format and categories
+- `docs/orchestration/05-interface-states.md` — All states to demonstrate
+- `docs/orchestration/03-ux-design.md` — Interaction patterns to showcase
 - `src/components/[ComponentName]/[ComponentName].types.ts` — Props to configure
 - `src/utils/mockData.ts` — Mock utilities to use in prototyping stories
 
@@ -82,7 +82,7 @@ Required production stories:
 
 ## Step 6: Update Progress
 
-Read `docs/vibe-coding/progress.json`, set `components.[ComponentName].step-6-stories.status` to `"completed"`, set `completedAt` to current ISO timestamp, update `lastUpdated`, write back.
+Read `docs/orchestration/progress.json`, set `components.[ComponentName].step-6-stories.status` to `"completed"`, set `completedAt` to current ISO timestamp, update `lastUpdated`, write back.
 
 ## Exit Criteria
 

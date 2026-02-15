@@ -2,160 +2,61 @@
 
 ## Shared Types
 
-All components use the `AgentStatus` type for status tracking:
+All components use the `RunState` type for execution tracking:
 
 ```typescript
-type AgentStatus = 'pending' | 'active' | 'completed' | 'failed';
+type RunState = 'idle' | 'running' | 'paused' | 'completed' | 'failed';
 ```
 
-Confidence is always a number from 0-100, with these semantic levels:
+And `ConfidenceLevel` for confidence thresholds:
 
 ```typescript
-type ConfidenceLevel = 'low' | 'medium' | 'high';
-// low: 0-39, medium: 40-79, high: 80-100
+type ConfidenceLevel = 'high' | 'medium' | 'low';
 ```
 
 ---
 
-## Component 1: AgentProgressTracker
+## Component 1: PlanCard
 
 ### State Matrix
 
-| State | Steps Data | Mode | Visual | Screen Reader |
-|-------|-----------|------|--------|---------------|
-| Empty | `[]` | either | Empty container with "No steps" message | "Agent progress: no steps" |
-| Single pending | 1 pending step | determinate | Step with gray indicator | "Step 1 of 1: [label], pending" |
-| Single active | 1 active step | determinate | Step with blue pulse indicator | "Step 1 of 1: [label], in progress" |
-| Multiple mixed | Active + pending + completed | determinate | Full step list with timeline | Announces each step status |
-| All completed | All steps completed | determinate | All green checkmarks | "Agent progress complete: [n] steps completed" |
-| Has failure | One step failed | determinate | Red indicator on failed step | "[label] failed: [errorMessage]" |
-| Indeterminate | Steps present, total unknown | indeterminate | No total count shown, "..." indicator | "Agent progress: [n] steps completed, more expected" |
-| With confidence | Steps have confidence scores | either | Confidence badges on each step | "[label]: [confidence]% confidence" |
-| With reasoning | Steps have reasoning text | either | Expandable reasoning sections | Reasoning text readable on expand |
-| With timestamps | Steps have timestamp data | either | Relative time display | "Completed [time] ago" |
-| Real-time update | New step added to array | either | Slide-in animation for new step | "New step: [label]" announced |
-
-### Step Status Lifecycle
-
-```
-pending ──> active ──> completed
-                   └──> failed
-```
+| State | Condition | Visual | Screen Reader |
+|-------|-----------|--------|---------------|
+| Empty | No steps provided | Empty card with "No plan" message | "No plan available" |
+| Pending | Steps present, none active | All steps gray/pending | "Plan: [title], [n] steps pending" |
+| In Progress | One step active | Active step highlighted, prior steps completed | "Plan: [title], step [n] of [total] in progress" |
+| Completed | All steps completed | All steps green/checked | "Plan: [title], all [n] steps completed" |
+| Failed | Active step failed | Failed step in red with error, prior steps intact | "Plan: [title], step [n] failed: [reason]" |
+| Indeterminate | Steps present, total unknown | No total count shown, "..." indicator | "Plan: [n] steps completed, more expected" |
 
 ### Props Interaction Matrix
 
-| Prop | Effect when true/set | Effect when false/unset |
-|------|---------------------|------------------------|
-| `showConfidence` | Confidence badges visible on steps that have scores | Confidence hidden |
-| `showReasoning` | Reasoning text shown (expanded or collapsible) | Reasoning hidden |
-| `showTimestamps` | Timestamps displayed per step | Timestamps hidden |
-| `mode="indeterminate"` | No total count, "more steps possible" indicator | Shows "Step X of Y" |
-| `currentStepId` | Overrides which step appears active | First step with `status: 'active'` used |
-| `onStepClick` | Steps are clickable, cursor pointer | Steps are not interactive |
+| Feature | Props Required | Visual Impact |
+|---------|---------------|---------------|
+| With assumptions | `assumptions` array | Expandable assumptions section |
+| With reasoning | `reasoning` string | Expandable reasoning panel |
+| With confidence | `confidence` per step | Confidence badges on each step |
+| Clickable steps | `onStepClick` handler | Steps are interactive, cursor pointer |
 
 ---
 
-## Component 2: ConfidenceScoreBadge
-
-### State Matrix
-
-| State | Confidence Value | Visual | Screen Reader |
-|-------|-----------------|--------|---------------|
-| High confidence | 80-100 | Green badge/bar | "[value]% confidence, high" |
-| Medium confidence | 40-79 | Amber badge/bar | "[value]% confidence, medium" |
-| Low confidence | 0-39 | Red badge/bar | "[value]% confidence, low" |
-| Zero confidence | 0 | Red badge, empty bar | "0% confidence, low" |
-| Full confidence | 100 | Green badge, full bar | "100% confidence, high" |
-| No value | `undefined` | "N/A" or hidden (configurable) | "Confidence not available" |
-| Animating | Value changing | Smooth transition between states | New value announced |
-
-### Variants
-
-| Variant | Visual Description |
-|---------|-------------------|
-| `badge` | Pill-shaped label with colored background: `[High: 92%]` |
-| `bar` | Horizontal progress bar with percentage label |
-| `minimal` | Dot + percentage only: `● 67%` |
-| `ring` | Circular progress ring (small, icon-sized) |
-
-### Size Options
-
-| Size | Font Size | Height | Use Case |
-|------|-----------|--------|----------|
-| `sm` | 12px | 20px | Inline with text, table cells |
-| `md` | 14px | 28px | Default, step items |
-| `lg` | 16px | 36px | Standalone, hero displays |
-
----
-
-## Component 3: AgentStatusIndicator
-
-### State Matrix
-
-| State | Status Value | Visual | Animation | Screen Reader |
-|-------|-------------|--------|-----------|---------------|
-| Idle | `'idle'` | Gray dot | None | "Agent idle" |
-| Running | `'running'` | Blue dot | Pulsing | "Agent running" (live region) |
-| Completed | `'completed'` | Green dot | None | "Agent completed" |
-| Failed | `'failed'` | Red dot | None | "Agent failed" |
-| Waiting | `'waiting'` | Amber dot | Pulsing | "Agent waiting for input" |
-| Connecting | `'connecting'` | Blue dot | Spinning | "Agent connecting" |
-
-### Variants
-
-| Variant | Visual Description |
-|---------|-------------------|
-| `dot` | Simple colored circle (default) |
-| `dot-label` | Colored dot + text label: `● Running` |
-| `banner` | Full-width status bar with icon, label, description |
-| `chip` | Compact pill: `[● Running]` |
-
-### Size Options
-
-| Size | Dot Diameter | Use Case |
-|------|-------------|----------|
-| `sm` | 8px | Inline text, lists |
-| `md` | 12px | Default |
-| `lg` | 16px | Headers, prominent display |
-
-### With Optional Fields
-
-| Optional Prop | Effect |
-|---------------|--------|
-| `label` | Custom label text (overrides default status text) |
-| `description` | Additional context shown in banner variant |
-| `showLabel` | Show/hide the text label (dot variant) |
-| `pulse` | Override auto-pulse behavior |
-
----
-
-## Component 4: BasicHumanApprovalGate
+## Component 2: ApprovalGate
 
 ### State Matrix
 
 | State | Status | Visual | Interaction | Screen Reader |
 |-------|--------|--------|-------------|---------------|
 | Pending | `'pending'` | Highlighted card with action buttons | Approve/Reject enabled | "Approval required: [title]" (alert) |
-| Approved | `'approved'` | Green confirmation state, buttons disabled | Read-only | "Approved: [title]" |
-| Rejected | `'rejected'` | Red rejection state, buttons disabled | Read-only | "Rejected: [title]" |
-| Expired | `'expired'` | Gray expired state, buttons disabled | Read-only | "Expired: [title]" |
-| Loading | Submitting decision | Buttons show loading spinner | Buttons disabled | "Submitting decision..." |
+| Approved | `'approved'` | Green confirmation state | Read-only | "Approved: [title]" |
+| Rejected | `'rejected'` | Red rejection state | Read-only | "Rejected: [title]" |
+| Expired | `'expired'` | Gray card with "expired" label | Read-only | "Approval expired: [title]" |
 
-### Props Interaction Matrix
+### Mode Variants
 
-| Prop | Effect when set |
-|------|----------------|
-| `title` | Header text for the approval gate |
-| `description` | Detailed context about what needs approval |
-| `agentReasoning` | Why the agent is requesting this approval |
-| `confidence` | Confidence badge shown on the gate |
-| `onApprove` | Callback when user clicks Approve |
-| `onReject` | Callback when user clicks Reject |
-| `approveLabel` | Custom text for approve button (default: "Approve") |
-| `rejectLabel` | Custom text for reject button (default: "Reject") |
-| `timeout` | Seconds until auto-expire (shows countdown) |
-| `metadata` | Key-value pairs displayed as context |
-| `status` | Controls which state the gate displays |
+| Mode | Description | Extra Visual |
+|------|-------------|-------------|
+| `simple` | Single approve/reject decision | Standard two-button layout |
+| `staged` | Preview → Confirm → Execute flow | Stage indicator, back button, confirm-and-execute CTA |
 
 ### Timeout Behavior
 
@@ -172,7 +73,109 @@ pending ──> active ──> completed
 pending ──> approved  (user clicks Approve)
         ├──> rejected  (user clicks Reject)
         └──> expired   (timeout reached)
+
+staged mode:
+pending ──> previewing ──> confirming ──> approved
+                       └──> back to previewing
 ```
+
+---
+
+## Component 3: ConfidenceMeter
+
+### State Matrix
+
+| State | Confidence Value | Visual | Screen Reader |
+|-------|-----------------|--------|---------------|
+| High confidence | 80-100 | Green bar/badge | "[value]% confidence, high" |
+| Medium confidence | 40-79 | Amber bar/badge | "[value]% confidence, medium" |
+| Low confidence | 0-39 | Red bar/badge | "[value]% confidence, low" |
+| No value | `undefined` | Gray placeholder | "Confidence: not available" |
+| Animating | Value changing | Smooth color/width transition | Live region updates value |
+
+### Display Variants
+
+| Display | Visual | Best For |
+|---------|--------|----------|
+| `meter` | Horizontal bar with percentage | Detailed view, dashboards |
+| `badge` | Compact inline pill | Inline annotations, lists |
+
+### Props Interaction
+
+| Feature | Props | Visual Impact |
+|---------|-------|---------------|
+| Show label | `showLabel` | "High/Medium/Low" text label |
+| Show value | `showValue` | Numeric percentage |
+| With reasoning | `reasoning` | Expandable reasoning text |
+
+---
+
+## Component 4: RunControls
+
+### State Matrix
+
+| State | RunState | Available Actions | Visual |
+|-------|----------|------------------|--------|
+| Idle | `'idle'` | Start | Play button enabled |
+| Running | `'running'` | Pause, Stop | Pause/Stop buttons, pulsing indicator |
+| Paused | `'paused'` | Resume, Stop | Resume/Stop buttons, amber indicator |
+| Completed | `'completed'` | Restart (optional) | Green check, all buttons disabled |
+| Failed | `'failed'` | Retry, Stop | Red indicator, retry button |
+
+### Action Flow
+
+```
+idle ──> running ──> completed
+              ├──> paused ──> running (resume)
+              │          └──> idle (stop)
+              ├──> failed ──> running (retry)
+              └──> idle (stop)
+```
+
+---
+
+## Component 5: ToolTrace
+
+### State Matrix
+
+| State | Condition | Visual |
+|-------|-----------|--------|
+| Empty | No tool calls | "No tool calls yet" message |
+| Streaming | Calls arriving in real-time | Timeline with latest call highlighted, auto-scroll |
+| Complete | All calls finished | Full timeline, all entries static |
+| Error entry | Individual call failed | Red entry with error message and duration |
+| Expanded entry | User clicked an entry | Shows input/output details |
+
+### Entry States
+
+| Entry State | Visual | Screen Reader |
+|-------------|--------|---------------|
+| Pending | Gray, spinner | "Tool call [name]: pending" |
+| Running | Blue, active indicator | "Tool call [name]: running" (live) |
+| Completed | Green, checkmark | "Tool call [name]: completed in [duration]" |
+| Failed | Red, error icon | "Tool call [name]: failed: [error]" |
+
+---
+
+## Component 6: ArtifactCard
+
+### State Matrix
+
+| State | Condition | Visual |
+|-------|-----------|--------|
+| Preview | Content generated, not exported | Card with content preview, export buttons enabled |
+| Exporting | Export in progress | Loading indicator on export button |
+| Exported | Successfully exported | Green confirmation with format label |
+| Error | Export failed | Red error, retry button |
+
+### Export Options
+
+| Format | Button Label | Icon |
+|--------|-------------|------|
+| Markdown | "Copy MD" | 📋 |
+| JSON | "Copy JSON" | { } |
+| CSV | "Download CSV" | 📊 |
+| Pull Request | "Open PR" | 🔀 |
 
 ---
 
@@ -180,23 +183,20 @@ pending ──> approved  (user clicks Approve)
 
 When components are used together in a typical agent workflow:
 
-```
-AgentStatusIndicator: idle → running → waiting → running → completed
-                                         │
-AgentProgressTracker: step1(active) → step2(active) → approval(active) → step3(active) → done
-                                                          │
-BasicHumanApprovalGate:                              pending → approved
-                                                          │
-ConfidenceScoreBadge:                    shown on each step + on approval gate
-```
+| Agent Phase | PlanCard | ApprovalGate | ConfidenceMeter | RunControls | ToolTrace | ArtifactCard |
+|-------------|----------|-------------|-----------------|-------------|-----------|-------------|
+| Planning | Active (steps populating) | — | — | Idle | — | — |
+| Approval | Frozen | Pending | Shows plan confidence | Idle | — | — |
+| Execution | Steps advancing | Approved | Updates per-step | Running | Streaming | — |
+| Complete | All done | — | Final score | Completed | Complete | Preview |
 
-## Loading / Skeleton States
+### Loading / Skeleton States
 
-All components support a `loading` state that shows a skeleton placeholder:
-
-| Component | Skeleton Visual |
-|-----------|----------------|
-| AgentProgressTracker | 3 gray placeholder step bars |
-| ConfidenceScoreBadge | Gray pill/bar placeholder |
-| AgentStatusIndicator | Gray dot (same as idle) |
-| BasicHumanApprovalGate | Gray card placeholder with disabled buttons |
+| Component | Skeleton |
+|-----------|----------|
+| PlanCard | 3 gray placeholder step bars |
+| ApprovalGate | Gray card placeholder with disabled buttons |
+| ConfidenceMeter | Gray pill/bar placeholder |
+| RunControls | Disabled buttons with gray indicator |
+| ToolTrace | Empty timeline with "waiting..." |
+| ArtifactCard | Gray card placeholder |

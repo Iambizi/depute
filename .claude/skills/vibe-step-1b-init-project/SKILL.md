@@ -11,7 +11,7 @@ Scaffold the React + TypeScript project with all tooling configured.
 
 ## Prerequisites
 
-Read `docs/vibe-coding/progress.json` and verify:
+Read `docs/orchestration/progress.json` and verify:
 - `step-1-ideation` status is `completed`
 
 If not, tell the user to run `/vibe-step-1-ideation` first.
@@ -19,7 +19,7 @@ If not, tell the user to run `/vibe-step-1-ideation` first.
 ## Reference Docs
 
 Read these for implementation details:
-- `docs/vibe-coding/02-technical-architecture.md` — project structure, configs, scripts
+- `docs/orchestration/02-technical-architecture.md` — project structure, configs, scripts
 
 ## Step 1: Initialize Vite Project
 
@@ -138,7 +138,7 @@ npm run storybook    # Storybook starts (can Ctrl+C after confirming)
 
 ## Step 10: Update Progress
 
-Read `docs/vibe-coding/progress.json`, set `globalSteps.step-1b-init-project.status` to `"completed"`, set `completedAt` to current ISO timestamp, update `lastUpdated`, write back.
+Read `docs/orchestration/progress.json`, set `globalSteps.step-1b-init-project.status` to `"completed"`, set `completedAt` to current ISO timestamp, update `lastUpdated`, write back.
 
 ## Exit Criteria
 

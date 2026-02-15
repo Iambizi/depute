@@ -98,42 +98,46 @@ When total steps are unknown:
 
 ## Layout Patterns
 
-### Vertical Step List (AgentProgressTracker)
+### Plan View (PlanCard)
 
 ```
 ┌─────────────────────────────────┐
-│ [icon] Step Label        85% ✓  │
-│         Description text        │
-│         > Show reasoning        │
-├─────────────────────────────────┤
-│ [spin] Active Step       72%    │
-│         Currently working...    │
-│         Reasoning visible       │
-├ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─┤
-│ [○] Pending Step                │
-│         Waiting...              │
+│ 📋 Plan: [title]                │
+│                                 │
+│ 1. [✓] Step one         done    │
+│ 2. [→] Step two         active  │
+│ 3. [ ] Step three       pending │
+│                                 │
+│ Assumptions:                    │
+│   • [assumption 1]              │
+│   • [assumption 2]              │
+│                                 │
+│ > Show reasoning                │
 └─────────────────────────────────┘
 ```
 
-### Inline Badge (ConfidenceScoreBadge)
+### Confidence Display (ConfidenceMeter)
 
 ```
-[████████░░] 82%     ← progress bar variant
-[High: 92%]          ← label variant
+[████████░░] 82%     ← meter display (default)
+[High: 92%]          ← badge display (compact)
 [●] 67%              ← minimal variant
 ```
 
-### Status Dot (AgentStatusIndicator)
+### Execution Controls (RunControls)
 
 ```
 ● Idle          (gray, static)
-● Running       (blue, pulsing)
-● Completed     (green, static)
-● Failed        (red, static)
-● Waiting       (amber, pulsing)
+▶ Running       (blue, pulsing)
+⏸ Paused        (amber, static)
+✓ Completed     (green, static)
+✗ Failed        (red, static)
+
+[⏸ Pause]  [■ Stop]   ← during run
+[▶ Resume] [■ Stop]   ← when paused
 ```
 
-### Approval Gate (BasicHumanApprovalGate)
+### Approval Gate (ApprovalGate)
 
 ```
 ┌─────────────────────────────────┐
@@ -144,6 +148,16 @@ When total steps are unknown:
 │ Confidence: [badge]             │
 │                                 │
 │    [Reject]     [Approve]       │
+└─────────────────────────────────┘
+
+mode="staged":
+┌─────────────────────────────────┐
+│ ⚠ Review Required              │
+│                                 │
+│ Preview → Confirm → Execute     │
+│ [current stage indicator]       │
+│                                 │
+│  [Back]  [Confirm & Execute]    │
 └─────────────────────────────────┘
 ```
 
