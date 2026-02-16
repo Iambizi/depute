@@ -168,6 +168,14 @@ Created Claude Cowork case study from live workshop screenshots. Added AX Book r
 13. **Artifact provenance** — outputs trace back to plan steps and tool calls
 14. **AX-CN model hardened** — all PRDs now explicitly reference copy-paste distribution
 
+#### 22. Design Tokens + Shared Types (Feb 16)
+- ✅ `src/styles/tokens.css` — all CSS custom properties (palette, status, confidence, typography, spacing, radius, shadows, animation, surfaces)
+- ✅ `src/styles/animations.css` — 5 keyframes (pulse, spin, slide-in, fade-in, scale-pop)
+- ✅ `src/styles/index.css` — style aggregator
+- ✅ `src/types/common.ts` — PlanStep, ToolCall (w/ policyFlags), Artifact (w/ provenance), all union types, `getConfidenceLevel()`
+- ✅ `src/index.ts` — style import + type re-exports
+- ✅ Build verified: `tsc --noEmit` ✓, `vite build` ✓ (4.12 kB CSS, 0.11 kB JS)
+
 ### Next Steps
 - [x] Finish reading AX Book (Chapters 10-12)
 - [x] Define Catalog v0 (6-10 primitives)
@@ -177,8 +185,8 @@ Created Claude Cowork case study from live workshop screenshots. Added AX Book r
 - [x] Research synthesis audit (6 gaps closed)
 - [x] Second AI review + AX-CN hardening
 - [x] Primitives catalog v0 status tracking
-- [ ] Design tokens (`/vibe-step-2-design-tokens`)
-- [ ] Shared types (`/vibe-step-3-shared-types`)
+- [x] Design tokens (`/vibe-step-2-design-tokens`)
+- [x] Shared types (`/vibe-step-3-shared-types`)
 - [ ] Begin building primitives (PlanCard first)
 
 ---
