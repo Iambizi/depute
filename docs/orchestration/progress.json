@@ -1,6 +1,6 @@
 {
   "version": "2.0.0",
-  "lastUpdated": "2026-02-15",
+  "lastUpdated": "2026-02-16",
   "catalogVersion": "v0",
   "globalSteps": {
     "step-1-ideation": {
@@ -20,21 +20,21 @@
     },
     "step-2-design-tokens": {
       "name": "Design Tokens",
-      "status": "not_started",
+      "status": "completed",
       "command": "/vibe-step-2-design-tokens",
       "dependsOn": [
         "step-1b-init-project"
       ],
-      "completedAt": null
+      "completedAt": "2026-02-16T22:45:00Z"
     },
     "step-3-shared-types": {
       "name": "Shared Types",
-      "status": "not_started",
+      "status": "completed",
       "command": "/vibe-step-3-shared-types",
       "dependsOn": [
         "step-1b-init-project"
       ],
-      "completedAt": null
+      "completedAt": "2026-02-16T22:45:00Z"
     },
     "step-8-docs": {
       "name": "Documentation",
