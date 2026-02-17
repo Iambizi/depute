@@ -58,8 +58,8 @@
       "buildOrder": 1,
       "hook": "usePlan",
       "step-4-component": {
-        "status": "not_started",
-        "completedAt": null
+        "status": "completed",
+        "completedAt": "2026-02-17T22:45:00Z"
       },
       "step-5-mock-data": {
         "status": "not_started",

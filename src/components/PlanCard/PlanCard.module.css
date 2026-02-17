@@ -1,0 +1,266 @@
+/* PlanCard — CSS Module
+ *
+ * Uses design tokens from src/styles/tokens.css.
+ * Status colors map to --ax-status-* tokens.
+ */
+
+/* ------------------------------------------------------------------ */
+/* Container                                                           */
+/* ------------------------------------------------------------------ */
+
+.planCard {
+  font-family: var(--ax-font-family);
+  background: var(--ax-surface-primary);
+  border: var(--ax-border-width) solid var(--ax-border-color);
+  border-radius: var(--ax-radius-lg);
+  box-shadow: var(--ax-shadow-sm);
+  overflow: hidden;
+}
+
+/* ------------------------------------------------------------------ */
+/* Header                                                              */
+/* ------------------------------------------------------------------ */
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--ax-space-4) var(--ax-space-5);
+  border-bottom: var(--ax-border-width) solid var(--ax-border-color);
+}
+
+.title {
+  margin: 0;
+  font-size: var(--ax-font-size-lg);
+  font-weight: var(--ax-font-weight-semibold);
+  line-height: var(--ax-line-height-tight);
+  color: var(--ax-text-primary);
+}
+
+.progress {
+  font-size: var(--ax-font-size-sm);
+  color: var(--ax-text-secondary);
+  white-space: nowrap;
+}
+
+/* ------------------------------------------------------------------ */
+/* Step list                                                           */
+/* ------------------------------------------------------------------ */
+
+.stepList {
+  list-style: none;
+  margin: 0;
+  padding: var(--ax-space-3) 0;
+}
+
+.step {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--ax-space-3);
+  padding: var(--ax-space-2) var(--ax-space-5);
+  transition: background-color var(--ax-duration-fast) var(--ax-ease-default);
+}
+
+.step:hover {
+  background-color: var(--ax-surface-secondary);
+}
+
+.stepClickable {
+  cursor: pointer;
+}
+
+.stepClickable:focus-visible {
+  outline: 2px solid var(--ax-color-blue-500);
+  outline-offset: -2px;
+  border-radius: var(--ax-radius-sm);
+}
+
+/* ------------------------------------------------------------------ */
+/* Step status icon                                                    */
+/* ------------------------------------------------------------------ */
+
+.stepIcon {
+  flex-shrink: 0;
+  width: 1.25rem;
+  height: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--ax-radius-full);
+  margin-top: 0.125rem;
+  font-size: var(--ax-font-size-xs);
+  font-weight: var(--ax-font-weight-bold);
+}
+
+.stepIconPending {
+  background: var(--ax-status-pending-bg);
+  color: var(--ax-status-pending-color);
+  border: var(--ax-border-width) solid var(--ax-status-pending-border);
+}
+
+.stepIconActive {
+  background: var(--ax-status-active-bg);
+  color: var(--ax-status-active-color);
+  border: var(--ax-border-width) solid var(--ax-status-active-border);
+  animation: ax-pulse var(--ax-duration-slow) var(--ax-ease-default) infinite;
+}
+
+.stepIconCompleted {
+  background: var(--ax-status-completed-bg);
+  color: var(--ax-status-completed-color);
+  border: var(--ax-border-width) solid var(--ax-status-completed-border);
+}
+
+.stepIconFailed {
+  background: var(--ax-status-failed-bg);
+  color: var(--ax-status-failed-color);
+  border: var(--ax-border-width) solid var(--ax-status-failed-border);
+}
+
+/* ------------------------------------------------------------------ */
+/* Step content                                                        */
+/* ------------------------------------------------------------------ */
+
+.stepContent {
+  flex: 1;
+  min-width: 0;
+}
+
+.stepLabel {
+  font-size: var(--ax-font-size-sm);
+  font-weight: var(--ax-font-weight-medium);
+  color: var(--ax-text-primary);
+  line-height: var(--ax-line-height-normal);
+}
+
+.stepLabelFailed {
+  color: var(--ax-status-failed-color);
+}
+
+.stepDescription {
+  margin-top: var(--ax-space-1);
+  font-size: var(--ax-font-size-xs);
+  color: var(--ax-text-secondary);
+  line-height: var(--ax-line-height-normal);
+}
+
+.stepReasoning {
+  margin-top: var(--ax-space-2);
+  padding: var(--ax-space-2) var(--ax-space-3);
+  background: var(--ax-surface-secondary);
+  border-radius: var(--ax-radius-sm);
+  font-size: var(--ax-font-size-xs);
+  color: var(--ax-text-secondary);
+  line-height: var(--ax-line-height-relaxed);
+}
+
+/* ------------------------------------------------------------------ */
+/* Confidence badge                                                    */
+/* ------------------------------------------------------------------ */
+
+.confidenceBadge {
+  flex-shrink: 0;
+  font-size: var(--ax-font-size-xs);
+  font-weight: var(--ax-font-weight-medium);
+  padding: var(--ax-space-1) var(--ax-space-2);
+  border-radius: var(--ax-radius-full);
+  white-space: nowrap;
+}
+
+.confidenceHigh {
+  background: var(--ax-confidence-high-bg);
+  color: var(--ax-confidence-high-color);
+}
+
+.confidenceMedium {
+  background: var(--ax-confidence-medium-bg);
+  color: var(--ax-confidence-medium-color);
+}
+
+.confidenceLow {
+  background: var(--ax-confidence-low-bg);
+  color: var(--ax-confidence-low-color);
+}
+
+/* ------------------------------------------------------------------ */
+/* Indeterminate indicator                                             */
+/* ------------------------------------------------------------------ */
+
+.indeterminateIndicator {
+  padding: var(--ax-space-2) var(--ax-space-5);
+  padding-left: calc(var(--ax-space-5) + 1.25rem + var(--ax-space-3));
+  font-size: var(--ax-font-size-sm);
+  color: var(--ax-text-tertiary);
+  letter-spacing: 0.1em;
+}
+
+/* ------------------------------------------------------------------ */
+/* Footer sections (assumptions / reasoning)                           */
+/* ------------------------------------------------------------------ */
+
+.footer {
+  border-top: var(--ax-border-width) solid var(--ax-border-color);
+  padding: var(--ax-space-3) var(--ax-space-5);
+}
+
+.sectionToggle {
+  display: flex;
+  align-items: center;
+  gap: var(--ax-space-2);
+  padding: var(--ax-space-1) 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: var(--ax-font-family);
+  font-size: var(--ax-font-size-xs);
+  font-weight: var(--ax-font-weight-medium);
+  color: var(--ax-text-secondary);
+  width: 100%;
+  text-align: left;
+}
+
+.sectionToggle:hover {
+  color: var(--ax-text-primary);
+}
+
+.sectionToggle:focus-visible {
+  outline: 2px solid var(--ax-color-blue-500);
+  outline-offset: 2px;
+  border-radius: var(--ax-radius-sm);
+}
+
+.chevron {
+  transition: transform var(--ax-duration-fast) var(--ax-ease-default);
+  font-size: 0.625rem;
+}
+
+.chevronOpen {
+  transform: rotate(90deg);
+}
+
+.sectionContent {
+  padding: var(--ax-space-2) 0 var(--ax-space-1);
+  font-size: var(--ax-font-size-xs);
+  color: var(--ax-text-secondary);
+  line-height: var(--ax-line-height-relaxed);
+}
+
+.assumptionList {
+  margin: 0;
+  padding-left: var(--ax-space-4);
+}
+
+.assumptionList li {
+  margin-bottom: var(--ax-space-1);
+}
+
+/* ------------------------------------------------------------------ */
+/* Empty state                                                         */
+/* ------------------------------------------------------------------ */
+
+.emptyState {
+  padding: var(--ax-space-8) var(--ax-space-5);
+  text-align: center;
+  color: var(--ax-text-tertiary);
+  font-size: var(--ax-font-size-sm);
+}
