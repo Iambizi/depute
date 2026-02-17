@@ -1,0 +1,205 @@
+{
+  "name": "ax-components",
+  "version": "0.1.0",
+  "description": "AX Components — UI primitives for agentic experiences",
+  "distribution": "axk",
+  "primitives": {
+    "PlanCard": {
+      "name": "PlanCard",
+      "category": "Intent & Delegation",
+      "description": "Displays a proposed plan with steps, assumptions, and expected outputs",
+      "buildOrder": 1,
+      "files": [
+        "src/components/PlanCard/PlanCard.tsx",
+        "src/components/PlanCard/PlanCard.module.css",
+        "src/components/PlanCard/PlanCard.types.ts",
+        "src/components/PlanCard/index.ts"
+      ],
+      "hook": "usePlan",
+      "requiredTokens": [
+        "--ax-status-pending-*",
+        "--ax-status-active-*",
+        "--ax-status-completed-*",
+        "--ax-status-failed-*",
+        "--ax-font-*",
+        "--ax-space-*",
+        "--ax-radius-*",
+        "--ax-surface-*",
+        "--ax-border-*"
+      ],
+      "a11yNotes": [
+        "Use ordered list (<ol>) for step sequence",
+        "Each step has aria-current='step' when active",
+        "Status changes announced via aria-live region",
+        "Progress conveyed through aria-label on container"
+      ],
+      "axPrinciples": ["Transparency", "Progressive Disclosure"],
+      "stateModel": {
+        "states": ["empty", "loading", "partial", "complete", "error"],
+        "events": ["stepAdded", "stepUpdated", "planCompleted", "planFailed"]
+      }
+    },
+    "ApprovalGate": {
+      "name": "ApprovalGate",
+      "category": "Trust & Approval",
+      "description": "Approve, reject, or edit before an action runs",
+      "buildOrder": 2,
+      "files": [
+        "src/components/ApprovalGate/ApprovalGate.tsx",
+        "src/components/ApprovalGate/ApprovalGate.module.css",
+        "src/components/ApprovalGate/ApprovalGate.types.ts",
+        "src/components/ApprovalGate/index.ts"
+      ],
+      "hook": "useApprovalGate",
+      "requiredTokens": [
+        "--ax-status-waiting-*",
+        "--ax-status-completed-*",
+        "--ax-status-failed-*",
+        "--ax-confidence-*",
+        "--ax-font-*",
+        "--ax-space-*",
+        "--ax-radius-*",
+        "--ax-shadow-*"
+      ],
+      "a11yNotes": [
+        "Focus trapped when pending approval",
+        "aria-live='assertive' announces blocking state",
+        "Approve/Reject buttons keyboard-accessible (Enter/Space)",
+        "Focus restored to trigger element on resolve",
+        "role='alertdialog' when blocking"
+      ],
+      "axPrinciples": ["Human-in-the-Loop", "Trust", "Consent"],
+      "stateModel": {
+        "states": ["pending", "approved", "rejected", "expired"],
+        "events": ["approve", "reject", "expire", "reset"]
+      }
+    },
+    "ConfidenceMeter": {
+      "name": "ConfidenceMeter",
+      "category": "Trust & Approval",
+      "description": "Shows confidence score plus reasoning (signals, missing info, ambiguities)",
+      "buildOrder": 3,
+      "files": [
+        "src/components/ConfidenceMeter/ConfidenceMeter.tsx",
+        "src/components/ConfidenceMeter/ConfidenceMeter.module.css",
+        "src/components/ConfidenceMeter/ConfidenceMeter.types.ts",
+        "src/components/ConfidenceMeter/index.ts"
+      ],
+      "hook": "useConfidence",
+      "requiredTokens": [
+        "--ax-confidence-high-*",
+        "--ax-confidence-medium-*",
+        "--ax-confidence-low-*",
+        "--ax-font-*",
+        "--ax-space-*",
+        "--ax-radius-*"
+      ],
+      "a11yNotes": [
+        "role='meter' with aria-valuenow, aria-valuemin, aria-valuemax",
+        "aria-label describes what confidence refers to",
+        "Color-blind safe: always pair color with text label"
+      ],
+      "axPrinciples": ["Transparency", "Calibrated Trust"],
+      "stateModel": {
+        "states": ["idle", "updating", "settled"],
+        "events": ["scoreChanged", "reasoningUpdated"]
+      }
+    },
+    "RunControls": {
+      "name": "RunControls",
+      "category": "Control & Steering",
+      "description": "Pause, resume, stop, and retry buttons",
+      "buildOrder": 4,
+      "files": [
+        "src/components/RunControls/RunControls.tsx",
+        "src/components/RunControls/RunControls.module.css",
+        "src/components/RunControls/RunControls.types.ts",
+        "src/components/RunControls/index.ts"
+      ],
+      "hook": "useRun",
+      "requiredTokens": [
+        "--ax-status-active-*",
+        "--ax-status-completed-*",
+        "--ax-status-failed-*",
+        "--ax-font-*",
+        "--ax-space-*",
+        "--ax-radius-*"
+      ],
+      "a11yNotes": [
+        "Toolbar pattern: role='toolbar' with aria-label",
+        "Button states reflected via aria-pressed or aria-disabled",
+        "State transitions announced via aria-live"
+      ],
+      "axPrinciples": ["Human Agency", "Control"],
+      "stateModel": {
+        "states": ["idle", "running", "paused", "completed", "failed"],
+        "events": ["start", "pause", "resume", "stop", "retry", "complete", "fail"]
+      }
+    },
+    "ToolTrace": {
+      "name": "ToolTrace",
+      "category": "Transparency & Trace",
+      "description": "Timeline of tool calls showing input, output, duration, and errors",
+      "buildOrder": 5,
+      "files": [
+        "src/components/ToolTrace/ToolTrace.tsx",
+        "src/components/ToolTrace/ToolTrace.module.css",
+        "src/components/ToolTrace/ToolTrace.types.ts",
+        "src/components/ToolTrace/index.ts"
+      ],
+      "hook": "useTrace",
+      "requiredTokens": [
+        "--ax-status-*",
+        "--ax-font-family-mono",
+        "--ax-font-size-xs",
+        "--ax-font-size-sm",
+        "--ax-space-*",
+        "--ax-radius-*",
+        "--ax-border-*"
+      ],
+      "a11yNotes": [
+        "Entries default to collapsed (aria-expanded='false')",
+        "Running entry auto-expands",
+        "New entries announced via aria-live='polite'",
+        "Keyboard: Enter/Space toggles expansion",
+        "Monospace font for tool I/O readability"
+      ],
+      "axPrinciples": ["Transparency", "Auditability"],
+      "stateModel": {
+        "states": ["empty", "streaming", "complete"],
+        "events": ["entryAdded", "entryUpdated", "entryCompleted", "entryFailed"]
+      }
+    },
+    "ArtifactCard": {
+      "name": "ArtifactCard",
+      "category": "Output",
+      "description": "Output summary with export options (MD, JSON, CSV, PR)",
+      "buildOrder": 6,
+      "files": [
+        "src/components/ArtifactCard/ArtifactCard.tsx",
+        "src/components/ArtifactCard/ArtifactCard.module.css",
+        "src/components/ArtifactCard/ArtifactCard.types.ts",
+        "src/components/ArtifactCard/index.ts"
+      ],
+      "hook": "useArtifact",
+      "requiredTokens": [
+        "--ax-surface-*",
+        "--ax-border-*",
+        "--ax-font-*",
+        "--ax-space-*",
+        "--ax-radius-*",
+        "--ax-shadow-*"
+      ],
+      "a11yNotes": [
+        "role='article' with aria-label for artifact title",
+        "Export buttons in role='group' with aria-label='Export options'",
+        "Provenance info exposed as descriptive text"
+      ],
+      "axPrinciples": ["Transparency", "Provenance"],
+      "stateModel": {
+        "states": ["loading", "ready", "exporting", "exported"],
+        "events": ["loaded", "exportStarted", "exportCompleted"]
+      }
+    }
+  }
+}

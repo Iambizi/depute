@@ -160,14 +160,6 @@ Created Claude Cowork case study from live workshop screenshots. Added AX Book r
 - ✅ Added v0 Implementation Key to `AX-PRIMITIVES-STARTER.md`
 - ✅ All 48+ primitives now have a `v0 Status` column: 🔨 v0 / ⏳ v1 / ⏳ v2 / —
 
-### Key Decisions
-9. **v0 = 6 primitives** — PlanCard, ApprovalGate, ConfidenceMeter, RunControls, ToolTrace, ArtifactCard
-10. **CommitGate absorbed** — becomes `ApprovalGate mode="staged"`
-11. **UncertaintyBadge absorbed** — becomes `ConfidenceMeter display="badge"`
-12. **Scoped approvals** — `ApprovalGate` supports resource-bounded + time-bounded grants (Stripe SPT pattern)
-13. **Artifact provenance** — outputs trace back to plan steps and tool calls
-14. **AXK model hardened** — all PRDs now explicitly reference copy-paste distribution
-
 #### 22. Design Tokens + Shared Types (Feb 16)
 - ✅ `src/styles/tokens.css` — all CSS custom properties (palette, status, confidence, typography, spacing, radius, shadows, animation, surfaces)
 - ✅ `src/styles/animations.css` — 5 keyframes (pulse, spin, slide-in, fade-in, scale-pop)
@@ -175,6 +167,26 @@ Created Claude Cowork case study from live workshop screenshots. Added AX Book r
 - ✅ `src/types/common.ts` — PlanStep, ToolCall (w/ policyFlags), Artifact (w/ provenance), all union types, `getConfidenceLevel()`
 - ✅ `src/index.ts` — style import + type re-exports
 - ✅ Build verified: `tsc --noEmit` ✓, `vite build` ✓ (4.12 kB CSS, 0.11 kB JS)
+
+#### 23. AX-CN → AXK Rename (Feb 17)
+- ✅ Renamed distribution model from AX-CN to AXK (AX Kit) across 11 doc files (25 references)
+- ✅ Future CLI will be `axk` (init, add, list, doctor)
+- Rationale: avoid derivative naming confusion with shadcn
+
+#### 24. A11y Utilities + Registry Schema (Feb 17)
+- ✅ `src/utils/a11y.tsx` — `VisuallyHidden`, `useAnnouncer` (aria-live), `useFocusTrap`
+- ✅ `registry/registry.json` — full manifest for all 6 v0 primitives (files, tokens, a11y notes, principles, state models)
+- ✅ Updated `src/index.ts` with a11y exports
+- ✅ Build verified: `tsc --noEmit` ✓, `vite build` ✓ (4.12 kB CSS, 10.66 kB JS)
+
+### Key Decisions
+9. **v0 = 6 primitives** — PlanCard, ApprovalGate, ConfidenceMeter, RunControls, ToolTrace, ArtifactCard
+10. **CommitGate absorbed** — becomes `ApprovalGate mode="staged"`
+11. **UncertaintyBadge absorbed** — becomes `ConfidenceMeter display="badge"`
+12. **Scoped approvals** — `ApprovalGate` supports resource-bounded + time-bounded grants (Stripe SPT pattern)
+13. **Artifact provenance** — outputs trace back to plan steps and tool calls
+14. **AXK model** — renamed from AX-CN to avoid derivative naming with shadcn
+15. **A11y as trust** — accessibility failures = trust failures in agent UIs; baked in from primitive #1
 
 ### Next Steps
 - [x] Finish reading AX Book (Chapters 10-12)
@@ -187,7 +199,11 @@ Created Claude Cowork case study from live workshop screenshots. Added AX Book r
 - [x] Primitives catalog v0 status tracking
 - [x] Design tokens (`/vibe-step-2-design-tokens`)
 - [x] Shared types (`/vibe-step-3-shared-types`)
-- [ ] Begin building primitives (PlanCard first)
+- [x] AX-CN → AXK rename
+- [x] A11y utilities (VisuallyHidden, useAnnouncer, useFocusTrap)
+- [x] Registry schema (registry.json with a11y notes + state models)
+- [ ] Build PlanCard (step 4, first primitive)
+- [ ] Build ApprovalGate (step 4, second primitive)
 
 ---
 

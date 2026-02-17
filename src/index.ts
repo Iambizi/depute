@@ -19,3 +19,7 @@ export type {
 } from './types/common';
 
 export { getConfidenceLevel } from './types/common';
+
+// A11y utilities
+export { VisuallyHidden, useAnnouncer, useFocusTrap } from './utils/a11y';
+export type { VisuallyHiddenProps } from './utils/a11y';
