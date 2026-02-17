@@ -31,7 +31,7 @@ All UX guidance in this doc must map directly to these primitives and their comp
 | Accessibility | WCAG 2.1 AA compliance |
 | Customization | className prop + CSS custom properties |
 
-**AX-CN implication:** Components are owned by the consumer repo, so designs must be easy to tweak locally (clear markup, predictable class names, minimal magic).
+**AXK implication:** Components are owned by the consumer repo, so designs must be easy to tweak locally (clear markup, predictable class names, minimal magic).
 
 ## Interaction Patterns
 

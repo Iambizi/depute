@@ -6,7 +6,7 @@
 **Tagline:** "From prototype to production"
 **Domain:** Agentic Experience (AX) Design
 **Catalog Status:** v0 locked (Feb 15, 2026)
-**Distribution Model:** AX-CN (CLI copy-paste, shadcn-style)
+**Distribution Model:** AXK (CLI copy-paste, shadcn-style)
 
 ## What is Agentic Experience (AX)?
 
@@ -26,7 +26,7 @@ Traditional UI components assume deterministic workflows. Figma prototypes can't
 
 Production-ready React components specifically designed for agentic interactions. Use them to prototype agent experiences, then deploy the same code to production.
 
-**AX-CN Model (shadcn-style):**
+**AXK Model (shadcn-style):**
 - UI primitives are **copied into the user's repo** via a CLI (no npm black box).
 - Headless hooks can be published as a small package, but UI code is owned by the user.
 - A registry defines available primitives and variants.
@@ -84,7 +84,7 @@ Deferred primitives (v1+): `IntentBar`, `MemoryPanel`, `ThrottleControl`, `RiskB
 
 ### Architecture Overview
 
-Three-layer structure (AX-CN):
+Three-layer structure (AXK):
 
 1. **Headless Hooks** — State machines and hooks (`useRun()`, `useApprovalGate()`, `useTrace()`)
 2. **Styled UI Primitives** — Copy-paste React components owned by the user

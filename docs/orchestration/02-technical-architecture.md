@@ -11,7 +11,7 @@
 | Storybook | Component documentation + live examples | 8.x |
 | Vitest | Unit + component testing | 2.x |
 | @testing-library/react | Component test utilities | 16.x |
-| AX-CN CLI | Copy-paste distribution | Node 20+ |
+| AXK CLI | Copy-paste distribution | Node 20+ |
 | Registry JSON | Component source index | N/A |
 
 ## Key Constraints
@@ -20,13 +20,13 @@
 - **No Tailwind CSS** - use CSS Modules for zero-dependency styling
 - **No AI backend coupling** - components work with any agent backend
 - **React 18+** - leverage concurrent features where appropriate
-- **AX-CN distribution** - UI components are copied into user repos, not imported from `node_modules`
+- **AXK distribution** - UI components are copied into user repos, not imported from `node_modules`
 
 ## Project Structure (Repository)
 
 ```
 ax-components-react/
-├── registry/                         # Component registry (AX-CN)
+├── registry/                         # Component registry (AXK)
 │   ├── registry.json
 │   └── components/                   # Source of copy-paste primitives
 ├── src/

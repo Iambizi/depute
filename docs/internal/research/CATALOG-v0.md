@@ -77,6 +77,6 @@ Three research candidates overlapped with v0. Resolved as follows:
 
 1. ~~Define v0 primitives~~ ✅
 2. ~~Triage overlapping candidates~~ ✅
-3. Update PRD docs (01-07) to reflect v0 + AX-CN model
+3. Update PRD docs (01-07) to reflect v0 + AXK model
 4. Reset `progress.json` to match v0
 5. Run `/vibe-step-1b-init-project` to scaffold

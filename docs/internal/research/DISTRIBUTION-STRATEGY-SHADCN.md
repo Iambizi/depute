@@ -71,7 +71,7 @@ Based on [Manupa's Anatomy of shadcn/ui](https://manupa.dev/blog/anatomy-of-shad
 
 ---
 
-## 5. Architecture Plan (The "AX-CN" Model)
+## 5. Architecture Plan (The "AXK" Model)
 
 We should structure the library similarly:
 1.  **Headless Logic:** Hook-based state machines (`useAgent`, `useApproval`).

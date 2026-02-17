@@ -89,7 +89,7 @@ Created Claude Cowork case study from live workshop screenshots. Added AX Book r
 - ✅ Strategic benefit: "Code Ownership" is critical for agents to read/edit their own UI
 
 ### Key Decisions
-1. **Adopt "AX-CN" model** — Distribute via CLI copy-paste (Headless hooks + Tailwind UI), not strict npm packages.
+1. **Adopt "AXK" model** — Distribute via CLI copy-paste (Headless hooks + Tailwind UI), not strict npm packages.
 2. **Wait to formalize AX Book analysis** until complete (through Chapter 12) — notes are raw research for now
 3. **Generative Momentum validated** as a pattern we should support — consider `TaskSuggestions` primitive
 4. **Two-phase UI** (idle → active) is a smart Adaptive Canvas application worth considering
@@ -145,15 +145,15 @@ Created Claude Cowork case study from live workshop screenshots. Added AX Book r
   5. **ToolTrace defaults** → entries start collapsed, running entry auto-expands
   6. **Policy flags** → added `policyFlags` to `ToolCall` type (v1 A2UI compatibility)
 
-#### 20. Second AI Review — AX-CN Model Hardened (Feb 15)
-- ✅ Another AI reviewed all PRD docs and added AX-CN distribution context
+#### 20. Second AI Review — AXK Model Hardened (Feb 15)
+- ✅ Another AI reviewed all PRD docs and added AXK distribution context
 - ✅ `01` — added v0 catalog status, distribution model, scoped roadmap to 6 primitives
-- ✅ `02` — added `registry/` + `packages/headless/` to structure, AX-CN constraint
-- ✅ `03` — added v0 scope lock + AX-CN ownership implication
+- ✅ `02` — added `registry/` + `packages/headless/` to structure, AXK constraint
+- ✅ `03` — added v0 scope lock + AXK ownership implication
 - ✅ `04` — noted tokens are copied into consumer repos
 - ✅ `05` — added v0 scope note
-- ✅ `06` — added AX-CN distribution notes section
-- ✅ `07` — added AX-CN distribution conventions
+- ✅ `06` — added AXK distribution notes section
+- ✅ `07` — added AXK distribution conventions
 - ⚠️ Fixed: `progress.json` step-1b was incorrectly reset to `not_started` — restored to `completed`
 
 #### 21. Primitives Catalog v0 Status (Feb 15)
@@ -166,7 +166,7 @@ Created Claude Cowork case study from live workshop screenshots. Added AX Book r
 11. **UncertaintyBadge absorbed** — becomes `ConfidenceMeter display="badge"`
 12. **Scoped approvals** — `ApprovalGate` supports resource-bounded + time-bounded grants (Stripe SPT pattern)
 13. **Artifact provenance** — outputs trace back to plan steps and tool calls
-14. **AX-CN model hardened** — all PRDs now explicitly reference copy-paste distribution
+14. **AXK model hardened** — all PRDs now explicitly reference copy-paste distribution
 
 #### 22. Design Tokens + Shared Types (Feb 16)
 - ✅ `src/styles/tokens.css` — all CSS custom properties (palette, status, confidence, typography, spacing, radius, shadows, animation, surfaces)
@@ -179,11 +179,11 @@ Created Claude Cowork case study from live workshop screenshots. Added AX Book r
 ### Next Steps
 - [x] Finish reading AX Book (Chapters 10-12)
 - [x] Define Catalog v0 (6-10 primitives)
-- [x] Update PRD docs (01-07) to reflect v0 + AX-CN model
+- [x] Update PRD docs (01-07) to reflect v0 + AXK model
 - [x] Reset `progress.json` to match v0
 - [x] Scaffold the library (`/vibe-step-1b-init-project`)
 - [x] Research synthesis audit (6 gaps closed)
-- [x] Second AI review + AX-CN hardening
+- [x] Second AI review + AXK hardening
 - [x] Primitives catalog v0 status tracking
 - [x] Design tokens (`/vibe-step-2-design-tokens`)
 - [x] Shared types (`/vibe-step-3-shared-types`)

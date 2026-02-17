@@ -6,12 +6,12 @@
 Research Phase ✅ DONE
   └── AX Book (12/12 chapters)
   └── Case Studies: Stripe, Coinbase, Claude Cowork
-  └── Distribution Strategy: shadcn/ui (AX-CN model)
+  └── Distribution Strategy: shadcn/ui (AXK model)
   └── Primitive Catalog: 48 core + 34 candidates
 
 Transition Step 🟡 NOW
   └── Define Catalog v0 (pick 6-10 primitives)
-  └── Update PRD docs (01-07) to reflect new catalog + AX-CN model
+  └── Update PRD docs (01-07) to reflect new catalog + AXK model
 
 Build Phase (VC-ORCHESTRATION)
   └── /vibe-step-1b-init-project   → Scaffold repo
