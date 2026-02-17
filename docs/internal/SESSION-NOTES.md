@@ -179,6 +179,19 @@ Created Claude Cowork case study from live workshop screenshots. Added AX Book r
 - ✅ Updated `src/index.ts` with a11y exports
 - ✅ Build verified: `tsc --noEmit` ✓, `vite build` ✓ (4.12 kB CSS, 10.66 kB JS)
 
+#### 25. Distribution Deep Dive — Saved for Post-v0 (Feb 17)
+- ✅ Saved ChatGPT shadcn research to `docs/internal/research/AXK-DISTRIBUTION-DEEP-DIVE.md`
+- Covers: `axk.json` fingerprint, registry manifests, blocks (run-monitoring-flow, failure-recovery, confidence-escalation)
+- 🚫 Deferred: CLI + blocks require components to exist first — revisit after all 6 primitives ship
+
+#### 26. PlanCard — First v0 Primitive (Feb 17)
+- ✅ `src/components/PlanCard/PlanCard.types.ts` — props per doc 06
+- ✅ `src/components/PlanCard/PlanCard.module.css` — all 6 states, confidence badges, expandable sections
+- ✅ `src/components/PlanCard/PlanCard.tsx` — full component with a11y (aria-current, aria-label, useAnnouncer, keyboard nav)
+- ✅ `src/components/PlanCard/index.ts` — barrel export
+- ✅ `src/css-modules.d.ts` — CSS Modules type declarations
+- ✅ Build verified: `tsc --noEmit` ✓, `vite build` ✓ (9.07 kB CSS, 19.25 kB JS)
+
 ### Key Decisions
 9. **v0 = 6 primitives** — PlanCard, ApprovalGate, ConfidenceMeter, RunControls, ToolTrace, ArtifactCard
 10. **CommitGate absorbed** — becomes `ApprovalGate mode="staged"`
@@ -187,6 +200,7 @@ Created Claude Cowork case study from live workshop screenshots. Added AX Book r
 13. **Artifact provenance** — outputs trace back to plan steps and tool calls
 14. **AXK model** — renamed from AX-CN to avoid derivative naming with shadcn
 15. **A11y as trust** — accessibility failures = trust failures in agent UIs; baked in from primitive #1
+16. **Build components before infrastructure** — CLI, blocks, and registry manifests deferred until primitives exist
 
 ### Next Steps
 - [x] Finish reading AX Book (Chapters 10-12)
@@ -202,8 +216,10 @@ Created Claude Cowork case study from live workshop screenshots. Added AX Book r
 - [x] AX-CN → AXK rename
 - [x] A11y utilities (VisuallyHidden, useAnnouncer, useFocusTrap)
 - [x] Registry schema (registry.json with a11y notes + state models)
-- [ ] Build PlanCard (step 4, first primitive)
-- [ ] Build ApprovalGate (step 4, second primitive)
+- [x] Build PlanCard (first primitive) ✅
+- [ ] Build ApprovalGate (second primitive)
+- [ ] Build ConfidenceMeter, RunControls, ToolTrace, ArtifactCard
+- [ ] `axk` CLI + Block 01 (post-v0 primitives)
 
 ---
 
