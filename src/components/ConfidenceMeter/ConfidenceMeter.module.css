@@ -1,0 +1,128 @@
+/* ConfidenceMeter — CSS Module */
+
+.confidenceMeter {
+  font-family: var(--ax-font-family);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ax-space-2);
+}
+
+/* ------------------------------------------------------------------ */
+/* Meter display (horizontal bar)                                      */
+/* ------------------------------------------------------------------ */
+
+.meterContainer {
+  display: flex;
+  align-items: center;
+  gap: var(--ax-space-2);
+  width: 100%;
+}
+
+.meterTrack {
+  flex: 1;
+  height: 0.5rem;
+  background: var(--ax-color-gray-100);
+  border-radius: var(--ax-radius-full);
+  overflow: hidden;
+}
+
+.meterTrackSm { height: 0.25rem; }
+.meterTrackMd { height: 0.5rem; }
+.meterTrackLg { height: 0.75rem; }
+
+.meterFill {
+  height: 100%;
+  border-radius: var(--ax-radius-full);
+  transition: width var(--ax-duration-normal) var(--ax-ease-default);
+}
+
+.meterFillNoAnimate {
+  transition: none;
+}
+
+.meterFillHigh { background: var(--ax-confidence-high-color); }
+.meterFillMedium { background: var(--ax-confidence-medium-color); }
+.meterFillLow { background: var(--ax-confidence-low-color); }
+
+/* ------------------------------------------------------------------ */
+/* Badge display (compact inline)                                      */
+/* ------------------------------------------------------------------ */
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ax-space-1);
+  font-weight: var(--ax-font-weight-medium);
+  border-radius: var(--ax-radius-full);
+  white-space: nowrap;
+}
+
+.badgeSm {
+  font-size: var(--ax-font-size-xs);
+  padding: 0.125rem var(--ax-space-2);
+}
+
+.badgeMd {
+  font-size: var(--ax-font-size-sm);
+  padding: var(--ax-space-1) var(--ax-space-3);
+}
+
+.badgeLg {
+  font-size: var(--ax-font-size-base);
+  padding: var(--ax-space-2) var(--ax-space-4);
+}
+
+.badgeHigh {
+  background: var(--ax-confidence-high-bg);
+  color: var(--ax-confidence-high-color);
+}
+
+.badgeMedium {
+  background: var(--ax-confidence-medium-bg);
+  color: var(--ax-confidence-medium-color);
+}
+
+.badgeLow {
+  background: var(--ax-confidence-low-bg);
+  color: var(--ax-confidence-low-color);
+}
+
+/* ------------------------------------------------------------------ */
+/* Shared labels                                                       */
+/* ------------------------------------------------------------------ */
+
+.valueLabel {
+  font-weight: var(--ax-font-weight-semibold);
+  white-space: nowrap;
+}
+
+.valueLabelSm { font-size: var(--ax-font-size-xs); }
+.valueLabelMd { font-size: var(--ax-font-size-sm); }
+.valueLabelLg { font-size: var(--ax-font-size-base); }
+
+.levelLabel {
+  font-weight: var(--ax-font-weight-medium);
+  text-transform: capitalize;
+}
+
+/* Dot indicator for badge */
+.dot {
+  width: 0.375rem;
+  height: 0.375rem;
+  border-radius: var(--ax-radius-full);
+}
+
+.dotHigh { background: var(--ax-confidence-high-color); }
+.dotMedium { background: var(--ax-confidence-medium-color); }
+.dotLow { background: var(--ax-confidence-low-color); }
+
+/* ------------------------------------------------------------------ */
+/* Reasoning                                                           */
+/* ------------------------------------------------------------------ */
+
+.reasoning {
+  margin-top: var(--ax-space-2);
+  font-size: var(--ax-font-size-xs);
+  color: var(--ax-text-secondary);
+  line-height: var(--ax-line-height-relaxed);
+}

@@ -1,0 +1,200 @@
+/* ArtifactCard — CSS Module */
+
+.artifactCard {
+  font-family: var(--ax-font-family);
+  background: var(--ax-surface-primary);
+  border: var(--ax-border-width) solid var(--ax-border-color);
+  border-radius: var(--ax-radius-lg);
+  box-shadow: var(--ax-shadow-sm);
+  overflow: hidden;
+}
+
+/* ------------------------------------------------------------------ */
+/* Header                                                              */
+/* ------------------------------------------------------------------ */
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: var(--ax-space-3);
+  padding: var(--ax-space-4) var(--ax-space-5);
+  border-bottom: var(--ax-border-width) solid var(--ax-border-color);
+}
+
+.typeIcon {
+  flex-shrink: 0;
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--ax-radius-md);
+  background: var(--ax-surface-secondary);
+  font-size: var(--ax-font-size-sm);
+}
+
+.headerContent {
+  flex: 1;
+  min-width: 0;
+}
+
+.title {
+  margin: 0;
+  font-size: var(--ax-font-size-base);
+  font-weight: var(--ax-font-weight-semibold);
+  color: var(--ax-text-primary);
+  line-height: var(--ax-line-height-tight);
+}
+
+.typeBadge {
+  display: inline-flex;
+  margin-top: var(--ax-space-1);
+  font-size: var(--ax-font-size-xs);
+  color: var(--ax-text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* ------------------------------------------------------------------ */
+/* Content preview                                                     */
+/* ------------------------------------------------------------------ */
+
+.previewContainer {
+  position: relative;
+  overflow: hidden;
+}
+
+.preview {
+  padding: var(--ax-space-4) var(--ax-space-5);
+  font-family: var(--ax-font-family-mono);
+  font-size: var(--ax-font-size-xs);
+  line-height: var(--ax-line-height-relaxed);
+  color: var(--ax-text-secondary);
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.previewFade {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3rem;
+  background: linear-gradient(transparent, var(--ax-surface-primary));
+  pointer-events: none;
+}
+
+.showMore {
+  display: block;
+  width: 100%;
+  padding: var(--ax-space-2) var(--ax-space-5);
+  background: none;
+  border: none;
+  border-top: var(--ax-border-width) solid var(--ax-border-color);
+  cursor: pointer;
+  font-family: var(--ax-font-family);
+  font-size: var(--ax-font-size-xs);
+  font-weight: var(--ax-font-weight-medium);
+  color: var(--ax-text-tertiary);
+  text-align: center;
+}
+
+.showMore:hover {
+  color: var(--ax-text-primary);
+  background: var(--ax-surface-secondary);
+}
+
+.showMore:focus-visible {
+  outline: 2px solid var(--ax-color-blue-500);
+  outline-offset: -2px;
+}
+
+/* ------------------------------------------------------------------ */
+/* Metadata                                                            */
+/* ------------------------------------------------------------------ */
+
+.metadata {
+  padding: var(--ax-space-3) var(--ax-space-5);
+  border-top: var(--ax-border-width) solid var(--ax-border-color);
+}
+
+.metadataTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--ax-font-size-xs);
+}
+
+.metadataTable td {
+  padding: var(--ax-space-1) 0;
+}
+
+.metadataTable td:first-child {
+  font-weight: var(--ax-font-weight-medium);
+  color: var(--ax-text-tertiary);
+  white-space: nowrap;
+  padding-right: var(--ax-space-3);
+  width: 1%;
+}
+
+.metadataTable td:last-child {
+  color: var(--ax-text-secondary);
+}
+
+/* ------------------------------------------------------------------ */
+/* Export actions                                                       */
+/* ------------------------------------------------------------------ */
+
+.exportActions {
+  display: flex;
+  align-items: center;
+  gap: var(--ax-space-2);
+  padding: var(--ax-space-3) var(--ax-space-5);
+  border-top: var(--ax-border-width) solid var(--ax-border-color);
+}
+
+.exportLabel {
+  font-size: var(--ax-font-size-xs);
+  color: var(--ax-text-tertiary);
+  margin-right: var(--ax-space-1);
+}
+
+.exportBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ax-space-1);
+  padding: var(--ax-space-1) var(--ax-space-2);
+  border-radius: var(--ax-radius-sm);
+  border: var(--ax-border-width) solid var(--ax-border-color);
+  background: var(--ax-surface-primary);
+  cursor: pointer;
+  font-family: var(--ax-font-family);
+  font-size: var(--ax-font-size-xs);
+  font-weight: var(--ax-font-weight-medium);
+  color: var(--ax-text-secondary);
+  transition: all var(--ax-duration-fast) var(--ax-ease-default);
+}
+
+.exportBtn:hover {
+  background: var(--ax-surface-secondary);
+  border-color: var(--ax-color-gray-400);
+  color: var(--ax-text-primary);
+}
+
+.exportBtn:focus-visible {
+  outline: 2px solid var(--ax-color-blue-500);
+  outline-offset: 2px;
+}
+
+/* ------------------------------------------------------------------ */
+/* Provenance                                                          */
+/* ------------------------------------------------------------------ */
+
+.provenance {
+  padding: var(--ax-space-2) var(--ax-space-5);
+  border-top: var(--ax-border-width) solid var(--ax-border-color);
+  font-size: var(--ax-font-size-xs);
+  color: var(--ax-text-tertiary);
+  display: flex;
+  align-items: center;
+  gap: var(--ax-space-2);
+}

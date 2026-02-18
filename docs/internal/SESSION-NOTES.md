@@ -192,6 +192,14 @@ Created Claude Cowork case study from live workshop screenshots. Added AX Book r
 - ✅ `src/css-modules.d.ts` — CSS Modules type declarations
 - ✅ Build verified: `tsc --noEmit` ✓, `vite build` ✓ (9.07 kB CSS, 19.25 kB JS)
 
+#### 27. All V0 Primitives Built (Feb 18)
+- ✅ `ApprovalGate` — focus trap, aria-live assertive, role=alertdialog, countdown timer (3 urgency levels), staged mode (preview→confirm→execute), scoped approvals (Grant Details), metadata table
+- ✅ `ConfidenceMeter` — meter (horizontal bar) + badge (compact pill) displays, role=meter, 3 sizes, animated transitions
+- ✅ `RunControls` — role=toolbar, state-dependent button visibility, pulsing status dot, actions slot for v1 extensibility
+- ✅ `ToolTrace` — vertical timeline with connector line, auto-scroll for streaming, expandable JSON input/output, policy flag badges, role=log + aria-live
+- ✅ `ArtifactCard` — semantic `<article>`, type icon, truncatable preview with gradient fade, metadata table, export buttons, provenance chain
+- ✅ Build verified: `tsc --noEmit` ✓, `vite build` ✓ (28.75 kB CSS, 47.26 kB JS, 31 modules)
+
 ### Key Decisions
 9. **v0 = 6 primitives** — PlanCard, ApprovalGate, ConfidenceMeter, RunControls, ToolTrace, ArtifactCard
 10. **CommitGate absorbed** — becomes `ApprovalGate mode="staged"`
@@ -217,9 +225,10 @@ Created Claude Cowork case study from live workshop screenshots. Added AX Book r
 - [x] A11y utilities (VisuallyHidden, useAnnouncer, useFocusTrap)
 - [x] Registry schema (registry.json with a11y notes + state models)
 - [x] Build PlanCard (first primitive) ✅
-- [ ] Build ApprovalGate (second primitive)
-- [ ] Build ConfidenceMeter, RunControls, ToolTrace, ArtifactCard
-- [ ] `axk` CLI + Block 01 (post-v0 primitives)
+- [x] Build ApprovalGate, ConfidenceMeter, RunControls, ToolTrace, ArtifactCard ✅
+- [ ] Mock data utilities (step 5)
+- [ ] Stories / visual tests (step 6)
+- [ ] Unit tests (step 7)
 
 ---
 

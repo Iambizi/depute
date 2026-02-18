@@ -1,0 +1,232 @@
+/* ToolTrace — CSS Module */
+
+.toolTrace {
+  font-family: var(--ax-font-family);
+  background: var(--ax-surface-primary);
+  border: var(--ax-border-width) solid var(--ax-border-color);
+  border-radius: var(--ax-radius-lg);
+  overflow: hidden;
+}
+
+.scrollContainer {
+  overflow-y: auto;
+}
+
+/* ------------------------------------------------------------------ */
+/* Timeline                                                            */
+/* ------------------------------------------------------------------ */
+
+.timeline {
+  list-style: none;
+  margin: 0;
+  padding: var(--ax-space-3) 0;
+  position: relative;
+}
+
+/* Vertical connector line */
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: calc(var(--ax-space-5) + 0.5rem);
+  top: var(--ax-space-3);
+  bottom: var(--ax-space-3);
+  width: 2px;
+  background: var(--ax-border-color);
+}
+
+/* ------------------------------------------------------------------ */
+/* Entry                                                               */
+/* ------------------------------------------------------------------ */
+
+.entry {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--ax-space-3);
+  padding: var(--ax-space-2) var(--ax-space-5);
+  transition: background-color var(--ax-duration-fast) var(--ax-ease-default);
+}
+
+.entry:hover {
+  background: var(--ax-surface-secondary);
+}
+
+.entryClickable {
+  cursor: pointer;
+}
+
+.entryClickable:focus-visible {
+  outline: 2px solid var(--ax-color-blue-500);
+  outline-offset: -2px;
+  border-radius: var(--ax-radius-sm);
+}
+
+/* ------------------------------------------------------------------ */
+/* Status dot                                                          */
+/* ------------------------------------------------------------------ */
+
+.dot {
+  flex-shrink: 0;
+  width: 1rem;
+  height: 1rem;
+  border-radius: var(--ax-radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.5rem;
+  margin-top: 0.125rem;
+  z-index: 1;
+  background: var(--ax-surface-primary);
+}
+
+.dotPending {
+  border: 2px solid var(--ax-color-gray-300);
+}
+
+.dotRunning {
+  border: 2px solid var(--ax-status-active-color);
+  animation: ax-pulse var(--ax-duration-slow) var(--ax-ease-default) infinite;
+}
+
+.dotCompleted {
+  background: var(--ax-status-completed-bg);
+  color: var(--ax-status-completed-color);
+  border: 2px solid var(--ax-status-completed-border);
+}
+
+.dotFailed {
+  background: var(--ax-status-failed-bg);
+  color: var(--ax-status-failed-color);
+  border: 2px solid var(--ax-status-failed-border);
+}
+
+/* ------------------------------------------------------------------ */
+/* Entry content                                                       */
+/* ------------------------------------------------------------------ */
+
+.entryContent {
+  flex: 1;
+  min-width: 0;
+}
+
+.entryHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--ax-space-2);
+}
+
+.toolName {
+  font-size: var(--ax-font-size-sm);
+  font-weight: var(--ax-font-weight-medium);
+  color: var(--ax-text-primary);
+  font-family: var(--ax-font-family-mono);
+}
+
+.duration {
+  font-size: var(--ax-font-size-xs);
+  color: var(--ax-text-tertiary);
+  margin-left: auto;
+}
+
+.errorMessage {
+  margin-top: var(--ax-space-1);
+  font-size: var(--ax-font-size-xs);
+  color: var(--ax-status-failed-color);
+}
+
+/* ------------------------------------------------------------------ */
+/* Expandable input/output                                             */
+/* ------------------------------------------------------------------ */
+
+.expandToggle {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ax-space-1);
+  margin-top: var(--ax-space-1);
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: var(--ax-font-family);
+  font-size: var(--ax-font-size-xs);
+  color: var(--ax-text-tertiary);
+  padding: 0;
+}
+
+.expandToggle:hover {
+  color: var(--ax-text-secondary);
+}
+
+.expandToggle:focus-visible {
+  outline: 2px solid var(--ax-color-blue-500);
+  outline-offset: 2px;
+  border-radius: var(--ax-radius-sm);
+}
+
+.chevron {
+  transition: transform var(--ax-duration-fast) var(--ax-ease-default);
+  font-size: 0.5rem;
+}
+
+.chevronOpen {
+  transform: rotate(90deg);
+}
+
+.expandedContent {
+  margin-top: var(--ax-space-2);
+}
+
+.jsonBlock {
+  padding: var(--ax-space-2) var(--ax-space-3);
+  background: var(--ax-surface-secondary);
+  border-radius: var(--ax-radius-sm);
+  font-family: var(--ax-font-family-mono);
+  font-size: var(--ax-font-size-xs);
+  line-height: var(--ax-line-height-relaxed);
+  color: var(--ax-text-secondary);
+  white-space: pre-wrap;
+  word-break: break-all;
+  overflow-x: auto;
+  margin-bottom: var(--ax-space-1);
+}
+
+.jsonLabel {
+  font-size: var(--ax-font-size-xs);
+  font-weight: var(--ax-font-weight-semibold);
+  color: var(--ax-text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: var(--ax-space-1);
+}
+
+/* ------------------------------------------------------------------ */
+/* Policy flags                                                        */
+/* ------------------------------------------------------------------ */
+
+.policyFlags {
+  display: flex;
+  gap: var(--ax-space-1);
+  margin-top: var(--ax-space-1);
+}
+
+.policyBadge {
+  font-size: 0.625rem;
+  font-weight: var(--ax-font-weight-medium);
+  padding: 0 var(--ax-space-1);
+  border-radius: var(--ax-radius-sm);
+  background: var(--ax-color-amber-50);
+  color: var(--ax-color-amber-700);
+  border: var(--ax-border-width) solid var(--ax-color-amber-200);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* ------------------------------------------------------------------ */
+/* Empty                                                               */
+/* ------------------------------------------------------------------ */
+
+.emptyState {
+  padding: var(--ax-space-6) var(--ax-space-5);
+  text-align: center;
+  color: var(--ax-text-tertiary);
+  font-size: var(--ax-font-size-sm);
+}

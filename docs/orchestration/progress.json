@@ -82,8 +82,8 @@
         "staged"
       ],
       "step-4-component": {
-        "status": "not_started",
-        "completedAt": null
+        "status": "completed",
+        "completedAt": "2026-02-18T15:06:00Z"
       },
       "step-5-mock-data": {
         "status": "not_started",
@@ -106,8 +106,8 @@
         "badge"
       ],
       "step-4-component": {
-        "status": "not_started",
-        "completedAt": null
+        "status": "completed",
+        "completedAt": "2026-02-18T15:06:00Z"
       },
       "step-5-mock-data": {
         "status": "not_started",
@@ -126,8 +126,8 @@
       "buildOrder": 4,
       "hook": "useRun",
       "step-4-component": {
-        "status": "not_started",
-        "completedAt": null
+        "status": "completed",
+        "completedAt": "2026-02-18T15:06:00Z"
       },
       "step-5-mock-data": {
         "status": "not_started",
@@ -146,8 +146,8 @@
       "buildOrder": 5,
       "hook": "useTrace",
       "step-4-component": {
-        "status": "not_started",
-        "completedAt": null
+        "status": "completed",
+        "completedAt": "2026-02-18T15:06:00Z"
       },
       "step-5-mock-data": {
         "status": "not_started",
@@ -166,8 +166,8 @@
       "buildOrder": 6,
       "hook": null,
       "step-4-component": {
-        "status": "not_started",
-        "completedAt": null
+        "status": "completed",
+        "completedAt": "2026-02-18T15:06:00Z"
       },
       "step-5-mock-data": {
         "status": "not_started",

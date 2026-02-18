@@ -1,0 +1,390 @@
+/* ApprovalGate — CSS Module
+ *
+ * Uses design tokens from src/styles/tokens.css.
+ * Handles all four states: pending, approved, rejected, expired.
+ * Supports simple + staged modes, countdown, and scoped approvals.
+ */
+
+/* ------------------------------------------------------------------ */
+/* Container                                                           */
+/* ------------------------------------------------------------------ */
+
+.approvalGate {
+  font-family: var(--ax-font-family);
+  background: var(--ax-surface-primary);
+  border: var(--ax-border-width) solid var(--ax-border-color);
+  border-radius: var(--ax-radius-lg);
+  box-shadow: var(--ax-shadow-md);
+  overflow: hidden;
+  position: relative;
+}
+
+.approvalGatePending {
+  border-color: var(--ax-status-waiting-border);
+  box-shadow: var(--ax-shadow-md), 0 0 0 1px var(--ax-status-waiting-border);
+}
+
+.approvalGateApproved {
+  border-color: var(--ax-status-completed-border);
+}
+
+.approvalGateRejected {
+  border-color: var(--ax-status-failed-border);
+}
+
+.approvalGateExpired {
+  border-color: var(--ax-color-gray-300);
+  opacity: 0.8;
+}
+
+/* ------------------------------------------------------------------ */
+/* Header                                                              */
+/* ------------------------------------------------------------------ */
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: var(--ax-space-3);
+  padding: var(--ax-space-4) var(--ax-space-5);
+  border-bottom: var(--ax-border-width) solid var(--ax-border-color);
+}
+
+.statusIcon {
+  flex-shrink: 0;
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--ax-radius-full);
+  font-size: var(--ax-font-size-base);
+}
+
+.statusIconPending {
+  background: var(--ax-status-waiting-bg);
+  color: var(--ax-status-waiting-color);
+  animation: ax-pulse var(--ax-duration-slow) var(--ax-ease-default) infinite;
+}
+
+.statusIconApproved {
+  background: var(--ax-status-completed-bg);
+  color: var(--ax-status-completed-color);
+}
+
+.statusIconRejected {
+  background: var(--ax-status-failed-bg);
+  color: var(--ax-status-failed-color);
+}
+
+.statusIconExpired {
+  background: var(--ax-color-gray-100);
+  color: var(--ax-color-gray-500);
+}
+
+.headerContent {
+  flex: 1;
+  min-width: 0;
+}
+
+.title {
+  margin: 0;
+  font-size: var(--ax-font-size-lg);
+  font-weight: var(--ax-font-weight-semibold);
+  line-height: var(--ax-line-height-tight);
+  color: var(--ax-text-primary);
+}
+
+.statusLabel {
+  font-size: var(--ax-font-size-xs);
+  color: var(--ax-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: var(--ax-space-1);
+}
+
+/* ------------------------------------------------------------------ */
+/* Body                                                                */
+/* ------------------------------------------------------------------ */
+
+.body {
+  padding: var(--ax-space-4) var(--ax-space-5);
+}
+
+.description {
+  font-size: var(--ax-font-size-sm);
+  color: var(--ax-text-secondary);
+  line-height: var(--ax-line-height-relaxed);
+  margin-bottom: var(--ax-space-3);
+}
+
+.reasoning {
+  padding: var(--ax-space-3);
+  background: var(--ax-surface-secondary);
+  border-radius: var(--ax-radius-md);
+  font-size: var(--ax-font-size-xs);
+  color: var(--ax-text-secondary);
+  line-height: var(--ax-line-height-relaxed);
+  margin-bottom: var(--ax-space-3);
+}
+
+.reasoningLabel {
+  font-weight: var(--ax-font-weight-semibold);
+  color: var(--ax-text-primary);
+  margin-bottom: var(--ax-space-1);
+  font-size: var(--ax-font-size-xs);
+}
+
+/* ------------------------------------------------------------------ */
+/* Confidence badge                                                    */
+/* ------------------------------------------------------------------ */
+
+.confidenceBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ax-space-1);
+  font-size: var(--ax-font-size-xs);
+  font-weight: var(--ax-font-weight-medium);
+  padding: var(--ax-space-1) var(--ax-space-2);
+  border-radius: var(--ax-radius-full);
+  margin-bottom: var(--ax-space-3);
+}
+
+.confidenceHigh {
+  background: var(--ax-confidence-high-bg);
+  color: var(--ax-confidence-high-color);
+}
+
+.confidenceMedium {
+  background: var(--ax-confidence-medium-bg);
+  color: var(--ax-confidence-medium-color);
+}
+
+.confidenceLow {
+  background: var(--ax-confidence-low-bg);
+  color: var(--ax-confidence-low-color);
+}
+
+/* ------------------------------------------------------------------ */
+/* Scope — Grant Details                                               */
+/* ------------------------------------------------------------------ */
+
+.scope {
+  padding: var(--ax-space-3);
+  background: var(--ax-surface-secondary);
+  border-radius: var(--ax-radius-md);
+  margin-bottom: var(--ax-space-3);
+}
+
+.scopeTitle {
+  font-size: var(--ax-font-size-xs);
+  font-weight: var(--ax-font-weight-semibold);
+  color: var(--ax-text-primary);
+  margin-bottom: var(--ax-space-2);
+}
+
+.scopeItems {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ax-space-2);
+}
+
+.scopeBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ax-space-1);
+  font-size: var(--ax-font-size-xs);
+  padding: var(--ax-space-1) var(--ax-space-2);
+  border-radius: var(--ax-radius-sm);
+  background: var(--ax-color-blue-50);
+  color: var(--ax-color-blue-700);
+  border: var(--ax-border-width) solid var(--ax-color-blue-200);
+}
+
+/* ------------------------------------------------------------------ */
+/* Metadata table                                                      */
+/* ------------------------------------------------------------------ */
+
+.metadata {
+  margin-bottom: var(--ax-space-3);
+}
+
+.metadataTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--ax-font-size-xs);
+}
+
+.metadataTable td {
+  padding: var(--ax-space-1) var(--ax-space-2);
+  border-bottom: var(--ax-border-width) solid var(--ax-border-color);
+}
+
+.metadataTable td:first-child {
+  font-weight: var(--ax-font-weight-medium);
+  color: var(--ax-text-secondary);
+  white-space: nowrap;
+  width: 1%;
+}
+
+.metadataTable td:last-child {
+  color: var(--ax-text-primary);
+  font-family: var(--ax-font-family-mono);
+}
+
+/* ------------------------------------------------------------------ */
+/* Countdown                                                           */
+/* ------------------------------------------------------------------ */
+
+.countdown {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ax-space-1);
+  font-size: var(--ax-font-size-xs);
+  font-weight: var(--ax-font-weight-medium);
+  padding: var(--ax-space-1) var(--ax-space-2);
+  border-radius: var(--ax-radius-full);
+}
+
+.countdownNormal {
+  background: var(--ax-color-gray-100);
+  color: var(--ax-color-gray-600);
+}
+
+.countdownWarning {
+  background: var(--ax-color-amber-50);
+  color: var(--ax-color-amber-700);
+}
+
+.countdownUrgent {
+  background: var(--ax-color-red-50);
+  color: var(--ax-color-red-700);
+  animation: ax-pulse var(--ax-duration-normal) var(--ax-ease-default) infinite;
+}
+
+/* ------------------------------------------------------------------ */
+/* Staged mode indicator                                               */
+/* ------------------------------------------------------------------ */
+
+.stageIndicator {
+  display: flex;
+  align-items: center;
+  gap: var(--ax-space-2);
+  padding: var(--ax-space-2) var(--ax-space-5);
+  background: var(--ax-surface-secondary);
+  font-size: var(--ax-font-size-xs);
+  color: var(--ax-text-secondary);
+}
+
+.stage {
+  display: flex;
+  align-items: center;
+  gap: var(--ax-space-1);
+}
+
+.stageActive {
+  color: var(--ax-status-active-color);
+  font-weight: var(--ax-font-weight-semibold);
+}
+
+.stageCompleted {
+  color: var(--ax-status-completed-color);
+}
+
+.stageSeparator {
+  color: var(--ax-color-gray-300);
+}
+
+/* ------------------------------------------------------------------ */
+/* Actions                                                             */
+/* ------------------------------------------------------------------ */
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: var(--ax-space-3);
+  padding: var(--ax-space-4) var(--ax-space-5);
+  border-top: var(--ax-border-width) solid var(--ax-border-color);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ax-space-2);
+  padding: var(--ax-space-2) var(--ax-space-4);
+  border-radius: var(--ax-radius-md);
+  font-family: var(--ax-font-family);
+  font-size: var(--ax-font-size-sm);
+  font-weight: var(--ax-font-weight-medium);
+  border: var(--ax-border-width) solid transparent;
+  cursor: pointer;
+  transition: all var(--ax-duration-fast) var(--ax-ease-default);
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--ax-color-blue-500);
+  outline-offset: 2px;
+}
+
+.btnApprove {
+  background: var(--ax-color-green-600);
+  color: #ffffff;
+  border-color: var(--ax-color-green-700);
+}
+
+.btnApprove:hover {
+  background: var(--ax-color-green-700);
+}
+
+.btnReject {
+  background: var(--ax-surface-primary);
+  color: var(--ax-color-red-600);
+  border-color: var(--ax-color-red-300);
+}
+
+.btnReject:hover {
+  background: var(--ax-color-red-50);
+}
+
+.btnSecondary {
+  background: var(--ax-surface-primary);
+  color: var(--ax-text-secondary);
+  border-color: var(--ax-border-color);
+}
+
+.btnSecondary:hover {
+  background: var(--ax-surface-secondary);
+  color: var(--ax-text-primary);
+}
+
+.actionsSpacerRight {
+  margin-left: auto;
+}
+
+/* ------------------------------------------------------------------ */
+/* Resolved state banner                                               */
+/* ------------------------------------------------------------------ */
+
+.resolvedBanner {
+  display: flex;
+  align-items: center;
+  gap: var(--ax-space-2);
+  padding: var(--ax-space-3) var(--ax-space-5);
+  font-size: var(--ax-font-size-sm);
+  font-weight: var(--ax-font-weight-medium);
+}
+
+.resolvedApproved {
+  background: var(--ax-status-completed-bg);
+  color: var(--ax-status-completed-color);
+}
+
+.resolvedRejected {
+  background: var(--ax-status-failed-bg);
+  color: var(--ax-status-failed-color);
+}
+
+.resolvedExpired {
+  background: var(--ax-color-gray-100);
+  color: var(--ax-color-gray-600);
+}
