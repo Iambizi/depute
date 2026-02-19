@@ -226,7 +226,7 @@ Created Claude Cowork case study from live workshop screenshots. Added AX Book r
 - [x] Registry schema (registry.json with a11y notes + state models)
 - [x] Build PlanCard (first primitive) ✅
 - [x] Build ApprovalGate, ConfidenceMeter, RunControls, ToolTrace, ArtifactCard ✅
-- [ ] Mock data utilities (step 5)
+- [x] Mock data utilities (step 5) ✅
 - [ ] Stories / visual tests (step 6)
 - [ ] Unit tests (step 7)
 
@@ -610,6 +610,32 @@ Initial project setup and documentation formatting. Established core project str
 - All specification documents are now properly formatted and consistent
 - Project has clear technical and business strategy
 - Ready to begin implementation phase
+
+---
+
+#### 28. Mock Data Utilities Built (Feb 19)
+- ✅ `src/utils/mockData.ts` — generators + simulators for all 6 primitives
+  - `generateMockPlan` (stepCount, confidence, reasoning options)
+  - `simulatePlanExecution` — auto-advances steps pending → active → completed with real timing; returns `cancel()`
+  - `generateMockApproval` (mode, scope, metadata, agent reasoning)
+  - `generateRandomConfidence`
+  - `generateMockToolCalls` — completed/failed calls with policy flags (15% failure rate)
+  - `simulateToolStream` — streams running → completed/failed entries for ToolTrace; returns `cancel()`
+  - `generateMockArtifact` — realistic markdown/json/csv/code content
+  - `buildRunMonitoringScenario` — composite scenario wired to all 6 components at once
+  - Label banks: `MOCK_STEP_LABELS`, `MOCK_TOOL_NAMES`, `MOCK_APPROVAL_SCENARIOS`
+- ✅ All exports added to `src/index.ts`
+- ✅ Build verified: `tsc --noEmit` ✓, `vite build` ✓ (54.74 kB JS, 32 modules)
+
+#### 29. Distribution Review + Registry Fix + Deferred Log (Feb 19)
+- ✅ Reviewed `AXK-DISTRIBUTION-DEEP-DIVE.md` and `DISTRIBUTION-STRATEGY-SHADCN.md` (overdue since v0 shipped)
+- ✅ Fixed `registry/registry.json` — restructured from `primitives{}` object to `items[]` array (shadcn convention)
+  - Added kebab-case `name` field, `type: "primitive"`, `registryDependencies: []` to each item
+  - All a11yNotes, stateModel, axPrinciples, requiredTokens preserved
+- ✅ Created `docs/internal/DEFERRED-LOG.md` — single source of truth for all deferred research, with milestone triggers
+- ✅ Captured `docs/internal/research/DELEGATION-ERA-STRATEGY.md` — OpenClaw→OpenAI signal analysis
+  - Confirms supervision UX direction; identifies event model gap for post-reference-app phase
+- ✅ CLI / `axk.json` / Block 01 remain deferred to post-reference-app (no premature optimization)
 
 ---
 
