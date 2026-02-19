@@ -3,18 +3,21 @@
   "version": "0.1.0",
   "description": "AX Components — UI primitives for agentic experiences",
   "distribution": "axk",
-  "primitives": {
-    "PlanCard": {
-      "name": "PlanCard",
+  "items": [
+    {
+      "name": "plan-card",
+      "label": "PlanCard",
       "category": "Intent & Delegation",
       "description": "Displays a proposed plan with steps, assumptions, and expected outputs",
       "buildOrder": 1,
+      "type": "primitive",
       "files": [
         "src/components/PlanCard/PlanCard.tsx",
         "src/components/PlanCard/PlanCard.module.css",
         "src/components/PlanCard/PlanCard.types.ts",
         "src/components/PlanCard/index.ts"
       ],
+      "registryDependencies": [],
       "hook": "usePlan",
       "requiredTokens": [
         "--ax-status-pending-*",
@@ -39,17 +42,20 @@
         "events": ["stepAdded", "stepUpdated", "planCompleted", "planFailed"]
       }
     },
-    "ApprovalGate": {
-      "name": "ApprovalGate",
+    {
+      "name": "approval-gate",
+      "label": "ApprovalGate",
       "category": "Trust & Approval",
       "description": "Approve, reject, or edit before an action runs",
       "buildOrder": 2,
+      "type": "primitive",
       "files": [
         "src/components/ApprovalGate/ApprovalGate.tsx",
         "src/components/ApprovalGate/ApprovalGate.module.css",
         "src/components/ApprovalGate/ApprovalGate.types.ts",
         "src/components/ApprovalGate/index.ts"
       ],
+      "registryDependencies": [],
       "hook": "useApprovalGate",
       "requiredTokens": [
         "--ax-status-waiting-*",
@@ -74,17 +80,20 @@
         "events": ["approve", "reject", "expire", "reset"]
       }
     },
-    "ConfidenceMeter": {
-      "name": "ConfidenceMeter",
+    {
+      "name": "confidence-meter",
+      "label": "ConfidenceMeter",
       "category": "Trust & Approval",
       "description": "Shows confidence score plus reasoning (signals, missing info, ambiguities)",
       "buildOrder": 3,
+      "type": "primitive",
       "files": [
         "src/components/ConfidenceMeter/ConfidenceMeter.tsx",
         "src/components/ConfidenceMeter/ConfidenceMeter.module.css",
         "src/components/ConfidenceMeter/ConfidenceMeter.types.ts",
         "src/components/ConfidenceMeter/index.ts"
       ],
+      "registryDependencies": [],
       "hook": "useConfidence",
       "requiredTokens": [
         "--ax-confidence-high-*",
@@ -105,17 +114,20 @@
         "events": ["scoreChanged", "reasoningUpdated"]
       }
     },
-    "RunControls": {
-      "name": "RunControls",
+    {
+      "name": "run-controls",
+      "label": "RunControls",
       "category": "Control & Steering",
       "description": "Pause, resume, stop, and retry buttons",
       "buildOrder": 4,
+      "type": "primitive",
       "files": [
         "src/components/RunControls/RunControls.tsx",
         "src/components/RunControls/RunControls.module.css",
         "src/components/RunControls/RunControls.types.ts",
         "src/components/RunControls/index.ts"
       ],
+      "registryDependencies": [],
       "hook": "useRun",
       "requiredTokens": [
         "--ax-status-active-*",
@@ -136,17 +148,20 @@
         "events": ["start", "pause", "resume", "stop", "retry", "complete", "fail"]
       }
     },
-    "ToolTrace": {
-      "name": "ToolTrace",
+    {
+      "name": "tool-trace",
+      "label": "ToolTrace",
       "category": "Transparency & Trace",
       "description": "Timeline of tool calls showing input, output, duration, and errors",
       "buildOrder": 5,
+      "type": "primitive",
       "files": [
         "src/components/ToolTrace/ToolTrace.tsx",
         "src/components/ToolTrace/ToolTrace.module.css",
         "src/components/ToolTrace/ToolTrace.types.ts",
         "src/components/ToolTrace/index.ts"
       ],
+      "registryDependencies": [],
       "hook": "useTrace",
       "requiredTokens": [
         "--ax-status-*",
@@ -170,18 +185,21 @@
         "events": ["entryAdded", "entryUpdated", "entryCompleted", "entryFailed"]
       }
     },
-    "ArtifactCard": {
-      "name": "ArtifactCard",
+    {
+      "name": "artifact-card",
+      "label": "ArtifactCard",
       "category": "Output",
       "description": "Output summary with export options (MD, JSON, CSV, PR)",
       "buildOrder": 6,
+      "type": "primitive",
       "files": [
         "src/components/ArtifactCard/ArtifactCard.tsx",
         "src/components/ArtifactCard/ArtifactCard.module.css",
         "src/components/ArtifactCard/ArtifactCard.types.ts",
         "src/components/ArtifactCard/index.ts"
       ],
-      "hook": "useArtifact",
+      "registryDependencies": [],
+      "hook": null,
       "requiredTokens": [
         "--ax-surface-*",
         "--ax-border-*",
@@ -201,5 +219,5 @@
         "events": ["loaded", "exportStarted", "exportCompleted"]
       }
     }
-  }
+  ]
 }

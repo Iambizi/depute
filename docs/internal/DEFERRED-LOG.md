@@ -10,13 +10,13 @@ Update status as milestones are hit.
 
 | Item | File | Trigger | Status |
 |---|---|---|---|
-| AXK distribution model (shadcn registry, CLI, components.json) | [AXK-DISTRIBUTION-DEEP-DIVE.md](research/AXK-DISTRIBUTION-DEEP-DIVE.md) | ✅ v0 primitives shipped → **Review now** | 🔴 Overdue |
+| AXK distribution model (shadcn registry, CLI, components.json) | [AXK-DISTRIBUTION-DEEP-DIVE.md](research/AXK-DISTRIBUTION-DEEP-DIVE.md) | ✅ v0 primitives shipped → **Review now** | ✅ Reviewed Feb 19 — registry.json fixed; CLI/axk.json deferred to post-reference-app |
 | Formal event model + state machine vocabulary | [DELEGATION-ERA-STRATEGY.md](research/DELEGATION-ERA-STRATEGY.md) | Before building reference app | ⏳ Pending |
 | Coinbase Agentic Wallets — payments/scoped auth implications | [COINBASE-AGENTIC-WALLETS.md](research/COINBASE-AGENTIC-WALLETS.md) | v1 ApprovalGate / scoped grants | ⏳ Pending |
 | A2UI model — "UI as capability surface" framing | [A2UI-Implications.md](research/A2UI-Implications.md) | Before writing positioning / README | ⏳ Pending |
 | AX Meta Strategy — moat, positioning, defensibility | [AX-META-STRATEGY.md](research/AX-META-STRATEGY.md) | Before public launch / pitch | ⏳ Pending |
 | Stripe Checkout UX insights — approval + trust patterns | [AX-STRIPE-CHECKOUT-INSIGHTS.md](research/AX-STRIPE-CHECKOUT-INSIGHTS.md) | Before finalizing ApprovalGate v1 | ⏳ Pending |
-| Distribution strategy (shadcn model overview) | [DISTRIBUTION-STRATEGY-SHADCN.md](research/DISTRIBUTION-STRATEGY-SHADCN.md) | Same as AXK deep-dive above | 🔴 Overdue |
+| Distribution strategy (shadcn model overview) | [DISTRIBUTION-STRATEGY-SHADCN.md](research/DISTRIBUTION-STRATEGY-SHADCN.md) | Same as AXK deep-dive above | ✅ Reviewed Feb 19 — confirms registry approach; CLI/blocks deferred to post-reference-app |
 
 ---
 
