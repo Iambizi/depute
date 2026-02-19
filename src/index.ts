@@ -42,3 +42,22 @@ export type { ToolTraceProps } from './components/ToolTrace';
 
 export { ArtifactCard } from './components/ArtifactCard';
 export type { ArtifactCardProps, ExportFormat } from './components/ArtifactCard';
+
+// Mock data utilities
+export {
+  generateMockPlan,
+  simulatePlanExecution,
+  generateMockApproval,
+  generateRandomConfidence,
+  generateMockToolCalls,
+  simulateToolStream,
+  generateMockArtifact,
+  buildRunMonitoringScenario,
+  MOCK_STEP_LABELS,
+  MOCK_TOOL_NAMES,
+  MOCK_APPROVAL_SCENARIOS,
+} from './utils/mockData';
+export type {
+  GenerateMockPlanOptions,
+  MockPlan,
+} from './utils/mockData';
