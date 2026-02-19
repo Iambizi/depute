@@ -1,6 +1,6 @@
 {
   "version": "2.0.0",
-  "lastUpdated": "2026-02-16",
+  "lastUpdated": "2026-02-19",
   "catalogVersion": "v0",
   "globalSteps": {
     "step-1-ideation": {
@@ -13,27 +13,21 @@
       "name": "Initialize Project",
       "status": "completed",
       "command": "/vibe-step-1b-init-project",
-      "dependsOn": [
-        "step-1-ideation"
-      ],
+      "dependsOn": ["step-1-ideation"],
       "completedAt": "2026-02-15T15:00:00Z"
     },
     "step-2-design-tokens": {
       "name": "Design Tokens",
       "status": "completed",
       "command": "/vibe-step-2-design-tokens",
-      "dependsOn": [
-        "step-1b-init-project"
-      ],
+      "dependsOn": ["step-1b-init-project"],
       "completedAt": "2026-02-16T22:45:00Z"
     },
     "step-3-shared-types": {
       "name": "Shared Types",
       "status": "completed",
       "command": "/vibe-step-3-shared-types",
-      "dependsOn": [
-        "step-1b-init-project"
-      ],
+      "dependsOn": ["step-1b-init-project"],
       "completedAt": "2026-02-16T22:45:00Z"
     },
     "step-8-docs": {
@@ -47,9 +41,7 @@
       "name": "Final Validation",
       "status": "not_started",
       "command": "/vibe-step-9-validate",
-      "dependsOn": [
-        "step-8-docs"
-      ],
+      "dependsOn": ["step-8-docs"],
       "completedAt": null
     }
   },
@@ -62,8 +54,8 @@
         "completedAt": "2026-02-17T22:45:00Z"
       },
       "step-5-mock-data": {
-        "status": "not_started",
-        "completedAt": null
+        "status": "completed",
+        "completedAt": "2026-02-19T16:48:00Z"
       },
       "step-6-stories": {
         "status": "not_started",
@@ -77,17 +69,14 @@
     "ApprovalGate": {
       "buildOrder": 2,
       "hook": "useApprovalGate",
-      "modes": [
-        "simple",
-        "staged"
-      ],
+      "modes": ["simple", "staged"],
       "step-4-component": {
         "status": "completed",
         "completedAt": "2026-02-18T15:06:00Z"
       },
       "step-5-mock-data": {
-        "status": "not_started",
-        "completedAt": null
+        "status": "completed",
+        "completedAt": "2026-02-19T16:48:00Z"
       },
       "step-6-stories": {
         "status": "not_started",
@@ -101,17 +90,14 @@
     "ConfidenceMeter": {
       "buildOrder": 3,
       "hook": "useConfidence",
-      "displays": [
-        "meter",
-        "badge"
-      ],
+      "displays": ["meter", "badge"],
       "step-4-component": {
         "status": "completed",
         "completedAt": "2026-02-18T15:06:00Z"
       },
       "step-5-mock-data": {
-        "status": "not_started",
-        "completedAt": null
+        "status": "completed",
+        "completedAt": "2026-02-19T16:48:00Z"
       },
       "step-6-stories": {
         "status": "not_started",
@@ -130,8 +116,8 @@
         "completedAt": "2026-02-18T15:06:00Z"
       },
       "step-5-mock-data": {
-        "status": "not_started",
-        "completedAt": null
+        "status": "completed",
+        "completedAt": "2026-02-19T16:48:00Z"
       },
       "step-6-stories": {
         "status": "not_started",
@@ -150,8 +136,8 @@
         "completedAt": "2026-02-18T15:06:00Z"
       },
       "step-5-mock-data": {
-        "status": "not_started",
-        "completedAt": null
+        "status": "completed",
+        "completedAt": "2026-02-19T16:48:00Z"
       },
       "step-6-stories": {
         "status": "not_started",
@@ -170,8 +156,8 @@
         "completedAt": "2026-02-18T15:06:00Z"
       },
       "step-5-mock-data": {
-        "status": "not_started",
-        "completedAt": null
+        "status": "completed",
+        "completedAt": "2026-02-19T16:48:00Z"
       },
       "step-6-stories": {
         "status": "not_started",
