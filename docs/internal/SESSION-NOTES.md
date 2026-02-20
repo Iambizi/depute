@@ -712,3 +712,11 @@ Any important context or observations
 - ✅ Storybook build completed successfully to `storybook-static/`.
 - ✅ Verified ZERO `any` types in source files, 100% `aria-` and `role=` attribute coverage, and full `--ax-` token adoption in all CSS modules.
 - ✅ Marked `step-9-validate` as completed in `progress.json`. The AX Components v0 library is officially built and validated.
+
+### Key Decisions
+1. **Defer Reference App.** While valuable, building a full reference app is deferred in favor of officially wrapping up v0 and capitalizing on the Agentic Coding Levels research to draft the v1 catalog.
+2. **Prioritize v0 Launch & v1 Design.** Next immediate actions are administrative wrap-up for v0 (tag release, etc.) and defining the new orchestration primitives for v1 based on the Fig 8 model.
+
+### Next Steps
+- [ ] Prepare v0 release (GitHub tag, publish strategy, launch notes)
+- [ ] Draft v1 catalog (AgentRoster, OrchestratorView, TaskQueue, etc.)
