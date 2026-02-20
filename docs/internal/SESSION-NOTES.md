@@ -704,3 +704,11 @@ Any important context or observations
 - ✅ Fixed TS error in `examples/prototype-setup/App.tsx` line 51: `scope` prop on `ApprovalGateProps` is `{ resourceLimit?, durationSeconds?, target? }` (object), not a string.
 - ✅ Changed `scope: 'resource'` → `scope: { target: 'Stripe API' }` and removed the incorrectly placed `metadata: { target: ... }` override.
 - ✅ Committed: `fix(examples): correct scope type in generateMockApproval call`
+
+#### 34. Step 9 (Validation) Complete -> v0 is READY
+- ✅ `tsc --noEmit` clean across `src/`, `stories/`, and `examples/`.
+- ✅ All 84 Vitest unit tests passing (100% coverage of v0).
+- ✅ `vite build` generated correct `dist/ax-components.es.js` and `.cjs.js`.
+- ✅ Storybook build completed successfully to `storybook-static/`.
+- ✅ Verified ZERO `any` types in source files, 100% `aria-` and `role=` attribute coverage, and full `--ax-` token adoption in all CSS modules.
+- ✅ Marked `step-9-validate` as completed in `progress.json`. The AX Components v0 library is officially built and validated.

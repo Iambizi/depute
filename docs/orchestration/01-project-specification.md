@@ -5,7 +5,7 @@
 **Name:** AX Components for React
 **Tagline:** "From prototype to production"
 **Domain:** Agentic Experience (AX) Design
-**Catalog Status:** v0 locked (Feb 15, 2026)
+**Catalog Status:** v0 passed validation / ready for release (Feb 20, 2026)
 **Distribution Model:** AXK (CLI copy-paste, shadcn-style)
 
 ## What is Agentic Experience (AX)?
