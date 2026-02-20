@@ -79,8 +79,8 @@
         "completedAt": "2026-02-19T16:48:00Z"
       },
       "step-6-stories": {
-        "status": "not_started",
-        "completedAt": null
+        "status": "completed",
+        "completedAt": "2026-02-19T22:00:00Z"
       },
       "step-7-tests": {
         "status": "not_started",
@@ -100,8 +100,8 @@
         "completedAt": "2026-02-19T16:48:00Z"
       },
       "step-6-stories": {
-        "status": "not_started",
-        "completedAt": null
+        "status": "completed",
+        "completedAt": "2026-02-19T22:00:00Z"
       },
       "step-7-tests": {
         "status": "not_started",
@@ -120,8 +120,8 @@
         "completedAt": "2026-02-19T16:48:00Z"
       },
       "step-6-stories": {
-        "status": "not_started",
-        "completedAt": null
+        "status": "completed",
+        "completedAt": "2026-02-19T22:00:00Z"
       },
       "step-7-tests": {
         "status": "not_started",
@@ -140,8 +140,8 @@
         "completedAt": "2026-02-19T16:48:00Z"
       },
       "step-6-stories": {
-        "status": "not_started",
-        "completedAt": null
+        "status": "completed",
+        "completedAt": "2026-02-19T22:00:00Z"
       },
       "step-7-tests": {
         "status": "not_started",
@@ -160,8 +160,8 @@
         "completedAt": "2026-02-19T16:48:00Z"
       },
       "step-6-stories": {
-        "status": "not_started",
-        "completedAt": null
+        "status": "completed",
+        "completedAt": "2026-02-19T22:00:00Z"
       },
       "step-7-tests": {
         "status": "not_started",

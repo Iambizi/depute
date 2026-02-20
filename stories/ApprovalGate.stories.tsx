@@ -172,7 +172,7 @@ export const WithRealAPIData: Story = {
   name: 'With Real API Data — Scoped Grant',
   args: {
     title: 'Submit refund via Stripe',
-    description: 'A refund of $47.99 will be issued to the customer's original payment method.',
+    description: "A refund of $47.99 will be issued to the customer's original payment method.",
     agentReasoning: 'Customer requested refund within the 30-day policy window. Eligibility confirmed.',
     status: 'pending',
     mode: 'simple',

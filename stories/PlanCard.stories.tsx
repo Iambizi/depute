@@ -11,8 +11,6 @@ const meta: Meta<typeof PlanCard> = {
   argTypes: {
     mode: { control: 'select', options: ['determinate', 'indeterminate'] },
     showConfidence: { control: 'boolean' },
-    showReasoning: { control: 'boolean' },
-    showAssumptions: { control: 'boolean' },
   },
 };
 
@@ -40,8 +38,6 @@ export const AllFeatures: Story = {
     reasoning: 'A sequential approach ensures each step is validated before proceeding to the next.',
     mode: 'determinate',
     showConfidence: true,
-    showReasoning: true,
-    showAssumptions: true,
   },
 };
 
@@ -149,7 +145,7 @@ export const TestVariations: Story = {
             </button>
           ))}
         </div>
-        <PlanCard title={plan.title} steps={plan.steps} showConfidence showAssumptions assumptions={plan.assumptions} />
+        <PlanCard title={plan.title} steps={plan.steps} showConfidence assumptions={plan.assumptions} />
       </div>
     );
   },
@@ -178,7 +174,6 @@ export const SimulateRealTimeUpdates: Story = {
           title={plan.title}
           steps={liveSteps}
           showConfidence
-          showReasoning
           assumptions={plan.assumptions}
           reasoning={plan.reasoning}
         />
@@ -235,6 +230,5 @@ export const ErrorHandling: Story = {
       { id: '3', label: 'Transform records', status: 'failed', reasoning: 'Unexpected null value in required field "customer_id" at row 1,204.' },
       { id: '4', label: 'Write to destination', status: 'pending' },
     ],
-    showReasoning: true,
   },
 };
