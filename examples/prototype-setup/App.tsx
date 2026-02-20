@@ -48,8 +48,7 @@ export default function PrototypeApp() {
           setApproval(
             generateMockApproval({
               mode: 'staged',
-              scope: 'resource',
-              metadata: { target: 'Stripe API' }
+              scope: { target: 'Stripe API' },
             })
           );
         }
