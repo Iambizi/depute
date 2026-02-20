@@ -18,6 +18,7 @@ Update status as milestones are hit.
 | Stripe Checkout UX insights — approval + trust patterns | [AX-STRIPE-CHECKOUT-INSIGHTS.md](research/AX-STRIPE-CHECKOUT-INSIGHTS.md) | Before finalizing ApprovalGate v1 | ⏳ Pending |
 | Distribution strategy (shadcn model overview) | [DISTRIBUTION-STRATEGY-SHADCN.md](research/DISTRIBUTION-STRATEGY-SHADCN.md) | Same as AXK deep-dive above | ✅ Reviewed Feb 19 — confirms registry approach; CLI/blocks deferred to post-reference-app |
 | Skill Layer Opportunity — MCP protocol, skill economy | [SKILL-LAYER-OPPORTUNITY.md](research/SKILL-LAYER-OPPORTUNITY.md) | Post-V0 Traction / post-Theo outreach | ⏳ Pending |
+| Multi-Agent Orchestration UI (Agentic Coding Levels) | [AGENTIC-CODING-LEVELS.md](research/AGENTIC-CODING-LEVELS.md) | During v1 primitive selection | ⏳ Pending |
 
 ---
 
