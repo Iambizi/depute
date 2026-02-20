@@ -227,7 +227,7 @@ Created Claude Cowork case study from live workshop screenshots. Added AX Book r
 - [x] Build PlanCard (first primitive) ✅
 - [x] Build ApprovalGate, ConfidenceMeter, RunControls, ToolTrace, ArtifactCard ✅
 - [x] Mock data utilities (step 5) ✅
-- [ ] Stories / visual tests (step 6)
+- [x] Stories / visual tests (step 6) ✅
 - [ ] Unit tests (step 7)
 
 ---
