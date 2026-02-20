@@ -5,9 +5,9 @@ import { ToolTrace } from './ToolTrace';
 import type { ToolCall } from '../../types/common';
 
 const mockCalls: ToolCall[] = [
-  { id: '1', name: 'search_web', status: 'completed', duration: 1500, input: { query: 'test' }, output: { result: 'ok' }, timestamp: Date.now() },
-  { id: '2', name: 'read_file', status: 'running', timestamp: Date.now() },
-  { id: '3', name: 'write_file', status: 'failed', error: 'File not found', timestamp: Date.now() },
+  { id: '1', name: 'search_web', status: 'completed', duration: 1500, input: { query: 'test' }, output: { result: 'ok' }, timestamp: new Date().toISOString() },
+  { id: '2', name: 'read_file', status: 'running', timestamp: new Date().toISOString() },
+  { id: '3', name: 'write_file', status: 'failed', error: 'File not found', timestamp: new Date().toISOString() },
 ];
 
 describe('ToolTrace', () => {
@@ -23,7 +23,7 @@ describe('ToolTrace', () => {
     it('renders with all optional props', () => {
       render(
         <ToolTrace
-          calls={[{ id: '4', name: 'secure_op', status: 'pending', policyFlags: { requiresApproval: true } }]}
+          calls={[{ id: '4', name: 'secure_op', status: 'pending', policyFlags: { requiresApproval: true }, timestamp: new Date().toISOString() }]}
           autoScroll={false}
           maxHeight="500px"
           expandable={false}
@@ -68,6 +68,7 @@ describe('ToolTrace', () => {
               name: 'test',
               status: 'pending',
               policyFlags: { requiresApproval: true, writesState: true, externalAction: true },
+              timestamp: new Date().toISOString()
             },
           ]}
         />

@@ -15,6 +15,7 @@ Completed all unit tests for v0 primitives.
 - ✅ Created comprehensive Vitest test suites for `ApprovalGate`, `ConfidenceMeter`, `RunControls`, `ToolTrace`, and `ArtifactCard`.
 - ✅ Fixed failing tests in `PlanCard` related to `aria-live` staleness.
 - ✅ All 6 components now have fully passing unit tests covering rendering, state matrix, interactions, and a11y properties.
+- ✅ Fixed TypeScript compilation errors in `ArtifactCard.test.tsx` and `ToolTrace.test.tsx` related to mock payload timestamps.
 - ✅ `vitest` logs 84 out of 84 tests passing. `progress.json` step-7-tests tracked as completed.
 
 ---

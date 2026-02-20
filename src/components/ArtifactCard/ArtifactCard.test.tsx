@@ -1,3 +1,4 @@
+import '@testing-library/jest-dom/vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, it, expect, vi } from 'vitest';
@@ -9,6 +10,7 @@ const mockArtifact: Artifact = {
   title: 'Generated Analysis',
   type: 'markdown',
   content: '# Hello\nThis is a test.',
+  timestamp: new Date().toISOString(),
 };
 
 describe('ArtifactCard', () => {
