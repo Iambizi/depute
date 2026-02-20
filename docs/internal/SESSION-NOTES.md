@@ -670,3 +670,8 @@ Key technical or strategic decisions
 ### Notes
 Any important context or observations
 ```
+
+### 31. Step 7 (Unit Tests) Complete
+*   **Time:** February 2026
+*   **Action:** Created comprehensive Vitest test suites for `ApprovalGate`, `ConfidenceMeter`, `RunControls`, `ToolTrace`, and `ArtifactCard`. Also fixed failing tests in `PlanCard` related to `aria-live` staleness.
+*   **Result:** All 6 components now have fully passing unit tests covering rendering, state matrix, interactions, and a11y properties (`aria-live`, `role="alertdialog"`, etc). `vitest` logs 84 out of 84 tests passing. `progress.json` step-7-tests tracked as completed.
