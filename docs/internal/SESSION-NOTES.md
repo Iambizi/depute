@@ -637,6 +637,15 @@ Initial project setup and documentation formatting. Established core project str
   - Confirms supervision UX direction; identifies event model gap for post-reference-app phase
 - ✅ CLI / `axk.json` / Block 01 remain deferred to post-reference-app (no premature optimization)
 
+#### 30. Stories Built & Node Upgraded (Feb 19)
+- ✅ **Step 6 Complete**: Wrote Storybook stories for all 6 v0 primitives.
+  - 9 stories per component (3 shared, 3 prototyping, 3 production).
+  - Includes live simulation states using `mockData.ts` utilities.
+  - Re-mapped CSS imports in `.storybook/preview.ts` to include AX tokens so rendering matches spec.
+- ✅ **TypeScript check**: `tsc --noEmit` is clean across the entire `stories/` directory.
+- ✅ **Environment Upgrade**: Storybook v10 required Node.js 20.19+, so upgraded from `v20.10.0` to `v20.20.0` via `nvm`.
+- ✅ Verified `npm run build-storybook` successfully builds `storybook-static` output.
+
 ---
 
 ## Session Template (for future sessions)
