@@ -699,3 +699,8 @@ Any important context or observations
 - ✅ Created `examples/prototype-setup` showcasing how to build a mock UI using `mockData.ts` generators without a real API.
 - ✅ Created `examples/production-setup` demonstrating how to swap mock data for a live API stream/SSE hook while preserving the exact same agent UI.
 - ✅ Updated `docs/orchestration/progress.json` to mark `step-8-docs` as completed.
+
+#### 33. TypeScript Fix — `scope` type in prototype example
+- ✅ Fixed TS error in `examples/prototype-setup/App.tsx` line 51: `scope` prop on `ApprovalGateProps` is `{ resourceLimit?, durationSeconds?, target? }` (object), not a string.
+- ✅ Changed `scope: 'resource'` → `scope: { target: 'Stripe API' }` and removed the incorrectly placed `metadata: { target: ... }` override.
+- ✅ Committed: `fix(examples): correct scope type in generateMockApproval call`
