@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import * as React from 'react';
+import { useState, useEffect } from 'react';
 
 // AX Component Primitives
 import { PlanCard } from '../../src/components/PlanCard/PlanCard';
@@ -15,8 +16,8 @@ import {
   generateMockApproval,
   MOCK_TOOL_NAMES
 } from '../../src/utils/mockData';
-
-import type { PlanStep, ToolCall, ApprovalRequest } from '../../src/types/common';
+import type { PlanStep, ToolCall, RunState } from '../../src/types/common';
+import type { ApprovalGateProps } from '../../src/components/ApprovalGate/ApprovalGate.types';
 
 export default function PrototypeApp() {
   const [planSteps, setPlanSteps] = useState<PlanStep[]>([]);
@@ -24,52 +25,49 @@ export default function PrototypeApp() {
   
   const [tools, setTools] = useState<ToolCall[]>([]);
   
-  const [approval, setApproval] = useState<ApprovalRequest | null>(null);
-  const [status, setStatus] = useState<'idle' | 'running' | 'paused' | 'completed' | 'failed'>('idle');
+  const [approval, setApproval] = useState<ApprovalGateProps | null>(null);
+  const [status, setStatus] = useState<RunState>('idle');
 
   // Trigger the simulation on mount
   useEffect(() => {
     // 1. Generate the initial static plan
-    const initialPlan = generateMockPlan(3);
+    const initialPlan = generateMockPlan({ stepCount: 3 });
     setPlanSteps(initialPlan.steps);
     setActiveStepId(initialPlan.steps[0].id);
     setStatus('running');
 
-    // 2. Start the Plan Simulation (auto advances steps 1 -> 2 -> 3)
-    const stopPlan = simulatePlanExecution(
-      initialPlan.steps,
-      (updatedSteps, newActiveId) => {
+    const { cancel: cancelPlan } = simulatePlanExecution({
+      steps: initialPlan.steps,
+      onUpdate: (updatedSteps: PlanStep[]) => {
         setPlanSteps(updatedSteps);
-        setActiveStepId(newActiveId);
+        const activeId = updatedSteps.find(s => s.status === 'active')?.id;
+        setActiveStepId(activeId);
         
-        // Once the final step is reached, pause the run and trigger an approval gate
-        if (newActiveId === undefined) {
+        if (activeId === undefined) {
           setStatus('paused');
           setApproval(
-            generateMockApproval('staged', 'resource', {
-              action: 'Execute Transaction',
-              amount: '$45.00',
-              destination: 'Stripe API'
+            generateMockApproval({
+              mode: 'staged',
+              scope: 'resource',
+              metadata: { target: 'Stripe API' }
             })
           );
         }
       },
-      2500 // 2.5s per step
-    );
+      intervalMs: 2500
+    });
 
-    // 3. Start the Tool Stream Simulation (simulates typing out terminal logs)
-    const stopTools = simulateToolStream(
-      MOCK_TOOL_NAMES,
-      (newToolEntries) => {
-        setTools(newToolEntries);
+    const { cancel: cancelTools } = simulateToolStream({
+      onCall: (call: ToolCall) => {
+        setTools(prev => [...prev, call]);
       },
-      800 // new tool every ~0.8s
-    );
+      intervalMs: 800
+    });
 
     // Cleanup simulations on unmount
     return () => {
-      stopPlan();
-      stopTools();
+      cancelPlan();
+      cancelTools();
     };
   }, []);
 
@@ -83,10 +81,16 @@ export default function PrototypeApp() {
         <div className="flex items-center gap-4">
           <ConfidenceMeter value={92} display="badge" />
           <RunControls 
-            status={status} 
+            state={status} 
             onPause={() => setStatus('paused')}
-            onResume={() => setStatus('running')}
+            onStart={() => setStatus('running')}
             onStop={() => setStatus('failed')}
+            onRetry={() => {
+              setStatus('running');
+              if (planSteps.length > 0) {
+                setActiveStepId(planSteps[0].id);
+              }
+            }}
           />
         </div>
       </header>

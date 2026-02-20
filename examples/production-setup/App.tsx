@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 
 // AX Component Primitives
 import { PlanCard } from '../../src/components/PlanCard/PlanCard';
@@ -15,6 +15,7 @@ const useAgentStream = (_endpoint: string) => ({
   pauseRun: () => {},
   resumeRun: () => {},
   stopRun: () => {},
+  retryRun: () => {},
   approveStagedRun: () => {},
   rejectStagedRun: () => {},
   status: 'idle' as 'idle' | 'running' | 'paused' | 'completed' | 'failed',
@@ -37,6 +38,7 @@ export default function ProductionApp() {
     pauseRun,
     resumeRun,
     stopRun,
+    retryRun,
     approveStagedRun,
     rejectStagedRun,
     
@@ -62,10 +64,11 @@ export default function ProductionApp() {
           <div className="flex items-center gap-4">
             <ConfidenceMeter value={confidence} display="badge" />
             <RunControls 
-              status={status} 
+              state={status} 
               onPause={pauseRun}
-              onResume={resumeRun}
+              onStart={resumeRun}
               onStop={stopRun}
+              onRetry={retryRun}
             />
           </div>
         )}
