@@ -693,3 +693,9 @@ Key technical or strategic decisions
 ### Notes
 Any important context or observations
 ```
+
+#### 32. Step 8 (Documentation & Examples) Complete
+- ✅ Wrote root `README.md` introducing the AXK distribution architecture and outlining the 6 v0 primitives.
+- ✅ Created `examples/prototype-setup` showcasing how to build a mock UI using `mockData.ts` generators without a real API.
+- ✅ Created `examples/production-setup` demonstrating how to swap mock data for a live API stream/SSE hook while preserving the exact same agent UI.
+- ✅ Updated `docs/orchestration/progress.json` to mark `step-8-docs` as completed.
