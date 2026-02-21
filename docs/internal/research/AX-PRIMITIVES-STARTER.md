@@ -2,7 +2,7 @@
 
 **Type:** 🧩 Primitive Catalog
 **Scope:** 48+ primitives across 8 categories
-**v0 Status:** 6 primitives locked for build (Feb 15, 2026) — see `CATALOG-v0.md`
+**v0 Status:** 6 primitives locked for build (Feb 15, 2026) — see `catalog-versions/CATALOG-v0.md`
 
 > **Purpose:** UI building blocks for delegation, trust, and visibility — not "chat components."
 

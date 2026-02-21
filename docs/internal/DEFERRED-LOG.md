@@ -28,7 +28,7 @@ Update status as milestones are hit.
 | Item | File | Resolved |
 |---|---|---|
 | AX Book — 12 chapters of agent UX research | [AX-BOOK.md](research/AX-BOOK.md) | ✅ Feb 2026 — informed all 6 primitives |
-| v0 Catalog — what 6 primitives to build | [CATALOG-v0.md](research/CATALOG-v0.md) | ✅ Feb 15, 2026 — locked and built |
+| v0 Catalog — what 6 primitives to build | [CATALOG-v0.md](research/catalog-versions/CATALOG-v0.md) | ✅ Feb 15, 2026 — locked and built |
 | AX Primitives starter list | [AX-PRIMITIVES-STARTER.md](research/AX-PRIMITIVES-STARTER.md) | ✅ Feb 15, 2026 — superseded by CATALOG-v0 |
 | Claude co-work analysis | [AX-CLAUDE-COWORK-ANALYSIS.md](research/AX-CLAUDE-COWORK-ANALYSIS.md) | ✅ Applied to build approach |
 

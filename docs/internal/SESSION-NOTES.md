@@ -216,7 +216,7 @@ Created Claude Cowork case study from live workshop screenshots. Added AX Book r
 #### 15. Catalog v0 Locked (Feb 15)
 - ✅ Selected 6 primitives: `PlanCard`, `ApprovalGate`, `ConfidenceMeter`, `RunControls`, `ToolTrace`, `ArtifactCard`
 - ✅ Triaged 3 overlapping candidates: `CommitGate` absorbed into ApprovalGate, `UncertaintyBadge` absorbed into ConfidenceMeter, `EscapeHatchBar` deferred to v1
-- ✅ Created `docs/internal/research/CATALOG-v0.md`
+- ✅ Created `docs/internal/research/catalog-versions/CATALOG-v0.md`
 - ✅ Documented master roadmap in `VC-ORCHESTRATION.md`
 
 #### 16. v0 Migration — Full Repo Update (Feb 15)
