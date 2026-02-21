@@ -11,7 +11,7 @@ v1 solves the **"Multi-Agent Orchestration"** problem (Figure 8). As agents move
 
 ## Proposed v1 Primitives
 
-These 4 primitives form the foundation of the v1 catalog.
+These 5 primitives form the foundation of the v1 catalog.
 
 ### 1. `OrchestratorView` (Structural)
 The macro-level visualization of the agent hierarchy.
@@ -36,6 +36,12 @@ The representation of "Generative Momentum."
 * **Problem:** Orchestrators break large goals into dozens of sub-tasks. The user needs to see the backlog of upcoming work that has not yet been assigned to a worker node.
 * **Anatomy:** A Kanban-like list or scrolling queue of pending intents.
 * **Interaction:** Allows the human to reorder priority, inject new manual tasks, or pause specific tasks before they are delegated to a worker.
+
+### 5. `HandoffProtocol` (Transition)
+The standardized UI for passing context between entities.
+* **Problem:** In a multi-agent swarm, context is constantly handed off (Orchestrator → Specialist, or Agent → Human). Without a visible protocol, the user loses trust in the transfer.
+* **Anatomy:** A structured transfer card showing the source, destination, assigned goal, and attached payload/context.
+* **Interaction:** Allows a human to intercept a handoff, review the payload, or forcefully route to a different agent/human.
 
 ## Integration with v0
 

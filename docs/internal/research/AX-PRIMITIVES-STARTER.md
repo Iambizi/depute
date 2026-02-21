@@ -3,7 +3,7 @@
 **Type:** 🧩 Primitive Catalog
 **Scope:** 50+ primitives across 9 categories
 **v0 Status:** 6 primitives locked for build (Feb 15, 2026) — see `catalog-versions/CATALOG-v0.md`
-**v1 Status:** 4 orchestration primitives locked (Feb 21, 2026) — see `catalog-versions/CATALOG-v1.md`
+**v1 Status:** 5 orchestration primitives locked (Feb 21, 2026) — see `catalog-versions/CATALOG-v1.md`
 
 > **Purpose:** UI building blocks for delegation, trust, and visibility — not "chat components."
 
@@ -148,6 +148,7 @@ Scale from single-threaded loops to parallel, hierarchical swarms managed by an 
 | `AgentRoster` | Resource management view of concurrent workers and their states | ⏳ v1 |
 | `SubagentCard` | Condensed node component showing an individual worker's status | ⏳ v1 |
 | `TaskQueue` | Backlog of pending jobs/requests waiting for available worker capacity | ⏳ v1 |
+| `HandoffProtocol` | Standardized UI for passing context from Orchestrator → Specialist → Human | ⏳ v1 |
 
 ---
 
@@ -213,7 +214,6 @@ Small demos combining primitives into flows:
 | `CommitGate` | Explicit "Preview → Confirm → Execute" state machine for high-stakes actions | AX Book Ch 11 | `ApprovalGate` (stateful variant) | 🟡 Medium |
 | `PermissionBroker` | Manages scopes, time limits, and spend caps for agents | AX Book Ch 11 | `ThrottleControl` (backend logic) | 🟡 Medium |
 | `TrustProfile` | Dashboard showing "what the system knows about me" and "what it's allowed to do" | AX Book Ch 11 | `RelationshipHealth` + `MemoryPanel` | 🟡 Medium |
-| `HandoffProtocol` | Standardized UI for passing context from Orchestrator → Specialist → Human | AX Book Ch 11 | `HumanTakeover` (expanded) | 🟡 Medium |
 | `TrustScoreboard` | Admin view of signals over time: reversals, corrections, escalations | AX Book Ch 12 | — | 🟢 Low |
 | `UncertaintyBadge` | Distinct component for "I'm guessing here" vs "I know this" | AX Book Ch 12 | `ConfidenceMeter` (inverse) | 🟡 Medium |
 | `RecoveryFlow` | Standardized pattern for "Admit Mistake → Fix → Verify" | AX Book Ch 12 | — | 🟡 Medium |
