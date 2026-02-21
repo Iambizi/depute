@@ -80,7 +80,13 @@ v0 ships **6 primitives across 4 categories**:
 | Transparency & Trace | `ToolTrace`, `ArtifactCard` | Making the system legible while working + clear outputs |
 | Control & Steering | `RunControls` | Steering agents without breaking flow |
 
-Deferred primitives (v1+): `IntentBar`, `MemoryPanel`, `ThrottleControl`, `RiskBadge`, `AdaptiveCanvas`, financial primitives.
+### Upcoming v1 (Orchestration & Distribution)
+
+With v0 solving single-agent oversight, v1 focuses on multi-agent swarms and AI-native distribution.
+* **Orchestration Primitives**: `AgentRoster`, `OrchestratorView`, `SubagentCard`, `TaskQueue`
+* **Distribution Layer**: Native AI Skills (`skills.sh` and Anthropic `.claude/skills`) to teach coding agents how to install and use AX Components.
+
+*Deferred primitives (v2+):* `IntentBar`, `MemoryPanel`, `ThrottleControl`, `RiskBadge`, `AdaptiveCanvas`, financial primitives.
 
 ### Architecture Overview
 
