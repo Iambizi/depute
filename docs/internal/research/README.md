@@ -21,13 +21,16 @@ External examples of companies solving AX problems — patterns to learn from, n
 | `COINBASE-AGENTIC-WALLETS.md` | Coinbase | x402 machine-to-machine protocol, session spending caps, transaction guardrails, authorization vs autonomy |
 
 ### 🏗️ Architecture & Protocol Analysis
-- [Distribution Strategy: The shadcn Model](./DISTRIBUTION-STRATEGY-SHADCN.md) - CLI-based component distribution vs npm packages
 
-Specs and protocols that inform how our library should be structured.
+Specs and protocols that inform how our library should be structured and distributed to both humans and AI agents.
 
 | File | Source | Key Insight |
 |------|--------|-------------|
 | `A2UI-Implications.md` | Google (A2UI v0.8) | Catalog-first, schema-first design. AX Components = design system layer above A2UI renderer (compatibility target, not dependency) |
+| `DISTRIBUTION-STRATEGY-SHADCN.md` | shadcn/ui | CLI-based component distribution vs npm packages (Code Ownership is critical for AI). |
+| `SKILL-LAYER-OPPORTUNITY.md` | Vercel / Anthropic | Distributing component intelligence via `skills.sh` and Anthropic native skills. |
+| `AX-SKILL-SPEC.md` | AX Strategy | The architectural specification for the AX Skill (trigger conditions, progressive disclosure, AXK copy-paste payload). |
+| `AGENTIC-CODING-LEVELS.md` | AX Framework | The 8 levels of agentic coding, targeting Orchestrated Hierarchy (Fig 8) for v1's multi-agent primitives. |
 
 ### 🧩 Primitive Catalogs
 
@@ -35,7 +38,9 @@ Component inventories and building block definitions.
 
 | File | Scope | Key Insight |
 |------|-------|-------------|
-| `AX-PRIMITIVES-STARTER.md` | 48+ primitives, 8 categories | Intent, trust, transparency, memory, canvas, control, output, social — with 3-layer architecture proposal |
+| `AX-PRIMITIVES-STARTER.md` | 48+ primitives | The master tracker for all primitive ideas generated across research sessions. |
+| `catalog-versions/CATALOG-v0.md` | v0 (6 primitives) | The final locked catalog for the v0 launch. |
+| `catalog-versions/CATALOG-v1.md` | v1 (4 primitives) | The draft catalog for the v1 multi-agent orchestration milestone. |
 
 ### 📖 Book Notes
 
@@ -57,7 +62,7 @@ Notes from foundational AX reading — in progress.
 
 - **Repo:** AX Components for React (`AX-CMP-S-K`)
 - **Strategy:** Open source first (MIT License), monetize via expertise later
-- **Status:** Research phase — component library not yet scaffolded
+- **Status:** v0 Released / v1 Planning Phase
 - **Key docs elsewhere:**
   - `docs/internal/BUILDER-SPEC.md` — Full builder specification
   - `docs/internal/MONETIZATION-MODEL.md` — Revenue strategy
