@@ -4,6 +4,47 @@
 
 ---
 
+## Session 9 - February 20-21, 2026
+
+### Overview
+Finalized v0 validation, documented the "Levels of Agentic Coding" framework, and officially released v0.1.0 of the AX Components library.
+
+### Accomplishments
+
+#### 32. Step 8 (Documentation & Examples) Complete
+- ✅ Wrote root `README.md` introducing the AXK distribution architecture and outlining the 6 v0 primitives.
+- ✅ Created `examples/prototype-setup` showcasing how to build a mock UI using `mockData.ts` generators without a real API.
+- ✅ Created `examples/production-setup` demonstrating how to swap mock data for a live API stream/SSE hook while preserving the exact same agent UI.
+- ✅ Updated `docs/orchestration/progress.json` to mark `step-8-docs` as completed.
+
+#### 33. TypeScript Fix — `scope` type in prototype example
+- ✅ Fixed TS error in `examples/prototype-setup/App.tsx` line 51: `scope` prop on `ApprovalGateProps` is `{ resourceLimit?, durationSeconds?, target? }` (object), not a string.
+- ✅ Changed `scope: 'resource'` → `scope: { target: 'Stripe API' }` and removed the incorrectly placed `metadata: { target: ... }` override.
+- ✅ Committed: `fix(examples): correct scope type in generateMockApproval call`
+
+#### 34. Step 9 (Validation) Complete -> v0 is READY
+- ✅ `tsc --noEmit` clean across `src/`, `stories/`, and `examples/`.
+- ✅ All 84 Vitest unit tests passing (100% coverage of v0).
+- ✅ `vite build` generated correct `dist/ax-components.es.js` and `.cjs.js`.
+- ✅ Storybook build completed successfully to `storybook-static/`.
+- ✅ Verified ZERO `any` types in source files, 100% `aria-` and `role=` attribute coverage, and full `--ax-` token adoption in all CSS modules.
+- ✅ Marked `step-9-validate` as completed in `progress.json`. The AX Components v0 library is officially built and validated.
+
+#### 35. v0.1.0 Officially Released
+- ✅ Drafted release notes and launch announcement in `docs/RELEASES.md`.
+- ✅ Tagged commit as `v0.1.0` in git and pushed to remote.
+- ✅ Marked v0 as fully complete and released.
+
+### Key Decisions
+1. **Defer Reference App.** While valuable, building a full reference app is deferred in favor of officially wrapping up v0 and capitalizing on the Agentic Coding Levels research to draft the v1 catalog.
+2. **Prioritize v0 Launch & v1 Design.** Next immediate actions are administrative wrap-up for v0 (tag release, etc.) and defining the new orchestration primitives for v1 based on the Fig 8 model.
+
+### Next Steps
+- [ ] Draft v1 catalog (AgentRoster, OrchestratorView, SubagentCard, TaskQueue, etc.)
+- [ ] Define AX Skill distribution architecture (skills.sh vs Anthropic native)
+
+---
+
 ## Session 8 - February 20, 2026
 
 ### Overview
@@ -286,7 +327,7 @@ Created Claude Cowork case study from live workshop screenshots. Added AX Book r
 - [x] Build ApprovalGate, ConfidenceMeter, RunControls, ToolTrace, ArtifactCard ✅
 - [x] Mock data utilities (step 5) ✅
 - [x] Stories / visual tests (step 6) ✅
-- [ ] Unit tests (step 7)
+- [x] Unit tests (step 7)
 
 ---
 
@@ -694,34 +735,3 @@ Key technical or strategic decisions
 Any important context or observations
 ```
 
-#### 32. Step 8 (Documentation & Examples) Complete
-- ✅ Wrote root `README.md` introducing the AXK distribution architecture and outlining the 6 v0 primitives.
-- ✅ Created `examples/prototype-setup` showcasing how to build a mock UI using `mockData.ts` generators without a real API.
-- ✅ Created `examples/production-setup` demonstrating how to swap mock data for a live API stream/SSE hook while preserving the exact same agent UI.
-- ✅ Updated `docs/orchestration/progress.json` to mark `step-8-docs` as completed.
-
-#### 33. TypeScript Fix — `scope` type in prototype example
-- ✅ Fixed TS error in `examples/prototype-setup/App.tsx` line 51: `scope` prop on `ApprovalGateProps` is `{ resourceLimit?, durationSeconds?, target? }` (object), not a string.
-- ✅ Changed `scope: 'resource'` → `scope: { target: 'Stripe API' }` and removed the incorrectly placed `metadata: { target: ... }` override.
-- ✅ Committed: `fix(examples): correct scope type in generateMockApproval call`
-
-#### 34. Step 9 (Validation) Complete -> v0 is READY
-- ✅ `tsc --noEmit` clean across `src/`, `stories/`, and `examples/`.
-- ✅ All 84 Vitest unit tests passing (100% coverage of v0).
-- ✅ `vite build` generated correct `dist/ax-components.es.js` and `.cjs.js`.
-- ✅ Storybook build completed successfully to `storybook-static/`.
-- ✅ Verified ZERO `any` types in source files, 100% `aria-` and `role=` attribute coverage, and full `--ax-` token adoption in all CSS modules.
-- ✅ Marked `step-9-validate` as completed in `progress.json`. The AX Components v0 library is officially built and validated.
-
-#### 35. v0.1.0 Officially Released
-- ✅ Drafted release notes and launch announcement in `docs/RELEASES.md`.
-- ✅ Tagged commit as `v0.1.0` in git and pushed to remote.
-- ✅ Marked v0 as fully complete and released.
-
-### Key Decisions
-1. **Defer Reference App.** While valuable, building a full reference app is deferred in favor of officially wrapping up v0 and capitalizing on the Agentic Coding Levels research to draft the v1 catalog.
-2. **Prioritize v0 Launch & v1 Design.** Next immediate actions are administrative wrap-up for v0 (tag release, etc.) and defining the new orchestration primitives for v1 based on the Fig 8 model.
-
-### Next Steps
-- [x] Prepare v0 release (GitHub tag, publish strategy, launch notes)
-- [ ] Draft v1 catalog (AgentRoster, OrchestratorView, TaskQueue, etc.)
