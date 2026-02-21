@@ -154,7 +154,7 @@ useMemory()
 - Validation + safety gates
 - Adjacency-list diffing + message buffering
 
-Layer A is always useful standalone. Layer C is optional. See `research/A2UI-Implications.md` for protocol details.
+Layer A is always useful standalone. Layer C is optional. See `research/architecture-and-protocols/A2UI-Implications.md` for protocol details.
 
 ---
 
@@ -274,6 +274,7 @@ Pick primitives that are:
 
 ## Key Research References
 
-- `research/A2UI-Implications.md` — Google A2UI protocol analysis and strategic positioning
-- `research/AX-STRIPE-CHECKOUT-INSIGHTS.md` — Stripe's agentic patterns mapped to AX primitives
+- `research/book-notes/AX-BOOK.md` — Chapter summaries informing the catalog
+- `research/architecture-and-protocols/A2UI-Implications.md` — Google A2UI protocol analysis and strategic positioning
+- `research/case-studies/AX-STRIPE-CHECKOUT-INSIGHTS.md` — Stripe's agentic patterns mapped to AX primitives
 - `research/AX-Primitives-starter.md` — Full 48-primitive catalog definition

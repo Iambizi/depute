@@ -140,7 +140,7 @@ Created Claude Cowork case study from live workshop screenshots. Added AX Book r
 - ✅ Added new 📖 Book Notes category to research index
 
 #### 4. AX Book Chapter 6 — Generative UI (Feb 12)
-- ✅ Integrated Chapter 6 notes into `AX-BOOK.md` — Generative UI as precision, not vibes
+- ✅ Integrated Chapter 6 notes into `docs/internal/research/book-notes/AX-BOOK.md` — Generative UI as precision, not vibes
 - ✅ Key concepts: "generative within guardrails," stable spine + contextual surfaces, conversational discovery
 - ✅ Cross-referenced 7 implied primitives against catalog — 1 genuinely new (`CapabilityGlossary`)
 
@@ -150,7 +150,7 @@ Created Claude Cowork case study from live workshop screenshots. Added AX Book r
 - ✅ Decision: wait to revise catalog until book is finished (Ch 7-12 still pending)
 
 #### 6. AX Book Chapter 7 — Invisible UI (Feb 13)
-- ✅ Integrated Chapter 7 notes into `AX-BOOK.md` — invisible UI as "ambient unless needed"
+- ✅ Integrated Chapter 7 notes into `docs/internal/research/book-notes/AX-BOOK.md` — invisible UI as "ambient unless needed"
 - ✅ Key concepts: interface detail vs machine intelligence, gradual fade, escalation thresholds, "trust becomes everything"
 - ✅ Cross-referenced 7 implied primitives — 3 genuinely new: `AmbientNudge`, `ExceptionInbox`, `QuietMode`
 - ✅ These are the first primitives for the **ambient/invisible side** of AX — a new category
@@ -188,8 +188,8 @@ Created Claude Cowork case study from live workshop screenshots. Added AX Book r
 
 #### 12. Strategic Vision: The "AX Playbook" (Feb 14)
 - ✅ Captured growing sentiment that research > just library specs
-- ✅ Created `docs/internal/research/AX-META-STRATEGY.md`
-- ✅ Documented "Trust Architect Agent" concept (using this folder as training data)
+- ✅ Created `docs/internal/research/strategy/AX-META-STRATEGY.md`
+- ✅ Created `docs/internal/research/strategy/DELEGATION-ERA-STRATEGY.md`gent" concept (using this folder as training data)
 - ✅ Documented "3I Lens" as a consulting framework
 
 #### 13. Distribution Strategy: The shadcn Model (Feb 14)
@@ -290,7 +290,7 @@ Created Claude Cowork case study from live workshop screenshots. Added AX Book r
 - ✅ Build verified: `tsc --noEmit` ✓, `vite build` ✓ (4.12 kB CSS, 10.66 kB JS)
 
 #### 25. Distribution Deep Dive — Saved for Post-v0 (Feb 17)
-- ✅ Saved ChatGPT shadcn research to `docs/internal/research/AXK-DISTRIBUTION-DEEP-DIVE.md`
+- 📖 Finished reading **Chapter 10 (Relationship Moats)** and added notes to `docs/internal/research/book-notes/AX-BOOK.md`.-DISTRIBUTION-DEEP-DIVE.md`
 - Covers: `axk.json` fingerprint, registry manifests, blocks (run-monitoring-flow, failure-recovery, confidence-escalation)
 - 🚫 Deferred: CLI + blocks require components to exist first — revisit after all 6 primitives ship
 
@@ -388,9 +388,9 @@ Continued AX research phase. Imported Stripe Agentic Checkout insights and A2UI 
 ### Accomplishments
 
 #### 1. Research Documents
-- ✅ Created `docs/internal/research/AX-STRIPE-CHECKOUT-INSIGHTS.md`
+- ✅ Created `docs/internal/research/case-studies/AX-STRIPE-CHECKOUT-INSIGHTS.md`
   - Stripe's approach: protocol + event stream, permissions + approvals, stateful replayable/auditable flows
-- ✅ Created `docs/internal/research/A2UI-Implications.md`
+- ✅ Created `docs/internal/research/architecture-and-protocols/A2UI-Implications.md`
   - Analyzed Google's A2UI spec (v0.8, Apache 2.0) for implications on AX Components
   - Key takeaways: catalog-first, schema-first, event-first design
   - Extracted surface model, adjacency list structure, 4 message types, JSON Pointer data binding
@@ -404,7 +404,7 @@ Continued AX research phase. Imported Stripe Agentic Checkout insights and A2UI 
 - Building the reference React renderer would give AX Components instant legitimacy
 - Aligns perfectly with open-source-first strategy (Apache 2.0 + MIT compatible)
 - Opens door to collaboration with Google and CopilotKit teams
-- Documented in `A2UI-Implications.md` § "Strategic Opportunity"
+- Documented in `docs/internal/research/architecture-and-protocols/A2UI-Implications.md` § "Strategic Opportunity"
 
 ### Key Decisions Made
 1. **Catalog-first design** — Even without adopting A2UI directly, design primitives as schema-renderable contracts
@@ -432,7 +432,7 @@ Imported initial AX primitives research, analyzed Storybook limitations, and piv
 ### Accomplishments
 
 #### 1. AX Primitives Research
-- ✅ Created `docs/internal/research/AX-Primitives-starter.md`
+- ✅ Created `docs/internal/research/AX-PRIMITIVES-STARTER.md`
   - 48 primitives across 8 categories
   - Categories: Intent & Delegation, Trust & Approval, Transparency & Trace, Memory, Adaptive Canvas, Control & Steering, Output, Social & Shared-Work
   - Proposed 3-layer architecture: headless primitives, UI components, reference recipes

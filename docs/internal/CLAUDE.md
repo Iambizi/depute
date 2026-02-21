@@ -61,7 +61,7 @@ Layer A is always useful standalone. Layer C is optional.
 
 ## A2UI Protocol Relationship
 
-Google's A2UI is a **compatibility target**, not a dependency. Our only real dependency is React. The project is spec-aligned with A2UI but does not require it. See `docs/internal/research/A2UI-Implications.md` for full analysis.
+Google's A2UI is a **compatibility target**, not a dependency. Our only real dependency is React. The project is spec-aligned with A2UI but does not require it. See `docs/internal/research/architecture-and-protocols/A2UI-Implications.md` for full analysis.
 
 ## Tech Stack
 
