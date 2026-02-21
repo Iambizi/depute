@@ -1,8 +1,9 @@
 # AX Primitives - Starter Reference
 
 **Type:** 🧩 Primitive Catalog
-**Scope:** 48+ primitives across 8 categories
+**Scope:** 50+ primitives across 9 categories
 **v0 Status:** 6 primitives locked for build (Feb 15, 2026) — see `catalog-versions/CATALOG-v0.md`
+**v1 Status:** 4 orchestration primitives locked (Feb 21, 2026) — see `catalog-versions/CATALOG-v1.md`
 
 > **Purpose:** UI building blocks for delegation, trust, and visibility — not "chat components."
 
@@ -137,6 +138,19 @@ For team collaboration — design as extension points even if built later.
 
 ---
 
+## 9. Multi-Agent Orchestration Primitives
+
+Scale from single-threaded loops to parallel, hierarchical swarms managed by an Orchestrator.
+
+| Primitive | Description | v0 Status |
+|-----------|-------------|:---------:|
+| `OrchestratorView` | Macro-level visualization of the agent command-and-control hierarchy | ⏳ v1 |
+| `AgentRoster` | Resource management view of concurrent workers and their states | ⏳ v1 |
+| `SubagentCard` | Condensed node component showing an individual worker's status | ⏳ v1 |
+| `TaskQueue` | Backlog of pending jobs/requests waiting for available worker capacity | ⏳ v1 |
+
+---
+
 ## Library Architecture
 
 To package these as a proper primitives kit, structure in 3 layers:
@@ -170,7 +184,6 @@ Small demos combining primitives into flows:
 
 | Candidate | Description | Source | Overlaps With | Priority |
 |---|---|---|---|---|
-| `TaskQueue` | Queue follow-up instructions for a running agent without interrupting | Cowork Analysis | — | 🟡 Medium |
 | `TaskSuggestions` | Starter task cards — concrete proposals the user can pick to begin | Cowork Landing Page, AX Book Ch 6 | `CommandPalette`, `NextActionBar` (partial) | 🟡 Medium |
 | `ModelBadge` | Display which AI model is running the current task | Cowork Analysis | Could be `IntentBar` prop | 🟢 Low |
 | `CapabilityGlossary` | Browsable, searchable list of what the agent can do | AX Book Ch 6 | — | 🟡 Medium |
@@ -221,4 +234,4 @@ Small demos combining primitives into flows:
 - **Financial Autonomy (Val):** Coinbase report validates the need for strict, specialized throttles (`BudgetCap`, `TransactionGate`) — matching our "Trust & Safety" category perfectly.
 - **Safe Autonomy Wedge:** User analysis identifies "Safe Autonomy" (Mandate + Guardrails) as the killer use case. Financial primitives should be prioritized as a "Spend Controls Kit."
 
-*Last updated: Feb 15, 2026 — v0 status added; through AX Book Ch 12 + Cowork Analysis + Coinbase Deep Dive*
+*Last updated: Feb 21, 2026 — v1 status added; multi-agent orchestration category introduced*
