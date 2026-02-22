@@ -45,7 +45,7 @@ export type { ArtifactCardProps, ExportFormat } from './components/ArtifactCard'
 
 // --- v1 Orchestration Primitives ---
 export { OrchestratorView } from './components/OrchestratorView';
-export type { OrchestratorViewProps } from './components/OrchestratorView';
+export type { OrchestratorViewProps, OrchestratorNode, AgentStatus } from './components/OrchestratorView';
 
 export { AgentRoster } from './components/AgentRoster';
 export type { AgentRosterProps, AgentRosterItem } from './components/AgentRoster';

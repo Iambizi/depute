@@ -1,122 +1,194 @@
+/* AgentRoster — dense table layout for flat swarm scanning */
+
 .base {
   display: flex;
   flex-direction: column;
   border-radius: 8px;
-  background-color: var(--ax-bg-primary, #ffffff);
   border: 1px solid var(--ax-border-color, #e5e7eb);
-  overflow: hidden;
+  background: var(--ax-bg-primary, #ffffff);
   font-family: var(--ax-font-sans, system-ui, sans-serif);
+  overflow: hidden;
 }
 
+/* Header */
 .header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 12px 16px;
-  background-color: var(--ax-bg-secondary, #f9fafb);
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 10px 16px;
+  background: var(--ax-bg-secondary, #f9fafb);
   border-bottom: 1px solid var(--ax-border-color, #e5e7eb);
 }
 
-.header h3 {
-  margin: 0;
-  font-size: 14px;
-  font-weight: 500;
+.title {
+  font-size: 13px;
+  font-weight: 600;
   color: var(--ax-text-primary, #111827);
 }
 
-.badge {
-  font-size: 12px;
-  padding: 2px 8px;
-  border-radius: 12px;
-  background-color: var(--ax-bg-tertiary, #e5e7eb);
-  color: var(--ax-text-secondary, #4b5563);
-}
-
-.empty {
-  padding: 32px;
-  text-align: center;
-  color: var(--ax-text-tertiary, #9ca3af);
-  font-size: 14px;
-}
-
-.tableRef {
+.summary {
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
+  gap: 6px;
 }
 
-.tableHeader, .row {
-  display: flex;
-  padding: 12px 16px;
-  border-bottom: 1px solid var(--ax-border-color, #e5e7eb);
-}
-
-.tableHeader {
-  background-color: var(--ax-bg-secondary, #f9fafb);
-  font-size: 12px;
-  font-weight: 500;
+.pill {
+  font-size: 10px;
+  font-weight: 600;
   text-transform: uppercase;
-  color: var(--ax-text-secondary, #4b5563);
-  letter-spacing: 0.05em;
+  letter-spacing: 0.04em;
+  padding: 2px 8px;
+  border-radius: 10px;
 }
 
-.row {
-  background: none;
-  border-top: none;
-  border-left: none;
-  border-right: none;
+.pillWorking { background: #d1fae5; color: #065f46; }
+.pillBlocked { background: #fef3c7; color: #92400e; }
+.pillFailed { background: #fee2e2; color: #991b1b; }
+.pillIdle { background: #f3f4f6; color: #6b7280; }
+.pillCompleted { background: #ede9fe; color: #4c1d95; }
+
+/* Empty */
+.empty {
+  padding: 48px 24px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--ax-text-tertiary, #9ca3af);
+}
+
+/* Table wrapper */
+.tableWrapper {
+  overflow-x: auto;
+}
+
+.table {
   width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+/* Head row */
+.headRow {
+  background: var(--ax-bg-secondary, #f9fafb);
+}
+
+.headCell {
+  padding: 8px 12px;
   text-align: left;
-  font-family: inherit;
-  font-size: 14px;
-  color: var(--ax-text-primary, #111827);
-  cursor: pointer;
-  transition: background-color 0.15s ease;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ax-text-secondary, #6b7280);
+  border-bottom: 1px solid var(--ax-border-color, #e5e7eb);
+  white-space: nowrap;
+}
+
+/* Body rows */
+.row {
+  border-bottom: 1px solid var(--ax-border-color, #f3f4f6);
+  transition: background 0.12s ease;
 }
 
 .row:last-child {
   border-bottom: none;
 }
 
-.row:hover {
-  background-color: var(--ax-bg-secondary, #f9fafb);
+.rowClickable {
+  cursor: pointer;
 }
 
-.colName, .colRole, .colStatus {
-  flex: 1;
-  display: flex;
-  align-items: center;
+.rowClickable:hover {
+  background: var(--ax-bg-secondary, #f9fafb);
 }
 
-.colRole {
-  color: var(--ax-text-secondary, #4b5563);
+.rowClickable:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: -2px;
 }
 
-/* Status Badges */
-.statusBadge {
-  display: inline-flex;
-  padding: 2px 8px;
-  border-radius: 4px;
-  font-size: 12px;
-  font-weight: 500;
-  text-transform: capitalize;
+.rowSelected {
+  background: #eff6ff !important;
 }
 
-.idle {
-  background-color: #f3f4f6;
-  color: #4b5563;
+/* Cells */
+.cellStatus {
+  padding: 10px 0 10px 16px;
+  width: 24px;
 }
 
-.working {
-  background-color: #dbeafe;
-  color: #1d4ed8;
+.cellName {
+  padding: 8px 12px;
+  min-width: 150px;
 }
 
-.blocked {
-  background-color: #fef3c7;
-  color: #d97706;
+.cellTask {
+  padding: 8px 12px;
+  max-width: 280px;
 }
 
-.failed {
-  background-color: #fee2e2;
-  color: #b91c1c;
+.cellMeta {
+  padding: 8px 12px;
+  white-space: nowrap;
+  color: var(--ax-text-secondary, #64748b);
+}
+
+/* Status dot */
+.dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.dotIdle { background: #d1d5db; }
+.dotWorking { background: #10b981; }
+.dotBlocked { background: #f59e0b; }
+.dotFailed { background: #ef4444; }
+.dotCompleted { background: #6366f1; }
+
+.dotPulsing {
+  animation: rosterPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes rosterPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+/* Agent name/role */
+.agentName {
+  display: block;
+  font-weight: 600;
+  color: var(--ax-text-primary, #111827);
+}
+
+.agentRole {
+  display: block;
+  font-size: 10px;
+  color: var(--ax-text-secondary, #6b7280);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-top: 1px;
+}
+
+/* Task text */
+.taskText {
+  color: var(--ax-text-secondary, #374151);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+  max-width: 280px;
+  font-style: italic;
+}
+
+.taskEmpty,
+.metaEmpty {
+  color: var(--ax-text-tertiary, #d1d5db);
+}
+
+.metaValue {
+  color: var(--ax-text-secondary, #374151);
 }
