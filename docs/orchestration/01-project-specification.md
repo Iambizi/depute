@@ -83,7 +83,7 @@ v0 ships **6 primitives across 4 categories**:
 ### Upcoming v1 (Orchestration & Distribution)
 
 With v0 solving single-agent oversight, v1 focuses on multi-agent swarms and AI-native distribution.
-* **Orchestration Primitives**: `AgentRoster`, `OrchestratorView`, `SubagentCard`, `TaskQueue`, `HandoffProtocol`, `DelegationGate`, `SwarmMonitor`, `EscalationRouter`
+* **Orchestration Primitives**: `AgentRoster`, `OrchestratorView`, `SubagentCard`, `TaskQueue`, `HandoffProtocol`, `DelegationGate`, `SwarmMonitor`, `EscalationRouter`, `SwarmInbox`, `BranchControls`, `SharedContextLedger`
 * **Distribution Layer**: Native AI Skills (`skills.sh` and Anthropic `.claude/skills`) to teach coding agents how to install and use AX Components.
 
 *Deferred primitives (v2+):* `IntentBar`, `MemoryPanel`, `ThrottleControl`, `RiskBadge`, `AdaptiveCanvas`, financial primitives.

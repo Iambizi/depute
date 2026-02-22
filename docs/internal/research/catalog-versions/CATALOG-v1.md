@@ -14,7 +14,7 @@ While v1's ultimate target is the hierarchical tree (Figure 8 - Orchestrated Hie
 
 ## Proposed v1 Primitives
 
-These 8 primitives form the foundation of the v1 catalog.
+These 11 primitives form the foundation of the v1 catalog.
 
 ### 1. `OrchestratorView` (Structural)
 The macro-level visualization of the agent hierarchy.
@@ -40,11 +40,11 @@ The representation of "Generative Momentum."
 * **Anatomy:** A Kanban-like list or scrolling queue of pending intents.
 * **Interaction:** Allows the human to reorder priority, inject new manual tasks, or pause specific tasks before they are delegated to a worker.
 
-### 5. `HandoffProtocol` (Transition)
+### 5. `HandoffProtocol` (Transition & Comprehension)
 The standardized UI for passing context between entities.
 * **Problem:** In a multi-agent swarm, context is constantly handed off (Orchestrator → Specialist, or Agent → Human). Without a visible protocol, the user loses trust in the transfer.
-* **Anatomy:** A structured transfer card showing the source, destination, assigned goal, and attached payload/context.
-* **Interaction:** Allows a human to intercept a handoff, review the payload, or forcefully route to a different agent/human.
+* **Anatomy:** A structured "comprehension interface" (not a decision gate) showing the source, destination, assigned goal, and attached payload. It emphasizes reading and understanding the state change.
+* **Interaction:** Allows a human to intercept a handoff, review the payload, or optionally forcefully route to a different agent/human, but defaults to informational.
 
 ### 6. `DelegationGate` (Spawning)
 The decision point where an Orchestrator commits to spinning up a new autonomous worker.
@@ -63,6 +63,24 @@ The UI pattern for handling when an agent fails and the error bubbles up.
 * **Problem:** When a leaf-node agent fails, the Orchestrator has to decide whether to retry, reassign, or escalate to the human.
 * **Anatomy:** An alert feed summarizing the failure trace, the subagent involved, the orchestrator's recommendation, and options for resolution.
 * **Interaction:** Allows the human to step in, adjust context and hit "Retry," reassign the task, or cancel the branch.
+
+### 9. `SwarmInbox` (Attention Triage)
+The global aggregation layer for events that require human attention.
+* **Problem:** Without a centralized inbox, users will pinball between `OrchestratorView`, `AgentRoster`, and individual traces, leading to notification spam or silent drift.
+* **Anatomy:** A prioritized inbox sitting above the graphs/tables. Aggregates approval requests, escalations, policy violations, and stalled tasks.
+* **Interaction:** Supports severity grouping (by branch/agent/task) and one-click actions ("open branch", "approve", "pause branch").
+
+### 10. `BranchControls` (Scoped Steering)
+Steering mechanisms isolated to a specific branch of the agent tree.
+* **Problem:** `RunControls` from v0 are global. In a tree, you need to isolate, pause, or quarantine a branch without freezing the entire swarm.
+* **Anatomy:** A compact control bar attached to specific nodes in the `OrchestratorView`.
+* **Interaction:** Allows pausing, resuming, canceling, quarantining (prevents further tool calls/spawns while allowing inspection), or throttling a specific branch.
+
+### 11. `SharedContextLedger` (ReadOnly State & Provenance)
+The control surface for shared memory and data synchronization across the swarm.
+* **Problem:** Multi-agent systems break when shared memory is invisible. It must be clear what the agents currently believe is true, and who wrote it.
+* **Anatomy:** A scoped read+provenance panel (Global / Branch / Agent-local). Shows typed entries (facts, decisions, constraints) and conflict signals.
+* **Interaction:** A read-only UI for v1. Focuses on provenance ("written by agent X based on source Y"). Full write-control and commit resolving is deferred to v2.
 
 ## Integration with v0
 
