@@ -1,49 +1,88 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styles from './EscalationRouter.module.css';
 import type { EscalationRouterProps } from './EscalationRouter.types';
 
 /**
- * EscalationRouter is the UI pattern for handling when an agent fails and the error bubbles up.
+ * EscalationRouter surfaces a leaf-agent failure to the human, with the failure trace
+ * and options to retry, reassign to a different agent, or cancel the whole branch.
  */
 export const EscalationRouter: React.FC<EscalationRouterProps> = ({
   className,
   failedAgent,
+  branchId,
   errorSummary,
+  errorTrace,
   recommendation,
   onRetry,
   onReassign,
   onCancelBranch,
 }) => {
+  const [traceExpanded, setTraceExpanded] = useState(false);
+
   return (
-    <div className={`${styles.base} ${className || ''}`}>
+    <div
+      className={`${styles.base} ${className || ''}`}
+      role="alertdialog"
+      aria-modal="true"
+      aria-label={`Escalation: ${failedAgent} failed`}
+    >
+      {/* Header */}
       <div className={styles.header}>
-        <div className={styles.titleArea}>
-          <span className={styles.icon}>⚠️</span>
-          <h3>Escalation Required</h3>
+        <span className={styles.icon} aria-hidden="true">⚠</span>
+        <div className={styles.headerText}>
+          <span className={styles.title}>Agent Failure Escalated</span>
+          <span className={styles.subtitle}>
+            <strong>{failedAgent}</strong>{branchId ? ` · branch ${branchId}` : ''}
+          </span>
         </div>
-        <span className={styles.agentTag}>{failedAgent}</span>
+        <span className={styles.failedBadge}>Failed</span>
       </div>
-      
-      <div className={styles.body}>
-        <div className={styles.errorBox}>
-          <span className={styles.errorLabel}>Failure Trace</span>
-          <p className={styles.errorText}>{errorSummary}</p>
+
+      {/* Error summary */}
+      <div className={styles.errorBox}>
+        <p className={styles.errorSummary}>{errorSummary}</p>
+      </div>
+
+      {/* Error trace (collapsible) */}
+      {errorTrace && (
+        <div className={styles.traceSection}>
+          <button
+            className={styles.traceToggle}
+            onClick={() => setTraceExpanded(!traceExpanded)}
+            aria-expanded={traceExpanded}
+          >
+            <span className={`${styles.chevron} ${traceExpanded ? styles.chevronOpen : ''}`}>▶</span>
+            {traceExpanded ? 'Hide' : 'Show'} Error Trace
+          </button>
+          {traceExpanded && (
+            <pre className={styles.trace}>{errorTrace}</pre>
+          )}
         </div>
-        
-        {recommendation && (
-          <div className={styles.recommendationBox}>
-            <span className={styles.recLabel}>Orchestrator Recommendation</span>
-            <p className={styles.recText}>{recommendation}</p>
-          </div>
-        )}
-      </div>
-      
+      )}
+
+      {/* System recommendation */}
+      {recommendation && (
+        <div className={styles.recommendation}>
+          <span className={styles.recLabel}>System Recommendation</span>
+          <span className={styles.recValue}>
+            {recommendation === 'retry' && '↺ Retry with same agent'}
+            {recommendation === 'reassign' && '⇄ Reassign to different agent'}
+            {recommendation === 'cancel' && '⊘ Cancel this branch'}
+          </span>
+        </div>
+      )}
+
+      {/* Actions */}
       <div className={styles.actions}>
-        <button className={styles.btnDanger} onClick={onCancelBranch}>Cancel Branch</button>
-        <div className={styles.resolveActions}>
-          <button className={styles.btnSecondary} onClick={onReassign}>Reassign...</button>
-          <button className={styles.btnPrimary} onClick={onRetry}>Adjust & Retry</button>
-        </div>
+        <button className={styles.btnRetry} onClick={onRetry}>
+          ↺ Retry
+        </button>
+        <button className={styles.btnReassign} onClick={onReassign}>
+          ⇄ Reassign
+        </button>
+        <button className={styles.btnCancel} onClick={onCancelBranch}>
+          ⊘ Cancel Branch
+        </button>
       </div>
     </div>
   );

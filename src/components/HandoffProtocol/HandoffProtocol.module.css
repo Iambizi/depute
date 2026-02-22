@@ -1,96 +1,175 @@
+/* HandoffProtocol — comprehension UI for agent-to-agent or agent-to-human context transfer */
+
 .base {
-  background-color: var(--ax-bg-primary, #ffffff);
-  border: 1px solid var(--ax-border-color, #e5e7eb);
+  display: flex;
+  flex-direction: column;
+  gap: 0;
   border-radius: 8px;
-  overflow: hidden;
+  border: 1px solid var(--ax-border-color, #e5e7eb);
+  background: var(--ax-bg-primary, #fff);
   font-family: var(--ax-font-sans, system-ui, sans-serif);
+  overflow: hidden;
 }
 
+/* Header */
 .header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
   padding: 12px 16px;
-  background-color: var(--ax-bg-secondary, #f9fafb);
+  background: linear-gradient(135deg, #eff6ff 0%, #fafafa 100%);
   border-bottom: 1px solid var(--ax-border-color, #e5e7eb);
 }
 
-.transferPath {
+.route {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
 }
 
-.entity {
-  font-size: 14px;
-  font-weight: 600;
+.agent {
+  font-size: 13px;
+  font-weight: 700;
   color: var(--ax-text-primary, #111827);
-  background-color: var(--ax-bg-primary, #ffffff);
-  padding: 4px 10px;
-  border-radius: 6px;
+  font-family: var(--ax-font-mono, monospace);
+  background: var(--ax-bg-secondary, #f3f4f6);
+  padding: 3px 8px;
+  border-radius: 5px;
   border: 1px solid var(--ax-border-color, #e5e7eb);
 }
 
 .arrow {
-  width: 16px;
-  height: 16px;
-  color: var(--ax-text-tertiary, #9ca3af);
+  font-size: 16px;
+  color: #3b82f6;
+  font-weight: 700;
 }
 
-.label {
-  font-size: 11px;
+.badge {
+  font-size: 10px;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: #8b5cf6; /* Distinct purple for transitions */
+  letter-spacing: 0.06em;
+  color: #3b82f6;
+  background: #dbeafe;
+  padding: 2px 8px;
+  border-radius: 10px;
 }
 
-.body {
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.field {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.fieldLabel {
-  font-size: 12px;
-  color: var(--ax-text-secondary, #4b5563);
-  font-weight: 500;
-}
-
-.fieldValue {
-  font-size: 14px;
-  color: var(--ax-text-primary, #111827);
-  line-height: 1.5;
-}
-
-.footer {
+/* Sections */
+.section {
   padding: 12px 16px;
-  background-color: #faf5ff; /* Subtle purple tint */
-  border-top: 1px solid #f3e8ff;
-  display: flex;
-  justify-content: flex-end;
+  border-bottom: 1px solid var(--ax-border-color, #f3f4f6);
 }
 
-.interceptBtn {
-  background-color: #ffffff;
-  border: 1px solid #d8b4fe;
-  color: #7c3aed;
+.section:last-of-type {
+  border-bottom: none;
+}
+
+.sectionTitle {
+  margin: 0 0 6px 0;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ax-text-secondary, #6b7280);
+}
+
+.goalText,
+.summaryText,
+.nextRequestText {
+  margin: 0;
   font-size: 13px;
-  font-weight: 500;
-  padding: 6px 14px;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: all 0.2s ease;
+  color: var(--ax-text-primary, #111827);
+  line-height: 1.55;
 }
 
-.interceptBtn:hover {
-  background-color: #f3e8ff;
-  border-color: #c084fc;
+.nextRequestText {
+  font-style: italic;
+  color: var(--ax-text-secondary, #374151);
+}
+
+/* Payload */
+.payloadList {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0;
+}
+
+.payloadRow {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 6px 10px;
+  background: var(--ax-bg-secondary, #f9fafb);
+  border-radius: 5px;
+  border: 1px solid var(--ax-border-color, #e5e7eb);
+}
+
+.payloadLabel {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--ax-text-secondary, #6b7280);
+  min-width: 100px;
+  flex-shrink: 0;
+}
+
+.payloadValue {
+  font-size: 11px;
+  font-family: var(--ax-font-mono, monospace);
+  color: var(--ax-text-primary, #111827);
+  word-break: break-all;
+  margin: 0;
+}
+
+/* Actions */
+.actions {
+  display: flex;
+  gap: 8px;
+  padding: 12px 16px;
+  background: var(--ax-bg-secondary, #f9fafb);
+  border-top: 1px solid var(--ax-border-color, #e5e7eb);
+  flex-wrap: wrap;
+}
+
+.btnAccept,
+.btnIntercept,
+.btnCancel {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 7px 14px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  border: 1px solid transparent;
+}
+
+.btnAccept {
+  background: #111827;
+  color: #fff;
+  border-color: #111827;
+}
+
+.btnAccept:hover {
+  background: #374151;
+}
+
+.btnIntercept {
+  background: #fffbeb;
+  color: #b45309;
+  border-color: #fde68a;
+}
+
+.btnIntercept:hover {
+  background: #fef3c7;
+}
+
+.btnCancel {
+  background: transparent;
+  color: var(--ax-text-secondary, #6b7280);
+  border-color: var(--ax-border-color, #e5e7eb);
+}
+
+.btnCancel:hover {
+  background: var(--ax-bg-tertiary, #f3f4f6);
 }

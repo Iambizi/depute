@@ -1,106 +1,163 @@
+/* SwarmMonitor — macro KPI dashboard */
+
 .base {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  padding: 16px;
   border-radius: 8px;
-  background-color: var(--ax-bg-primary, #ffffff);
   border: 1px solid var(--ax-border-color, #e5e7eb);
+  background: var(--ax-bg-primary, #fff);
   font-family: var(--ax-font-sans, system-ui, sans-serif);
+  overflow: hidden;
 }
 
 .header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding-bottom: 12px;
-  border-bottom: 1px solid var(--ax-border-color, #f3f4f6);
+  justify-content: space-between;
+  padding: 10px 16px;
+  background: var(--ax-bg-secondary, #f9fafb);
+  border-bottom: 1px solid var(--ax-border-color, #e5e7eb);
 }
 
-.header h3 {
-  margin: 0;
-  font-size: 15px;
+.title {
+  font-size: 13px;
   font-weight: 600;
   color: var(--ax-text-primary, #111827);
 }
 
-.globalControls {
+.controls {
   display: flex;
-  gap: 8px;
+  gap: 6px;
 }
 
-.pauseBtn, .killBtn {
-  font-size: 12px;
+.btnPause,
+.btnKill {
+  font-size: 11px;
   font-weight: 500;
   padding: 4px 10px;
-  border-radius: 4px;
+  border-radius: 5px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.15s ease;
+  border: 1px solid transparent;
 }
 
-.pauseBtn {
-  background-color: var(--ax-bg-secondary, #f9fafb);
-  border: 1px solid var(--ax-border-color, #d1d5db);
-  color: var(--ax-text-primary, #374151);
+.btnPause {
+  background: #fffbeb;
+  color: #b45309;
+  border-color: #fde68a;
 }
 
-.pauseBtn:hover {
-  background-color: #e5e7eb;
-}
+.btnPause:hover { background: #fef3c7; }
 
-.killBtn {
-  background-color: #fee2e2;
-  border: 1px solid #f87171;
+.btnKill {
+  background: #fef2f2;
   color: #b91c1c;
+  border-color: #fecaca;
 }
 
-.killBtn:hover {
-  background-color: #fca5a5;
-}
+.btnKill:hover { background: #fee2e2; }
 
-.metricsGrid {
+/* Metrics grid */
+.grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-  gap: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+  border-bottom: 1px solid var(--ax-border-color, #e5e7eb);
 }
 
-.metricCard {
+.metric {
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  padding: 12px;
-  background-color: var(--ax-bg-secondary, #f9fafb);
-  border-radius: 6px;
-  border: 1px solid var(--ax-border-color, #e5e7eb);
+  align-items: center;
+  padding: 14px 8px;
+  border-right: 1px solid var(--ax-border-color, #f3f4f6);
+  position: relative;
+  gap: 2px;
 }
 
-.metricCard.warning {
-  background-color: #fefce8;
-  border-color: #fde047;
-}
-
-.metricCard.warning .metricValue {
-  color: #b45309;
-}
-
-.metricLabel {
-  font-size: 11px;
-  font-weight: 600;
-  text-transform: uppercase;
-  color: var(--ax-text-secondary, #6b7280);
-  letter-spacing: 0.05em;
+.metric:last-child {
+  border-right: none;
 }
 
 .metricValue {
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 700;
   color: var(--ax-text-primary, #111827);
-  font-variant-numeric: tabular-nums;
+  font-family: var(--ax-font-mono, monospace);
+  line-height: 1.2;
 }
 
-.metricSub {
+.metricLabel {
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ax-text-secondary, #9ca3af);
+  font-weight: 500;
+}
+
+/* Error severity tints */
+.metricError_medium { background: #fefce8; }
+.metricError_low { background: transparent; }
+.metricError_high {
+  background: #fef2f2;
+}
+
+.metricError_high .metricValue { color: #b91c1c; }
+.metricError_medium .metricValue { color: #b45309; }
+
+/* Status dot in metric tile */
+.dot {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+
+.dotWorking { background: #10b981; animation: smPulse 1.5s ease-in-out infinite; }
+.dotIdle { background: #d1d5db; }
+
+@keyframes smPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+/* Completion progress */
+.completionRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+}
+
+.completionLabel {
+  font-size: 10px;
+  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: var(--ax-text-secondary, #6b7280);
+  white-space: nowrap;
+}
+
+.progressBar {
+  flex: 1;
+  height: 4px;
+  background: var(--ax-bg-tertiary, #e5e7eb);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  background: linear-gradient(90deg, #10b981, #3b82f6);
+  border-radius: 4px;
+  transition: width 0.4s ease;
+}
+
+.completionValue {
   font-size: 11px;
-  color: var(--ax-text-tertiary, #9ca3af);
-  font-family: var(--ax-font-mono, monospace);
-  margin-top: 2px;
+  font-weight: 600;
+  color: var(--ax-text-secondary, #374151);
+  min-width: 32px;
+  text-align: right;
 }

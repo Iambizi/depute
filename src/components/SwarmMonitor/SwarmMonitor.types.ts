@@ -3,9 +3,11 @@ export interface SwarmMonitorProps {
   className?: string;
   metrics: {
     activeInstances: number;
+    idleInstances: number;
     totalCost: string;
     tokensBurned: number;
-    errorRate: number; // percentage 0-100
+    errorRate: number; // percentage 0–100
+    taskCompletionRate?: number; // percentage 0–100
     estimatedTimeRemaining?: string;
   };
   onGlobalPause?: () => void;

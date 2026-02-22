@@ -1,15 +1,22 @@
+export type TaskPriority = 'critical' | 'high' | 'medium' | 'low';
+export type TaskStatus = 'pending' | 'assigned' | 'in_progress';
+
 export interface TaskQueueItem {
   id: string;
   title: string;
-  priority: 'high' | 'medium' | 'low';
+  description?: string;
+  priority: TaskPriority;
+  /** Agent the task is assigned to, if any */
+  assignedTo?: string;
+  status: TaskStatus;
   estimatedTokens?: number;
 }
 
 export interface TaskQueueProps {
   /** The root layout class name */
   className?: string;
-  /** List of pending tasks awaiting assignment */
+  /** List of tasks in the backlog queue */
   tasks?: TaskQueueItem[];
-  /** Callback for when a task requires manual intervention/pausing */
-  onTaskAction?: (id: string, action: 'pause' | 'promote' | 'cancel') => void;
+  /** Callback when a user acts on a task */
+  onTaskAction?: (id: string, action: 'promote' | 'assign' | 'cancel') => void;
 }

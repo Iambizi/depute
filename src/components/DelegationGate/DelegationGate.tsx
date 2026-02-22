@@ -3,57 +3,81 @@ import styles from './DelegationGate.module.css';
 import type { DelegationGateProps } from './DelegationGate.types';
 
 /**
- * DelegationGate is a decision intercept where an Orchestrator commits to spinning up a new autonomous worker.
+ * DelegationGate intercepts an Orchestrator's request to spawn a new sub-agent.
+ * This is a decision gate (Y/N) focused on authorizing new autonomous capacity.
  */
 export const DelegationGate: React.FC<DelegationGateProps> = ({
   className,
-  sourceAgent,
+  requestingAgent,
   proposedSubagent,
   onApprove,
   onDeny,
 }) => {
   return (
-    <div className={`${styles.base} ${className || ''}`}>
+    <div
+      className={`${styles.base} ${className || ''}`}
+      role="alertdialog"
+      aria-modal="true"
+      aria-label={`${requestingAgent} is requesting to spawn a new agent`}
+    >
+      {/* Header */}
       <div className={styles.header}>
-        <div className={styles.iconWrapper}>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <rect x="3" y="3" width="7" height="7" />
-            <rect x="14" y="3" width="7" height="7" />
-            <rect x="14" y="14" width="7" height="7" />
-            <path d="M3 14h7v7H3z" />
-          </svg>
-        </div>
+        <span className={styles.icon} aria-hidden="true">⊕</span>
         <div className={styles.headerText}>
-          <h3>Spawn Request</h3>
-          <p>{sourceAgent} is requesting to spin up a new subagent.</p>
+          <span className={styles.title}>Agent Spawn Request</span>
+          <span className={styles.subtitle}>
+            <strong>{requestingAgent}</strong> wants to delegate a task
+          </span>
+        </div>
+        <span className={styles.badge}>Delegation Gate</span>
+      </div>
+
+      {/* Proposed agent details */}
+      <div className={styles.body}>
+        <div className={styles.detailRow}>
+          <span className={styles.detailLabel}>Role</span>
+          <span className={styles.detailValue}>{proposedSubagent.role}</span>
+        </div>
+        <div className={styles.detailRow}>
+          <span className={styles.detailLabel}>Mandate</span>
+          <span className={styles.detailValue}>{proposedSubagent.mandate}</span>
+        </div>
+        {proposedSubagent.allowedTools && proposedSubagent.allowedTools.length > 0 && (
+          <div className={styles.detailRow}>
+            <span className={styles.detailLabel}>Allowed Tools</span>
+            <div className={styles.tagList}>
+              {proposedSubagent.allowedTools.map((tool) => (
+                <span key={tool} className={styles.toolTag}>{tool}</span>
+              ))}
+            </div>
+          </div>
+        )}
+        {proposedSubagent.maxDepth != null && (
+          <div className={styles.detailRow}>
+            <span className={styles.detailLabel}>Max Depth</span>
+            <span className={styles.detailValue}>{proposedSubagent.maxDepth} levels</span>
+          </div>
+        )}
+        <div className={styles.costRow}>
+          <div className={styles.costItem}>
+            <span className={styles.costLabel}>Est. Tokens</span>
+            <span className={styles.costValue}>{proposedSubagent.estimatedTokens.toLocaleString()}</span>
+          </div>
+          <div className={styles.costItem}>
+            <span className={styles.costLabel}>Est. Cost</span>
+            <span className={styles.costValue}>{proposedSubagent.estimatedCost}</span>
+          </div>
         </div>
       </div>
-      
-      <div className={styles.content}>
-        <div className={styles.detailRow}>
-          <span className={styles.label}>Proposed Role:</span>
-          <span className={styles.value}>{proposedSubagent.role}</span>
-        </div>
-        <div className={styles.detailRow}>
-          <span className={styles.label}>Mandate:</span>
-          <span className={styles.value}>{proposedSubagent.mandate}</span>
-        </div>
-        
-        <div className={styles.budgetBox}>
-          <div className={styles.budgetRow}>
-            <span>Est. Compute:</span>
-            <span className={styles.budgetLimit}>{proposedSubagent.estimatedTokens.toLocaleString()} tokens</span>
-          </div>
-          <div className={styles.budgetRow}>
-            <span>Est. Cost:</span>
-            <span className={styles.budgetLimit}>{proposedSubagent.estimatedCost}</span>
-          </div>
-        </div>
-      </div>
-      
-      <div className={styles.footer}>
-        <button className={styles.btnSecondary} onClick={onDeny}>Deny Request</button>
-        <button className={styles.btnPrimary} onClick={onApprove}>Authorize Spawn</button>
+
+      {/* Actions */}
+      <div className={styles.actions}>
+        <button className={styles.btnApprove} onClick={onApprove}>
+          Approve Spawn
+        </button>
+        <button className={styles.btnDeny} onClick={onDeny}>
+          Deny
+        </button>
       </div>
     </div>
   );
