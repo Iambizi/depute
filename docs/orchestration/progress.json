@@ -194,7 +194,7 @@
       "hook": null,
       "notes": "v1 Orchestration Primitive",
       "step-4-component": { "status": "completed", "completedAt": "2026-02-22T17:00:00Z" },
-      "step-5-mock-data": { "status": "not_started", "completedAt": null },
+      "step-5-mock-data": { "status": "completed", "completedAt": "2026-02-22T18:42:00Z" },
       "step-6-stories": { "status": "not_started", "completedAt": null },
       "step-7-tests": { "status": "not_started", "completedAt": null }
     },
@@ -203,7 +203,7 @@
       "hook": null,
       "notes": "v1 Orchestration Primitive",
       "step-4-component": { "status": "completed", "completedAt": "2026-02-22T17:00:00Z" },
-      "step-5-mock-data": { "status": "not_started", "completedAt": null },
+      "step-5-mock-data": { "status": "completed", "completedAt": "2026-02-22T18:42:00Z" },
       "step-6-stories": { "status": "not_started", "completedAt": null },
       "step-7-tests": { "status": "not_started", "completedAt": null }
     },
@@ -212,7 +212,7 @@
       "hook": null,
       "notes": "v1 Orchestration Primitive",
       "step-4-component": { "status": "completed", "completedAt": "2026-02-22T18:30:00Z" },
-      "step-5-mock-data": { "status": "not_started", "completedAt": null },
+      "step-5-mock-data": { "status": "completed", "completedAt": "2026-02-22T18:42:00Z" },
       "step-6-stories": { "status": "not_started", "completedAt": null },
       "step-7-tests": { "status": "not_started", "completedAt": null }
     },
@@ -221,7 +221,7 @@
       "hook": null,
       "notes": "v1 Orchestration Primitive",
       "step-4-component": { "status": "completed", "completedAt": "2026-02-22T18:30:00Z" },
-      "step-5-mock-data": { "status": "not_started", "completedAt": null },
+      "step-5-mock-data": { "status": "completed", "completedAt": "2026-02-22T18:42:00Z" },
       "step-6-stories": { "status": "not_started", "completedAt": null },
       "step-7-tests": { "status": "not_started", "completedAt": null }
     },
@@ -230,7 +230,7 @@
       "hook": null,
       "notes": "v1 Orchestration Primitive",
       "step-4-component": { "status": "completed", "completedAt": "2026-02-22T18:30:00Z" },
-      "step-5-mock-data": { "status": "not_started", "completedAt": null },
+      "step-5-mock-data": { "status": "completed", "completedAt": "2026-02-22T18:42:00Z" },
       "step-6-stories": { "status": "not_started", "completedAt": null },
       "step-7-tests": { "status": "not_started", "completedAt": null }
     },
@@ -239,7 +239,7 @@
       "hook": null,
       "notes": "v1 Orchestration Primitive",
       "step-4-component": { "status": "completed", "completedAt": "2026-02-22T18:30:00Z" },
-      "step-5-mock-data": { "status": "not_started", "completedAt": null },
+      "step-5-mock-data": { "status": "completed", "completedAt": "2026-02-22T18:42:00Z" },
       "step-6-stories": { "status": "not_started", "completedAt": null },
       "step-7-tests": { "status": "not_started", "completedAt": null }
     },
@@ -248,7 +248,7 @@
       "hook": null,
       "notes": "v1 Orchestration Primitive",
       "step-4-component": { "status": "completed", "completedAt": "2026-02-22T18:30:00Z" },
-      "step-5-mock-data": { "status": "not_started", "completedAt": null },
+      "step-5-mock-data": { "status": "completed", "completedAt": "2026-02-22T18:42:00Z" },
       "step-6-stories": { "status": "not_started", "completedAt": null },
       "step-7-tests": { "status": "not_started", "completedAt": null }
     },
@@ -257,7 +257,7 @@
       "hook": null,
       "notes": "v1 Orchestration Primitive",
       "step-4-component": { "status": "completed", "completedAt": "2026-02-22T18:30:00Z" },
-      "step-5-mock-data": { "status": "not_started", "completedAt": null },
+      "step-5-mock-data": { "status": "completed", "completedAt": "2026-02-22T18:42:00Z" },
       "step-6-stories": { "status": "not_started", "completedAt": null },
       "step-7-tests": { "status": "not_started", "completedAt": null }
     },
@@ -266,7 +266,7 @@
       "hook": null,
       "notes": "v1 Orchestration Primitive",
       "step-4-component": { "status": "completed", "completedAt": "2026-02-22T18:30:00Z" },
-      "step-5-mock-data": { "status": "not_started", "completedAt": null },
+      "step-5-mock-data": { "status": "completed", "completedAt": "2026-02-22T18:42:00Z" },
       "step-6-stories": { "status": "not_started", "completedAt": null },
       "step-7-tests": { "status": "not_started", "completedAt": null }
     },
@@ -275,7 +275,7 @@
       "hook": null,
       "notes": "v1 Orchestration Primitive",
       "step-4-component": { "status": "completed", "completedAt": "2026-02-22T18:30:00Z" },
-      "step-5-mock-data": { "status": "not_started", "completedAt": null },
+      "step-5-mock-data": { "status": "completed", "completedAt": "2026-02-22T18:42:00Z" },
       "step-6-stories": { "status": "not_started", "completedAt": null },
       "step-7-tests": { "status": "not_started", "completedAt": null }
     },
@@ -284,7 +284,7 @@
       "hook": null,
       "notes": "v1 Orchestration Primitive",
       "step-4-component": { "status": "completed", "completedAt": "2026-02-22T18:30:00Z" },
-      "step-5-mock-data": { "status": "not_started", "completedAt": null },
+      "step-5-mock-data": { "status": "completed", "completedAt": "2026-02-22T18:42:00Z" },
       "step-6-stories": { "status": "not_started", "completedAt": null },
       "step-7-tests": { "status": "not_started", "completedAt": null }
     }
