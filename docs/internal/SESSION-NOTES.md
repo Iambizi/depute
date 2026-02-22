@@ -15,6 +15,30 @@
 
 ---
 
+## Session 10 - February 22, 2026
+
+### Overview
+Finalized the v1 Orchestration Primitive scope based on multi-AI synthesis and completed the codebase scaffolding for all 11 new React components.
+
+### Accomplishments
+
+#### 35. Finalized v1 Draft Catalog (11 Primitives)
+- ✅ Integrated expert AI feedback (Claude + ChatGPT) on the requirements for Figure 7/8 multi-agent orchestration.
+- ✅ Added `SwarmInbox` (attention triage), `BranchControls` (scoped steering), and `SharedContextLedger` (scoped read memory) to the v1 specification.
+- ✅ Updated `CATALOG-v1.md`, `AX-PRIMITIVES-STARTER.md`, and `01-project-specification.md` to secure the 11 locked v1 orchestration primitives.
+
+#### 36. Scaffolded v1 Codebase
+- ✅ Created React TSX and CSS Module boilerplates for all 11 orchestration primitives (`OrchestratorView`, `AgentRoster`, `SubagentCard`, `TaskQueue`, `HandoffProtocol`, `DelegationGate`, `SwarmMonitor`, `EscalationRouter`, `SwarmInbox`, `BranchControls`, `SharedContextLedger`).
+- ✅ Exported all new primitives from `src/index.ts`.
+
+#### 37. Refactored v1 TypeScript Architecture
+- ✅ Extracted inline Typescript interfaces (e.g., `EscalationRouterProps`) from the `.tsx` execution files.
+- ✅ Created dedicated `.types.ts` files for all 11 primitives to match the `v0` canonical architecture.
+- ✅ Updated the `index.ts` files to use explicit named exports to resolve Vite/Bundler module resolution errors.
+- ✅ `npm run build` passing with zero TS errors in < 500ms.
+
+---
+
 ## Session 9 - February 20-21, 2026
 
 ### Overview
