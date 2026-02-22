@@ -7,11 +7,14 @@
 
 v0 solved the "Single-Agent Oversight" problem (Figures 2, 4, and 5 of the Agentic Coding Levels framework). It provides the primitives necessary for a human to supervise and control a single autonomous process.
 
-v1 solves the **"Multi-Agent Orchestration"** problem (Figure 8). As agents move from single-threaded loops to parallel, hierarchical swarms managed by an "Orchestrator," the UI must scale to visualize tree structures, concurrent workers, and delegated tasks without overwhelming the user.
+v1 solves the **"Multi-Agent Orchestration"** problem. As agents move from single-threaded loops to parallel, hierarchical swarms managed by an "Orchestrator," the UI must scale to visualize tree structures, concurrent workers, and delegated tasks without overwhelming the user.
+
+***A Note on Figure 7 vs Figure 8:***
+While v1's ultimate target is the hierarchical tree (Figure 8 - Orchestrated Hierarchy), the primitives also support intermediate complexity flat swarms (Figure 7 - 4-5 independent, un-orchestrated agents). However, components like `OrchestratorView` are specifically engineered for the structural depth of Figure 8; developers building flat Figure 7 swarms will primarily rely on `AgentRoster`.
 
 ## Proposed v1 Primitives
 
-These 5 primitives form the foundation of the v1 catalog.
+These 8 primitives form the foundation of the v1 catalog.
 
 ### 1. `OrchestratorView` (Structural)
 The macro-level visualization of the agent hierarchy.
@@ -42,6 +45,24 @@ The standardized UI for passing context between entities.
 * **Problem:** In a multi-agent swarm, context is constantly handed off (Orchestrator → Specialist, or Agent → Human). Without a visible protocol, the user loses trust in the transfer.
 * **Anatomy:** A structured transfer card showing the source, destination, assigned goal, and attached payload/context.
 * **Interaction:** Allows a human to intercept a handoff, review the payload, or forcefully route to a different agent/human.
+
+### 6. `DelegationGate` (Spawning)
+The decision point where an Orchestrator commits to spinning up a new autonomous worker.
+* **Problem:** Spawning an agent commits resources, creates scope, and racks up cost. It is semantically different from `ApprovalGate` (approving an action) because it approves the *creation* of an autonomous entity.
+* **Anatomy:** An intercept UI showing the proposed agent's mandate, constraints, estimated token cost, and lifespan.
+* **Interaction:** Human can authorize the spawn, adjust budget constraints before spawning, or deny creation.
+
+### 7. `SwarmMonitor` (Aggregate Health)
+The macro-level metrics view of parallel agentic swarms.
+* **Problem:** `AgentRoster` is great for per-agent health, but lacks aggregate insight. A user needs a global view of costs, token burn, error rates, and time estimates across the swarm.
+* **Anatomy:** A dashboard header unit tracking total accrued cost, tokens burned, active instances, and swarm error rate vs. estimated completion time.
+* **Interaction:** Includes a global kill switch for the swarm and global pause capabilities.
+
+### 8. `EscalationRouter` (Error Propagation)
+The UI pattern for handling when an agent fails and the error bubbles up.
+* **Problem:** When a leaf-node agent fails, the Orchestrator has to decide whether to retry, reassign, or escalate to the human.
+* **Anatomy:** An alert feed summarizing the failure trace, the subagent involved, the orchestrator's recommendation, and options for resolution.
+* **Interaction:** Allows the human to step in, adjust context and hit "Retry," reassign the task, or cancel the branch.
 
 ## Integration with v0
 

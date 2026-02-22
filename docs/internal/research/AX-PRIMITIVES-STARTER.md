@@ -1,9 +1,9 @@
 # AX Primitives - Starter Reference
 
 **Type:** 🧩 Primitive Catalog
-**Scope:** 50+ primitives across 9 categories
+**Scope:** 53+ primitives across 9 categories
 **v0 Status:** 6 primitives locked for build (Feb 15, 2026) — see `catalog-versions/CATALOG-v0.md`
-**v1 Status:** 5 orchestration primitives locked (Feb 21, 2026) — see `catalog-versions/CATALOG-v1.md`
+**v1 Status:** 8 orchestration primitives locked (Feb 21, 2026) — see `catalog-versions/CATALOG-v1.md`
 
 > **Purpose:** UI building blocks for delegation, trust, and visibility — not "chat components."
 
@@ -149,6 +149,9 @@ Scale from single-threaded loops to parallel, hierarchical swarms managed by an 
 | `SubagentCard` | Condensed node component showing an individual worker's status | ⏳ v1 |
 | `TaskQueue` | Backlog of pending jobs/requests waiting for available worker capacity | ⏳ v1 |
 | `HandoffProtocol` | Standardized UI for passing context from Orchestrator → Specialist → Human | ⏳ v1 |
+| `DelegationGate` | Decision intercept where an Orchestrator commits to spinning up a new autonomous worker | ⏳ v1 |
+| `SwarmMonitor` | Macro-level metrics view of parallel agentic swarms (cost, errors, active nodes) | ⏳ v1 |
+| `EscalationRouter` | UI pattern for handling when an agent fails and the error bubbles up | ⏳ v1 |
 
 ---
 
