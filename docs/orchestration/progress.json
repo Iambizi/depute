@@ -188,6 +188,105 @@
         "status": "completed",
         "completedAt": "2026-02-20T18:59:08.627Z"
       }
+    },
+    "OrchestratorView": {
+      "buildOrder": 7,
+      "hook": null,
+      "notes": "v1 Orchestration Primitive",
+      "step-4-component": { "status": "not_started", "completedAt": null },
+      "step-5-mock-data": { "status": "not_started", "completedAt": null },
+      "step-6-stories": { "status": "not_started", "completedAt": null },
+      "step-7-tests": { "status": "not_started", "completedAt": null }
+    },
+    "AgentRoster": {
+      "buildOrder": 8,
+      "hook": null,
+      "notes": "v1 Orchestration Primitive",
+      "step-4-component": { "status": "not_started", "completedAt": null },
+      "step-5-mock-data": { "status": "not_started", "completedAt": null },
+      "step-6-stories": { "status": "not_started", "completedAt": null },
+      "step-7-tests": { "status": "not_started", "completedAt": null }
+    },
+    "SubagentCard": {
+      "buildOrder": 9,
+      "hook": null,
+      "notes": "v1 Orchestration Primitive",
+      "step-4-component": { "status": "not_started", "completedAt": null },
+      "step-5-mock-data": { "status": "not_started", "completedAt": null },
+      "step-6-stories": { "status": "not_started", "completedAt": null },
+      "step-7-tests": { "status": "not_started", "completedAt": null }
+    },
+    "TaskQueue": {
+      "buildOrder": 10,
+      "hook": null,
+      "notes": "v1 Orchestration Primitive",
+      "step-4-component": { "status": "not_started", "completedAt": null },
+      "step-5-mock-data": { "status": "not_started", "completedAt": null },
+      "step-6-stories": { "status": "not_started", "completedAt": null },
+      "step-7-tests": { "status": "not_started", "completedAt": null }
+    },
+    "HandoffProtocol": {
+      "buildOrder": 11,
+      "hook": null,
+      "notes": "v1 Orchestration Primitive",
+      "step-4-component": { "status": "not_started", "completedAt": null },
+      "step-5-mock-data": { "status": "not_started", "completedAt": null },
+      "step-6-stories": { "status": "not_started", "completedAt": null },
+      "step-7-tests": { "status": "not_started", "completedAt": null }
+    },
+    "DelegationGate": {
+      "buildOrder": 12,
+      "hook": null,
+      "notes": "v1 Orchestration Primitive",
+      "step-4-component": { "status": "not_started", "completedAt": null },
+      "step-5-mock-data": { "status": "not_started", "completedAt": null },
+      "step-6-stories": { "status": "not_started", "completedAt": null },
+      "step-7-tests": { "status": "not_started", "completedAt": null }
+    },
+    "SwarmMonitor": {
+      "buildOrder": 13,
+      "hook": null,
+      "notes": "v1 Orchestration Primitive",
+      "step-4-component": { "status": "not_started", "completedAt": null },
+      "step-5-mock-data": { "status": "not_started", "completedAt": null },
+      "step-6-stories": { "status": "not_started", "completedAt": null },
+      "step-7-tests": { "status": "not_started", "completedAt": null }
+    },
+    "EscalationRouter": {
+      "buildOrder": 14,
+      "hook": null,
+      "notes": "v1 Orchestration Primitive",
+      "step-4-component": { "status": "not_started", "completedAt": null },
+      "step-5-mock-data": { "status": "not_started", "completedAt": null },
+      "step-6-stories": { "status": "not_started", "completedAt": null },
+      "step-7-tests": { "status": "not_started", "completedAt": null }
+    },
+    "SwarmInbox": {
+      "buildOrder": 15,
+      "hook": null,
+      "notes": "v1 Orchestration Primitive",
+      "step-4-component": { "status": "not_started", "completedAt": null },
+      "step-5-mock-data": { "status": "not_started", "completedAt": null },
+      "step-6-stories": { "status": "not_started", "completedAt": null },
+      "step-7-tests": { "status": "not_started", "completedAt": null }
+    },
+    "BranchControls": {
+      "buildOrder": 16,
+      "hook": null,
+      "notes": "v1 Orchestration Primitive",
+      "step-4-component": { "status": "not_started", "completedAt": null },
+      "step-5-mock-data": { "status": "not_started", "completedAt": null },
+      "step-6-stories": { "status": "not_started", "completedAt": null },
+      "step-7-tests": { "status": "not_started", "completedAt": null }
+    },
+    "SharedContextLedger": {
+      "buildOrder": 17,
+      "hook": null,
+      "notes": "v1 Orchestration Primitive",
+      "step-4-component": { "status": "not_started", "completedAt": null },
+      "step-5-mock-data": { "status": "not_started", "completedAt": null },
+      "step-6-stories": { "status": "not_started", "completedAt": null },
+      "step-7-tests": { "status": "not_started", "completedAt": null }
     }
   }
 }
