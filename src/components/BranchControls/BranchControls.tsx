@@ -1,17 +1,6 @@
 import React from 'react';
 import styles from './BranchControls.module.css';
-
-export interface BranchControlsProps {
-  /** The root layout class name */
-  className?: string;
-  branchName: string;
-  status: 'running' | 'paused' | 'quarantined';
-  onPause: () => void;
-  onResume: () => void;
-  onQuarantine: () => void;
-  onCancel: () => void;
-  onThrottle?: () => void;
-}
+import type { BranchControlsProps } from './BranchControls.types';
 
 /**
  * BranchControls provides scoped steering mechanisms isolated to a specific branch of the agent tree.

@@ -1,15 +1,6 @@
 import React from 'react';
 import styles from './HandoffProtocol.module.css';
-
-export interface HandoffProtocolProps {
-  /** The root layout class name */
-  className?: string;
-  sourceAgent: string;
-  destinationAgent: string;
-  goal: string;
-  payloadSummary: string;
-  onIntercept?: () => void;
-}
+import type { HandoffProtocolProps } from './HandoffProtocol.types';
 
 /**
  * HandoffProtocol is a comprehension UI for visualizing context transfers between agents.

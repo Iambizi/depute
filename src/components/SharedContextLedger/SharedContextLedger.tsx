@@ -1,27 +1,6 @@
 import React from 'react';
 import styles from './SharedContextLedger.module.css';
-
-export interface ContextLedgerEntry {
-  id: string;
-  scope: 'global' | 'branch' | 'agent-local';
-  type: 'fact' | 'decision' | 'constraint' | 'artifact';
-  key: string;
-  value: string;
-  provenance: {
-    authorAgent: string;
-    source?: string;
-    timestamp: string;
-  };
-  conflict?: boolean;
-}
-
-export interface SharedContextLedgerProps {
-  /** The root layout class name */
-  className?: string;
-  entries?: ContextLedgerEntry[];
-  currentScope?: 'global' | 'branch' | 'agent-local';
-  onFilterContext?: (scope: 'global' | 'branch' | 'agent-local') => void;
-}
+import type { SharedContextLedgerProps } from './SharedContextLedger.types';
 
 /**
  * SharedContextLedger is the read-only control surface for shared memory and data synchronization across the swarm.

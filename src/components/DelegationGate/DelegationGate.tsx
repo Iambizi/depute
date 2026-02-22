@@ -1,19 +1,6 @@
 import React from 'react';
 import styles from './DelegationGate.module.css';
-
-export interface DelegationGateProps {
-  /** The root layout class name */
-  className?: string;
-  sourceAgent: string;
-  proposedSubagent: {
-    role: string;
-    mandate: string;
-    estimatedTokens: number;
-    estimatedCost: string;
-  };
-  onApprove: () => void;
-  onDeny: () => void;
-}
+import type { DelegationGateProps } from './DelegationGate.types';
 
 /**
  * DelegationGate is a decision intercept where an Orchestrator commits to spinning up a new autonomous worker.

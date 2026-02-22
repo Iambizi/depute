@@ -1,19 +1,6 @@
 import React from 'react';
 import styles from './SwarmMonitor.module.css';
-
-export interface SwarmMonitorProps {
-  /** The root layout class name */
-  className?: string;
-  metrics: {
-    activeInstances: number;
-    totalCost: string;
-    tokensBurned: number;
-    errorRate: number; // percentage 0-100
-    estimatedTimeRemaining?: string;
-  };
-  onGlobalPause?: () => void;
-  onGlobalKill?: () => void;
-}
+import type { SwarmMonitorProps } from './SwarmMonitor.types';
 
 /**
  * SwarmMonitor provides macro-level metrics for parallel agentic swarms.

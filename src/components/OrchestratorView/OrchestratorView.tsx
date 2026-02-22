@@ -1,12 +1,6 @@
 import React from 'react';
 import styles from './OrchestratorView.module.css';
-
-export interface OrchestratorViewProps {
-  /** The root layout class name */
-  className?: string;
-  /** Hierarchical tree data for the swarm */
-  nodes?: any[];
-}
+import type { OrchestratorViewProps } from './OrchestratorView.types';
 
 /**
  * OrchestratorView visualizes the command-and-control hierarchy of a multi-agent swarm.

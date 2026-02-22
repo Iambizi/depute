@@ -1,16 +1,6 @@
 import React from 'react';
 import styles from './EscalationRouter.module.css';
-
-export interface EscalationRouterProps {
-  /** The root layout class name */
-  className?: string;
-  failedAgent: string;
-  errorSummary: string;
-  recommendation?: string;
-  onRetry: () => void;
-  onReassign: () => void;
-  onCancelBranch: () => void;
-}
+import type { EscalationRouterProps } from './EscalationRouter.types';
 
 /**
  * EscalationRouter is the UI pattern for handling when an agent fails and the error bubbles up.
