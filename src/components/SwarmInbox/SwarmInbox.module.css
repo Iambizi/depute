@@ -1,0 +1,158 @@
+.base {
+  display: flex;
+  flex-direction: column;
+  border-radius: 8px;
+  background-color: var(--ax-bg-secondary, #f9fafb);
+  border: 1px solid var(--ax-border-color, #e5e7eb);
+  overflow: hidden;
+  font-family: var(--ax-font-sans, system-ui, sans-serif);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--ax-border-color, #e5e7eb);
+}
+
+.header h3 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ax-text-primary, #111827);
+}
+
+.badge {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 2px 8px;
+  border-radius: 12px;
+  background-color: #fef2f2;
+  color: #b91c1c;
+  border: 1px solid #fecaca;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  padding: 12px;
+  gap: 8px;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.empty {
+  padding: 32px 16px;
+  text-align: center;
+  color: var(--ax-text-tertiary, #9ca3af);
+  font-size: 13px;
+  font-style: italic;
+}
+
+.item {
+  display: flex;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 6px;
+  background-color: var(--ax-bg-primary, #ffffff);
+  border: 1px solid var(--ax-border-color, #e5e7eb);
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+/* Item type styling */
+.approval { border-left: 3px solid #3b82f6; }
+.escalation { border-left: 3px solid #f59e0b; }
+.policy_violation { border-left: 3px solid #ef4444; }
+.stalled { border-left: 3px solid #8b5cf6; }
+
+.itemIcon {
+  font-size: 16px;
+  padding-top: 2px;
+}
+
+.itemContent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.itemHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.itemTitle {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ax-text-primary, #111827);
+  line-height: 1.4;
+}
+
+.timestamp {
+  font-size: 11px;
+  color: var(--ax-text-tertiary, #9ca3af);
+  white-space: nowrap;
+}
+
+.itemMeta {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.agentTag {
+  font-size: 10px;
+  font-weight: 600;
+  background-color: var(--ax-bg-secondary, #f3f4f6);
+  color: var(--ax-text-secondary, #4b5563);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.branchPath {
+  font-size: 11px;
+  color: var(--ax-text-tertiary, #9ca3af);
+  font-family: var(--ax-font-mono, monospace);
+}
+
+.itemActions {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  justify-content: flex-start;
+}
+
+button {
+  font-size: 12px;
+  font-weight: 500;
+  padding: 4px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.btnReview {
+  background-color: var(--ax-button-primary-bg, #000000);
+  border: 1px solid var(--ax-button-primary-bg, #000000);
+  color: var(--ax-button-primary-text, #ffffff);
+}
+
+.btnReview:hover {
+  opacity: 0.9;
+}
+
+.btnDismiss {
+  background: none;
+  border: 1px solid var(--ax-border-color, #d1d5db);
+  color: var(--ax-text-secondary, #4b5563);
+}
+
+.btnDismiss:hover {
+  background-color: var(--ax-bg-secondary, #f3f4f6);
+}

@@ -1,0 +1,122 @@
+.base {
+  display: flex;
+  flex-direction: column;
+  border-radius: 8px;
+  background-color: var(--ax-bg-primary, #ffffff);
+  border: 1px solid var(--ax-border-color, #e5e7eb);
+  overflow: hidden;
+  font-family: var(--ax-font-sans, system-ui, sans-serif);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background-color: var(--ax-bg-secondary, #f9fafb);
+  border-bottom: 1px solid var(--ax-border-color, #e5e7eb);
+}
+
+.header h3 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ax-text-primary, #111827);
+}
+
+.badge {
+  font-size: 12px;
+  padding: 2px 8px;
+  border-radius: 12px;
+  background-color: var(--ax-bg-tertiary, #e5e7eb);
+  color: var(--ax-text-secondary, #4b5563);
+}
+
+.empty {
+  padding: 32px;
+  text-align: center;
+  color: var(--ax-text-tertiary, #9ca3af);
+  font-size: 14px;
+}
+
+.tableRef {
+  display: flex;
+  flex-direction: column;
+}
+
+.tableHeader, .row {
+  display: flex;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--ax-border-color, #e5e7eb);
+}
+
+.tableHeader {
+  background-color: var(--ax-bg-secondary, #f9fafb);
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+  color: var(--ax-text-secondary, #4b5563);
+  letter-spacing: 0.05em;
+}
+
+.row {
+  background: none;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  width: 100%;
+  text-align: left;
+  font-family: inherit;
+  font-size: 14px;
+  color: var(--ax-text-primary, #111827);
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.row:last-child {
+  border-bottom: none;
+}
+
+.row:hover {
+  background-color: var(--ax-bg-secondary, #f9fafb);
+}
+
+.colName, .colRole, .colStatus {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.colRole {
+  color: var(--ax-text-secondary, #4b5563);
+}
+
+/* Status Badges */
+.statusBadge {
+  display: inline-flex;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.idle {
+  background-color: #f3f4f6;
+  color: #4b5563;
+}
+
+.working {
+  background-color: #dbeafe;
+  color: #1d4ed8;
+}
+
+.blocked {
+  background-color: #fef3c7;
+  color: #d97706;
+}
+
+.failed {
+  background-color: #fee2e2;
+  color: #b91c1c;
+}

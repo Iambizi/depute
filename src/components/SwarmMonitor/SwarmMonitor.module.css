@@ -1,0 +1,106 @@
+.base {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px;
+  border-radius: 8px;
+  background-color: var(--ax-bg-primary, #ffffff);
+  border: 1px solid var(--ax-border-color, #e5e7eb);
+  font-family: var(--ax-font-sans, system-ui, sans-serif);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--ax-border-color, #f3f4f6);
+}
+
+.header h3 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ax-text-primary, #111827);
+}
+
+.globalControls {
+  display: flex;
+  gap: 8px;
+}
+
+.pauseBtn, .killBtn {
+  font-size: 12px;
+  font-weight: 500;
+  padding: 4px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.pauseBtn {
+  background-color: var(--ax-bg-secondary, #f9fafb);
+  border: 1px solid var(--ax-border-color, #d1d5db);
+  color: var(--ax-text-primary, #374151);
+}
+
+.pauseBtn:hover {
+  background-color: #e5e7eb;
+}
+
+.killBtn {
+  background-color: #fee2e2;
+  border: 1px solid #f87171;
+  color: #b91c1c;
+}
+
+.killBtn:hover {
+  background-color: #fca5a5;
+}
+
+.metricsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px;
+}
+
+.metricCard {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px;
+  background-color: var(--ax-bg-secondary, #f9fafb);
+  border-radius: 6px;
+  border: 1px solid var(--ax-border-color, #e5e7eb);
+}
+
+.metricCard.warning {
+  background-color: #fefce8;
+  border-color: #fde047;
+}
+
+.metricCard.warning .metricValue {
+  color: #b45309;
+}
+
+.metricLabel {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--ax-text-secondary, #6b7280);
+  letter-spacing: 0.05em;
+}
+
+.metricValue {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--ax-text-primary, #111827);
+  font-variant-numeric: tabular-nums;
+}
+
+.metricSub {
+  font-size: 11px;
+  color: var(--ax-text-tertiary, #9ca3af);
+  font-family: var(--ax-font-mono, monospace);
+  margin-top: 2px;
+}
