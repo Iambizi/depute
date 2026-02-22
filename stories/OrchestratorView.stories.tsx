@@ -80,7 +80,7 @@ export const PrototypeWithSelection: Story = {
 
     return (
       <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', fontFamily: 'sans-serif' }}>
-        <OrchestratorView nodes={nodes} selectedNodeId={selectedId} onSelectNode={setSelectedId} />
+        <OrchestratorView nodes={nodes} selectedNodeId={selectedId} onNodeClick={(n) => setSelectedId((prev) => prev === n.id ? undefined : n.id)} />
         {selectedId && (
           <div style={{ fontSize: '12px', color: '#6b7280', padding: '8px 12px', background: '#f9fafb', borderRadius: '6px', border: '1px solid #e5e7eb' }}>
             Selected node: <strong>{selectedId}</strong>

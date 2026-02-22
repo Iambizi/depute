@@ -54,27 +54,22 @@ export const EmptyQueue: Story = {
 // ============================================================
 
 export const PrototypeInteractive: Story = {
-  name: 'Prototype: Assign + Complete Tasks',
+  name: 'Prototype: Assign + Promote Tasks',
   render: () => {
     const [tasks, setTasks] = useState<TaskQueueItem[]>(generateMockTaskQueue(7));
 
-    const assignTask = (id: string) =>
+    const handleAction = (id: string, action: 'promote' | 'assign' | 'cancel') => {
       setTasks((prev) =>
-        prev.map((t) => t.id === id ? { ...t, status: 'assigned', assignedTo: 'Code-Writer-1' } : t)
+        prev.map((t) => {
+          if (t.id !== id) return t;
+          if (action === 'assign') return { ...t, status: 'assigned' as const, assignedTo: 'Code-Writer-1' };
+          if (action === 'promote') return { ...t, status: 'in_progress' as const };
+          return t;
+        })
       );
+    };
 
-    const completeTask = (id: string) =>
-      setTasks((prev) =>
-        prev.map((t) => t.id === id ? { ...t, status: 'completed' } : t)
-      );
-
-    return (
-      <TaskQueue
-        tasks={tasks}
-        onAssignTask={assignTask}
-        onCompleteTask={completeTask}
-      />
-    );
+    return <TaskQueue tasks={tasks} onTaskAction={handleAction} />;
   },
 };
 
