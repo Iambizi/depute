@@ -1,7 +1,7 @@
 {
   "version": "2.0.0",
-  "lastUpdated": "2026-02-20",
-  "catalogVersion": "v0",
+  "lastUpdated": "2026-02-22",
+  "catalogVersion": "v1",
   "globalSteps": {
     "step-1-ideation": {
       "name": "Create PRD Docs",
@@ -58,6 +58,18 @@
       "command": "/vibe-step-10-v1-scaffold",
       "dependsOn": ["step-9-validate"],
       "completedAt": "2026-02-22T12:00:00Z"
+    },
+    "step-11-v1-complete": {
+      "name": "v1 Steps 5-7 + v0.2.0 Tag",
+      "status": "completed",
+      "dependsOn": ["step-10-v1-scaffold"],
+      "completedAt": "2026-02-22T20:07:00Z"
+    },
+    "step-12-axk-cli": {
+      "name": "AXK CLI",
+      "status": "not_started",
+      "dependsOn": ["step-11-v1-complete"],
+      "completedAt": null
     }
   },
   "components": {

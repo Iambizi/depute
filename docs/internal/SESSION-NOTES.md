@@ -3,7 +3,7 @@
 **Last Updated:** February 22, 2026
 **Updated By:** AI Assistant
 **Current Branch:** `main`
-**Overall Progress:** v0 Released · v1 Primitives Complete (steps 4–7) · **Next: AXK CLI**
+**Overall Progress:** v0.2.0 Tagged · v1 Primitives Complete (steps 4–7) · **Next: AXK CLI**
 
 **IMPORTANT:** See `docs/internal/DEFERRED-LOG.md` for the latest strategic context and deferred triggers.
 
@@ -18,7 +18,7 @@
 ## Session 11 - February 22, 2026
 
 ### Overview
-Completed all Step 5–7 work for v1 orchestration primitives (mock data, Storybook stories, unit tests). Patched PlanCard Step 6 story gap from v0. Made the strategic decision to build the AXK CLI now rather than waiting for the reference app.
+Completed all Step 5–7 work for v1 orchestration primitives (mock data, Storybook stories, unit tests). Patched PlanCard Step 6 story gap from v0. Tagged v0.2.0. Made the strategic decision to build the AXK CLI now rather than waiting for the reference app.
 
 ### Accomplishments
 
@@ -37,14 +37,20 @@ Completed all Step 5–7 work for v1 orchestration primitives (mock data, Storyb
 - ✅ Wrote `stories/PlanCard.stories.tsx` — the only missing v0 story file.
 - ✅ `npm run build` clean. Committed and pushed.
 
+#### 46. v0.2.0 Released
+- ✅ Wrote `docs/RELEASES.md` v0.2.0 release notes covering all 11 new orchestration primitives.
+- ✅ Bumped `package.json` version from `0.1.0` → `0.2.0`.
+- ✅ `tsc --noEmit` clean, `npm run build` clean, all 219 tests passing.
+- ✅ Committed `b7869ba`, tagged `v0.2.0`, pushed tag to origin.
+
 ### Key Decisions
-1. **Override CLI deferral.** The previous decision was to defer the AXK CLI until after the reference app. Overriding this: build the CLI now. Rationale: the registry.json is complete for v0 + v1; the CLI is a short, well-scoped deliverable; and shipping it unlocks the distribution story before reference app work begins.
+1. **Override CLI deferral.** The previous decision was to defer the AXK CLI until after the reference app. Overriding this: build the CLI now. Rationale: the registry.json is complete for v0; the CLI is a short, well-scoped deliverable; and shipping it unlocks the distribution story before reference app work begins.
 2. **CLI before Reference App.** New sequence: AXK CLI → Reference App → Skills layer.
 
 ### Next Steps
 - [ ] **Build AXK CLI** (`packages/cli/`) — Node.js package, `npx axk add <component>` copies source files into user repo from `registry.json`.
-- [ ] Update `registry.json` to include all 11 v1 orchestration primitives.
-- [ ] Add `step-8-cli` to `progress.json` global steps.
+- [ ] Update `registry.json` to include all 11 v1 orchestration primitives (first step of CLI work).
+- [ ] Add `step-11-cli` to `progress.json` global steps.
 
 ---
 
