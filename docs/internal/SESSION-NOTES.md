@@ -1,9 +1,9 @@
 # Current Status & Next Steps
 
-**Last Updated:** February 21, 2026
+**Last Updated:** February 22, 2026
 **Updated By:** AI Assistant
 **Current Branch:** `main`
-**Overall Progress:** AX Components v0.1.0 Released — v1 Planning (Multi-Agent Orchestration & Skill Architecture) In Progress
+**Overall Progress:** v0 Released · v1 Primitives Complete (steps 4–7) · **Next: AXK CLI**
 
 **IMPORTANT:** See `docs/internal/DEFERRED-LOG.md` for the latest strategic context and deferred triggers.
 
@@ -12,6 +12,39 @@
 # AX Components - Session Notes
 
 *Latest sessions appear at the top*
+
+---
+
+## Session 11 - February 22, 2026
+
+### Overview
+Completed all Step 5–7 work for v1 orchestration primitives (mock data, Storybook stories, unit tests). Patched PlanCard Step 6 story gap from v0. Made the strategic decision to build the AXK CLI now rather than waiting for the reference app.
+
+### Accomplishments
+
+#### 42. Step 5 (Mock Data) Complete — All 11 v1 Primitives
+- ✅ Added generator functions to `src/utils/mockData.ts` for all 11 v1 orchestration components.
+
+#### 43. Step 6 (Storybook Stories) Complete — All 11 v1 Primitives
+- ✅ Created `.stories.tsx` files for all 11 v1 primitives in `stories/`.
+- ✅ Each story follows the CSF3 pattern: Default, AllFeatures, state variants, interactive prototypes, production examples.
+
+#### 44. Step 7 (Unit Tests) Complete — All 11 v1 Primitives
+- ✅ Created `.test.tsx` files for all 11 v1 primitives using Vitest + React Testing Library.
+- ✅ All 219 tests pass across 17 test files (11 v1 + 6 v0).
+
+#### 45. PlanCard Step 6 Gap Patched
+- ✅ Wrote `stories/PlanCard.stories.tsx` — the only missing v0 story file.
+- ✅ `npm run build` clean. Committed and pushed.
+
+### Key Decisions
+1. **Override CLI deferral.** The previous decision was to defer the AXK CLI until after the reference app. Overriding this: build the CLI now. Rationale: the registry.json is complete for v0 + v1; the CLI is a short, well-scoped deliverable; and shipping it unlocks the distribution story before reference app work begins.
+2. **CLI before Reference App.** New sequence: AXK CLI → Reference App → Skills layer.
+
+### Next Steps
+- [ ] **Build AXK CLI** (`packages/cli/`) — Node.js package, `npx axk add <component>` copies source files into user repo from `registry.json`.
+- [ ] Update `registry.json` to include all 11 v1 orchestration primitives.
+- [ ] Add `step-8-cli` to `progress.json` global steps.
 
 ---
 
