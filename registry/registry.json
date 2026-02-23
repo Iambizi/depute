@@ -1,8 +1,14 @@
 {
   "name": "ax-components",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "AX Components — UI primitives for agentic experiences",
   "distribution": "axk",
+  "repo": "Iambizi/depute",
+  "branch": "main",
+  "sharedFiles": [
+    "src/types/common.ts",
+    "src/utils/a11y.tsx"
+  ],
   "items": [
     {
       "name": "plan-card",
@@ -18,29 +24,7 @@
         "src/components/PlanCard/index.ts"
       ],
       "registryDependencies": [],
-      "hook": "usePlan",
-      "requiredTokens": [
-        "--ax-status-pending-*",
-        "--ax-status-active-*",
-        "--ax-status-completed-*",
-        "--ax-status-failed-*",
-        "--ax-font-*",
-        "--ax-space-*",
-        "--ax-radius-*",
-        "--ax-surface-*",
-        "--ax-border-*"
-      ],
-      "a11yNotes": [
-        "Use ordered list (<ol>) for step sequence",
-        "Each step has aria-current='step' when active",
-        "Status changes announced via aria-live region",
-        "Progress conveyed through aria-label on container"
-      ],
-      "axPrinciples": ["Transparency", "Progressive Disclosure"],
-      "stateModel": {
-        "states": ["empty", "loading", "partial", "complete", "error"],
-        "events": ["stepAdded", "stepUpdated", "planCompleted", "planFailed"]
-      }
+      "axPrinciples": ["Transparency", "Progressive Disclosure"]
     },
     {
       "name": "approval-gate",
@@ -56,29 +40,7 @@
         "src/components/ApprovalGate/index.ts"
       ],
       "registryDependencies": [],
-      "hook": "useApprovalGate",
-      "requiredTokens": [
-        "--ax-status-waiting-*",
-        "--ax-status-completed-*",
-        "--ax-status-failed-*",
-        "--ax-confidence-*",
-        "--ax-font-*",
-        "--ax-space-*",
-        "--ax-radius-*",
-        "--ax-shadow-*"
-      ],
-      "a11yNotes": [
-        "Focus trapped when pending approval",
-        "aria-live='assertive' announces blocking state",
-        "Approve/Reject buttons keyboard-accessible (Enter/Space)",
-        "Focus restored to trigger element on resolve",
-        "role='alertdialog' when blocking"
-      ],
-      "axPrinciples": ["Human-in-the-Loop", "Trust", "Consent"],
-      "stateModel": {
-        "states": ["pending", "approved", "rejected", "expired"],
-        "events": ["approve", "reject", "expire", "reset"]
-      }
+      "axPrinciples": ["Human-in-the-Loop", "Trust", "Consent"]
     },
     {
       "name": "confidence-meter",
@@ -94,31 +56,13 @@
         "src/components/ConfidenceMeter/index.ts"
       ],
       "registryDependencies": [],
-      "hook": "useConfidence",
-      "requiredTokens": [
-        "--ax-confidence-high-*",
-        "--ax-confidence-medium-*",
-        "--ax-confidence-low-*",
-        "--ax-font-*",
-        "--ax-space-*",
-        "--ax-radius-*"
-      ],
-      "a11yNotes": [
-        "role='meter' with aria-valuenow, aria-valuemin, aria-valuemax",
-        "aria-label describes what confidence refers to",
-        "Color-blind safe: always pair color with text label"
-      ],
-      "axPrinciples": ["Transparency", "Calibrated Trust"],
-      "stateModel": {
-        "states": ["idle", "updating", "settled"],
-        "events": ["scoreChanged", "reasoningUpdated"]
-      }
+      "axPrinciples": ["Transparency", "Calibrated Trust"]
     },
     {
       "name": "run-controls",
       "label": "RunControls",
       "category": "Control & Steering",
-      "description": "Pause, resume, stop, and retry buttons",
+      "description": "Pause, resume, stop, and retry buttons for an active agent run",
       "buildOrder": 4,
       "type": "primitive",
       "files": [
@@ -128,25 +72,7 @@
         "src/components/RunControls/index.ts"
       ],
       "registryDependencies": [],
-      "hook": "useRun",
-      "requiredTokens": [
-        "--ax-status-active-*",
-        "--ax-status-completed-*",
-        "--ax-status-failed-*",
-        "--ax-font-*",
-        "--ax-space-*",
-        "--ax-radius-*"
-      ],
-      "a11yNotes": [
-        "Toolbar pattern: role='toolbar' with aria-label",
-        "Button states reflected via aria-pressed or aria-disabled",
-        "State transitions announced via aria-live"
-      ],
-      "axPrinciples": ["Human Agency", "Control"],
-      "stateModel": {
-        "states": ["idle", "running", "paused", "completed", "failed"],
-        "events": ["start", "pause", "resume", "stop", "retry", "complete", "fail"]
-      }
+      "axPrinciples": ["Human Agency", "Control"]
     },
     {
       "name": "tool-trace",
@@ -162,28 +88,7 @@
         "src/components/ToolTrace/index.ts"
       ],
       "registryDependencies": [],
-      "hook": "useTrace",
-      "requiredTokens": [
-        "--ax-status-*",
-        "--ax-font-family-mono",
-        "--ax-font-size-xs",
-        "--ax-font-size-sm",
-        "--ax-space-*",
-        "--ax-radius-*",
-        "--ax-border-*"
-      ],
-      "a11yNotes": [
-        "Entries default to collapsed (aria-expanded='false')",
-        "Running entry auto-expands",
-        "New entries announced via aria-live='polite'",
-        "Keyboard: Enter/Space toggles expansion",
-        "Monospace font for tool I/O readability"
-      ],
-      "axPrinciples": ["Transparency", "Auditability"],
-      "stateModel": {
-        "states": ["empty", "streaming", "complete"],
-        "events": ["entryAdded", "entryUpdated", "entryCompleted", "entryFailed"]
-      }
+      "axPrinciples": ["Transparency", "Auditability"]
     },
     {
       "name": "artifact-card",
@@ -199,25 +104,183 @@
         "src/components/ArtifactCard/index.ts"
       ],
       "registryDependencies": [],
-      "hook": null,
-      "requiredTokens": [
-        "--ax-surface-*",
-        "--ax-border-*",
-        "--ax-font-*",
-        "--ax-space-*",
-        "--ax-radius-*",
-        "--ax-shadow-*"
+      "axPrinciples": ["Transparency", "Provenance"]
+    },
+    {
+      "name": "orchestrator-view",
+      "label": "OrchestratorView",
+      "category": "Orchestration: Visibility",
+      "description": "Recursive tree visualization of orchestrator → subagent hierarchies with per-node status",
+      "buildOrder": 7,
+      "type": "primitive",
+      "files": [
+        "src/components/OrchestratorView/OrchestratorView.tsx",
+        "src/components/OrchestratorView/OrchestratorView.module.css",
+        "src/components/OrchestratorView/OrchestratorView.types.ts",
+        "src/components/OrchestratorView/index.ts"
       ],
-      "a11yNotes": [
-        "role='article' with aria-label for artifact title",
-        "Export buttons in role='group' with aria-label='Export options'",
-        "Provenance info exposed as descriptive text"
+      "registryDependencies": [],
+      "axPrinciples": ["Transparency", "Hierarchy Visibility"]
+    },
+    {
+      "name": "agent-roster",
+      "label": "AgentRoster",
+      "category": "Orchestration: Visibility",
+      "description": "Dense operational table for scanning many agents simultaneously",
+      "buildOrder": 8,
+      "type": "primitive",
+      "files": [
+        "src/components/AgentRoster/AgentRoster.tsx",
+        "src/components/AgentRoster/AgentRoster.module.css",
+        "src/components/AgentRoster/AgentRoster.types.ts",
+        "src/components/AgentRoster/index.ts"
       ],
-      "axPrinciples": ["Transparency", "Provenance"],
-      "stateModel": {
-        "states": ["loading", "ready", "exporting", "exported"],
-        "events": ["loaded", "exportStarted", "exportCompleted"]
-      }
+      "registryDependencies": [],
+      "axPrinciples": ["Transparency", "Fleet Visibility"]
+    },
+    {
+      "name": "subagent-card",
+      "label": "SubagentCard",
+      "category": "Orchestration: Visibility",
+      "description": "Compact embeddable card showing a single agent's plan progress and token usage",
+      "buildOrder": 9,
+      "type": "primitive",
+      "files": [
+        "src/components/SubagentCard/SubagentCard.tsx",
+        "src/components/SubagentCard/SubagentCard.module.css",
+        "src/components/SubagentCard/SubagentCard.types.ts",
+        "src/components/SubagentCard/index.ts"
+      ],
+      "registryDependencies": [],
+      "axPrinciples": ["Transparency", "Progressive Disclosure"]
+    },
+    {
+      "name": "task-queue",
+      "label": "TaskQueue",
+      "category": "Orchestration: Work Management",
+      "description": "Grouped task backlog (In Progress → Assigned → Pending) with priority chips",
+      "buildOrder": 10,
+      "type": "primitive",
+      "files": [
+        "src/components/TaskQueue/TaskQueue.tsx",
+        "src/components/TaskQueue/TaskQueue.module.css",
+        "src/components/TaskQueue/TaskQueue.types.ts",
+        "src/components/TaskQueue/index.ts"
+      ],
+      "registryDependencies": [],
+      "axPrinciples": ["Transparency", "Work Visibility"]
+    },
+    {
+      "name": "handoff-protocol",
+      "label": "HandoffProtocol",
+      "category": "Orchestration: Coordination",
+      "description": "Structured payload viewer for agent-to-agent handoffs with Accept/Intercept/Cancel",
+      "buildOrder": 11,
+      "type": "primitive",
+      "files": [
+        "src/components/HandoffProtocol/HandoffProtocol.tsx",
+        "src/components/HandoffProtocol/HandoffProtocol.module.css",
+        "src/components/HandoffProtocol/HandoffProtocol.types.ts",
+        "src/components/HandoffProtocol/index.ts"
+      ],
+      "registryDependencies": [],
+      "axPrinciples": ["Human-in-the-Loop", "Comprehension"]
+    },
+    {
+      "name": "delegation-gate",
+      "label": "DelegationGate",
+      "category": "Orchestration: Coordination",
+      "description": "Gate for authorizing new agent spawning — shows role, mandate, constraints, cost",
+      "buildOrder": 12,
+      "type": "primitive",
+      "files": [
+        "src/components/DelegationGate/DelegationGate.tsx",
+        "src/components/DelegationGate/DelegationGate.module.css",
+        "src/components/DelegationGate/DelegationGate.types.ts",
+        "src/components/DelegationGate/index.ts"
+      ],
+      "registryDependencies": [],
+      "axPrinciples": ["Human-in-the-Loop", "Safe Delegation"]
+    },
+    {
+      "name": "swarm-monitor",
+      "label": "SwarmMonitor",
+      "category": "Orchestration: Visibility",
+      "description": "Macro-dashboard with KPI tiles: active instances, token burn, cost, error rate",
+      "buildOrder": 13,
+      "type": "primitive",
+      "files": [
+        "src/components/SwarmMonitor/SwarmMonitor.tsx",
+        "src/components/SwarmMonitor/SwarmMonitor.module.css",
+        "src/components/SwarmMonitor/SwarmMonitor.types.ts",
+        "src/components/SwarmMonitor/index.ts"
+      ],
+      "registryDependencies": [],
+      "axPrinciples": ["Transparency", "Fleet Visibility"]
+    },
+    {
+      "name": "escalation-router",
+      "label": "EscalationRouter",
+      "category": "Orchestration: Observability",
+      "description": "Alertdialog for unrecoverable agent errors with error trace and 3-way resolution",
+      "buildOrder": 14,
+      "type": "primitive",
+      "files": [
+        "src/components/EscalationRouter/EscalationRouter.tsx",
+        "src/components/EscalationRouter/EscalationRouter.module.css",
+        "src/components/EscalationRouter/EscalationRouter.types.ts",
+        "src/components/EscalationRouter/index.ts"
+      ],
+      "registryDependencies": [],
+      "axPrinciples": ["Human-in-the-Loop", "Error Recovery"]
+    },
+    {
+      "name": "swarm-inbox",
+      "label": "SwarmInbox",
+      "category": "Orchestration: Work Management",
+      "description": "Attention-triage inbox for items requiring human review across agents",
+      "buildOrder": 15,
+      "type": "primitive",
+      "files": [
+        "src/components/SwarmInbox/SwarmInbox.tsx",
+        "src/components/SwarmInbox/SwarmInbox.module.css",
+        "src/components/SwarmInbox/SwarmInbox.types.ts",
+        "src/components/SwarmInbox/index.ts"
+      ],
+      "registryDependencies": [],
+      "axPrinciples": ["Human-in-the-Loop", "Attention Management"]
+    },
+    {
+      "name": "branch-controls",
+      "label": "BranchControls",
+      "category": "Orchestration: Coordination",
+      "description": "Scoped steering panel for an individual agent branch with contextual actions",
+      "buildOrder": 16,
+      "type": "primitive",
+      "files": [
+        "src/components/BranchControls/BranchControls.tsx",
+        "src/components/BranchControls/BranchControls.module.css",
+        "src/components/BranchControls/BranchControls.types.ts",
+        "src/components/BranchControls/index.ts"
+      ],
+      "registryDependencies": [],
+      "axPrinciples": ["Human Agency", "Scoped Control"]
+    },
+    {
+      "name": "shared-context-ledger",
+      "label": "SharedContextLedger",
+      "category": "Orchestration: Observability",
+      "description": "Read-only scoped memory viewer with key/value entries, type tags, and conflict signals",
+      "buildOrder": 17,
+      "type": "primitive",
+      "files": [
+        "src/components/SharedContextLedger/SharedContextLedger.tsx",
+        "src/components/SharedContextLedger/SharedContextLedger.module.css",
+        "src/components/SharedContextLedger/SharedContextLedger.types.ts",
+        "src/components/SharedContextLedger/index.ts"
+      ],
+      "registryDependencies": [],
+      "axPrinciples": ["Transparency", "Context Visibility"]
     }
   ]
 }

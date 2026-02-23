@@ -1,0 +1,28 @@
+{
+  "name": "axk",
+  "version": "0.2.0",
+  "description": "AXK CLI — add AX Components primitives to your project",
+  "license": "MIT",
+  "type": "module",
+  "bin": {
+    "axk": "./bin/axk.js"
+  },
+  "files": [
+    "bin",
+    "src"
+  ],
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "keywords": [
+    "ax-components",
+    "agentic",
+    "react",
+    "ui",
+    "cli"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Iambizi/depute"
+  }
+}
