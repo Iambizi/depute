@@ -1,4 +1,4 @@
-// AXK CLI — commands/help.js
+// depute CLI — commands/help.js
 
 const c = {
   bold: (s) => `\x1b[1m${s}\x1b[0m`,

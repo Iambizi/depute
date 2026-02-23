@@ -1,4 +1,4 @@
-// AXK CLI — src/index.js
+// depute CLI — src/index.js
 // Routes CLI commands to their handlers.
 
 import { runAdd } from './commands/add.js';
@@ -22,6 +22,6 @@ switch (command) {
     printHelp();
     break;
   default:
-    console.error(`\n  Unknown command: "${command}". Run "axk help" for usage.\n`);
+    console.error(`\n  Unknown command: "${command}". Run "depute help" for usage.\n`);
     process.exit(1);
 }

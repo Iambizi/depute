@@ -1,4 +1,4 @@
-// AXK CLI — utils/fs.js
+// depute CLI — utils/fs.js
 // File system helpers with user-facing logging.
 
 import fs from 'fs';

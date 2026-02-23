@@ -3,7 +3,7 @@
 ## CSS Custom Properties
 
 All design tokens are defined as CSS custom properties on `:root` and consumed by component CSS Modules.
-Under the AXK model, these tokens are **copied into the consumer repo** (e.g. `src/styles/ax-theme.css`) so teams can theme without forking the component logic.
+Under the **depute** model, these tokens are **copied into the consumer repo** (e.g. `src/styles/ax-theme.css`) so teams can theme without forking the component logic.
 
 ## Color Tokens
 

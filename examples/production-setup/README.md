@@ -10,7 +10,7 @@ The most common pattern is Server-Sent Events (SSE). As the server streams text 
 
 ## Running the Example
 
-In a real project, this setup assumes you have copied the AXK components into your `src/components/` directory.
+In a real project, this setup assumes you have copied the depute components into your `src/components/` directory.
 
 ### `App.tsx`
 Below is a conceptual example of a custom React hook that manages the state of the agent run by parsing an incoming stream.

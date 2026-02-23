@@ -1,4 +1,4 @@
-// AXK CLI — utils/registry.js
+// depute CLI — utils/registry.js
 // Fetches registry.json from GitHub.
 
 import { fetchURL } from './github.js';

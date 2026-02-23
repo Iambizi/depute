@@ -18,14 +18,15 @@
 ## Session 12 - February 23, 2026
 
 ### Overview
-Built the AXK CLI (`npx axk`) and renamed the GitHub repo from `AX-CMP-S-K` to `depute`. The CLI implements the shadcn-style distribution model: it reads `registry.json` from GitHub raw and copies component source files directly into the user's project. All 17 components (6 v0 + 11 v1) are now in the registry.
+Built the `depute` CLI (`npx depute`) and renamed the GitHub repo from `AX-CMP-S-K` to `depute`. The CLI implements the shadcn-style distribution model: it reads `registry.json` from GitHub raw and copies component source files directly into the user's project. Completed a full AXK → depute branding sweep across all public-facing and internal docs.
 
 ### Context for the Next AI Reading This
-This project is a React component library for Agentic Experience (AX) design. The distribution model is **copy-paste via CLI** (not `npm install`), identical to how shadcn/ui works. The CLI package (`packages/cli/`) is a vanilla Node.js ESM package with zero dependencies.
+This project is a React component library for Agentic Experience (AX) design. The distribution model is **copy-paste via CLI** (not `npm install`), identical to how shadcn/ui works. The CLI package (`packages/cli/`) is a vanilla Node.js ESM package with zero runtime dependencies.
 
-**Repo:** `https://github.com/Iambizi/depute` (currently private — must go public before CLI works for the world)  
+**Repo:** `https://github.com/Iambizi/depute` (must be made public before CLI works for the world)  
 **GitHub raw base URL used by CLI:** `https://raw.githubusercontent.com/Iambizi/depute/main`  
-**CLI npm package name:** `axk` (set in `packages/cli/package.json`)
+**CLI npm package name:** `depute` (set in `packages/cli/package.json`, bin: `depute`)  
+**CLI command:** `npx depute add <component>` | `npx depute list` | `npx depute help`
 
 ### Accomplishments
 
@@ -33,47 +34,62 @@ This project is a React component library for Agentic Experience (AX) design. Th
 - ✅ Repo renamed from `AX-CMP-S-K` → `depute` on GitHub.
 - ✅ Local git remote updated: `git remote set-url origin git@github.com:Iambizi/depute.git`
 
-#### 48. AXK CLI Built (`packages/cli/`)
-- ✅ `packages/cli/package.json` — name: `axk`, bin: `axk`, Node 18+, zero runtime dependencies.
-- ✅ `packages/cli/bin/axk.js` — shebang entry point (chmod +x).
+#### 48. depute CLI Built (`packages/cli/`)
+- ✅ `packages/cli/package.json` — name: `depute`, bin: `depute`, Node 18+, zero runtime dependencies.
+- ✅ `packages/cli/bin/depute.js` — shebang entry point (chmod +x).
 - ✅ `packages/cli/src/index.js` — argv parser, routes to add/list/help commands.
-- ✅ `packages/cli/src/commands/add.js` — core command: fetches registry, finds component, fetches each file from GitHub raw, writes to `src/components/<Name>/`, auto-adds `src/types/ax-common.ts` and `src/utils/ax-a11y.tsx` on first install.
+- ✅ `packages/cli/src/commands/add.js` — core command: fetches registry, finds component, fetches each file from GitHub raw, writes to `src/components/<Name>/`, auto-adds `src/types/ax-common.ts` and `src/utils/ax-a11y.tsx` on first install. Rewrites internal import paths.
 - ✅ `packages/cli/src/commands/list.js` — fetches registry, prints grouped table of all 17 components.
 - ✅ `packages/cli/src/commands/help.js` — usage, examples, options.
 - ✅ `packages/cli/src/utils/github.js` — raw GitHub fetcher (pure Node `https` builtin).
 - ✅ `packages/cli/src/utils/registry.js` — fetches and parses `registry.json` from GitHub.
 - ✅ `packages/cli/src/utils/fs.js` — `writeFileToDisk` with colored output, skip-if-exists logic.
 - ✅ `packages/cli/README.md` — user-facing docs with quick-start and component table.
-- ✅ All 3 commands verified working locally: `help`, `list` (fetches from GitHub), `add plan-card` (fetches + writes files).
+- ✅ All 3 commands verified working locally.
 
 #### 49. `registry.json` Expanded to 17 Components
 - ✅ Updated `registry/registry.json` from 6 (v0 only) → 17 (v0 + v1 orchestration primitives).
 - ✅ Added `repo`, `branch`, and `sharedFiles` fields to the registry schema.
-- ✅ Each entry has: name (slug), label, category, description, files[], registryDependencies[], axPrinciples[].
+- ✅ `"distribution": "depute"` set in registry.
 
-#### 50. Shared Files Created
-- ✅ `src/types/ax-common.ts` — copy of `common.ts`, the file the CLI writes to user projects as the shared types destination.
-- ✅ `src/utils/ax-a11y.tsx` — copy of `a11y.tsx`, the file the CLI writes for accessibility utilities.
-- ✅ Both files committed to repo so GitHub raw URLs for them resolve correctly.
+#### 50. Shared Files Committed
+- ✅ `src/types/ax-common.ts` — shared types file for CLI to deliver to user projects.
+- ✅ `src/utils/ax-a11y.tsx` — a11y utilities file for CLI to deliver.
+
+#### 51. Full AXK → depute Branding Sweep
+- ✅ Renamed CLI npm package from `axk` → `depute` (bin file, package.json, all help/error text).
+- ✅ Replaced all `AXK` / `axk` references across 20+ files:
+  - `registry/registry.json` — `"distribution"` field
+  - `README.md` — distribution model section
+  - `docs/orchestration/01-project-specification.md` — distribution model
+  - `docs/orchestration/02-technical-architecture.md` — tech stack, constraints, directory tree
+  - `docs/orchestration/03-ux-design.md` — depute implication note
+  - `docs/orchestration/04-design-system.md` — design tokens section
+  - `docs/orchestration/06-technical-specifications.md` — section heading
+  - `docs/orchestration/07-universal-format-standards.md` — section heading
+  - `docs/orchestration/progress.json` — step-12 name
+  - `docs/internal/research/README.md` — AX-SKILL-SPEC description
+  - `examples/prototype-setup/README.md` and `examples/production-setup/README.md`
+  - All `packages/cli/src/**` file header comments
+- ✅ Intentionally preserved: historical session notes (accurate record), research archive files with AXK in filename (`AXK-DISTRIBUTION-DEEP-DIVE.md`), `RELEASES.md` (historical context), and `DEFERRED-LOG.md`.
 
 ### Key Decisions
-1. **`npx axk` not `npx depute`** — CLI command name (`axk`) is independent of repo name (`depute`). `axk` is the npm package name. Short, brandable, consistent with the AXK distribution model name.
+1. **`npx depute` not `npx axk`** — Renamed CLI package to match repo name. Evaluators landing on `github.com/Iambizi/depute` and reading `npx depute` get instant brand coherence.
 2. **Zero dependencies in CLI** — Pure Node builtins (`https`, `fs`, `path`). No install step, no lock-in.
 3. **Files fetched live from GitHub raw** — CLI always delivers latest `main`. Not bundled in the CLI package.
-4. **Import path rewriting** — `add.js` rewrites `../../types/common` → `../../types/ax-common` and `../../utils/a11y` → `../../utils/ax-a11y` so copied files use the scoped filenames and don't collide with users' existing type files.
+4. **Import path rewriting** — `add.js` rewrites `../../types/common` → `../../types/ax-common` so users get isolated, non-colliding filenames.
 
 ### What's Left Before the Wealthsimple Deadline (March 2, 2026)
-- [ ] **Make `depute` repo public** on GitHub — required for `npx axk` to work for anyone.
-- [ ] **Publish `axk` to npm** — so `npx axk` resolves globally. Requires: `cd packages/cli && npm publish --access public`. (Decide name: keep `axk` or rename to match `depute` brand?)
-- [ ] **Polish root `README.md`** — must explain the project in 60 seconds for Wealthsimple evaluators. Currently references old AX Components library framing, needs to reflect the `depute` / AXK brand.
-- [ ] **Demo video** — 2-3 min showing ApprovalGate, OrchestratorView, SwarmMonitor in Storybook, then `npx axk add` in a fresh project.
-- [ ] **Written reasoning** — 1-page doc on the human/AI boundary problem this library solves (for the application).
+- [ ] **Make `depute` repo public** on GitHub — required for `npx depute` to work for anyone.
+- [ ] **Publish `depute` to npm** — `cd packages/cli && npm publish --access public`.
+- [ ] **Polish root `README.md`** — Needs a proper public-facing hero for Wealthsimple evaluators.
+- [ ] **Demo video** — 2-3 min showing ApprovalGate, OrchestratorView, SwarmMonitor in Storybook, then `npx depute add` in a fresh project.
+- [ ] **Written reasoning** — 1-page doc on the human/AI boundary problem this library solves.
 
 ### Next Steps (Immediate)
-1. Decide final npm package name for the CLI (keeping `axk` or renaming).
-2. Make repo public.
-3. Publish `axk` to npm.
-4. Polish README.md for public/evaluator audience.
+1. Make `depute` repo public on GitHub.
+2. `cd packages/cli && npm publish --access public`.
+3. Polish root README.
 
 ---
 

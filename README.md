@@ -4,7 +4,7 @@
 
 AX Components is a collection of React primitives designed specifically for Agentic Experience. It bridges the gap between what AI agents are doing in the background (planning, reasoning, executing tools) and what human users need to see to build trust.
 
-Built on the **AXK (AX Kit)** distribution model, these components are designed to be copied directly into your project so you have full code ownership. They are built with Radix UI, Tailwind CSS, and strict accessibility standards.
+Built on the **depute** distribution model — components are copied directly into your project so you have full code ownership. No black box, no lock-in.
 
 ## The v0 Primitives
 
@@ -81,15 +81,17 @@ export function AgentProduction() {
 }
 ```
 
-## Distribution Model (AXK)
+## Distribution Model (depute)
 
-We don't distribute via strict `npm` dependencies. Agents cannot easily customize UI they don't own. Instead, we use the shadcn/ui "copy-paste" model:
+We don't distribute via strict `npm` dependencies. Instead, we use the shadcn/ui "copy-paste" model via the **depute** CLI:
 
-1. Copy the primitive's source code into your project.
-2. Customize the Tailwind styling to match your brand.
-3. Edit the component's internal behavior if your agent needs custom props.
+```bash
+npx depute add approval-gate
+npx depute add orchestrator-view
+npx depute list
+```
 
-*(Note: The `axk` CLI is still in development. For now, components are available in this repository under `src/components/`)*.
+Each component's source is copied into your project — you own the code, customize it freely, and connect it to any agent backend.
 
 ## Development
 

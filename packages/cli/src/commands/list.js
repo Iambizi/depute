@@ -1,4 +1,4 @@
-// AXK CLI — commands/list.js
+// depute CLI — commands/list.js
 // Lists all available AX Components from the registry.
 
 import { fetchRegistry } from '../utils/registry.js';

@@ -29,7 +29,7 @@ Specs and protocols that inform how our library should be structured and distrib
 | `A2UI-Implications.md` | Google (A2UI v0.8) | Catalog-first, schema-first design. AX Components = design system layer above A2UI renderer (compatibility target, not dependency) |
 | `DISTRIBUTION-STRATEGY-SHADCN.md` | shadcn/ui | CLI-based component distribution vs npm packages (Code Ownership is critical for AI). |
 | `SKILL-LAYER-OPPORTUNITY.md` | Vercel / Anthropic | Distributing component intelligence via `skills.sh` and Anthropic native skills. |
-| `AX-SKILL-SPEC.md` | AX Strategy | The architectural specification for the AX Skill (trigger conditions, progressive disclosure, AXK copy-paste payload). |
+| `AX-SKILL-SPEC.md` | AX Strategy | The architectural specification for the AX Skill (trigger conditions, progressive disclosure, depute copy-paste payload). |
 | `AGENTIC-CODING-LEVELS.md` | AX Framework | The 8 levels of agentic coding, targeting Orchestrated Hierarchy (Fig 8) for v1's multi-agent primitives. |
 
 ### 🧩 Primitive Catalogs

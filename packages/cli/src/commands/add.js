@@ -1,4 +1,4 @@
-// AXK CLI — commands/add.js
+// depute CLI — commands/add.js
 // Copies a component's source files into the user's project.
 
 import path from 'path';

@@ -1,4 +1,4 @@
-// AXK CLI — utils/github.js
+// depute CLI — utils/github.js
 // Fetches raw file content from GitHub using only Node built-ins.
 
 import https from 'https';

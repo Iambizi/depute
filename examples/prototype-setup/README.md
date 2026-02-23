@@ -8,7 +8,7 @@ When designing Agentic Experiences (AX), the way the agent communicates trust an
 
 ## Running the Example
 
-In a real project, this setup assumes you have copied the AXK components into your `src/components/` directory.
+In a real project, this setup assumes you have copied the depute components into your `src/components/` directory.
 
 ### `App.tsx`
 This example simulates a multi-step agent flow that starts immediately, streams log entries, and pauses to ask for human approval before charging a simulated card.

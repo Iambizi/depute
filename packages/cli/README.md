@@ -10,7 +10,7 @@ npx depute list
 
 ## What is this?
 
-AXK follows the [shadcn/ui](https://ui.shadcn.com/) distribution model. Instead of importing from `node_modules`, components are **copied directly into your project** — you own the code, you control the customization.
+depute follows the [shadcn/ui](https://ui.shadcn.com/) distribution model. Instead of importing from `node_modules`, components are **copied directly into your project** — you own the code, you control the customization.
 
 ## Quick Start
 

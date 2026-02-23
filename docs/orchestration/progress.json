@@ -66,7 +66,7 @@
       "completedAt": "2026-02-22T20:07:00Z"
     },
     "step-12-axk-cli": {
-      "name": "AXK CLI",
+      "name": "depute CLI",
       "status": "not_started",
       "dependsOn": ["step-11-v1-complete"],
       "completedAt": null

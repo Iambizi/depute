@@ -2,7 +2,7 @@
   "name": "ax-components",
   "version": "0.2.0",
   "description": "AX Components — UI primitives for agentic experiences",
-  "distribution": "axk",
+  "distribution": "depute",
   "repo": "Iambizi/depute",
   "branch": "main",
   "sharedFiles": [
