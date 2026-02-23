@@ -72,10 +72,7 @@
         "status": "completed",
         "completedAt": "2026-02-19T16:48:00Z"
       },
-      "step-6-stories": {
-        "status": "not_started",
-        "completedAt": null
-      },
+      "step-6-stories": { "status": "completed", "completedAt": "2026-02-22T19:27:00Z" },
       "step-7-tests": {
         "status": "completed",
         "completedAt": "2026-02-20T18:54:08.008Z"
