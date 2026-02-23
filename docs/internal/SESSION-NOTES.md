@@ -1,9 +1,9 @@
 # Current Status & Next Steps
 
-**Last Updated:** February 22, 2026
+**Last Updated:** February 23, 2026
 **Updated By:** AI Assistant
 **Current Branch:** `main`
-**Overall Progress:** v0.2.0 Tagged · v1 Primitives Complete (steps 4–7) · **Next: AXK CLI**
+**Overall Progress:** v0.2.0 Tagged · AXK CLI Built · **Next: Publish `axk` to npm, make repo public**
 
 **IMPORTANT:** See `docs/internal/DEFERRED-LOG.md` for the latest strategic context and deferred triggers.
 
@@ -12,6 +12,68 @@
 # AX Components - Session Notes
 
 *Latest sessions appear at the top*
+
+---
+
+## Session 12 - February 23, 2026
+
+### Overview
+Built the AXK CLI (`npx axk`) and renamed the GitHub repo from `AX-CMP-S-K` to `depute`. The CLI implements the shadcn-style distribution model: it reads `registry.json` from GitHub raw and copies component source files directly into the user's project. All 17 components (6 v0 + 11 v1) are now in the registry.
+
+### Context for the Next AI Reading This
+This project is a React component library for Agentic Experience (AX) design. The distribution model is **copy-paste via CLI** (not `npm install`), identical to how shadcn/ui works. The CLI package (`packages/cli/`) is a vanilla Node.js ESM package with zero dependencies.
+
+**Repo:** `https://github.com/Iambizi/depute` (currently private — must go public before CLI works for the world)  
+**GitHub raw base URL used by CLI:** `https://raw.githubusercontent.com/Iambizi/depute/main`  
+**CLI npm package name:** `axk` (set in `packages/cli/package.json`)
+
+### Accomplishments
+
+#### 47. GitHub Repo Renamed to `depute`
+- ✅ Repo renamed from `AX-CMP-S-K` → `depute` on GitHub.
+- ✅ Local git remote updated: `git remote set-url origin git@github.com:Iambizi/depute.git`
+
+#### 48. AXK CLI Built (`packages/cli/`)
+- ✅ `packages/cli/package.json` — name: `axk`, bin: `axk`, Node 18+, zero runtime dependencies.
+- ✅ `packages/cli/bin/axk.js` — shebang entry point (chmod +x).
+- ✅ `packages/cli/src/index.js` — argv parser, routes to add/list/help commands.
+- ✅ `packages/cli/src/commands/add.js` — core command: fetches registry, finds component, fetches each file from GitHub raw, writes to `src/components/<Name>/`, auto-adds `src/types/ax-common.ts` and `src/utils/ax-a11y.tsx` on first install.
+- ✅ `packages/cli/src/commands/list.js` — fetches registry, prints grouped table of all 17 components.
+- ✅ `packages/cli/src/commands/help.js` — usage, examples, options.
+- ✅ `packages/cli/src/utils/github.js` — raw GitHub fetcher (pure Node `https` builtin).
+- ✅ `packages/cli/src/utils/registry.js` — fetches and parses `registry.json` from GitHub.
+- ✅ `packages/cli/src/utils/fs.js` — `writeFileToDisk` with colored output, skip-if-exists logic.
+- ✅ `packages/cli/README.md` — user-facing docs with quick-start and component table.
+- ✅ All 3 commands verified working locally: `help`, `list` (fetches from GitHub), `add plan-card` (fetches + writes files).
+
+#### 49. `registry.json` Expanded to 17 Components
+- ✅ Updated `registry/registry.json` from 6 (v0 only) → 17 (v0 + v1 orchestration primitives).
+- ✅ Added `repo`, `branch`, and `sharedFiles` fields to the registry schema.
+- ✅ Each entry has: name (slug), label, category, description, files[], registryDependencies[], axPrinciples[].
+
+#### 50. Shared Files Created
+- ✅ `src/types/ax-common.ts` — copy of `common.ts`, the file the CLI writes to user projects as the shared types destination.
+- ✅ `src/utils/ax-a11y.tsx` — copy of `a11y.tsx`, the file the CLI writes for accessibility utilities.
+- ✅ Both files committed to repo so GitHub raw URLs for them resolve correctly.
+
+### Key Decisions
+1. **`npx axk` not `npx depute`** — CLI command name (`axk`) is independent of repo name (`depute`). `axk` is the npm package name. Short, brandable, consistent with the AXK distribution model name.
+2. **Zero dependencies in CLI** — Pure Node builtins (`https`, `fs`, `path`). No install step, no lock-in.
+3. **Files fetched live from GitHub raw** — CLI always delivers latest `main`. Not bundled in the CLI package.
+4. **Import path rewriting** — `add.js` rewrites `../../types/common` → `../../types/ax-common` and `../../utils/a11y` → `../../utils/ax-a11y` so copied files use the scoped filenames and don't collide with users' existing type files.
+
+### What's Left Before the Wealthsimple Deadline (March 2, 2026)
+- [ ] **Make `depute` repo public** on GitHub — required for `npx axk` to work for anyone.
+- [ ] **Publish `axk` to npm** — so `npx axk` resolves globally. Requires: `cd packages/cli && npm publish --access public`. (Decide name: keep `axk` or rename to match `depute` brand?)
+- [ ] **Polish root `README.md`** — must explain the project in 60 seconds for Wealthsimple evaluators. Currently references old AX Components library framing, needs to reflect the `depute` / AXK brand.
+- [ ] **Demo video** — 2-3 min showing ApprovalGate, OrchestratorView, SwarmMonitor in Storybook, then `npx axk add` in a fresh project.
+- [ ] **Written reasoning** — 1-page doc on the human/AI boundary problem this library solves (for the application).
+
+### Next Steps (Immediate)
+1. Decide final npm package name for the CLI (keeping `axk` or renaming).
+2. Make repo public.
+3. Publish `axk` to npm.
+4. Polish README.md for public/evaluator audience.
 
 ---
 
