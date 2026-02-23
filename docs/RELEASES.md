@@ -1,3 +1,39 @@
+# AX Components v0.2.0 Release Notes
+
+**February 22, 2026**
+
+The second release of **AX Components for React**, adding 11 new orchestration primitives for multi-agent swarm supervision. Where v0.1.0 solved the single-agent oversight problem, v0.2.0 addresses **Figures 7 & 8 of the Agentic Coding Levels framework** — coordinating networks of specialized agents working in parallel.
+
+## ✨ 11 New Orchestration Primitives
+
+### Visibility & Hierarchy
+- **`OrchestratorView`** — Recursive tree visualization of orchestrator → subagent hierarchies with per-node status, depth-coded coloring, and expand/collapse.
+- **`AgentRoster`** — Dense operational table for scanning 20+ agents simultaneously, with summary status pills and row-level actions.
+- **`SubagentCard`** — Compact embeddable card showing a single agent's plan progress, token usage, and current task.
+- **`SwarmMonitor`** — Macro-dashboard with KPI tiles (active instances, token burn, cost, error rate) and a global progress bar.
+
+### Task & Work Management
+- **`TaskQueue`** — Grouped task backlog (In Progress → Assigned → Pending) with priority chips and inline promote/assign/cancel actions.
+- **`SwarmInbox`** — Attention-triage inbox for items requiring human review, with severity-tinted rows and a pulsing critical-item badge.
+
+### Agent Coordination
+- **`HandoffProtocol`** — Structured payload viewer for agent-to-agent handoffs, with Accept / Intercept / Cancel actions.
+- **`DelegationGate`** — Alertdialog gate for authorizing new agent spawning, showing role, mandate, tool constraints, and cost estimate.
+- **`BranchControls`** — Scoped steering panel for an individual agent branch with contextual action buttons.
+
+### Observability & Context
+- **`EscalationRouter`** — Red alertdialog for unrecoverable agent errors with collapsible error trace and 3-way resolution (Retry / Reassign / Cancel Branch).
+- **`SharedContextLedger`** — Read-only scoped memory viewer showing key/value entries with type tags, provenance metadata, and conflict signals.
+
+## 📦 What's Included
+
+- **219 tests passing** across all 17 test files (11 v1 + 6 v0).
+- **Full Storybook coverage** — each component has Default, state variants, interactive prototypes, and production examples.
+- **Mock data generators** for all 11 new components in `src/utils/mockData.ts`.
+- **`registry.json`** update incoming with v1 primitives (part of AXK CLI work).
+
+---
+
 # AX Components v0.1.0 Release Notes
 
 **February 20, 2026**
