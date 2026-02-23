@@ -1,8 +1,11 @@
 import { useState, useEffect } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import { PlanCard } from '../src/components/PlanCard';
+import {
+  generateMockPlan,
+  simulatePlanExecution,
+} from '../src/utils/mockData';
 import type { PlanStep } from '../src/types/common';
-import { generateMockPlan, simulatePlanExecution } from '../src/utils/mockData';
 
 const meta: Meta<typeof PlanCard> = {
   title: 'AX Components/PlanCard',
@@ -21,71 +24,94 @@ type Story = StoryObj<typeof PlanCard>;
 // SHARED STORIES
 // ============================================================
 
-const { title, steps, assumptions } = generateMockPlan({ stepCount: 4 });
+const BASE = generateMockPlan({ stepCount: 5, includeConfidence: true });
 
+/** Default: all steps pending, determinate mode */
 export const Default: Story = {
   args: {
-    title,
-    steps,
+    title: BASE.title,
+    steps: BASE.steps,
+    assumptions: BASE.assumptions,
   },
 };
 
+/** All features enabled: assumptions, reasoning, confidence badges */
 export const AllFeatures: Story = {
   args: {
-    title,
-    steps,
-    assumptions,
-    reasoning: 'A sequential approach ensures each step is validated before proceeding to the next.',
-    mode: 'determinate',
+    ...generateMockPlan({
+      stepCount: 5,
+      includeConfidence: true,
+      includeReasoning: true,
+    }),
     showConfidence: true,
   },
 };
 
-// State stories
-export const AllPending: Story = {
-  name: 'State: All Pending',
+// --- State variants ---
+
+export const StateActive: Story = {
+  name: 'State: Active (step 2 in progress)',
   args: {
-    title: 'Preparing analysis',
-    steps: generateMockPlan({ stepCount: 4 }).steps.map((s) => ({ ...s, status: 'pending' as const })),
+    title: 'Refactor authentication layer',
+    steps: [
+      { id: 's1', label: 'Audit existing auth code', status: 'completed', confidence: 92 },
+      { id: 's2', label: 'Extract token refresh logic', status: 'active', confidence: 78, reasoning: 'Isolating to a pure function decouples it from the HTTP client.' },
+      { id: 's3', label: 'Write unit tests', status: 'pending', confidence: 85 },
+      { id: 's4', label: 'Update integration tests', status: 'pending', confidence: 70 },
+      { id: 's5', label: 'PR and review', status: 'pending' },
+    ],
+    showConfidence: true,
+    assumptions: ['Auth module is isolated', 'CI pipeline is green'],
   },
 };
 
-export const InProgress: Story = {
-  name: 'State: In Progress',
+export const StateCompleted: Story = {
+  name: 'State: All Completed',
   args: {
-    title: 'Running analysis',
-    steps: generateMockPlan({ stepCount: 4 }).steps.map((s, i) => ({
-      ...s,
-      status: i === 0 ? 'completed' : i === 1 ? 'active' : 'pending',
-    } as PlanStep)),
+    title: 'Generate API documentation',
+    steps: [
+      { id: 's1', label: 'Parse OpenAPI schema', status: 'completed', confidence: 95 },
+      { id: 's2', label: 'Generate endpoint descriptions', status: 'completed', confidence: 88 },
+      { id: 's3', label: 'Write usage examples', status: 'completed', confidence: 91 },
+      { id: 's4', label: 'Export as Markdown', status: 'completed', confidence: 99 },
+    ],
+    showConfidence: true,
   },
 };
 
-export const Completed: Story = {
-  name: 'State: Completed',
+export const StateFailed: Story = {
+  name: 'State: Step Failed',
   args: {
-    title: 'Analysis complete',
-    steps: generateMockPlan({ stepCount: 4 }).steps.map((s) => ({ ...s, status: 'completed' as const })),
+    title: 'Deploy to staging',
+    steps: [
+      { id: 's1', label: 'Build production bundle', status: 'completed', confidence: 97 },
+      { id: 's2', label: 'Run smoke tests', status: 'completed', confidence: 90 },
+      { id: 's3', label: 'Push to staging cluster', status: 'failed', confidence: 40 },
+      { id: 's4', label: 'Verify health checks', status: 'pending' },
+    ],
+    assumptions: ['AWS credentials are valid', 'ECS cluster is running'],
   },
 };
 
-export const Failed: Story = {
-  name: 'State: Failed',
+export const StateIndeterminate: Story = {
+  name: 'State: Indeterminate (open-ended)',
   args: {
-    title: 'Analysis failed',
-    steps: generateMockPlan({ stepCount: 4 }).steps.map((s, i) => ({
-      ...s,
-      status: i < 2 ? 'completed' : i === 2 ? 'failed' : 'pending',
-    } as PlanStep)),
-  },
-};
-
-export const Indeterminate: Story = {
-  name: 'State: Indeterminate',
-  args: {
-    title: 'Processing (open-ended)',
-    steps: [],
+    title: 'Exploratory research on caching strategies',
     mode: 'indeterminate',
+    steps: [
+      { id: 's1', label: 'Survey Redis documentation', status: 'completed' },
+      { id: 's2', label: 'Benchmark Memcached vs Redis', status: 'active' },
+      { id: 's3', label: 'Prototype with Dragonfly', status: 'pending' },
+    ],
+    reasoning: 'The number of additional steps depends on what the benchmarks reveal.',
+  },
+};
+
+export const StateEmpty: Story = {
+  name: 'State: No Steps (empty)',
+  args: {
+    title: 'Pending plan generation',
+    steps: [],
   },
 };
 
@@ -93,96 +119,85 @@ export const Indeterminate: Story = {
 // PROTOTYPING STORIES
 // ============================================================
 
-export const PrototypeQuickStart: Story = {
-  name: 'Quick Start: Prototype Plan Execution Flow',
+/** Interactive prototype: click steps to select them */
+export const PrototypeStepSelection: Story = {
+  name: 'Prototype: Step Selection',
   render: () => {
-    const plan = generateMockPlan({ stepCount: 5, includeConfidence: true });
-    const [liveSteps, setLiveSteps] = useState<PlanStep[]>(plan.steps);
+    const plan = generateMockPlan({ stepCount: 5, includeConfidence: true, includeReasoning: true });
+    const [activeStepId, setActiveStepId] = useState<string>(plan.steps[1]?.id ?? '');
+    const [lastClicked, setLastClicked] = useState<string>('(none)');
 
-    useEffect(() => {
-      const { cancel } = simulatePlanExecution({
-        steps: plan.steps,
-        onUpdate: setLiveSteps,
-        intervalMs: 1200,
-      });
-      return cancel;
-    }, []);
+    const handleStepClick = (step: PlanStep) => {
+      setActiveStepId(step.id);
+      setLastClicked(step.label);
+    };
 
     return (
-      <PlanCard
-        title={plan.title}
-        steps={liveSteps}
-        assumptions={plan.assumptions}
-        showConfidence
-      />
-    );
-  },
-};
-
-export const TestVariations: Story = {
-  name: 'Test Different Step Counts',
-  render: () => {
-    const [count, setCount] = useState(3);
-    const plan = generateMockPlan({ stepCount: count, includeConfidence: true });
-
-    return (
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-        <div style={{ display: 'flex', gap: '0.5rem', fontFamily: 'sans-serif', fontSize: '0.875rem' }}>
-          {[2, 3, 5, 8].map((n) => (
-            <button
-              key={n}
-              onClick={() => setCount(n)}
-              style={{
-                padding: '0.25rem 0.75rem',
-                border: '1px solid #ccc',
-                borderRadius: '4px',
-                background: count === n ? '#1d4ed8' : '#fff',
-                color: count === n ? '#fff' : '#333',
-                cursor: 'pointer',
-              }}
-            >
-              {n} steps
-            </button>
-          ))}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', maxWidth: '560px' }}>
+        <div style={{ fontSize: '13px', color: '#888' }}>
+          Last clicked: <strong>{lastClicked}</strong>
         </div>
-        <PlanCard title={plan.title} steps={plan.steps} showConfidence assumptions={plan.assumptions} />
+        <PlanCard
+          {...plan}
+          activeStepId={activeStepId}
+          onStepClick={handleStepClick}
+          showConfidence
+        />
       </div>
     );
   },
 };
 
-export const SimulateRealTimeUpdates: Story = {
-  name: 'Simulate Real-Time Updates',
+/** Live execution simulation: steps auto-advance pending → active → completed */
+export const PrototypeLiveExecution: Story = {
+  name: 'Prototype: Live Execution',
   render: () => {
-    const plan = generateMockPlan({ stepCount: 6, includeConfidence: true, includeReasoning: true });
-    const [liveSteps, setLiveSteps] = useState<PlanStep[]>(plan.steps);
-    const [key, setKey] = useState(0);
+    const plan = generateMockPlan({ stepCount: 6, includeConfidence: true });
+    const [steps, setSteps] = useState<PlanStep[]>(plan.steps);
+    const [running, setRunning] = useState(false);
+    const [cancelFn, setCancelFn] = useState<(() => void) | null>(null);
 
-    useEffect(() => {
-      setLiveSteps(plan.steps);
+    const handleStart = () => {
+      // Reset steps
+      setSteps(plan.steps.map((s) => ({ ...s, status: 'pending' as const })));
+      setRunning(true);
       const { cancel } = simulatePlanExecution({
-        steps: plan.steps,
-        onUpdate: setLiveSteps,
-        intervalMs: 800,
+        steps: plan.steps.map((s) => ({ ...s, status: 'pending' as const })),
+        onUpdate: (updated) => setSteps(updated),
+        intervalMs: 1200,
       });
-      return cancel;
-    }, [key]);
+      setCancelFn(() => cancel);
+    };
+
+    const handleStop = () => {
+      cancelFn?.();
+      setRunning(false);
+    };
 
     return (
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', maxWidth: '560px' }}>
+        <div style={{ display: 'flex', gap: '8px' }}>
+          <button
+            onClick={handleStart}
+            disabled={running}
+            style={{ padding: '6px 16px', borderRadius: '6px', cursor: running ? 'default' : 'pointer' }}
+          >
+            ▶ Start simulation
+          </button>
+          <button
+            onClick={handleStop}
+            disabled={!running}
+            style={{ padding: '6px 16px', borderRadius: '6px', cursor: !running ? 'default' : 'pointer' }}
+          >
+            ✕ Stop
+          </button>
+        </div>
         <PlanCard
           title={plan.title}
-          steps={liveSteps}
-          showConfidence
+          steps={steps}
           assumptions={plan.assumptions}
-          reasoning={plan.reasoning}
+          showConfidence
         />
-        <button
-          onClick={() => setKey((k) => k + 1)}
-          style={{ padding: '0.5rem 1rem', border: '1px solid #ccc', borderRadius: '4px', cursor: 'pointer', fontFamily: 'sans-serif' }}
-        >
-          ↺ Restart simulation
-        </button>
       </div>
     );
   },
@@ -192,43 +207,48 @@ export const SimulateRealTimeUpdates: Story = {
 // PRODUCTION STORIES
 // ============================================================
 
-export const BasicUsage: Story = {
-  name: 'Basic Usage',
+/** Production: realistic software planning task */
+export const ProductionSoftwarePlan: Story = {
+  name: 'Production: Software Planning Task',
   args: {
-    title: 'Summarize Q4 report',
-    steps: [
-      { id: '1', label: 'Load document', status: 'completed' },
-      { id: '2', label: 'Extract key metrics', status: 'active' },
-      { id: '3', label: 'Generate summary', status: 'pending' },
-    ],
-  },
-};
-
-export const WithRealAPIData: Story = {
-  name: 'With Real API Data',
-  args: {
-    title: 'Process customer refund request',
-    steps: [
-      { id: '1', label: 'Validate request ID', status: 'completed', confidence: 98 },
-      { id: '2', label: 'Check eligibility window', status: 'completed', confidence: 91 },
-      { id: '3', label: 'Calculate refund amount', status: 'active', confidence: 84 },
-      { id: '4', label: 'Submit to payment processor', status: 'pending', confidence: 79 },
-      { id: '5', label: 'Send confirmation email', status: 'pending' },
-    ],
-    assumptions: ['Policy window is 30 days from purchase', 'Original payment method is still valid'],
+    title: 'Implement OAuth 2.0 with PKCE',
+    mode: 'determinate',
     showConfidence: true,
+    steps: [
+      { id: 'p1', label: 'Research PKCE spec (RFC 7636)', status: 'completed', confidence: 98 },
+      { id: 'p2', label: 'Design token storage strategy', status: 'completed', confidence: 91 },
+      { id: 'p3', label: 'Implement authorization code flow', status: 'active', confidence: 84,
+        reasoning: 'PKCE flow prevents auth code interception in public clients without a client secret.' },
+      { id: 'p4', label: 'Add token refresh with sliding expiry', status: 'pending', confidence: 79 },
+      { id: 'p5', label: 'Write integration tests', status: 'pending', confidence: 87 },
+      { id: 'p6', label: 'Security audit & pen test', status: 'pending', confidence: 72 },
+    ],
+    assumptions: [
+      'Identity provider supports PKCE',
+      'Frontend is a SPA (no client secret)',
+      'Token storage uses httpOnly cookies',
+    ],
+    reasoning: 'PKCE is the recommended OAuth 2.0 flow for SPAs as of RFC 9700. The sequential steps ensure each security layer is validated before proceeding.',
   },
 };
 
-export const ErrorHandling: Story = {
-  name: 'Error Handling',
+/** Production: data analysis task with indeterminate steps */
+export const ProductionDataAnalysis: Story = {
+  name: 'Production: Data Analysis (Indeterminate)',
   args: {
-    title: 'Data pipeline failed',
+    title: 'Diagnose API latency regression',
+    mode: 'indeterminate',
+    showConfidence: true,
     steps: [
-      { id: '1', label: 'Connect to data source', status: 'completed' },
-      { id: '2', label: 'Validate schema', status: 'completed' },
-      { id: '3', label: 'Transform records', status: 'failed', reasoning: 'Unexpected null value in required field "customer_id" at row 1,204.' },
-      { id: '4', label: 'Write to destination', status: 'pending' },
+      { id: 'd1', label: 'Pull last 7 days of trace data', status: 'completed', confidence: 99 },
+      { id: 'd2', label: 'Identify p99 latency outliers', status: 'completed', confidence: 94 },
+      { id: 'd3', label: 'Correlate with recent deploys', status: 'active', confidence: 81 },
+      { id: 'd4', label: 'Isolate DB query bottleneck', status: 'pending', confidence: 70 },
+    ],
+    reasoning: 'Additional steps may be added depending on whether the bottleneck is in the DB layer, network, or application code.',
+    assumptions: [
+      'Datadog traces are available for the time window',
+      'Deploy log access is granted',
     ],
   },
 };
