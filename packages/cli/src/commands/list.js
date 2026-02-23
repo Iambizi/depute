@@ -12,7 +12,7 @@ const c = {
 };
 
 export async function runList() {
-  console.log(`\n  ${c.bold('✦ AXK')} ${c.dim('— AX Components for React')}\n`);
+  console.log(`\n  ${c.bold('✦ depute')} ${c.dim('— AX Components for React')}\n`);
 
   let registry;
   try {
@@ -43,6 +43,6 @@ export async function runList() {
     console.log('');
   }
 
-  console.log(`  ${c.dim('Usage:')} npx axk add ${c.bold('<component-name>')}\n`);
-  console.log(`  ${c.dim('Example:')} npx axk add approval-gate\n`);
+  console.log(`  ${c.dim('Usage:')} npx depute ${c.bold('<component-name>')}`);
+  console.log(`  ${c.dim('Example:')} npx depute add approval-gate\n`);
 }

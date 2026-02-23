@@ -1,11 +1,11 @@
-# axk
+# depute
 
 > CLI for [AX Components](https://github.com/Iambizi/depute) — copy-paste React primitives for agentic experiences.
 
 ```bash
-npx axk add approval-gate
-npx axk add orchestrator-view
-npx axk list
+npx depute add approval-gate
+npx depute add orchestrator-view
+npx depute list
 ```
 
 ## What is this?
@@ -17,13 +17,13 @@ AXK follows the [shadcn/ui](https://ui.shadcn.com/) distribution model. Instead 
 ### List available components
 
 ```bash
-npx axk list
+npx depute list
 ```
 
 ### Add a single component
 
 ```bash
-npx axk add plan-card
+npx depute add plan-card
 ```
 
 Files are written to `src/components/<Component>/` by default:
@@ -45,7 +45,7 @@ src/
 ### Custom output directory
 
 ```bash
-npx axk add plan-card --dir components/ax
+npx depute add plan-card --dir components/ax
 ```
 
 ## Available Components
@@ -79,7 +79,7 @@ npx axk add plan-card --dir components/ax
 
 ## How it works
 
-1. `npx axk add <component>` fetches `registry.json` from this repo
+1. `npx depute add <component>` fetches `registry.json` from this repo
 2. Each file in the component's `files[]` list is fetched from GitHub raw
 3. Files are written to your project — no installation, no lock-in
 4. Shared types (`ax-common.ts`) and utilities are added once

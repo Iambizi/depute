@@ -1,11 +1,11 @@
 {
-  "name": "axk",
+  "name": "depute",
   "version": "0.2.0",
-  "description": "AXK CLI — add AX Components primitives to your project",
+  "description": "depute — add AX Components primitives to your project (npx depute add <component>)",
   "license": "MIT",
   "type": "module",
   "bin": {
-    "axk": "./bin/axk.js"
+    "depute": "./bin/depute.js"
   },
   "files": [
     "bin",

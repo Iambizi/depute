@@ -9,12 +9,12 @@ const c = {
 
 export function printHelp() {
   console.log(`
-  ${c.bold('✦ AXK')} — AX Components for React
+  ${c.bold('✦ depute')} — AX Components for React
   ${c.dim('Copy-paste UI primitives for agentic experiences (shadcn-style)')}
 
   ${c.cyan(c.bold('Usage'))}
 
-    npx axk ${c.bold('<command>')} [options]
+    npx depute ${c.bold('<command>')} [options]
 
   ${c.cyan(c.bold('Commands'))}
 
@@ -24,10 +24,10 @@ export function printHelp() {
 
   ${c.cyan(c.bold('Examples'))}
 
-    npx axk list
-    npx axk add approval-gate
-    npx axk add orchestrator-view
-    npx axk add plan-card --dir components/ax
+    npx depute list
+    npx depute add approval-gate
+    npx depute add orchestrator-view
+    npx depute add plan-card --dir components/ax
 
   ${c.cyan(c.bold('Options for add'))}
 
