@@ -28,8 +28,8 @@ export async function runAdd(args) {
 
   if (!componentName) {
     console.error(`\n  ${c.red('Error:')} Please specify a component name.\n`);
-    console.error(`  Usage: ${c.bold('npx depute add <component-name>')}\n`);
-    console.error(`  Run ${c.bold('npx depute list')} to see available components.\n`);
+    console.error(`  Usage: ${c.bold('npx ax-depute add <component-name>')}\n`);
+    console.error(`  Run ${c.bold('npx ax-depute list')} to see available components.\n`);
     process.exit(1);
   }
 
@@ -39,7 +39,7 @@ export async function runAdd(args) {
     ? args[dirFlagIdx + 1]
     : COMPONENTS_DIR;
 
-  console.log(`\n  ${c.bold('✦ depute')} ${c.dim('— AX Components for React')}\n`);
+  console.log(`\n  ${c.bold('✦ ax-depute')} ${c.dim('— AX Components for React')}\n`);
 
   // 1. Fetch registry
   let registry;
@@ -57,7 +57,7 @@ export async function runAdd(args) {
   const component = findComponent(registry, componentName);
   if (!component) {
     console.error(`  ${c.red('Error:')} Component "${componentName}" not found.\n`);
-    console.error(`  Run ${c.bold('npx depute list')} to see available components.\n`);
+    console.error(`  Run ${c.bold('npx ax-depute list')} to see available components.\n`);
     process.exit(1);
   }
 

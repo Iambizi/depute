@@ -22,6 +22,6 @@ switch (command) {
     printHelp();
     break;
   default:
-    console.error(`\n  Unknown command: "${command}". Run "depute help" for usage.\n`);
+    console.error(`\n  Unknown command: "${command}". Run "ax-depute help" for usage.\n`);
     process.exit(1);
 }

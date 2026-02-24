@@ -1,29 +1,29 @@
-# depute
+# ax-depute
 
 > CLI for [AX Components](https://github.com/Iambizi/depute) — copy-paste React primitives for agentic experiences.
 
 ```bash
-npx depute add approval-gate
-npx depute add orchestrator-view
-npx depute list
+npx ax-depute add approval-gate
+npx ax-depute add orchestrator-view
+npx ax-depute list
 ```
 
 ## What is this?
 
-depute follows the [shadcn/ui](https://ui.shadcn.com/) distribution model. Instead of importing from `node_modules`, components are **copied directly into your project** — you own the code, you control the customization.
+ax-depute follows the [shadcn/ui](https://ui.shadcn.com/) distribution model. Instead of importing from `node_modules`, components are **copied directly into your project** — you own the code, you control the customization.
 
 ## Quick Start
 
 ### List available components
 
 ```bash
-npx depute list
+npx ax-depute list
 ```
 
 ### Add a single component
 
 ```bash
-npx depute add plan-card
+npx ax-depute add plan-card
 ```
 
 Files are written to `src/components/<Component>/` by default:
@@ -45,7 +45,7 @@ src/
 ### Custom output directory
 
 ```bash
-npx depute add plan-card --dir components/ax
+npx ax-depute add plan-card --dir components/ax
 ```
 
 ## Available Components
@@ -79,7 +79,7 @@ npx depute add plan-card --dir components/ax
 
 ## How it works
 
-1. `npx depute add <component>` fetches `registry.json` from this repo
+1. `npx ax-depute add <component>` fetches `registry.json` from this repo
 2. Each file in the component's `files[]` list is fetched from GitHub raw
 3. Files are written to your project — no installation, no lock-in
 4. Shared types (`ax-common.ts`) and utilities are added once

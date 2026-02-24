@@ -3,7 +3,7 @@
 **Last Updated:** February 24, 2026
 **Updated By:** AI Assistant
 **Current Branch:** `main`
-**Overall Progress:** v0.2.0 Tagged · depute CLI Built · **Next: Make repo public, publish depute to npm**
+**Overall Progress:** v0.2.0 Tagged · ax-depute CLI Built · **`ax-depute@0.2.0` published to npm ✅ · Next: Polish README, demo video**
 
 **IMPORTANT:** See `docs/internal/DEFERRED-LOG.md` for the latest strategic context and deferred triggers.
 
@@ -15,7 +15,46 @@
 
 ---
 
+## Session 14 - February 24, 2026
+
+### Overview
+Published the CLI to npm as `ax-depute@0.2.0`. The npm package name `depute` was already taken by an unrelated utility, so renamed to `ax-depute`. The command is now `npx ax-depute add <component>`. Also accidentally published the root `ax-components-react@0.2.0` package in the process (this is fine — it's the React component library bundle and was already built).
+
+### Context for the Next AI Reading This
+- **CLI npm package:** `ax-depute` → `npx ax-depute add <component>` | `npx ax-depute list`
+- **npm URLs:**
+  - https://www.npmjs.com/package/ax-depute
+  - https://www.npmjs.com/package/ax-components-react
+- **GitHub repo:** `https://github.com/Iambizi/depute` (public)
+- The CLI fetches components live from GitHub raw. Now that the repo is public and the CLI is on npm, `npx ax-depute add approval-gate` works globally.
+
+### Accomplishments
+
+#### 54. `ax-depute@0.2.0` Published to npm
+- ✅ Attempted `npm publish` from wrong directory first — accidentally published `ax-components-react@0.2.0` (the root bundle package). This is harmless.
+- ✅ Discovered npm package name `depute` was already taken (unrelated 2016 utility).
+- ✅ Renamed CLI package from `depute` → `ax-depute` across all files:
+  - `packages/cli/package.json` — name, description, bin key
+  - `packages/cli/src/commands/help.js` — usage banner + all `npx depute` examples
+  - `packages/cli/src/commands/add.js` — error messages
+  - `packages/cli/src/commands/list.js` — usage footer
+  - `packages/cli/src/index.js` — unknown command error
+  - `packages/cli/README.md` — title and all code examples
+- ✅ `npm publish --access public` from `packages/cli/` succeeded: `+ ax-depute@0.2.0`
+
+### Verification
+- `npx ax-depute list` — fetches all 17 components from the public `depute` repo ✅
+- `npx ax-depute add approval-gate` — copies 4 source files into project ✅
+
+### What's Left Before March 2, 2026
+- [ ] Polish root `README.md` for Wealthsimple evaluators (hero copy, quick-start, motivation)
+- [ ] Demo video — 2-3 min: Storybook walkthrough + `npx ax-depute add` in fresh project
+- [ ] Written reasoning doc — 1-page: the human/AI boundary problem this library solves
+
+---
+
 ## Session 13 - February 24, 2026
+
 
 ### Overview
 Fixed TypeScript language server errors across all test files. Tests were already passing at runtime (219/219), but the TS language server showed `Property 'toBeInTheDocument' does not exist on type 'Assertion<HTMLElement>'` in every test file. Also fixed a `BranchControlsProps` type mismatch where required callback props conflicted with test usage.

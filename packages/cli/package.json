@@ -1,11 +1,11 @@
 {
-  "name": "depute",
+  "name": "ax-depute",
   "version": "0.2.0",
-  "description": "depute — add AX Components primitives to your project (npx depute add <component>)",
+  "description": "ax-depute — add AX Components primitives to your project (npx ax-depute add <component>)",
   "license": "MIT",
   "type": "module",
   "bin": {
-    "depute": "./bin/depute.js"
+    "ax-depute": "bin/depute.js"
   },
   "files": [
     "bin",
@@ -23,6 +23,6 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/Iambizi/depute"
+    "url": "git+https://github.com/Iambizi/depute.git"
   }
 }
