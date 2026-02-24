@@ -50,11 +50,11 @@ export const BranchControls: React.FC<BranchControlsProps> = ({
       {/* Actions */}
       <div className={styles.actions}>
         {status === 'running' ? (
-          <button className={styles.btnSecondary} onClick={onPause}>
+          <button className={styles.btnSecondary} onClick={() => onPause?.()}>
             ⏸ Pause
           </button>
         ) : (
-          <button className={styles.btnPrimary} onClick={onResume}>
+          <button className={styles.btnPrimary} onClick={() => onResume?.()}>
             ▶ Resume
           </button>
         )}
@@ -62,7 +62,7 @@ export const BranchControls: React.FC<BranchControlsProps> = ({
         {status !== 'quarantined' && (
           <button
             className={styles.btnWarning}
-            onClick={onQuarantine}
+            onClick={() => onQuarantine?.()}
             title="Isolate branch: halt tool calls and spawns, allow inspection"
           >
             🔒 Quarantine
@@ -79,7 +79,7 @@ export const BranchControls: React.FC<BranchControlsProps> = ({
           </button>
         )}
 
-        <button className={styles.btnDanger} onClick={onCancel}>
+        <button className={styles.btnDanger} onClick={() => onCancel?.()}>
           ⊘ Cancel Branch
         </button>
       </div>

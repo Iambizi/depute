@@ -3,9 +3,9 @@ export interface BranchControlsProps {
   className?: string;
   branchName: string;
   status: 'running' | 'paused' | 'quarantined';
-  onPause: () => void;
-  onResume: () => void;
-  onQuarantine: () => void;
-  onCancel: () => void;
+  onPause?: () => void;
+  onResume?: () => void;
+  onQuarantine?: () => void;
+  onCancel?: () => void;
   onThrottle?: () => void;
 }
