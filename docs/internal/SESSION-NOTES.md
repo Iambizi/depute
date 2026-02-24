@@ -1,9 +1,9 @@
 # Current Status & Next Steps
 
-**Last Updated:** February 23, 2026
+**Last Updated:** February 24, 2026
 **Updated By:** AI Assistant
 **Current Branch:** `main`
-**Overall Progress:** v0.2.0 Tagged · AXK CLI Built · **Next: Publish `axk` to npm, make repo public**
+**Overall Progress:** v0.2.0 Tagged · depute CLI Built · **Next: Make repo public, publish depute to npm**
 
 **IMPORTANT:** See `docs/internal/DEFERRED-LOG.md` for the latest strategic context and deferred triggers.
 
@@ -15,7 +15,50 @@
 
 ---
 
+## Session 13 - February 24, 2026
+
+### Overview
+Fixed TypeScript language server errors across all test files. Tests were already passing at runtime (219/219), but the TS language server showed `Property 'toBeInTheDocument' does not exist on type 'Assertion<HTMLElement>'` in every test file. Also fixed a `BranchControlsProps` type mismatch where required callback props conflicted with test usage.
+
+### Context for the Next AI Reading This
+The repo uses **Vitest** (not Jest) for testing with `@testing-library/react` and `@testing-library/jest-dom`. The TS configuration is now split into two files:
+- `tsconfig.json` — editor/language-server config. Includes all `src/` + `stories/` files with no exclusions. Has `"types": ["vitest/globals"]`. Used by VS Code.
+- `tsconfig.build.json` — build config. Excludes `*.test.*` and `*.stories.*`, enforces `noUnusedLocals`, emits declarations to `dist/`. Used by `npm run build` and `npm run type-check`.
+- `src/test.d.ts` — `/// <reference types="@testing-library/jest-dom/vitest" />` — augments Vitest's `Assertion` type with jest-dom matchers globally.
+- `src/test-setup.ts` — imports `@testing-library/jest-dom/vitest` at runtime for Vitest setup.
+
+### Accomplishments
+
+#### 52. Fixed TS Language Server Errors in All Test Files
+- **Root cause:** `tsconfig.json` excluded `**/*.test.tsx`, causing VS Code to create "orphaned" inferred TS projects for test files that don't inherit the main config's types. `src/test.d.ts` was unreachable from these orphaned projects.
+- ✅ Split `tsconfig.json` into editor config (all files, vitest globals) and `tsconfig.build.json` (strict, excludes tests, emits declarations).
+- ✅ Updated `package.json` — `build` and `type-check` scripts now use `tsconfig.build.json`.
+- ✅ `src/test-setup.ts` updated to import `@testing-library/jest-dom/vitest` (Vitest-specific entry) instead of the generic `@testing-library/jest-dom`.
+- ✅ `src/test.d.ts` added — `/// <reference types="@testing-library/jest-dom/vitest" />` so jest-dom matchers augment `Assertion<T>` for all files under the editor tsconfig.
+- ✅ `tsconfig.test.json` added — alias for `tsconfig.build.json` with test files included (used for `tsc -p tsconfig.test.json --noEmit` verification).
+
+#### 53. Fixed `BranchControlsProps` Required Callback Type Mismatch
+- **Root cause:** `onPause`, `onResume`, `onQuarantine`, `onCancel` were required props, but tests correctly pass only the callback relevant to the test case being verified.
+- ✅ Made all four callbacks optional in `BranchControls.types.ts`.
+- ✅ Added `?.()` optional chaining on all four callback invocations in `BranchControls.tsx`.
+
+### Verification
+- `npx tsc -p tsconfig.build.json --noEmit` — clean (0 errors)
+- `npx tsc -p tsconfig.test.json --noEmit` — clean (0 errors)
+- `CI=true npx vitest run` — **219/219 tests passing, 17 test files**
+- `npm run build` — production bundle builds successfully
+
+### What's Left (unchanged from Session 12)
+- [ ] Make `depute` repo public on GitHub
+- [ ] `cd packages/cli && npm publish --access public`
+- [ ] Polish root `README.md` for evaluators
+- [ ] Demo video
+- [ ] Written reasoning doc (human/AI boundary problem)
+
+---
+
 ## Session 12 - February 23, 2026
+
 
 ### Overview
 Built the `depute` CLI (`npx depute`) and renamed the GitHub repo from `AX-CMP-S-K` to `depute`. The CLI implements the shadcn-style distribution model: it reads `registry.json` from GitHub raw and copies component source files directly into the user's project. Completed a full AXK → depute branding sweep across all public-facing and internal docs.
