@@ -3,7 +3,7 @@
 **Last Updated:** February 24, 2026
 **Updated By:** AI Assistant
 **Current Branch:** `main`
-**Overall Progress:** v0.2.0 Tagged · ax-depute CLI Built · **`ax-depute@0.2.0` published to npm ✅ · Next: Polish README, demo video**
+**Overall Progress:** v0.2.0 Tagged · ax-depute@0.2.0 on npm ✅ · README polished ✅ · **Next: Demo video, written reasoning doc**
 
 **IMPORTANT:** See `docs/internal/DEFERRED-LOG.md` for the latest strategic context and deferred triggers.
 
