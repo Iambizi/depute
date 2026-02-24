@@ -46,8 +46,17 @@ Published the CLI to npm as `ax-depute@0.2.0`. The npm package name `depute` was
 - `npx ax-depute list` — fetches all 17 components from the public `depute` repo ✅
 - `npx ax-depute add approval-gate` — copies 4 source files into project ✅
 
+#### 55. Root `README.md` Rewritten for Public Audience
+- ✅ Complete rewrite of root `README.md` — replaces thin placeholder with evaluator-ready content.
+- ✅ Added **problem statement** section: explains why agentic UI is hard and what AX solves.
+- ✅ Added **full component catalog** for all 17 components (v0 + v1) with descriptions.
+- ✅ Added **CLI quick-start** with `npx ax-depute add` as the primary entry point.
+- ✅ Added **design principles** section: human oversight, code ownership, agent-agnostic, accessible.
+- ✅ Fixed stale `npx depute` references → `npx ax-depute`.
+- ✅ Added links to npm packages (`ax-depute`, `ax-components-react`).
+
 ### What's Left Before March 2, 2026
-- [ ] Polish root `README.md` for Wealthsimple evaluators (hero copy, quick-start, motivation)
+- [x] Polish root `README.md` for Wealthsimple evaluators (hero copy, quick-start, motivation)
 - [ ] Demo video — 2-3 min: Storybook walkthrough + `npx ax-depute add` in fresh project
 - [ ] Written reasoning doc — 1-page: the human/AI boundary problem this library solves
 
