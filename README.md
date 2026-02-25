@@ -82,8 +82,10 @@ import { ApprovalGate } from '@/components/ApprovalGate';
 export function AgentUI() {
   return (
     <ApprovalGate
-      action="Send email to customer"
-      risk="high"
+      title="Send email to customer"
+      description="The agent will send a follow-up email to 3 recipients."
+      agentReasoning="Task requires notifying stakeholders of completed analysis."
+      mode="simple"
       status="pending"
       onApprove={() => agent.continue()}
       onReject={() => agent.stop()}
@@ -142,4 +144,4 @@ CLI source: [packages/cli](./packages/cli) · npm: [ax-depute](https://www.npmjs
 
 ## License
 
-MIT © [Iambizi](https://github.com/Iambizi)
+MIT © [Amir Bizimana](https://github.com/Iambizi)
