@@ -1,4 +1,5 @@
 // depute CLI — commands/help.js
+import { DOCS_URL } from '../config.js';
 
 const c = {
   bold: (s) => `\x1b[1m${s}\x1b[0m`,
@@ -39,6 +40,6 @@ export function printHelp() {
     you own the code — no black box, no lock-in. Shared types are
     added once to src/types/ax-common.ts.
 
-  ${c.dim('Docs: https://github.com/Iambizi/depute')}
+  ${c.dim(`Docs: ${DOCS_URL}`)}
 `);
 }

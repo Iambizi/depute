@@ -2,9 +2,7 @@
 // Fetches registry.json from GitHub.
 
 import { fetchURL } from './github.js';
-
-const REGISTRY_URL =
-  'https://raw.githubusercontent.com/Iambizi/depute/main/registry/registry.json';
+import { REGISTRY_URL } from '../config.js';
 
 /** @returns {Promise<import('./types.js').Registry>} */
 export async function fetchRegistry() {

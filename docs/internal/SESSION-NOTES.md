@@ -1,9 +1,9 @@
 # Current Status & Next Steps
 
-**Last Updated:** February 24, 2026
+**Last Updated:** February 25, 2026
 **Updated By:** AI Assistant
 **Current Branch:** `main`
-**Overall Progress:** v0.2.0 Tagged · ax-depute@0.2.0 on npm ✅ · README polished ✅ · **Next: Demo video, written reasoning doc**
+**Overall Progress:** v0.2.0 Tagged · ax-depute@0.2.0 on npm ✅ · README polished ✅ · CLI config centralized ✅ · **Next: Demo video, written reasoning doc**
 
 **IMPORTANT:** See `docs/internal/DEFERRED-LOG.md` for the latest strategic context and deferred triggers.
 
@@ -23,7 +23,8 @@ Standardized the project branding from "AX Components" to **depute** cross-platf
 ### Context for the Next AI Reading This
 - **Brand Name:** `depute` (delegation/appointment). 
 - **Spelling:** All-lowercase `depute` is the preferred brand mark in prose/labels.
-- **License:** MIT (Permissive). Copyright held by Iambizi.
+- **License:** MIT (Permissive). Copyright held by **Amir Bizimana** (legal name).
+- **GitHub username:** `Iambizi` — if it ever changes, update only `packages/cli/src/config.js` (one line: `export const REPO = '...'`).
 - The project is now fully consolidated: `depute` repo, `ax-depute` CLI, and `depute` registry.
 
 ### Accomplishments
@@ -40,10 +41,25 @@ Standardized the project branding from "AX Components" to **depute** cross-platf
 - ✅ Updated root `package.json` with `"license": "MIT"`.
 - ✅ Verified `packages/cli/package.json` already has `"license": "MIT"`.
 
+#### 58. Legal Copyright Updated
+- ✅ `LICENSE` — copyright updated from `Iambizi` to **`Amir Bizimana`** (legal name).
+- ✅ README footer updated to `MIT © Amir Bizimana`.
+
+#### 59. CLI Config Centralized (`config.js`)
+- ✅ Created `packages/cli/src/config.js` — single source of truth with `REPO`, `BRANCH`, `RAW_BASE`, `REGISTRY_URL`, `DOCS_URL`.
+- ✅ `utils/registry.js` — removed hardcoded URL, now imports `REGISTRY_URL` from config.
+- ✅ `utils/github.js` — removed hardcoded URL, now imports `RAW_BASE` from config.
+- ✅ `commands/help.js` — removed hardcoded docs URL, now imports `DOCS_URL` from config.
+- **If GitHub username changes:** edit `REPO` in `config.js` only, then `npm publish` a patch version. Zero other files needed.
+
+#### 60. Fixed `ApprovalGate` Quick-Start Example in README
+- ✅ The code example was using fake props (`action`, `risk`). Fixed to match the real API: `title`, `description`, `agentReasoning`, `mode`, `status`, `onApprove`, `onReject`.
+
 ### Verification
-- `npm run build` — Clean ✅
-- `cat LICENSE` — MIT 2026 Iambizi ✅
-- `grep -r "AX Components"` — Remaining instances are historical/archived (claude-skills/research case studies), which is appropriate. ✅
+- `node packages/cli/bin/depute.js list` — ✅ fetches registry live, returns 17 components
+- `cat LICENSE` — MIT 2026 Amir Bizimana ✅
+- `grep -r "Iambizi" packages/cli/src/` — only `config.js` now (0 hardcoded URLs elsewhere) ✅
+- `grep -r "AX Components" docs/ registry/` — only archived research/case studies, appropriate ✅
 
 ### What's Left Before March 2, 2026
 - [ ] Demo video — 2-3 min: Storybook walkthrough + `npx ax-depute add` in fresh project

@@ -2,9 +2,7 @@
 // Fetches raw file content from GitHub using only Node built-ins.
 
 import https from 'https';
-
-const BASE_URL =
-  'https://raw.githubusercontent.com/Iambizi/depute/main';
+import { RAW_BASE } from '../config.js';
 
 /**
  * Fetch a URL and return the response body as a string.
@@ -36,5 +34,5 @@ export function fetchURL(url) {
  * @returns {Promise<string>}
  */
 export function fetchRepoFile(repoPath) {
-  return fetchURL(`${BASE_URL}/${repoPath}`);
+  return fetchURL(`${RAW_BASE}/${repoPath}`);
 }
