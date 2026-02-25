@@ -1,8 +1,8 @@
-# AX Components
+# depute
 
 > React primitives for the human side of agentic AI
 
-When an AI agent runs in your product — planning, calling tools, making decisions — users need to see what's happening. Not raw logs. **Purpose-built UI.** AX Components is the missing design system for that experience.
+When an AI agent runs in your product — planning, calling tools, making decisions — users need to see what's happening. Not raw logs. **Purpose-built UI.** `depute` is the design system for that experience.
 
 ---
 
@@ -15,9 +15,9 @@ Every team building on top of AI agents ends up rebuilding the same UI surface:
 - A trace to show which tools were called, and why
 - Controls to pause, steer, or cancel a running agent
 
-These aren't hard to build once. They're hard to build **correctly** — with the right accessibility, the right trust signals, the right interaction model for human oversight of autonomous systems.
+These aren't hard to build once. They're hard to build **correctly** — with the right accessibility, the right trust signals, and the right interaction model for human oversight of autonomous systems.
 
-AX Components solves this once, as a composable library you own.
+`depute` solves this once, as a composable library you own.
 
 ---
 

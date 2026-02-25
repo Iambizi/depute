@@ -2,7 +2,7 @@
 
 ## Project Identity
 
-**Name:** AX Components for React
+**Name:** depute
 **Tagline:** "From prototype to production"
 **Domain:** Agentic Experience (AX) Design
 **Catalog Status:** v0 passed validation / ready for release (Feb 20, 2026)
@@ -84,7 +84,7 @@ v0 ships **6 primitives across 4 categories**:
 
 With v0 solving single-agent oversight, v1 focuses on multi-agent swarms and AI-native distribution.
 * **Orchestration Primitives**: `AgentRoster`, `OrchestratorView`, `SubagentCard`, `TaskQueue`, `HandoffProtocol`, `DelegationGate`, `SwarmMonitor`, `EscalationRouter`, `SwarmInbox`, `BranchControls`, `SharedContextLedger`
-* **Distribution Layer**: Native AI Skills (`skills.sh` and Anthropic `.claude/skills`) to teach coding agents how to install and use AX Components.
+* **Distribution Layer**: Native AI Skills (`skills.sh` and Anthropic `.claude/skills`) to teach coding agents how to install and use depute.
 
 *Deferred primitives (v2+):* `IntentBar`, `MemoryPanel`, `ThrottleControl`, `RiskBadge`, `AdaptiveCanvas`, financial primitives.
 

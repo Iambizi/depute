@@ -126,7 +126,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { ComponentName } from '../src/components/ComponentName';
 
 const meta: Meta<typeof ComponentName> = {
-  title: 'AX Components/ComponentName',
+  title: 'depute/ComponentName',
   component: ComponentName,
   tags: ['autodocs'],
   argTypes: {

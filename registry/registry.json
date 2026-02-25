@@ -1,7 +1,7 @@
 {
-  "name": "ax-components",
+  "name": "depute",
   "version": "0.2.0",
-  "description": "AX Components — UI primitives for agentic experiences",
+  "description": "depute — UI primitives for agentic experiences",
   "distribution": "depute",
   "repo": "Iambizi/depute",
   "branch": "main",

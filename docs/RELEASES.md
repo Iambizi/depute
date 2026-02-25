@@ -1,8 +1,8 @@
-# AX Components v0.2.0 Release Notes
+# depute v0.2.0 Release Notes
 
 **February 22, 2026**
 
-The second release of **AX Components for React**, adding 11 new orchestration primitives for multi-agent swarm supervision. Where v0.1.0 solved the single-agent oversight problem, v0.2.0 addresses **Figures 7 & 8 of the Agentic Coding Levels framework** — coordinating networks of specialized agents working in parallel.
+The second release of **depute**, adding 11 new orchestration primitives for multi-agent swarm supervision. Where v0.1.0 solved the single-agent oversight problem, v0.2.0 addresses **Figures 7 & 8 of the Agentic Coding Levels framework** — coordinating networks of specialized agents working in parallel.
 
 ## ✨ 11 New Orchestration Primitives
 
@@ -34,11 +34,11 @@ The second release of **AX Components for React**, adding 11 new orchestration p
 
 ---
 
-# AX Components v0.1.0 Release Notes
+# depute v0.1.0 Release Notes
 
 **February 20, 2026**
 
-The initial open-source release of **AX Components for React**, a library of production-ready React components designed specifically for building Agentic Experiences (AX).
+The initial open-source release of **depute**, a library of production-ready React components designed specifically for building Agentic Experiences (AX).
 
 This release solves the single-agent oversight problem (Figures 2, 4, and 5 of the Agentic Coding Levels framework), providing developers and designers with the necessary primitives to build trust-based, transparent agent interfaces that run seamlessly from prototype to production.
 

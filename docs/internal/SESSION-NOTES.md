@@ -9,9 +9,45 @@
 
 ---
 
-# AX Components - Session Notes
+# depute - Session Notes
 
 *Latest sessions appear at the top*
+
+---
+
+## Session 15 - February 25, 2026
+
+### Overview
+Standardized the project branding from "AX Components" to **depute** cross-platform (Docs, Registry, Storybook). Established legal foundation by adding an MIT License, the industry standard for permissive open-source libraries.
+
+### Context for the Next AI Reading This
+- **Brand Name:** `depute` (delegation/appointment). 
+- **Spelling:** All-lowercase `depute` is the preferred brand mark in prose/labels.
+- **License:** MIT (Permissive). Copyright held by Iambizi.
+- The project is now fully consolidated: `depute` repo, `ax-depute` CLI, and `depute` registry.
+
+### Accomplishments
+
+#### 56. Universal Rebranding to `depute`
+- ✅ Rebranded root `README.md` (Title and Hero) to `depute`.
+- ✅ Updated `registry/registry.json` name and description to `depute`.
+- ✅ Updated `docs/RELEASES.md` and `docs/orchestration/` suite to use `depute` brand.
+- ✅ Updated Storybook title structure in `07-universal-format-standards.md` to `depute/ComponentName`.
+- ✅ Renamed Session Notes header to `# depute - Session Notes`.
+
+#### 57. Licensing & Legal Setup
+- ✅ Created root `LICENSE` file (MIT).
+- ✅ Updated root `package.json` with `"license": "MIT"`.
+- ✅ Verified `packages/cli/package.json` already has `"license": "MIT"`.
+
+### Verification
+- `npm run build` — Clean ✅
+- `cat LICENSE` — MIT 2026 Iambizi ✅
+- `grep -r "AX Components"` — Remaining instances are historical/archived (claude-skills/research case studies), which is appropriate. ✅
+
+### What's Left Before March 2, 2026
+- [ ] Demo video — 2-3 min: Storybook walkthrough + `npx ax-depute add` in fresh project
+- [ ] Written reasoning doc — 1-page: the human/AI boundary problem this library solves
 
 ---
 
