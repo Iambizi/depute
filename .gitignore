@@ -1,0 +1,9 @@
+node_modules
+dist
+storybook-static
+*.local
+.DS_Store
+storybook.log
+
+# Internal docs (session notes, orchestration, research)
+docs/
