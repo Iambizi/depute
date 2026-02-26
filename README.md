@@ -4,6 +4,8 @@
 
 When an AI agent runs in your product — planning, calling tools, making decisions — users need to see what's happening. Not raw logs. **Purpose-built UI.** `depute` is the design system for that experience.
 
+👉 **[View the Interactive Component Catalog (Storybook)](https://iambizi.github.io/depute/)**
+
 ---
 
 ## The Problem
