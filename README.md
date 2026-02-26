@@ -133,9 +133,6 @@ npm test              # 219 tests across 17 components
 # CLI: copy components into any React project
 npx ax-depute list
 npx ax-depute add <component-name>
-
-# npm (React bundle, optional)
-npm install ax-components-react
 ```
 
 CLI source: [packages/cli](./packages/cli) · npm: [ax-depute](https://www.npmjs.com/package/ax-depute)
