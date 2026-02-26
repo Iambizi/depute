@@ -287,7 +287,7 @@ export function ApprovalGate({
           {/* Staged: back button when confirming */}
           {mode === 'staged' && stagedStep === 'confirming' && (
             <button
-              className={styles.btnSecondary}
+              className={`${styles.btn} ${styles.btnSecondary}`}
               onClick={handleBack}
               type="button"
             >
@@ -296,7 +296,7 @@ export function ApprovalGate({
           )}
 
           <button
-            className={styles.btnReject}
+            className={`${styles.btn} ${styles.btnReject}`}
             onClick={handleReject}
             type="button"
           >
@@ -306,7 +306,7 @@ export function ApprovalGate({
           <span className={styles.actionsSpacerRight} />
 
           <button
-            className={styles.btnApprove}
+            className={`${styles.btn} ${styles.btnApprove}`}
             onClick={handleApprove}
             type="button"
           >
