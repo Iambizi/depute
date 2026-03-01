@@ -102,7 +102,9 @@ skills/depute/                     ← Vercel/skills.sh canonical (cross-agent)
 
 ### Next Steps
 - ✅ **Vercel deploy** — Created project, root directory: `apps/www`, Framework: Next.js. Deployed to production at: `https://www-one-rho-67.vercel.app` and `https://33fa1ur95-edznpxme4-amir-bizimanas-projects.vercel.app`.
-- [ ] **Port full component docs** — 15 stub pages need: full props table, usage examples, design rationale, and Storybook embed link. Priority order: ToolTrace → RunControls → ConfidenceMeter → ArtifactCard → then v1.
+- ✅ **Port full component docs (v0)** — Ported ToolTrace, RunControls, ConfidenceMeter, and ArtifactCard. Added full props tables, usage examples, design rationale, and Storybook callouts.
+- ✅ **Fumadocs TOC styling** — Configured `<DocsPage tableOfContent={{ style: 'clerk' }}>` to use the branched/indented tree style for the Table of Contents.
+- [ ] **Port full component docs (v1)** — 11 stub pages remain for the v1 orchestration primitives. Need to follow the same format as v0.
 - [ ] **Storybook embed** — Add `<iframe>` or screenshot for each component story; link to https://iambizi.github.io/depute/?path=/story/ComponentName
 - [ ] **Search** — Fumadocs ships with built-in search (Orama). Enable via `DocsLayout` `search` prop when content is fuller.
 - [ ] **OG image / metadata** — Add `opengraph-image.tsx` under `src/app/` for social sharing.
