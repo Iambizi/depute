@@ -1,6 +1,6 @@
 ---
 name: depute
-description: React component library for Agentic Experience (AX) design — purpose-built UI primitives for AI agent supervision and human oversight. Use when building interfaces for AI agents, autonomous workflows, or multi-agent systems. Triggers on: "agent UI", "approval gate", "confidence score", "tool trace", "agent plan", "pause agent", "human oversight", "AX component", "delegation interface", "agent audit", "orchestrator view", "swarm monitor", "handoff", "agent inbox", "escalation", "run controls", "npx ax-depute". Do NOT use for general React UI, standard CRUD interfaces, or non-agent applications.
+description: React component library for Agentic Experience (AX) design — purpose-built UI primitives for AI agent supervision and human oversight. Use when building interfaces for AI agents, autonomous workflows, or multi-agent systems. Triggers on: "agent UI", "approval gate", "confidence score", "tool trace", "agent plan", "pause agent", "human oversight", "AX component", "delegation interface", "agent audit", "orchestrator view", "swarm monitor", "handoff", "agent inbox", "escalation", "run controls", "npx ax-depute", "ax audit", "oversight review", "audit agent code", "what AX components am I missing". Do NOT use for general React UI, standard CRUD interfaces, or non-agent applications.
 license: MIT
 compatibility: React 18+, TypeScript, CSS Modules. Agent-agnostic — works with any AI backend (OpenAI, Anthropic, LangChain, AutoGen, or custom).
 metadata:
@@ -138,6 +138,61 @@ The most common AX flow — show the plan, gate high-risk actions, then display 
   onQuarantine={swarm.quarantineBranch}
 />
 ```
+
+---
+
+## Audit Mode — Codebase Oversight Review
+
+**When to enter audit mode:**
+- The user asks to "audit" their agent code, "review for oversight gaps", or "what AX components am I missing"
+- You notice agentic patterns in the codebase (LLM calls, tool use, multi-step execution) without corresponding oversight UI
+- The user says `npx ax-depute audit` (alias for asking you to run this review)
+
+### How to Run an Audit
+
+1. **Identify the agent boundary.** Find where the codebase makes LLM calls, executes tools, spawns agents, or runs autonomous workflows. Scan for: API calls to OpenAI/Anthropic/LangChain/AutoGen, tool-calling patterns, agent loop constructs, queue/task delegation logic.
+
+2. **Apply the 8 AX heuristics.** For each agent boundary found, check whether the following oversight surfaces exist:
+
+| # | Heuristic | What to look for | Missing component | Severity |
+|---|-----------|-------------------|-------------------|----------|
+| H1 | **Irreversible actions ungated** | The agent writes to a database, sends emails, calls external APIs, or deletes resources — with no human approval step before execution | `ApprovalGate` | 🔴 Critical |
+| H2 | **Confidence not surfaced** | The agent makes probabilistic decisions (classification, recommendation, triage) but the UI never shows how confident it is | `ConfidenceMeter` | 🟡 Warning |
+| H3 | **No pause/stop controls** | An agent run can last more than a few seconds but the user has no way to pause, cancel, or retry it | `RunControls` | 🔴 Critical |
+| H4 | **Tool calls invisible** | The agent calls tools/APIs but the user never sees what was called, with what input, or what came back | `ToolTrace` | 🟡 Warning |
+| H5 | **Plan not disclosed** | The agent executes a multi-step plan but the user doesn't see the steps before or during execution | `PlanCard` | 🟡 Warning |
+| H6 | **Output without provenance** | The agent produces a final artifact (report, code, summary) but there's no trace of which steps/tools produced it | `ArtifactCard` | 🟢 Info |
+| H7 | **Multi-agent coordination opaque** | Multiple agents coordinate, delegate, or run in parallel but there's no hierarchy view or status dashboard | `OrchestratorView` + `AgentRoster` | 🔴 Critical |
+| H8 | **Agent spawning ungated** | The system spawns new agents or delegates tasks to sub-agents without human approval of the delegation | `DelegationGate` | 🟡 Warning |
+
+3. **Produce the audit report.** Use this format:
+
+```
+## AX Oversight Audit Report
+
+**Codebase:** [project name]
+**Scanned:** [date]
+**Agent boundaries found:** [count]
+
+### Findings
+
+| # | Severity | File | Line(s) | Gap | Recommendation | Install |
+|---|----------|------|---------|-----|----------------|----------|
+| 1 | 🔴 Critical | src/agent/run.ts | 42-58 | Sends email without approval | Add `ApprovalGate` before `sendEmail()` | `npx ax-depute add approval-gate` |
+| 2 | 🟡 Warning | src/agent/classify.ts | 91 | Classification score not shown to user | Surface with `ConfidenceMeter` | `npx ax-depute add confidence-meter` |
+| ... | | | | | | |
+
+### Summary
+- 🔴 Critical: [n] findings
+- 🟡 Warning: [n] findings
+- 🟢 Info: [n] findings
+
+### Quick Fix
+Run these commands to install all missing components:
+[list the unique npx ax-depute add commands]
+```
+
+4. **Offer to install.** After presenting the report, ask: "Want me to install any of these components and wire them into your code?"
 
 ---
 
