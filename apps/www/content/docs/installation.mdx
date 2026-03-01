@@ -1,0 +1,82 @@
+---
+title: Installation
+description: Add depute components to your project using the CLI.
+---
+
+## Requirements
+
+- React 18+
+- TypeScript
+- CSS Modules support (standard in Vite, Next.js, CRA)
+
+depute is **agent-agnostic** — it works with any AI backend (OpenAI, Anthropic, LangChain, AutoGen, or custom).
+
+## Install a component
+
+```bash
+npx ax-depute add approval-gate
+```
+
+This copies the component source files directly into `src/components/ApprovalGate/`. You own the code.
+
+On first install, shared files are also added once:
+
+- `src/types/ax-common.ts` — shared TypeScript types (`PlanStep`, `ToolCall`, `Artifact`)
+- `src/utils/ax-a11y.tsx` — accessibility utilities used across components
+
+## List all components
+
+```bash
+npx ax-depute list
+```
+
+## Install multiple components
+
+```bash
+npx ax-depute add plan-card
+npx ax-depute add tool-trace
+npx ax-depute add run-controls
+```
+
+## Shared types
+
+All components use these core types from `src/types/ax-common.ts`:
+
+```ts
+interface PlanStep {
+  id: string;
+  label: string;
+  status: 'pending' | 'active' | 'completed' | 'failed';
+  confidence?: number;
+}
+
+interface ToolCall {
+  id: string;
+  name: string;
+  input: unknown;
+  output?: unknown;
+  status: 'running' | 'completed' | 'failed';
+  policyFlags?: ('requiresApproval' | 'writesState' | 'externalAction')[];
+}
+
+interface Artifact {
+  id: string;
+  content: string;
+  format: 'markdown' | 'json' | 'csv' | 'code';
+  sourceStepId?: string;
+  toolCallIds?: string[];
+}
+```
+
+## No backend required
+
+Use the built-in mock data generators for prototyping:
+
+```tsx
+import { generateMockPlan, generateMockToolCalls } from '@/utils/mockData';
+
+const plan = generateMockPlan(4);       // 4-step agent plan
+const trace = generateMockToolCalls(3); // 3 tool call entries
+```
+
+The mock generators show the exact shape each component expects.

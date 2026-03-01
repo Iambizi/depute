@@ -1,0 +1,26 @@
+{
+  "title": "depute",
+  "pages": [
+    "index",
+    "installation",
+    "---v0: Single Agent---",
+    "components/plan-card",
+    "components/approval-gate",
+    "components/confidence-meter",
+    "components/run-controls",
+    "components/tool-trace",
+    "components/artifact-card",
+    "---v1: Multi-Agent---",
+    "components/orchestrator-view",
+    "components/agent-roster",
+    "components/subagent-card",
+    "components/task-queue",
+    "components/handoff-protocol",
+    "components/delegation-gate",
+    "components/swarm-monitor",
+    "components/escalation-router",
+    "components/swarm-inbox",
+    "components/branch-controls",
+    "components/shared-context-ledger"
+  ]
+}

@@ -5,5 +5,5 @@ storybook-static
 .DS_Store
 storybook.log
 
-# Internal docs (session notes, orchestration, research)
-docs/
+# Internal docs (session notes, orchestration, research) — root only
+/docs/

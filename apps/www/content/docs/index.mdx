@@ -1,0 +1,38 @@
+---
+title: Introduction
+description: React primitives for the human side of agentic AI.
+---
+
+## What is depute?
+
+**depute** is a React component library for Agentic Experience (AX) design — purpose-built UI primitives for AI agent supervision and human oversight.
+
+When an AI agent runs in your product, users need to see what's happening — not raw logs, but structured UI for delegation, trust, and control.
+
+## Why depute?
+
+Most UI libraries build for CRUD apps. depute builds for the moment *after* you hand off work to an agent:
+
+- The agent proposes a plan → **PlanCard** shows it before execution
+- The agent wants to send email → **ApprovalGate** blocks until the user approves
+- The agent is running → **RunControls** let the user pause or stop at any time
+- Multiple agents are coordinating → **OrchestratorView** shows who's managing whom
+
+## Distribution model
+
+Components are delivered via CLI copy-paste (like shadcn/ui). The source lands in your repo — you own it, you can read it, you can modify it.
+
+```bash
+npx ax-depute add approval-gate
+```
+
+No lock-in. No black-box npm package the agent can't inspect.
+
+## Two tiers
+
+| Tier | Components | Use case |
+|------|-----------|---------|
+| **v0** | 6 primitives | Single agent acting on behalf of a user |
+| **v1** | 11 primitives | Multiple agents coordinating, delegating, or running in parallel |
+
+Start with v0. Add v1 when you need orchestration.

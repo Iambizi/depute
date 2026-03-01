@@ -1,0 +1,82 @@
+---
+title: PlanCard
+description: Show the agent's proposed plan before it executes. Users see the trajectory before anything happens.
+---
+
+## Install
+
+```bash
+npx ax-depute add plan-card
+```
+
+## Overview
+
+`PlanCard` implements the plan-first pattern: show the trajectory, then execute. Before an agent takes any action, it proposes a plan — a numbered list of steps with confidence scores and assumptions.
+
+This lowers fear and increases informed consent. Users can see where they're going before anything happens.
+
+## Basic usage
+
+```tsx
+<PlanCard
+  steps={agent.proposedPlan}
+  assumptions={agent.assumptions}
+/>
+```
+
+## With mock data
+
+```tsx
+import { generateMockPlan } from '@/utils/mockData';
+
+const plan = generateMockPlan(4); // 4-step plan
+
+<PlanCard
+  steps={plan.steps}
+  assumptions={plan.assumptions}
+/>
+```
+
+## Live execution state
+
+When the agent is running, pass `activeStepId` to highlight the current step:
+
+```tsx
+<PlanCard
+  steps={agent.plan}
+  activeStepId={agent.currentStepId}
+/>
+```
+
+## Props
+
+| Prop | Type | Description |
+|------|------|-------------|
+| `steps` | `PlanStep[]` | Ordered list of plan steps |
+| `assumptions` | `string[]` | Agent's stated assumptions about the task |
+| `activeStepId` | `string` | ID of the currently executing step |
+
+## PlanStep type
+
+```ts
+interface PlanStep {
+  id: string;
+  label: string;
+  status: 'pending' | 'active' | 'completed' | 'failed';
+  confidence?: number;   // 0–1
+}
+```
+
+## Composition flow
+
+`PlanCard` is always the first primitive in a single-agent flow:
+
+```
+PlanCard → ApprovalGate → RunControls → ToolTrace → ArtifactCard
+```
+
+Show it before the agent runs. Once execution starts, it updates step statuses live.
+
+## Design rationale
+
+**Why show the plan before execution?** Claude Cowork (Anthropic) shows the full plan in a "Progress" panel before any action is taken — validating the plan-first pattern. This is Pattern 6 (Generative Momentum) from the AX Book: propose concrete work rather than waiting for the user to figure out what to ask.
