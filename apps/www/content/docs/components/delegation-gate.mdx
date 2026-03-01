@@ -1,7 +1,9 @@
 ---
 title: DelegationGate
-description: Approval surface for spawning a new autonomous agent.
+description: Approval surface for spawning a new autonomous sub-agent.
 ---
+
+import { Callout } from 'fumadocs-ui/components/callout';
 
 ## Install
 
@@ -11,6 +13,72 @@ npx ax-depute add delegation-gate
 
 ## Overview
 
-Semantically different from ApprovalGate: approves the creation of an autonomous entity, not a single action. Shows mandate, tool constraints, estimated token cost, and lifespan.
+A specialized approval surface explicitly designed for the creation of new autonomous entities. It surfaces the proposed agent's mandate, tool constraints, and forecasted economic cost before the agent is allowed to execute.
 
-<Callout>Full documentation coming soon. See the [Storybook catalog](https://iambizi.github.io/depute/) for live interactive examples.</Callout>
+<Callout>
+  **Interactive Demo:** See the [Storybook catalog](https://iambizi.github.io/depute/?path=/story/delegationgate--default) for live interactive examples of DelegationGate.
+</Callout>
+
+## Usage
+
+```tsx
+import { DelegationGate } from '@/components/DelegationGate';
+
+export function App() {
+  const proposedAgent = {
+    role: 'Financial Analyst',
+    mandate: 'Read Q3 earnings reports and extract revenue metrics into a CSV.',
+    allowedTools: ['read_file', 'write_csv'],
+    maxDepth: 10,
+    estimatedTokens: 15000,
+    estimatedCost: '$0.25'
+  };
+
+  return (
+    <div className="p-4 border border-zinc-200 dark:border-zinc-800 rounded-lg max-w-lg">
+      <DelegationGate 
+        requestingAgent="Main Orchestrator"
+        proposedSubagent={proposedAgent}
+        onApprove={() => console.log('Sub-agent authorized')}
+        onDeny={() => console.log('Spawn request denied')}
+      />
+    </div>
+  );
+}
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+| :--- | :--- | :--- | :--- |
+| `requestingAgent` | `string` | **Required** | The name or ID of the parent agent requesting to spawn the child. |
+| `proposedSubagent` | `Object` | **Required** | Details about the sub-agent being proposed (see Type below). |
+| `onApprove` | `() => void` | **Required** | Callback fired when the user authorizes the creation of the sub-agent. |
+| `onDeny` | `() => void` | **Required** | Callback fired when the user rejects the creation of the sub-agent. |
+| `className` | `string` | `undefined` | Additional CSS class for the root element. |
+
+## Types
+
+### `ProposedSubagent`
+
+```typescript
+export interface ProposedSubagent {
+  role: string;             // Display role, e.g., "Financial Analyst"
+  mandate: string;          // The specific instructions given to the new agent
+  allowedTools?: string[];  // Sandbox constraints: which tools it can access
+  maxDepth?: number;        // Maximum number of reasoning steps before timeout
+  estimatedTokens: number;  // Forecasted token burn
+  estimatedCost: string;    // Forecasted USD cost, e.g., "$0.25"
+}
+```
+
+## Design Rationale
+
+**1. Semantic Distinction from ApprovalGate**  
+`ApprovalGate` (v0) is used before an agent takes a specific, discrete action (like charging a credit card or dropping a database table). `DelegationGate` (v1) is used before an agent *creates another agent*. Approving an action is a validation of intent; approving an agent is an authorization of autonomy. The UI must reflect this higher-stakes decision.
+
+**2. The "Box" Model (Sandboxing)**  
+When humans manage humans, they create boundaries via job descriptions. When humans manage AI, they create boundaries via constraints. The `allowedTools` and `maxDepth` fields explicitly visualize the "sandbox" the new agent will be trapped in, increasing human trust that the sub-agent cannot escape its mandate.
+
+**3. Forecasted Economics**  
+Agents aren't just code; they are active compute consumers. Displaying `estimatedCost` directly on the spawn request shifts the UI from purely operational to financial, preventing "infinite loop" surprises on the monthly bill.

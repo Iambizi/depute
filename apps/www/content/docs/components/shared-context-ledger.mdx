@@ -3,6 +3,8 @@ title: SharedContextLedger
 description: Read-only viewer for shared memory across agents, with provenance.
 ---
 
+import { Callout } from 'fumadocs-ui/components/callout';
+
 ## Install
 
 ```bash
@@ -11,6 +13,94 @@ npx ax-depute add shared-context-ledger
 
 ## Overview
 
-Shows typed entries (facts, decisions, constraints) with conflict signals. Scoped to global, branch, or agent-local. Read-only in v1.
+A read-only surface that visualizes the "black board" or shared memory of the swarm. It tracks facts, decisions, and constraints written by multi-agent workflows, strictly maintaining cryptographic-style provenance (who wrote what, and when).
 
-<Callout>Full documentation coming soon. See the [Storybook catalog](https://iambizi.github.io/depute/) for live interactive examples.</Callout>
+<Callout>
+  **Interactive Demo:** See the [Storybook catalog](https://iambizi.github.io/depute/?path=/story/sharedcontextledger--default) for live interactive examples of SharedContextLedger.
+</Callout>
+
+## Usage
+
+```tsx
+import { SharedContextLedger } from '@/components/SharedContextLedger';
+import type { ContextLedgerEntry } from '@/components/SharedContextLedger/SharedContextLedger.types';
+
+const mockEntries: ContextLedgerEntry[] = [
+  {
+    id: 'ctx_1',
+    scope: 'global',
+    type: 'constraint',
+    key: 'Budget Limit',
+    value: 'Max spend $5.00 across all active instances.',
+    provenance: {
+      authorAgent: 'System Policy',
+      timestamp: '2026-03-01T12:00:00Z'
+    }
+  },
+  {
+    id: 'ctx_2',
+    scope: 'branch',
+    type: 'fact',
+    key: 'Competitor Pricing',
+    value: 'Pro Tier is $49/mo',
+    provenance: {
+      authorAgent: 'Web Scraper Node',
+      source: 'https://example.com/pricing',
+      timestamp: 'Just now'
+    },
+    conflict: true
+  }
+];
+
+export function App() {
+  return (
+    <div className="p-4 border border-zinc-200 dark:border-zinc-800 rounded-lg max-w-2xl">
+      <SharedContextLedger 
+        entries={mockEntries}
+        currentScope="global"
+        onFilterContext={(scope) => console.log('Filtering memory by scope:', scope)}
+      />
+    </div>
+  );
+}
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+| :--- | :--- | :--- | :--- |
+| `entries` | `ContextLedgerEntry[]` | `undefined` | Array of memory items available to the swarm (see Type below). |
+| `currentScope` | `'global' \| 'branch' \| 'agent-local'` | `undefined` | The currently active viewing filter. |
+| `onFilterContext` | `(scope) => void` | `undefined` | Callback fired when the user selects a scope tab in the header. |
+| `className` | `string` | `undefined` | Additional CSS class for the root element. |
+
+## Types
+
+### `ContextLedgerEntry`
+
+```typescript
+export interface ContextLedgerEntry {
+  id: string;
+  scope: 'global' | 'branch' | 'agent-local'; // Controls visibility radius
+  type: 'fact' | 'decision' | 'constraint' | 'artifact';
+  key: string;              // E.g., "Target Audience"
+  value: string;            // E.g., "Developers aged 25-34"
+  provenance: {
+    authorAgent: string;    // Which agent wrote this memory?
+    source?: string;        // Where did they get it? (e.g., a URL)
+    timestamp: string;      
+  };
+  conflict?: boolean;       // True if another agent tried to overwrite this with a different value
+}
+```
+
+## Design Rationale
+
+**1. The Epistemology Hub**  
+When multiple agents collaborate, hallucinations compound. If Agent A hallucinates a "fact" and writes it to shared memory, Agents B, C, and D will treat it as ground truth. The `SharedContextLedger` exists to expose the swarm's epistemology to the human supervisor.
+
+**2. Strict Provenance**  
+A memory without an author is useless for debugging. The UI forces the display of the `provenance` block. If a human sees a hallucination in the ledger, they can instantly trace it back to the specific `authorAgent` that wrote it and the `source` it originated from.
+
+**3. Conflict Visualization**  
+In autonomous swarms, agents frequently debate or arrive at different conclusions. When two agents attempt to write conflicting values to the same `key`, the ledger displays both and flags them with `conflict: true`. This turns a silent failure of consensus into a visible prompt for human resolution.

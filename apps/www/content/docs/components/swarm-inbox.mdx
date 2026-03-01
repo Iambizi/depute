@@ -1,7 +1,9 @@
 ---
 title: SwarmInbox
-description: Prioritized inbox for approval requests, escalations, and policy violations.
+description: Prioritized inbox for approval requests, escalations, and violations.
 ---
+
+import { Callout } from 'fumadocs-ui/components/callout';
 
 ## Install
 
@@ -11,6 +13,87 @@ npx ax-depute add swarm-inbox
 
 ## Overview
 
-Centralized attention triage. Aggregates critical events from across the swarm into a single prioritized inbox with one-click actions.
+A centralized attention triage surface for the swarm supervisor. It aggregates critical events (like permission requests, failed nodes, or policy violations) from across the entire agent fleet into a single, prioritized inbox with one-click drill-down actions.
 
-<Callout>Full documentation coming soon. See the [Storybook catalog](https://iambizi.github.io/depute/) for live interactive examples.</Callout>
+<Callout>
+  **Interactive Demo:** See the [Storybook catalog](https://iambizi.github.io/depute/?path=/story/swarminbox--default) for live interactive examples of SwarmInbox.
+</Callout>
+
+## Usage
+
+```tsx
+import { SwarmInbox } from '@/components/SwarmInbox';
+import type { SwarmInboxItem } from '@/components/SwarmInbox/SwarmInbox.types';
+
+const mockNotifications: SwarmInboxItem[] = [
+  {
+    id: 'evt_1',
+    type: 'escalation',
+    severity: 'critical',
+    title: 'Database connection refused',
+    agentId: 'SQL Writer Node',
+    branchPath: 'Reporting / Q3',
+    timestamp: 'Just now',
+    detail: 'Allowed duration exceeded (3000ms)'
+  },
+  {
+    id: 'evt_2',
+    type: 'approval',
+    severity: 'warning',
+    title: 'Requested read access to S3 bucket',
+    agentId: 'Data Sync Node',
+    timestamp: '2m ago'
+  }
+];
+
+export function App() {
+  return (
+    <div className="p-4 border border-zinc-200 dark:border-zinc-800 rounded-lg max-w-lg">
+      <SwarmInbox 
+        items={mockNotifications}
+        onOpenItem={(item) => console.log('Opening detail modal for', item.id)}
+        onDismissItem={(id) => console.log('Dismissed', id)}
+      />
+    </div>
+  );
+}
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+| :--- | :--- | :--- | :--- |
+| `items` | `SwarmInboxItem[]` | `undefined` | Array of notification items to render in the inbox list. |
+| `onOpenItem` | `(item: SwarmInboxItem) => void` | `undefined` | Callback fired when the user clicks the "View" button to drill down into an issue. |
+| `onDismissItem` | `(id: string) => void` | `undefined` | Callback fired when the user clicks the "×" (dismiss) button on a non-critical item. |
+| `className` | `string` | `undefined` | Additional CSS class for the root element. |
+
+## Types
+
+### `SwarmInboxItem`
+
+```typescript
+export type SwarmInboxSeverity = 'critical' | 'warning' | 'info';
+
+export interface SwarmInboxItem {
+  id: string;
+  type: 'approval' | 'escalation' | 'policy_violation' | 'stalled' | 'budget_overrun' | 'conflict';
+  severity: SwarmInboxSeverity; 
+  title: string;
+  agentId: string;         // The agent requiring attention
+  branchPath?: string;     // The organizational sub-tree where this agent lives
+  timestamp: string;       // Formatted time string, e.g., "Just now"
+  detail?: string;         // Optional one-liner description for extra context
+}
+```
+
+## Design Rationale
+
+**1. The "Exception-Only" Workflow**  
+Supervising a multi-agent swarm requires shifting from "babysitting" to an "exception-only" workflow. The human should only look at the UI when the UI explicitly asks for help. `SwarmInbox` is the funnel for all of those system interrupts.
+
+**2. Type-Driven Visual Sorting**  
+Not all interruptions are equal. A `policy_violation` (an agent trying to access a restricted tool) gets a distinct visual treatment from a standard `approval` loop. The `critical` severity visually dominates the list, pulsing if necessary, ensuring triage happens in the correct order.
+
+**3. Actionable Drill-Downs**  
+An inbox without actions is just a log. The `onOpenItem` callback is designed to transition the user smoothly from the macro view (the inbox) to the micro view (opening an `EscalationRouter` or an `ApprovalGate` inside a modal) to resolve the exact issue.

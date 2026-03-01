@@ -3,6 +3,8 @@ title: EscalationRouter
 description: Alert feed for sub-agent failures with routing options.
 ---
 
+import { Callout } from 'fumadocs-ui/components/callout';
+
 ## Install
 
 ```bash
@@ -11,6 +13,56 @@ npx ax-depute add escalation-router
 
 ## Overview
 
-When a leaf node fails, the Orchestrator can retry, reassign, or escalate. EscalationRouter surfaces the failure trace and resolution options.
+A high-severity intervention surface. When an agent critically fails (e.g., gets stuck in a loop, hits a rate limit, or crashes), `EscalationRouter` surfaces the error trace and provides the human supervisor with three deterministic resolution paths: Retry, Reassign, or Cancel.
 
-<Callout>Full documentation coming soon. See the [Storybook catalog](https://iambizi.github.io/depute/) for live interactive examples.</Callout>
+<Callout>
+  **Interactive Demo:** See the [Storybook catalog](https://iambizi.github.io/depute/?path=/story/escalationrouter--default) for live interactive examples of EscalationRouter.
+</Callout>
+
+## Usage
+
+```tsx
+import { EscalationRouter } from '@/components/EscalationRouter';
+
+export function App() {
+  return (
+    <div className="p-4 border border-zinc-200 dark:border-zinc-800 rounded-lg max-w-lg">
+      <EscalationRouter 
+        failedAgent="Data Processor Node"
+        branchId="branch_7A"
+        errorSummary="Database Timeout: Allowed duration exceeded (3000ms)"
+        errorTrace="Error: Connection refused at pg_connect() \n at query (db.js:42:12)"
+        recommendation="retry"
+        onRetry={() => console.log('Retrying task on same agent...')}
+        onReassign={() => console.log('Opening reassignment modal...')}
+        onCancelBranch={() => console.log('Killing branch_7A')}
+      />
+    </div>
+  );
+}
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+| :--- | :--- | :--- | :--- |
+| `failedAgent` | `string` | **Required** | The name or ID of the agent that encountered the critical error. |
+| `errorSummary` | `string` | **Required** | A human-readable, single-sentence summary of what went wrong. |
+| `onRetry` | `() => void` | **Required** | Callback fired when the human chooses to restart the failed task on the same agent. |
+| `onReassign` | `() => void` | **Required** | Callback fired when the human chooses to route the task to a different agent. |
+| `onCancelBranch` | `() => void` | **Required** | Callback fired to terminate the task and explicitly fail the workflow branch. |
+| `branchId` | `string` | `undefined` | The specific execution branch or thread ID associated with the task. |
+| `errorTrace` | `string` | `undefined` | The raw system error, API response, or stack trace (rendered in a dark-themed code block). |
+| `recommendation` | `'retry' \| 'reassign' \| 'cancel'` | `undefined` | The orchestrator's suggestion for how the human should resolve the issue (highlights the primary button). |
+| `className` | `string` | `undefined` | Additional CSS class for the root element. |
+
+## Design Rationale
+
+**1. The "Three-Way Intersection"**  
+When autonomous systems fail, they often just stop or loop infinitely. `EscalationRouter` forces the system to pause and present a clear three-way intersection to the human: Try Again (transient errors), Give to Someone Else (capability errors), or Give Up (bad intent/unsolvable).
+
+**2. Visual Urgency**  
+This is one of the few components in the library that uses aggressive Red styling by default. It acts as an `alertdialog`, breaking the user out of passive monitoring and demanding active resolution.
+
+**3. Orchestrator Recommendations**  
+If the orchestrator is intelligent enough to know *why* an agent failed (e.g., a 429 Rate Limit), it can use the `recommendation` prop. This highlights the "Retry" button as the primary action, turning the human into a simple "Approve" clicker rather than forcing them to diagnose the trace themselves.

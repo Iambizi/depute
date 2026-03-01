@@ -3,6 +3,8 @@ title: HandoffProtocol
 description: Structured comprehension UI for context transfers between agents.
 ---
 
+import { Callout } from 'fumadocs-ui/components/callout';
+
 ## Install
 
 ```bash
@@ -11,6 +13,77 @@ npx ax-depute add handoff-protocol
 
 ## Overview
 
-Not a gate — a comprehension surface. Shows source agent, destination agent, assigned goal, and context payload. Human can optionally intercept and reroute.
+A "Comprehension UI" that visualizes the transfer of state between two agents (or an agent and a human). It clearly delineates the source, destination, assigned goal, and the exact payload being transferred.
 
-<Callout>Full documentation coming soon. See the [Storybook catalog](https://iambizi.github.io/depute/) for live interactive examples.</Callout>
+<Callout>
+  **Interactive Demo:** See the [Storybook catalog](https://iambizi.github.io/depute/?path=/story/handoffprotocol--default) for live interactive examples of HandoffProtocol.
+</Callout>
+
+## Usage
+
+```tsx
+import { HandoffProtocol } from '@/components/HandoffProtocol';
+
+export function App() {
+  const payload = [
+    { label: 'Scraped URLs', value: '42 pages processed' },
+    { label: 'Extraction Rule', value: 'Find pricing tables' },
+    { label: 'Cost Incurred', value: '$0.45' }
+  ];
+
+  return (
+    <div className="p-4 border border-zinc-200 dark:border-zinc-800 rounded-lg max-w-lg">
+      <HandoffProtocol 
+        sourceAgent="Web Scraper"
+        destinationAgent="Data Synthesizer"
+        goal="Extract pricing tiers into standardized JSON structure."
+        summary="I have crawled the target domain and identified 42 pages containing tabular data that likely represent pricing structures."
+        payload={payload}
+        nextRequest="Please parse the HTML tables in this payload and ensure the resulting JSON matches the ProductTier schema."
+        canIntercept={true}
+        onAccept={() => console.log('Handoff proceeds')}
+        onIntercept={() => console.log('Human takes over')}
+        onCancel={() => console.log('Handoff cancelled')}
+      />
+    </div>
+  );
+}
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+| :--- | :--- | :--- | :--- |
+| `sourceAgent` | `string` | **Required** | The name or ID of the agent sending the context. |
+| `destinationAgent` | `string` | **Required** | The name or ID of the agent (or human) receiving the context. |
+| `goal` | `string` | **Required** | The high-level intent behind this specific transfer of control. |
+| `summary` | `string` | **Required** | A readable description from the source agent of what has been accomplished so far. |
+| `payload` | `HandoffPayloadItem[]` | `undefined` | Key-value pairs representing the structured data being passed. |
+| `nextRequest` | `string` | `undefined` | Explicit instructions from the source agent to the destination agent. |
+| `canIntercept` | `boolean` | `false` | If true, renders the action buttons allowing the human to Accept, Intercept, or Cancel the transfer. |
+| `onAccept` | `() => void` | `undefined` | Callback fired when the user allows the handoff to proceed. |
+| `onIntercept` | `() => void` | `undefined` | Callback fired when the user decides to take over the task manually or reroute it. |
+| `onCancel` | `() => void` | `undefined` | Callback fired when the user cancels the handoff entirely. |
+| `className` | `string` | `undefined` | Additional CSS class for the root element. |
+
+## Types
+
+### `HandoffPayloadItem`
+
+```typescript
+export interface HandoffPayloadItem {
+  label: string;
+  value: string;
+}
+```
+
+## Design Rationale
+
+**1. Comprehension Over Logging**  
+Agent handoffs are usually hidden deep in terminal logs (`Agent A passed context to Agent B`). `HandoffProtocol` pulls this event out of the log and formats it as a formal "shipping manifest," drastically increasing the human supervisor's situational awareness.
+
+**2. Not Inherently a Gate**  
+Unless `canIntercept` is `true`, this component is purely a *Comprehension UI*. It exists to be read, not clicked. In full autonomous mode, these cards stream by as a verifiable record of context transfer.
+
+**3. The Intercept Hook**  
+When an AI orchestrator realizes it is stuck or routing incorrectly, it can use the `HandoffProtocol` with `canIntercept={true}`. The "Intercept" action allows the human to break the chain, take the accumulated context, and manually complete or reroute the task.

@@ -1,7 +1,9 @@
 ---
 title: SubagentCard
-description: Compact card for a single sub-agent — status, current step, confidence.
+description: A compact embeddable card for a single sub-agent.
 ---
+
+import { Callout } from 'fumadocs-ui/components/callout';
 
 ## Install
 
@@ -11,6 +13,62 @@ npx ax-depute add subagent-card
 
 ## Overview
 
-Embeds inside OrchestratorView nodes or AgentRoster rows. Shows current step, ConfidenceMeter badge, and a pulsing status dot.
+A versatile, compact card component used to represent individual workers. It surfaces the most critical agent telemetry (current task, plan progress, token burn, and status) and provides an expansion point to drill down into the agent's full v0 detail panel.
 
-<Callout>Full documentation coming soon. See the [Storybook catalog](https://iambizi.github.io/depute/) for live interactive examples.</Callout>
+<Callout>
+  **Interactive Demo:** See the [Storybook catalog](https://iambizi.github.io/depute/?path=/story/subagentcard--default) for live interactive examples of SubagentCard.
+</Callout>
+
+## Usage
+
+```tsx
+import { SubagentCard } from '@/components/SubagentCard';
+
+export function App() {
+  return (
+    <div className="p-4 grid gap-4 grid-cols-1 md:grid-cols-2">
+      <SubagentCard 
+        agentName="Search Node"
+        role="Web Scraper API"
+        status="working"
+        currentTask="Extracting pricing tables from competitor sites"
+        planStepCount={5}
+        planStepsCompleted={2}
+        tokensUsed={4500}
+        onExpand={() => console.log('Drill down tapped')}
+      />
+
+      <SubagentCard 
+        agentName="Summary Node"
+        role="Data Synthesizer"
+        status="idle"
+      />
+    </div>
+  );
+}
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+| :--- | :--- | :--- | :--- |
+| `agentName` | `string` | **Required** | The primary title or ID of the sub-agent. |
+| `status` | `AgentStatus` | **Required** | Current operating status (`'idle' \| 'working' \| 'blocked' \| 'failed' \| 'completed'`). |
+| `role` | `string` | `undefined` | A secondary label describing the agent's core capability or model. |
+| `currentTask` | `string` | `undefined` | A description of the specific action the agent is taking right now. |
+| `planStepCount` | `number` | `undefined` | Total number of steps in the agent's current plan (enables the progress bar). |
+| `planStepsCompleted` | `number` | `undefined` | Number of completed steps in the agent's current plan. |
+| `tokensUsed` | `number` | `undefined` | Optional token burn count displayed in the footer. |
+| `onExpand` | `() => void` | `undefined` | Callback fired when the user clicks the "expand" or drill-down button. |
+| `className` | `string` | `undefined` | Additional CSS class for the root element. |
+
+## Design Rationale
+
+**1. Contextual Embeds**  
+`SubagentCard` is designed to be embedded *inside* other orchestration components. It serves as the rich payload within `OrchestratorView` tree nodes, or as the dense grid item in a non-list swarm dashboard.
+
+**2. Progressive Disclosure via `onExpand`**  
+A single agent's full context (its `PlanCard`, `ToolTrace`, `RunControls`, and `ApprovalGate`) takes up an entire screen. The `SubagentCard` acts as the closed envelope; the `onExpand` handler allows developers to wire it up to a modal, slide-over, or detail pane where the human supervisor can actually debug the specific node.
+
+**3. Visual Mini-Plan**  
+If `planStepCount` is provided, a miniature progress bar appears. This leverages the established AX standard: always show the human the deterministic boundaries (a plan) around the non-deterministic generation.

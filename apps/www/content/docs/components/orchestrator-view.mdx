@@ -3,6 +3,8 @@ title: OrchestratorView
 description: Visualize the full agent hierarchy as a collapsible tree.
 ---
 
+import { Callout } from 'fumadocs-ui/components/callout';
+
 ## Install
 
 ```bash
@@ -11,6 +13,92 @@ npx ax-depute add orchestrator-view
 
 ## Overview
 
-Tree graph of the Orchestrator and all spawned workers. Blocked nodes are highlighted. Click a node to drill into its v0 panel (PlanCard + ToolTrace + ApprovalGate).
+A recursive tree graph representing the Orchestrator and all of its spawned worker sub-agents. It provides a macro-view of the swarm's structure and highlights blocked or failed nodes that require human attention.
 
-<Callout>Full documentation coming soon. See the [Storybook catalog](https://iambizi.github.io/depute/) for live interactive examples.</Callout>
+<Callout>
+  **Interactive Demo:** See the [Storybook catalog](https://iambizi.github.io/depute/?path=/story/orchestratorview--default) for live interactive examples of OrchestratorView.
+</Callout>
+
+## Usage
+
+```tsx
+import { useState } from 'react';
+import { OrchestratorView } from '@/components/OrchestratorView';
+import type { OrchestratorNode } from '@/components/OrchestratorView/OrchestratorView.types';
+
+const mockSwarm: OrchestratorNode[] = [
+  {
+    id: 'orch_1',
+    label: 'Main Router',
+    role: 'Orchestrator',
+    status: 'working',
+    currentTask: 'Delegating work to sub-agents...',
+    children: [
+      {
+        id: 'sub_1',
+        label: 'Data Researcher',
+        role: 'Search API',
+        status: 'completed',
+      },
+      {
+        id: 'sub_2',
+        label: 'Code Writer',
+        role: 'React Expert',
+        status: 'blocked',
+        currentTask: 'Waiting for missing API key',
+      }
+    ]
+  }
+];
+
+export function App() {
+  const [selectedId, setSelectedId] = useState<string>('orch_1');
+
+  return (
+    <div className="p-4 border border-zinc-200 dark:border-zinc-800 rounded-lg max-w-md">
+      <OrchestratorView 
+        nodes={mockSwarm} 
+        selectedNodeId={selectedId}
+        onNodeClick={(node) => setSelectedId(node.id)}
+      />
+    </div>
+  );
+}
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+| :--- | :--- | :--- | :--- |
+| `nodes` | `OrchestratorNode[]` | `undefined` | Hierarchical tree data. Usually contains a single root node representing the main orchestrator agent. |
+| `onNodeClick` | `(node: OrchestratorNode) => void` | `undefined` | Callback fired when the user clicks on an individual node in the tree. |
+| `selectedNodeId` | `string` | `undefined` | The `id` of the currently selected node, used to highlight the active agent in the tree. |
+| `className` | `string` | `undefined` | Additional CSS class for the root element. |
+
+## Types
+
+### `OrchestratorNode`
+
+```typescript
+export type AgentStatus = 'idle' | 'working' | 'blocked' | 'failed' | 'completed';
+
+export interface OrchestratorNode {
+  id: string;
+  label: string;
+  status: AgentStatus;
+  role?: string;
+  currentTask?: string;
+  children?: OrchestratorNode[];
+}
+```
+
+## Design Rationale
+
+**1. The Macro/Micro Split**  
+When multiple agents are running in a swarm, a single terminal log or chat thread becomes impossible to follow. `OrchestratorView` serves as the "macro" view—a structural map of *who* is doing what. Clicking a node typically updates an adjacent pane with the "micro" view (a standard `PlanCard` + `ToolTrace` for that specific agent).
+
+**2. Exception Highlighting**  
+The tree naturally collapses cognitive load by burying successful (`completed`) and waiting (`idle`) agents. However, `blocked` and `failed` nodes use high-contrast color codes to draw the supervisor's eye directly to the nodes requiring intervention, regardless of how deep they are nested.
+
+**3. Depth Coding**  
+To solve the "sea of gray boxes" problem, the left border of each node is color-coded by depth (e.g., Indigo → Sky → Emerald → Amber). This provides an instant visual anchor for nesting levels, even when inner branches are expanded.

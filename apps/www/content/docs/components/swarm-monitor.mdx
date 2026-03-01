@@ -1,7 +1,9 @@
 ---
 title: SwarmMonitor
-description: Aggregate health grid — throughput, token spend, error rate, global controls.
+description: Aggregate health grid showing throughput, tokens, and global controls.
 ---
+
+import { Callout } from 'fumadocs-ui/components/callout';
 
 ## Install
 
@@ -11,6 +13,74 @@ npx ax-depute add swarm-monitor
 
 ## Overview
 
-Dashboard header for swarm-level health. Includes a global kill switch and global pause. Use alongside AgentRoster for per-agent drill-down.
+A macro-level dashboard header. It aggregates the operating health of the entire swarm into a single row of KPIs, and features a prominent "global kill switch" for emergency overrides. Use this alongside `AgentRoster` for per-agent drill-downs.
 
-<Callout>Full documentation coming soon. See the [Storybook catalog](https://iambizi.github.io/depute/) for live interactive examples.</Callout>
+<Callout>
+  **Interactive Demo:** See the [Storybook catalog](https://iambizi.github.io/depute/?path=/story/swarmmonitor--default) for live interactive examples of SwarmMonitor.
+</Callout>
+
+## Usage
+
+```tsx
+import { SwarmMonitor } from '@/components/SwarmMonitor';
+
+export function App() {
+  const currentMetrics = {
+    activeInstances: 14,
+    idleInstances: 3,
+    totalCost: '$1.42',
+    tokensBurned: 145000,
+    errorRate: 12, // 12% 
+    taskCompletionRate: 68, // 68%
+    estimatedTimeRemaining: '~4m'
+  };
+
+  return (
+    <div className="p-4 border border-zinc-200 dark:border-zinc-800 rounded-lg">
+      <SwarmMonitor 
+        metrics={currentMetrics}
+        onGlobalPause={() => console.log('Swarm paused')}
+        onGlobalKill={() => console.log('Swarm killed')}
+      />
+    </div>
+  );
+}
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+| :--- | :--- | :--- | :--- |
+| `metrics` | `Object` | **Required** | Aggregate metrics object displaying the health of the entire swarm (see Type below). |
+| `onGlobalPause` | `() => void` | `undefined` | Callback fired when the user clicks the "Pause All" action. |
+| `onGlobalKill` | `() => void` | `undefined` | Callback fired when the user clicks the "Halt Swarm" emergency kill switch. |
+| `className` | `string` | `undefined` | Additional CSS class for the root element. |
+
+## Types
+
+### `SwarmMetrics`
+
+```typescript
+export interface SwarmMonitorProps {
+  metrics: {
+    activeInstances: number;     // Currently running agents
+    idleInstances: number;       // Agents waiting for routing/input
+    totalCost: string;           // Formatted USD string e.g. "$1.42"
+    tokensBurned: number;        // Raw input+output token count
+    errorRate: number;           // Percentage 0–100. Colors amber > 5%, red > 15%
+    taskCompletionRate?: number; // Percentage 0–100. Renders as a progress bar
+    estimatedTimeRemaining?: string; 
+  };
+}
+```
+
+## Design Rationale
+
+**1. The "Big Red Button" at Scale**  
+While `RunControls` stops a single agent, `SwarmMonitor` controls the fleet. When an unexpected loop or hallucination cascade begins, supervisors do not have time to find the specific rogue agent. The `onGlobalKill` action provides instant peace of mind.
+
+**2. Visualizing Severity (The 15% Rule)**  
+The `errorRate` metric is not a static number; it is a dynamic severity indicator. By default, it tints Amber if the error rate exceeds 5%, and solid Red if it exceeds 15% (the point at which a generative swarm is likely caught in a retry loop).
+
+**3. Progress vs. Time**  
+Generative workflows are non-deterministic, making time estimates notoriously inaccurate. `SwarmMonitor` centers the `taskCompletionRate` (a deterministic ratio of pending vs completed tasks) rather than a shaky countdown clock, grounding the human in reality.

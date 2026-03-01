@@ -1,7 +1,9 @@
 ---
 title: BranchControls
-description: Scoped pause, resume, quarantine, and cancel for one branch of the agent tree.
+description: Scoped execution controls for a single branch of the swarm.
 ---
+
+import { Callout } from 'fumadocs-ui/components/callout';
 
 ## Install
 
@@ -11,6 +13,54 @@ npx ax-depute add branch-controls
 
 ## Overview
 
-RunControls are global. BranchControls are scoped to a single node — pause a troubled branch without freezing the whole swarm.
+While `RunControls` operates on a single agent, and `SwarmMonitor` can kill the entire fleet, `BranchControls` operates on a specific *sub-tree*. It allows a supervisor to pause or quarantine a troubled workflow branch without freezing the rest of the healthy swarm.
 
-<Callout>Full documentation coming soon. See the [Storybook catalog](https://iambizi.github.io/depute/) for live interactive examples.</Callout>
+<Callout>
+  **Interactive Demo:** See the [Storybook catalog](https://iambizi.github.io/depute/?path=/story/branchcontrols--default) for live interactive examples of BranchControls.
+</Callout>
+
+## Usage
+
+```tsx
+import { BranchControls } from '@/components/BranchControls';
+
+export function App() {
+  return (
+    <div className="p-4 border border-zinc-200 dark:border-zinc-800 rounded-lg max-w-sm">
+      <BranchControls 
+        branchName="Data Scraping Pipeline"
+        status="running"
+        onPause={() => console.log('Pausing branch')}
+        onResume={() => console.log('Resuming branch')}
+        onQuarantine={() => console.log('Quarantining branch')}
+        onCancel={() => console.log('Canceling branch')}
+        onThrottle={() => console.log('Throttling branch speed')}
+      />
+    </div>
+  );
+}
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+| :--- | :--- | :--- | :--- |
+| `branchName` | `string` | **Required** | The display name of the organizational branch or sub-tree. |
+| `status` | `'running' \| 'paused' \| 'quarantined'` | **Required** | The current execution state of this specific branch. |
+| `onPause` | `() => void` | `undefined` | Callback fired to halt execution on this branch. |
+| `onResume` | `() => void` | `undefined` | Callback fired to resume execution on this branch. |
+| `onQuarantine` | `() => void` | `undefined` | Callback fired to isolate this branch (e.g., cut off its network/API access). |
+| `onCancel` | `() => void` | `undefined` | Callback fired to permanently terminate all agents in this branch. |
+| `onThrottle` | `() => void` | `undefined` | Callback fired to artificially slow down the loop speed of this branch. |
+| `className` | `string` | `undefined` | Additional CSS class for the root element. |
+
+## Design Rationale
+
+**1. Surgical Intervention**  
+In a 20-agent swarm, one agent hitting a bad API shouldn't crash the other 19. `BranchControls` provides the surgical tools needed to manage a complex hierarchical system. If a "Scraper" branch is misbehaving, you can pause it, adjust the scraper prompt, and resume it, all while the "Summary" branch continues to process the data already collected.
+
+**2. The Quarantine Concept**  
+Unlike "Pause" (which stops the agent from reasoning), "Quarantine" allows the branch to continue thinking but revokes its Write/Execute permissions. This is a critical debugging state: it lets the human observe *what the agent wants to do next* without actually letting it do it.
+
+**3. State-Driven UI**  
+The visible buttons dynamically swap based on the `status` prop. If the branch is `running`, the user sees Pause and Quarantine. If it's `paused`, they see Resume. This prevents the supervisor from clicking invalid state transitions during a fast-moving escalation.

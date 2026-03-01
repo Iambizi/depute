@@ -1,7 +1,9 @@
 ---
 title: AgentRoster
-description: Status dashboard for all active sub-agents.
+description: Status dashboard for scanning all active sub-agents.
 ---
+
+import { Callout } from 'fumadocs-ui/components/callout';
 
 ## Install
 
@@ -11,6 +13,89 @@ npx ax-depute add agent-roster
 
 ## Overview
 
-Dense table for scanning 20+ concurrent workers. Columns: Name/ID, Role, Status (Idle/Working/Blocked/Failed), Uptime/Cost.
+A dense table view designed for the "Flat Swarm" orchestration model (e.g., OpenAI's Swarm). It allows a human supervisor to scan 20+ concurrent workers at a glance, monitoring roll-up metrics like agent status, uptime, and token cost.
 
-<Callout>Full documentation coming soon. See the [Storybook catalog](https://iambizi.github.io/depute/) for live interactive examples.</Callout>
+<Callout>
+  **Interactive Demo:** See the [Storybook catalog](https://iambizi.github.io/depute/?path=/story/agentroster--default) for live interactive examples of AgentRoster.
+</Callout>
+
+## Usage
+
+```tsx
+import { useState } from 'react';
+import { AgentRoster } from '@/components/AgentRoster';
+import type { AgentRosterItem } from '@/components/AgentRoster/AgentRoster.types';
+
+const mockAgents: AgentRosterItem[] = [
+  {
+    id: 'ag_1',
+    name: 'Research Router',
+    role: 'Orchestrator',
+    status: 'working',
+    currentTask: 'Delegating to search APIs',
+    tokensUsed: 1250,
+    lastActive: 'Just now'
+  },
+  {
+    id: 'ag_2',
+    name: 'Browser Node',
+    role: 'Web Scraper',
+    status: 'failed',
+    currentTask: 'Scraping Wikipedia',
+    tokensUsed: 840,
+    lastActive: '5m ago'
+  }
+];
+
+export function App() {
+  const [selectedId, setSelectedId] = useState<string>('ag_1');
+
+  return (
+    <div className="p-4 border border-zinc-200 dark:border-zinc-800 rounded-lg">
+      <AgentRoster 
+        agents={mockAgents}
+        selectedAgentId={selectedId}
+        onAgentSelect={(agent) => setSelectedId(agent.id)}
+      />
+    </div>
+  );
+}
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+| :--- | :--- | :--- | :--- |
+| `agents` | `AgentRosterItem[]` | `undefined` | Array of agent data objects to render as rows in the table. |
+| `selectedAgentId` | `string` | `undefined` | The `id` of the currently selected agent row. |
+| `onAgentSelect` | `(agent: AgentRosterItem) => void` | `undefined` | Callback fired when the user clicks on a row. |
+| `className` | `string` | `undefined` | Additional CSS class for the root element. |
+
+## Types
+
+### `AgentRosterItem`
+
+```typescript
+import type { AgentStatus } from '../OrchestratorView/OrchestratorView.types';
+
+export interface AgentRosterItem {
+  id: string;
+  name: string;
+  role: string;
+  status: AgentStatus;          // 'idle' | 'working' | 'blocked' | 'failed' | 'completed'
+  currentTask?: string;         // E.g., "Summarizing PDF"
+  tokensUsed?: number;          // Token burn count for this session
+  lastActive?: string;          // E.g., "2m ago"
+}
+```
+
+## Design Rationale
+
+**1. Data Density for Flat Swarms**  
+While `OrchestratorView` is best for hierarchical workflows, `AgentRoster` is designed for "flat" worker pools (like OpenAI Swarm). It prioritizes information density over structural mapping, allowing supervisors to monitor dozens of parallel tasks without scrolling.
+
+**2. Roll-Up Status Metrics**  
+The header of the roster automatically calculates and displays summary metric pills based on the `agents` array (e.g., showing how many agents are Working, Blocked, or Failed). This provides instant situational awareness of the swarm's health.
+
+**3. Economic Visibility**  
+Agents spend money. The `tokensUsed` column surfaces economic metrics directly into the operational view, treating API spend as a first-class citizen alongside task status and uptime.
