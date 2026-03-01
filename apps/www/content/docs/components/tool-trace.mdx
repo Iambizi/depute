@@ -3,6 +3,8 @@ title: ToolTrace
 description: Live timeline of every tool call with inputs, outputs, and policy flags.
 ---
 
+import { Callout } from 'fumadocs-ui/components/callout';
+
 ## Install
 
 ```bash
@@ -11,6 +13,59 @@ npx ax-depute add tool-trace
 
 ## Overview
 
-Auto-scrolling timeline. Entries with policyFlags (requiresApproval, writesState, externalAction) are visually distinguished from routine calls.
+Auto-scrolling timeline representing the agent's inner loop. Entries with `policyFlags` (`requiresApproval`, `writesState`, `externalAction`) are visually distinguished from routine calls.
 
-<Callout>Full documentation coming soon. See the [Storybook catalog](https://iambizi.github.io/depute/) for live interactive examples.</Callout>
+<Callout>
+  **Interactive Demo:** See the [Storybook catalog](https://iambizi.github.io/depute/?path=/story/tooltrace--default) for live interactive examples of ToolTrace.
+</Callout>
+
+## Usage
+
+```tsx
+import { ToolTrace } from '@/components/ToolTrace';
+import type { ToolCall } from '@/types/ax-common';
+
+const mockCalls: ToolCall[] = [
+  {
+    id: 'call_1',
+    name: 'fetch_user_data',
+    status: 'completed',
+    timestamp: new Date(),
+    input: { userId: '123' },
+    output: { name: 'Alice' },
+    policyFlags: { externalAction: true }
+  }
+];
+
+export function App() {
+  return (
+    <ToolTrace 
+      calls={mockCalls} 
+      autoScroll={true} 
+      expandable={true} 
+    />
+  );
+}
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+| :--- | :--- | :--- | :--- |
+| `calls` | `ToolCall[]` | **Required** | Array of tool calls to display in the trace timeline. |
+| `autoScroll` | `boolean` | `false` | Whether the timeline should automatically scroll to the latest entry when new calls are added. |
+| `maxHeight` | `string` | `undefined` | Maximum height of the container before an internal scrollbar appears (e.g., `'400px'`). |
+| `onEntryClick` | `(call: ToolCall) => void` | `undefined` | Callback fired when a user clicks on a tool call entry. |
+| `expandable` | `boolean` | `false` | If true, entries can be clicked to expand and reveal their raw JSON input and output. |
+| `className` | `string` | `undefined` | Additional CSS class for the root element. |
+
+## Design Rationale
+
+**1. Comprehension Over Logging**  
+Standard terminal logs are unreadable for non-engineers. ToolTrace formats JSON inputs and outputs into a structured UI, translating machine process into human-readable proof of work.
+
+**2. Policy Flagging**  
+Not all tools are equal. A `read_file` is routine, but a `execute_payment` is critical. The `policyFlags` system allows specific tool calls to bear visual severity tokens (e.g., an amber badge for `writesState`), breaking the monotony of the timeline and drawing the human's eye to high-risk actions.
+
+**3. Automatic Anchoring**  
+In an active stream, the human loses context if the UI doesn't track the edge of computation. The `autoScroll` logic ensures the most recent action is always in view, creating a sense of live Generative Momentum.

@@ -1,7 +1,9 @@
 ---
 title: ArtifactCard
-description: Render the final output of a workflow with export and provenance.
+description: Render the final output of an agentic workflow with export and provenance tracing.
 ---
+
+import { Callout } from 'fumadocs-ui/components/callout';
 
 ## Install
 
@@ -11,6 +13,58 @@ npx ax-depute add artifact-card
 
 ## Overview
 
-The agent's receipt. sourceStepId and toolCallIds trace the output back to the exact plan step and tool calls that produced it.
+The agent's "receipt" of work completed. It renders the final output alongside crucial provenance data: precisely which plan step and tool calls generated it. It also provides integrated export options.
 
-<Callout>Full documentation coming soon. See the [Storybook catalog](https://iambizi.github.io/depute/) for live interactive examples.</Callout>
+<Callout>
+  **Interactive Demo:** See the [Storybook catalog](https://iambizi.github.io/depute/?path=/story/artifactcard--default) for live interactive examples of ArtifactCard.
+</Callout>
+
+## Usage
+
+```tsx
+import { ArtifactCard } from '@/components/ArtifactCard';
+import type { Artifact } from '@/types/ax-common';
+
+const mockArtifact: Artifact = {
+  id: 'art_123',
+  type: 'code',
+  title: 'Database Schema Migration',
+  createdAt: new Date(),
+  content: 'CREATE TABLE users (id SERIAL PRIMARY KEY, name VARCHAR(50));',
+  sourceStepId: 'step_2',
+  toolCallIds: ['call_456']
+};
+
+export function App() {
+  return (
+    <ArtifactCard 
+      artifact={mockArtifact} 
+      exportFormats={['markdown', 'sql']} 
+      onExport={(format) => console.log(`Exporting as ${format}`)}
+      showPreview={true}
+    />
+  );
+}
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+| :--- | :--- | :--- | :--- |
+| `artifact` | `Artifact` | **Required** | The artifact object to display (contains `title`, `type`, `content`, etc.). |
+| `exportFormats` | `ExportFormat[]` | `undefined` | Array of available export formats to show as action buttons. |
+| `onExport` | `(format: ExportFormat) => void` | `undefined` | Callback fired when an export button is clicked. |
+| `showPreview` | `boolean` | `true` | Whether to render a preview of the artifact's `content` inside the card. |
+| `maxPreviewHeight` | `string` | `'24rem'` | Maximum height of the content preview area before an internal scrollbar appears. |
+| `className` | `string` | `undefined` | Additional CSS class for the root element. |
+
+## Design Rationale
+
+**1. The "Receipt" Pattern**  
+In traditional SaaS, the UI *is* the application. In agentic software, the UI is often just the exhaust of the application. The `ArtifactCard` treats the final output as a primary, shareable asset. 
+
+**2. Verifiable Provenance**  
+Trust requires auditability. The `sourceStepId` and `toolCallIds` metadata fields visually connect the final artifact back to the exact operations that produced it, preventing "hallucinated outputs" from passing without scrutiny.
+
+**3. Actionability**  
+Agents excel at generation, but humans excel at distribution. Integrated `exportFormats` acknowledge that the artifact's lifecycle doesn't end in the chat UI—it needs to be pulled into PRs, Slack messages, or Google Docs.

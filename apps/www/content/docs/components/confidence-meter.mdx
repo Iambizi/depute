@@ -3,6 +3,8 @@ title: ConfidenceMeter
 description: Show how confident the agent is in its next step.
 ---
 
+import { Callout } from 'fumadocs-ui/components/callout';
+
 ## Install
 
 ```bash
@@ -11,6 +13,60 @@ npx ax-depute add confidence-meter
 
 ## Overview
 
-Displays a confidence score with reasoning. Use display="meter" for a full bar or display="badge" for a compact inline pill inside SubagentCard rows.
+Displays an agent's confidence score with optional reasoning. Supports a full `meter` display (a horizontal bar) as well as a compact `badge` display for tight spaces like roster rows in `SubagentCard`.
 
-<Callout>Full documentation coming soon. See the [Storybook catalog](https://iambizi.github.io/depute/) for live interactive examples.</Callout>
+<Callout>
+  **Interactive Demo:** See the [Storybook catalog](https://iambizi.github.io/depute/?path=/story/confidencemeter--default) for live interactive examples of ConfidenceMeter.
+</Callout>
+
+## Usage
+
+```tsx
+import { ConfidenceMeter } from '@/components/ConfidenceMeter';
+
+export function App() {
+  return (
+    <div className="flex flex-col gap-6">
+      {/* Full Meter Display */}
+      <ConfidenceMeter 
+        value={85} 
+        display="meter"
+        showLabel={true}
+        showValue={true}
+        reasoning="I have successfully retrieved the user's billing history."
+      />
+
+      {/* Compact Badge Display */}
+      <ConfidenceMeter 
+        value={42} 
+        display="badge"
+        size="sm"
+      />
+    </div>
+  );
+}
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+| :--- | :--- | :--- | :--- |
+| `value` | `number` | `undefined` | Confidence score from 0-100. If omitted, meter shows an indeterminate pulsing state. |
+| `display` | `'meter' \| 'badge'` | `'meter'` | Structural variant: full horizontal bar (`meter`) or a compact inline pill (`badge`). |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Size of the component. |
+| `showValue` | `boolean` | `true` | Whether to show the exact numeric percentage. |
+| `showLabel` | `boolean` | `true` | Whether to display a textual confidence category (e.g., "High", "Medium", "Low"). |
+| `reasoning` | `string` | `undefined` | An optional explanation from the agent justifying its confidence score. |
+| `animate` | `boolean` | `true` | Whether to animate the bar filling and color transitions when the value changes. |
+| `className` | `string` | `undefined` | Additional CSS class for the root element. |
+
+## Design Rationale
+
+**1. Quantitative Trust Signaling**  
+Humans struggle to calibrate trust in LLMs. By forcing the agent to output a confidence score *before* execution, the UI shifts from "black box" to a measurable partnership.
+
+**2. The Color-Coded Spectrum**  
+Scores are mapped to strict semantic buckets: Green (80-100%, high confidence), Amber (50-79%, moderate certainty), and Red (<50%, high risk). This leverages existing mental models of traffic lights for instant comprehension.
+
+**3. "Show Your Math"**  
+A score without rationale is opaque. The `reasoning` prop provides space for the agent to explicitly state *why* it arrived at its score (e.g., "I found 3 distinct APIs matching the intent, which introduces ambiguity"), which is crucial for human intervention.
