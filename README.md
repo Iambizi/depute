@@ -1,23 +1,29 @@
 # depute
 
-> React primitives for the human side of agentic AI
+> The React component library for Delegation UI
 
-When an AI agent runs in your product — planning, calling tools, making decisions — users need to see what's happening. Not raw logs. **Purpose-built UI.** `depute` is the design system for that experience.
+Software UI has gone through two eras. **Command Line:** you told the machine what to do, step by step. **Navigation:** you drove software through menus, flows, and screens. That paradigm held for thirty years — and it's the one that's dying.
 
-👉 **[View the Interactive Component Catalog (Storybook)](https://iambizi.github.io/depute/)**
+**Delegation UI** is the third era. You describe an outcome and an agent pursues it. The interface is no longer a vehicle you drive — it's a cockpit you monitor. You're setting intent, reviewing decisions, and maintaining oversight.
+
+Every component library on earth was built for navigation. Delegation UI has none of that. The vocabulary doesn't exist yet.
+
+`depute` is building it — an open-source React component library for interfaces where the user **supervises** instead of operates.
+
+👉 **[Interactive Component Catalog (Storybook)](https://iambizi.github.io/depute/)** · **[Documentation](https://www-one-rho-67.vercel.app)**
 
 ---
 
-## The Problem
+## Why This Exists
 
-Every team building on top of AI agents ends up rebuilding the same UI surface:
+The more autonomous an agent becomes, the more the interface needs to compensate with visibility and control. Teams building on AI agents keep rebuilding the same surfaces:
 
-- A component to show what the agent is planning
-- A gate to let a human approve before a high-risk action runs
-- A trace to show which tools were called, and why
-- Controls to pause, steer, or cancel a running agent
+- A component to show what the agent is **planning**
+- A gate to let a human **approve** before an irreversible action runs
+- A trace to show which tools were **called**, and why
+- Controls to **pause**, steer, or cancel a running agent
 
-These aren't hard to build once. They're hard to build **correctly** — with the right accessibility, the right trust signals, and the right interaction model for human oversight of autonomous systems.
+These aren't hard to build once. They're hard to build **correctly** — with the right accessibility, trust signals, and interaction model for human oversight of autonomous systems.
 
 `depute` solves this once, as a composable library you own.
 
