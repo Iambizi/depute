@@ -3,6 +3,8 @@ title: ApprovalGate
 description: Block execution and ask the user to approve a risky or high-stakes agent action.
 ---
 
+import { Callout } from 'fumadocs-ui/components/callout';
+
 ## Install
 
 ```bash
@@ -14,6 +16,10 @@ npx ax-depute add approval-gate
 `ApprovalGate` is the trust boundary primitive. It pauses agent execution and surfaces a structured approval UI before the agent crosses a trust boundary — sending emails, writing to a database, calling an external API.
 
 The key design principle (from Stripe's SPT pattern): **approvals are scoped grants, not binary yes/no decisions**. A user approving "send emails" shouldn't be approving "send unlimited emails forever."
+
+<Callout>
+  **Interactive Demo:** See the [Storybook catalog](https://iambizi.github.io/depute/?path=/story/approvalgate--default) for live interactive examples of ApprovalGate.
+</Callout>
 
 ## Basic usage
 
