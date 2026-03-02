@@ -6,7 +6,7 @@ export default function Layout({ children }: { children: ReactNode }) {
   return (
     <DocsLayout
       tree={source.pageTree}
-      nav={{ title: 'depute' }}
+      nav={{ title: 'Depute' }}
     >
       {children}
     </DocsLayout>

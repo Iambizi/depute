@@ -7,7 +7,7 @@ export default function HomePage() {
         <p className="text-sm font-mono text-fd-muted-foreground mb-3 tracking-widest uppercase">
           React · TypeScript · CSS Modules
         </p>
-        <h1 className="text-5xl font-bold tracking-tight mb-4">depute</h1>
+        <h1 className="text-5xl font-bold tracking-tight mb-4">Depute</h1>
         <p className="text-xl text-fd-muted-foreground mb-8">
           React primitives for the human side of agentic AI.
           Purpose-built UI for agent supervision, approval gates, confidence

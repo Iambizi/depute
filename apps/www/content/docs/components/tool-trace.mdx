@@ -4,6 +4,7 @@ description: Live timeline of every tool call with inputs, outputs, and policy f
 ---
 
 import { Callout } from 'fumadocs-ui/components/callout';
+import { StorybookEmbed } from '@/components/storybook-embed';
 
 ## Install
 
@@ -16,8 +17,10 @@ npx ax-depute add tool-trace
 Auto-scrolling timeline representing the agent's inner loop. Entries with `policyFlags` (`requiresApproval`, `writesState`, `externalAction`) are visually distinguished from routine calls.
 
 <Callout>
-  **Interactive Demo:** See the [Storybook catalog](https://iambizi.github.io/depute/?path=/story/tooltrace--default) for live interactive examples of ToolTrace.
+  **Interactive Demo:** See the [Storybook catalog](https://iambizi.github.io/depute/?path=/story/ax-components-tooltrace--default) for live interactive examples of ToolTrace.
 </Callout>
+
+<StorybookEmbed story="ax-components-tooltrace--default" />
 
 ## Usage
 

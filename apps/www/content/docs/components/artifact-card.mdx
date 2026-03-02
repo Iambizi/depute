@@ -4,6 +4,7 @@ description: Render the final output of an agentic workflow with export and prov
 ---
 
 import { Callout } from 'fumadocs-ui/components/callout';
+import { StorybookEmbed } from '@/components/storybook-embed';
 
 ## Install
 
@@ -16,8 +17,10 @@ npx ax-depute add artifact-card
 The agent's "receipt" of work completed. It renders the final output alongside crucial provenance data: precisely which plan step and tool calls generated it. It also provides integrated export options.
 
 <Callout>
-  **Interactive Demo:** See the [Storybook catalog](https://iambizi.github.io/depute/?path=/story/artifactcard--default) for live interactive examples of ArtifactCard.
+  **Interactive Demo:** See the [Storybook catalog](https://iambizi.github.io/depute/?path=/story/ax-components-artifactcard--default) for live interactive examples of ArtifactCard.
 </Callout>
+
+<StorybookEmbed story="ax-components-artifactcard--default" />
 
 ## Usage
 

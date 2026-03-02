@@ -4,6 +4,7 @@ description: Block execution and ask the user to approve a risky or high-stakes 
 ---
 
 import { Callout } from 'fumadocs-ui/components/callout';
+import { StorybookEmbed } from '@/components/storybook-embed';
 
 ## Install
 
@@ -18,8 +19,10 @@ npx ax-depute add approval-gate
 The key design principle (from Stripe's SPT pattern): **approvals are scoped grants, not binary yes/no decisions**. A user approving "send emails" shouldn't be approving "send unlimited emails forever."
 
 <Callout>
-  **Interactive Demo:** See the [Storybook catalog](https://iambizi.github.io/depute/?path=/story/approvalgate--default) for live interactive examples of ApprovalGate.
+  **Interactive Demo:** See the [Storybook catalog](https://iambizi.github.io/depute/?path=/story/ax-components-approvalgate--default) for live interactive examples of ApprovalGate.
 </Callout>
+
+<StorybookEmbed story="ax-components-approvalgate--default" />
 
 ## Basic usage
 

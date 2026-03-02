@@ -15,9 +15,12 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'depute — React primitives for agentic AI',
+  title: 'Depute — React primitives for agentic AI',
   description:
     'Purpose-built UI components for AI agent supervision and human oversight.',
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_SITE_URL ?? 'https://depute.dev',
+  ),
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {

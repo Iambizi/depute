@@ -37,8 +37,27 @@ export async function generateMetadata({ params }: PageProps) {
   const page = source.getPage(slug);
   if (!page) notFound();
 
+  const title = page.data.title;
+  const description = page.data.description;
+
   return {
-    title: page.data.title,
-    description: page.data.description,
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      images: [
+        {
+          url: `/api/og?title=${encodeURIComponent(title)}&description=${encodeURIComponent(description ?? '')}`,
+          width: 1200,
+          height: 630,
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+    },
   };
 }

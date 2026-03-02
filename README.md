@@ -1,4 +1,4 @@
-# depute
+# Depute
 
 > The React component library for Delegation UI
 

@@ -5,3 +5,16 @@
 :root {
   --fd-nav-height: 56px;
 }
+
+/* Make sidebar section separators visually distinct as bold headers */
+[data-sidebar] [role="separator"] {
+  margin-top: 1.25rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--fd-border);
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--fd-foreground);
+  opacity: 1;
+}
