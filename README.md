@@ -10,7 +10,7 @@ Every component library on earth was built for navigation. Delegation UI has non
 
 `depute` is building it — an open-source React component library for interfaces where the user **supervises** instead of operates.
 
-👉 **[Interactive Component Catalog (Storybook)](https://iambizi.github.io/depute/)** · **[Documentation](https://www-one-rho-67.vercel.app)**
+👉 **[Interactive Component Catalog (Storybook)](https://iambizi.github.io/depute/)**
 
 ---
 
