@@ -1,9 +1,9 @@
 # Current Status & Next Steps
 
-**Last Updated:** March 2, 2026
+**Last Updated:** March 3, 2026
 **Updated By:** AI Assistant
 **Current Branch:** `main`
-**Overall Progress:** Skill layer ✅ · Audit Mode ✅ · Docs site deployed + polished ✅ · Storybook embeds ✅ · Search (Orama) ✅ · OG images ✅ · Brand (Depute + Geist Pixel) ✅ · Landing page redesign ✅ · **Next: Component visual polish (shadcn-inspired) → Docs refinement → PoC app**
+**Overall Progress:** Skill layer ✅ · Audit Mode ✅ · Docs site deployed + polished ✅ · Native component demos ✅ · Package manager tabs ✅ · Search (Orama) ✅ · OG images ✅ · Brand (Depute + Geist Pixel) ✅ · Landing page redesign ✅ · **Next: Preview/Code toggle → Component visual polish → PoC app**
 
 **IMPORTANT:** See `docs/internal/DEFERRED-LOG.md` for the latest strategic context and deferred triggers.
 
@@ -60,22 +60,29 @@ Docs site polish session. Added three features (Storybook iframe embeds, Orama s
 
 #### 81. Storybook Embed Polish (shadcn-inspired)
 - ✅ Set per-component iframe heights (200px–500px) to eliminate empty whitespace
-  - Compact: ConfidenceMeter, RunControls (200px)
-  - Medium: ArtifactCard, SubagentCard, BranchControls (250–300px)
-  - Standard: ToolTrace, PlanCard, ApprovalGate, DelegationGate (320–350px)
-  - Full: OrchestratorView (500px), roster/monitor/queue (400px)
 - ✅ Updated `StorybookEmbed` container: subtle background, 12px radius, "Open in Storybook ↗" footer link
+
+#### 82. Package Manager Tabs
+- ✅ Added npm/pnpm/yarn/bun tabs to all 17 component pages + installation page
+- ✅ Uses Fumadocs `Tabs`/`Tab` with `groupId="package-manager"` + `persist` (syncs & persists)
+
+#### 83. Native Component Demos (replaces Storybook iframes)
+- ✅ Created 17 demo wrapper components in `apps/www/src/components/demos/`
+- ✅ Each demo imports actual component source with realistic mock data
+- ✅ Prebuild script (`sync-components`) copies root `src/` → `apps/www/src/depute/` (gitignored)
+- ✅ Imported design tokens CSS (`tokens.css`) into `globals.css`
+- ✅ Components render inline — no more iframe loading from GitHub Pages Storybook
 
 ### Key Decisions
 1. **Depute (capital D) for branding only.** npm package (`ax-depute`), repo URL, CLI commands, imports all stay lowercase. Same pattern as Next.js/Tailwind.
 2. **Drop v0/v1 labels from sidebar.** "Single Agent" and "Multi-Agent" are the meaningful user-facing categories. Internal versioning shouldn't leak into docs.
-3. **`/iframe.html` for embeds.** Gives just the rendered component without Storybook chrome — much cleaner inline.
-4. **Geist Pixel Square for brand.** Bitmap pixel font reinforces the "intentionally digital" identity. Fits the AI-tooling space. Tried Grid variant but Square with text-stroke hit the right balance.
-5. **Radix hydration warning is harmless.** Dev-only mismatch from random ID generation in Fumadocs' Radix Collapsible components. Self-corrects, doesn't affect production.
+3. **Geist Pixel Square for brand.** Bitmap pixel font reinforces the "intentionally digital" identity. Fits the AI-tooling space. Tried Grid variant but Square with text-stroke hit the right balance.
+4. **Radix hydration warning is harmless.** Dev-only mismatch from random ID generation in Fumadocs' Radix Collapsible components. Self-corrects, doesn't affect production.
+5. **Prebuild copy over alias/symlink.** Next.js 16 Turbopack cannot resolve symlinks or path aliases pointing outside the app root. Copying root `src/` into the docs app pre-build is the most reliable approach.
 
 ### Next Steps
-1. **Component Visual Polish** — The primitives themselves (PlanCard, RunControls, ApprovalGate, etc.) are functional but visually basic. The look and feel needs refinement to feel premium and production-ready. Consider borrowing design patterns from shadcn/ui (borders, shadows, radius, color tokens, hover states) to elevate the visual quality without losing the AX-specific semantics.
-2. **Docs Site Continued Improvement** — The docs pages themselves could use tighter styling, better code examples, and more polished Storybook embeds. Some components render minimally in the iframe (e.g., RunControls showing just "Idle" + play button).
+1. **Preview / Code Toggle** — Add a shadcn-style tab to each component demo letting users switch between the rendered preview and its source code.
+2. **Component Visual Polish** — The primitives themselves are functional but visually basic. Borrow design patterns from shadcn/ui (borders, shadows, radius, color tokens, hover states) to elevate the visual quality.
 3. **PoC App (Agent Wallet Console)** — Build a dogfooding app that uses depute components in a real scenario.
 4. **Audit Export Formats** — Implement structured output formats for the Audit Mode skill.
 
