@@ -4,13 +4,33 @@ description: Prioritized inbox for approval requests, escalations, and violation
 ---
 
 import { Callout } from 'fumadocs-ui/components/callout';
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
 import { StorybookEmbed } from '@/components/storybook-embed';
 
 ## Install
 
+<Tabs groupId="package-manager" items={["npm", "pnpm", "yarn", "bun"]} persist>
+  <Tab value="npm">
 ```bash
 npx ax-depute add swarm-inbox
 ```
+  </Tab>
+  <Tab value="pnpm">
+```bash
+pnpm dlx ax-depute add swarm-inbox
+```
+  </Tab>
+  <Tab value="yarn">
+```bash
+yarn dlx ax-depute add swarm-inbox
+```
+  </Tab>
+  <Tab value="bun">
+```bash
+bunx ax-depute add swarm-inbox
+```
+  </Tab>
+</Tabs>
 
 ## Overview
 

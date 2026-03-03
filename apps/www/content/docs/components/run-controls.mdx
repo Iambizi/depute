@@ -4,13 +4,33 @@ description: Let users pause, resume, or stop a running agent.
 ---
 
 import { Callout } from 'fumadocs-ui/components/callout';
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
 import { StorybookEmbed } from '@/components/storybook-embed';
 
 ## Install
 
+<Tabs groupId="package-manager" items={["npm", "pnpm", "yarn", "bun"]} persist>
+  <Tab value="npm">
 ```bash
 npx ax-depute add run-controls
 ```
+  </Tab>
+  <Tab value="pnpm">
+```bash
+pnpm dlx ax-depute add run-controls
+```
+  </Tab>
+  <Tab value="yarn">
+```bash
+yarn dlx ax-depute add run-controls
+```
+  </Tab>
+  <Tab value="bun">
+```bash
+bunx ax-depute add run-controls
+```
+  </Tab>
+</Tabs>
 
 ## Overview
 

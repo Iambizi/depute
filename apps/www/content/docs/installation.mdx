@@ -3,6 +3,8 @@ title: Installation
 description: Add Depute components to your project using the CLI.
 ---
 
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+
 ## Requirements
 
 - React 18+
@@ -13,9 +15,28 @@ Depute is **agent-agnostic** — it works with any AI backend (OpenAI, Anthropic
 
 ## Install a component
 
+<Tabs groupId="package-manager" items={["npm", "pnpm", "yarn", "bun"]} persist>
+  <Tab value="npm">
 ```bash
 npx ax-depute add approval-gate
 ```
+  </Tab>
+  <Tab value="pnpm">
+```bash
+pnpm dlx ax-depute add approval-gate
+```
+  </Tab>
+  <Tab value="yarn">
+```bash
+yarn dlx ax-depute add approval-gate
+```
+  </Tab>
+  <Tab value="bun">
+```bash
+bunx ax-depute add approval-gate
+```
+  </Tab>
+</Tabs>
 
 This copies the component source files directly into `src/components/ApprovalGate/`. You own the code.
 
@@ -26,17 +47,61 @@ On first install, shared files are also added once:
 
 ## List all components
 
+<Tabs groupId="package-manager" items={["npm", "pnpm", "yarn", "bun"]} persist>
+  <Tab value="npm">
 ```bash
 npx ax-depute list
 ```
+  </Tab>
+  <Tab value="pnpm">
+```bash
+pnpm dlx ax-depute list
+```
+  </Tab>
+  <Tab value="yarn">
+```bash
+yarn dlx ax-depute list
+```
+  </Tab>
+  <Tab value="bun">
+```bash
+bunx ax-depute list
+```
+  </Tab>
+</Tabs>
 
 ## Install multiple components
 
+<Tabs groupId="package-manager" items={["npm", "pnpm", "yarn", "bun"]} persist>
+  <Tab value="npm">
 ```bash
 npx ax-depute add plan-card
 npx ax-depute add tool-trace
 npx ax-depute add run-controls
 ```
+  </Tab>
+  <Tab value="pnpm">
+```bash
+pnpm dlx ax-depute add plan-card
+pnpm dlx ax-depute add tool-trace
+pnpm dlx ax-depute add run-controls
+```
+  </Tab>
+  <Tab value="yarn">
+```bash
+yarn dlx ax-depute add plan-card
+yarn dlx ax-depute add tool-trace
+yarn dlx ax-depute add run-controls
+```
+  </Tab>
+  <Tab value="bun">
+```bash
+bunx ax-depute add plan-card
+bunx ax-depute add tool-trace
+bunx ax-depute add run-controls
+```
+  </Tab>
+</Tabs>
 
 ## Shared types
 

@@ -4,13 +4,33 @@ description: Alert feed for sub-agent failures with routing options.
 ---
 
 import { Callout } from 'fumadocs-ui/components/callout';
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
 import { StorybookEmbed } from '@/components/storybook-embed';
 
 ## Install
 
+<Tabs groupId="package-manager" items={["npm", "pnpm", "yarn", "bun"]} persist>
+  <Tab value="npm">
 ```bash
 npx ax-depute add escalation-router
 ```
+  </Tab>
+  <Tab value="pnpm">
+```bash
+pnpm dlx ax-depute add escalation-router
+```
+  </Tab>
+  <Tab value="yarn">
+```bash
+yarn dlx ax-depute add escalation-router
+```
+  </Tab>
+  <Tab value="bun">
+```bash
+bunx ax-depute add escalation-router
+```
+  </Tab>
+</Tabs>
 
 ## Overview
 

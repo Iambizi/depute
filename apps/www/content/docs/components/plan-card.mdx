@@ -4,13 +4,33 @@ description: Show the agent's proposed plan before it executes. Users see the tr
 ---
 
 import { Callout } from 'fumadocs-ui/components/callout';
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
 import { StorybookEmbed } from '@/components/storybook-embed';
 
 ## Install
 
+<Tabs groupId="package-manager" items={["npm", "pnpm", "yarn", "bun"]} persist>
+  <Tab value="npm">
 ```bash
 npx ax-depute add plan-card
 ```
+  </Tab>
+  <Tab value="pnpm">
+```bash
+pnpm dlx ax-depute add plan-card
+```
+  </Tab>
+  <Tab value="yarn">
+```bash
+yarn dlx ax-depute add plan-card
+```
+  </Tab>
+  <Tab value="bun">
+```bash
+bunx ax-depute add plan-card
+```
+  </Tab>
+</Tabs>
 
 ## Overview
 

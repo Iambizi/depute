@@ -4,13 +4,33 @@ description: A backlog of pending swarm tasks with priority routing.
 ---
 
 import { Callout } from 'fumadocs-ui/components/callout';
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
 import { StorybookEmbed } from '@/components/storybook-embed';
 
 ## Install
 
+<Tabs groupId="package-manager" items={["npm", "pnpm", "yarn", "bun"]} persist>
+  <Tab value="npm">
 ```bash
 npx ax-depute add task-queue
 ```
+  </Tab>
+  <Tab value="pnpm">
+```bash
+pnpm dlx ax-depute add task-queue
+```
+  </Tab>
+  <Tab value="yarn">
+```bash
+yarn dlx ax-depute add task-queue
+```
+  </Tab>
+  <Tab value="bun">
+```bash
+bunx ax-depute add task-queue
+```
+  </Tab>
+</Tabs>
 
 ## Overview
 

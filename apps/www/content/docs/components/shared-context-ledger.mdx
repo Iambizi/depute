@@ -4,13 +4,33 @@ description: Read-only viewer for shared memory across agents, with provenance.
 ---
 
 import { Callout } from 'fumadocs-ui/components/callout';
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
 import { StorybookEmbed } from '@/components/storybook-embed';
 
 ## Install
 
+<Tabs groupId="package-manager" items={["npm", "pnpm", "yarn", "bun"]} persist>
+  <Tab value="npm">
 ```bash
 npx ax-depute add shared-context-ledger
 ```
+  </Tab>
+  <Tab value="pnpm">
+```bash
+pnpm dlx ax-depute add shared-context-ledger
+```
+  </Tab>
+  <Tab value="yarn">
+```bash
+yarn dlx ax-depute add shared-context-ledger
+```
+  </Tab>
+  <Tab value="bun">
+```bash
+bunx ax-depute add shared-context-ledger
+```
+  </Tab>
+</Tabs>
 
 ## Overview
 

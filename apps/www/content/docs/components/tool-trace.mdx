@@ -4,13 +4,33 @@ description: Live timeline of every tool call with inputs, outputs, and policy f
 ---
 
 import { Callout } from 'fumadocs-ui/components/callout';
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
 import { StorybookEmbed } from '@/components/storybook-embed';
 
 ## Install
 
+<Tabs groupId="package-manager" items={["npm", "pnpm", "yarn", "bun"]} persist>
+  <Tab value="npm">
 ```bash
 npx ax-depute add tool-trace
 ```
+  </Tab>
+  <Tab value="pnpm">
+```bash
+pnpm dlx ax-depute add tool-trace
+```
+  </Tab>
+  <Tab value="yarn">
+```bash
+yarn dlx ax-depute add tool-trace
+```
+  </Tab>
+  <Tab value="bun">
+```bash
+bunx ax-depute add tool-trace
+```
+  </Tab>
+</Tabs>
 
 ## Overview
 
