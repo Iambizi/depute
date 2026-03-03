@@ -3,7 +3,7 @@
 **Last Updated:** March 2, 2026
 **Updated By:** AI Assistant
 **Current Branch:** `main`
-**Overall Progress:** Skill layer ✅ · Audit Mode ✅ · Docs site deployed + polished ✅ · Storybook embeds ✅ · Search (Orama) ✅ · OG images ✅ · Brand capitalized (Depute) ✅ · **Next: PoC app (Agent Wallet Console) → Audit export formats**
+**Overall Progress:** Skill layer ✅ · Audit Mode ✅ · Docs site deployed + polished ✅ · Storybook embeds ✅ · Search (Orama) ✅ · OG images ✅ · Brand (Depute + Geist Pixel) ✅ · Landing page redesign ✅ · **Next: Component visual polish (shadcn-inspired) → Docs refinement → PoC app**
 
 **IMPORTANT:** See `docs/internal/DEFERRED-LOG.md` for the latest strategic context and deferred triggers.
 
@@ -18,7 +18,7 @@
 ## Session 23 - March 2, 2026
 
 ### Overview
-Docs site polish session. Added three features (Storybook iframe embeds, Orama search, dynamic OG images), capitalized brand name to "Depute", cleaned up sidebar navigation, and fixed Vercel deployment.
+Docs site polish session. Added three features (Storybook iframe embeds, Orama search, dynamic OG images), capitalized brand name to "Depute", cleaned up sidebar navigation, fixed Vercel deployment, and redesigned the landing page with Vercel's Geist Pixel font.
 
 ### Accomplishments
 
@@ -49,10 +49,26 @@ Docs site polish session. Added three features (Storybook iframe embeds, Orama s
 - ✅ Diagnosed failed Vercel deploy: Root Directory was blank (defaulting to repo root)
 - ✅ Fixed via dashboard: Build and Deployment → Root Directory → `apps/www`
 
+#### 80. Landing Page Redesign
+- ✅ Installed `geist` npm package for Geist Pixel font
+- ✅ "Depute" hero title rendered in `GeistPixelSquare` with `-webkit-text-stroke` for bold weight
+- ✅ Subtle 24px pixel grid background overlay
+- ✅ Gradient text (foreground → muted) on hero title
+- ✅ Pill-shaped CTA buttons with hover scale animations
+- ✅ CLI install command badge below CTAs
+- ✅ Feature cards with pixel-font numbers and component lists
+
 ### Key Decisions
 1. **Depute (capital D) for branding only.** npm package (`ax-depute`), repo URL, CLI commands, imports all stay lowercase. Same pattern as Next.js/Tailwind.
 2. **Drop v0/v1 labels from sidebar.** "Single Agent" and "Multi-Agent" are the meaningful user-facing categories. Internal versioning shouldn't leak into docs.
 3. **`/iframe.html` for embeds.** Gives just the rendered component without Storybook chrome — much cleaner inline.
+4. **Geist Pixel Square for brand.** Bitmap pixel font reinforces the "intentionally digital" identity. Fits the AI-tooling space. Tried Grid variant but Square with text-stroke hit the right balance.
+
+### Next Steps
+1. **Component Visual Polish** — The primitives themselves (PlanCard, RunControls, ApprovalGate, etc.) are functional but visually basic. The look and feel needs refinement to feel premium and production-ready. Consider borrowing design patterns from shadcn/ui (borders, shadows, radius, color tokens, hover states) to elevate the visual quality without losing the AX-specific semantics.
+2. **Docs Site Continued Improvement** — The docs pages themselves could use tighter styling, better code examples, and more polished Storybook embeds. Some components render minimally in the iframe (e.g., RunControls showing just "Idle" + play button).
+3. **PoC App (Agent Wallet Console)** — Build a dogfooding app that uses depute components in a real scenario.
+4. **Audit Export Formats** — Implement structured output formats for the Audit Mode skill.
 
 ---
 
