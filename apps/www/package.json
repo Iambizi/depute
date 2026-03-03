@@ -3,7 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "sync-components": "rm -rf src/depute && cp -r ../../src/ src/depute/",
+    "predev": "npm run sync-components",
     "dev": "next dev",
+    "prebuild": "npm run sync-components",
     "build": "next build",
     "start": "next start",
     "lint": "eslint"

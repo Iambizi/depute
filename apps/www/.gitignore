@@ -42,3 +42,4 @@ next-env.d.ts
 
 # fumadocs generated source (rebuilt on every dev/build)
 /.source
+src/depute/

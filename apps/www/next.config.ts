@@ -5,6 +5,11 @@ const nextConfig: NextConfig = {
   turbopack: {
     root: __dirname,
   },
+  webpack: (config) => {
+    // Enable following symlinks so src/depute → ../../src works
+    config.resolve.symlinks = true;
+    return config;
+  },
 };
 
 const withMDX = createMDX();
