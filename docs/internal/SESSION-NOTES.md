@@ -58,11 +58,20 @@ Docs site polish session. Added three features (Storybook iframe embeds, Orama s
 - ✅ CLI install command badge below CTAs
 - ✅ Feature cards with pixel-font numbers and component lists
 
+#### 81. Storybook Embed Polish (shadcn-inspired)
+- ✅ Set per-component iframe heights (200px–500px) to eliminate empty whitespace
+  - Compact: ConfidenceMeter, RunControls (200px)
+  - Medium: ArtifactCard, SubagentCard, BranchControls (250–300px)
+  - Standard: ToolTrace, PlanCard, ApprovalGate, DelegationGate (320–350px)
+  - Full: OrchestratorView (500px), roster/monitor/queue (400px)
+- ✅ Updated `StorybookEmbed` container: subtle background, 12px radius, "Open in Storybook ↗" footer link
+
 ### Key Decisions
 1. **Depute (capital D) for branding only.** npm package (`ax-depute`), repo URL, CLI commands, imports all stay lowercase. Same pattern as Next.js/Tailwind.
 2. **Drop v0/v1 labels from sidebar.** "Single Agent" and "Multi-Agent" are the meaningful user-facing categories. Internal versioning shouldn't leak into docs.
 3. **`/iframe.html` for embeds.** Gives just the rendered component without Storybook chrome — much cleaner inline.
 4. **Geist Pixel Square for brand.** Bitmap pixel font reinforces the "intentionally digital" identity. Fits the AI-tooling space. Tried Grid variant but Square with text-stroke hit the right balance.
+5. **Radix hydration warning is harmless.** Dev-only mismatch from random ID generation in Fumadocs' Radix Collapsible components. Self-corrects, doesn't affect production.
 
 ### Next Steps
 1. **Component Visual Polish** — The primitives themselves (PlanCard, RunControls, ApprovalGate, etc.) are functional but visually basic. The look and feel needs refinement to feel premium and production-ready. Consider borrowing design patterns from shadcn/ui (borders, shadows, radius, color tokens, hover states) to elevate the visual quality without losing the AX-specific semantics.
