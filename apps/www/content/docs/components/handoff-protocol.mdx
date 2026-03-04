@@ -3,9 +3,9 @@ title: HandoffProtocol
 description: Structured comprehension UI for context transfers between agents.
 ---
 
-import { Callout } from 'fumadocs-ui/components/callout';
 import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
 import { HandoffProtocolDemo } from '@/components/demos/HandoffProtocolDemo';
+import { ComponentPreview } from '@/components/component-preview';
 
 ## Install
 
@@ -36,11 +36,10 @@ bunx ax-depute add handoff-protocol
 
 A "Comprehension UI" that visualizes the transfer of state between two agents (or an agent and a human). It clearly delineates the source, destination, assigned goal, and the exact payload being transferred.
 
-<Callout>
-  **Interactive Demo:** See the [Storybook catalog](https://iambizi.github.io/depute/?path=/story/ax-components-v1-handoffprotocol--default) for live interactive examples of HandoffProtocol.
-</Callout>
 
-<HandoffProtocolDemo />
+<ComponentPreview>
+  <HandoffProtocolDemo />
+</ComponentPreview>
 
 ## Usage
 

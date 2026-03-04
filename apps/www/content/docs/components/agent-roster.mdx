@@ -3,9 +3,9 @@ title: AgentRoster
 description: Status dashboard for scanning all active sub-agents.
 ---
 
-import { Callout } from 'fumadocs-ui/components/callout';
 import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
 import { AgentRosterDemo } from '@/components/demos/AgentRosterDemo';
+import { ComponentPreview } from '@/components/component-preview';
 
 ## Install
 
@@ -36,11 +36,10 @@ bunx ax-depute add agent-roster
 
 A dense table view designed for the "Flat Swarm" orchestration model (e.g., OpenAI's Swarm). It allows a human supervisor to scan 20+ concurrent workers at a glance, monitoring roll-up metrics like agent status, uptime, and token cost.
 
-<Callout>
-  **Interactive Demo:** See the [Storybook catalog](https://iambizi.github.io/depute/?path=/story/ax-components-v1-agentroster--default) for live interactive examples of AgentRoster.
-</Callout>
 
-<AgentRosterDemo />
+<ComponentPreview>
+  <AgentRosterDemo />
+</ComponentPreview>
 
 ## Usage
 

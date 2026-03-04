@@ -3,9 +3,9 @@ title: PlanCard
 description: Show the agent's proposed plan before it executes. Users see the trajectory before anything happens.
 ---
 
-import { Callout } from 'fumadocs-ui/components/callout';
 import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
 import { PlanCardDemo } from '@/components/demos/PlanCardDemo';
+import { ComponentPreview } from '@/components/component-preview';
 
 ## Install
 
@@ -38,11 +38,10 @@ bunx ax-depute add plan-card
 
 This lowers fear and increases informed consent. Users can see where they're going before anything happens.
 
-<Callout>
-  **Interactive Demo:** See the [Storybook catalog](https://iambizi.github.io/depute/?path=/story/ax-components-plancard--default) for live interactive examples of PlanCard.
-</Callout>
 
-<PlanCardDemo />
+<ComponentPreview>
+  <PlanCardDemo />
+</ComponentPreview>
 
 ## Basic usage
 

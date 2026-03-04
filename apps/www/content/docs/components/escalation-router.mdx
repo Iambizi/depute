@@ -3,9 +3,9 @@ title: EscalationRouter
 description: Alert feed for sub-agent failures with routing options.
 ---
 
-import { Callout } from 'fumadocs-ui/components/callout';
 import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
 import { EscalationRouterDemo } from '@/components/demos/EscalationRouterDemo';
+import { ComponentPreview } from '@/components/component-preview';
 
 ## Install
 
@@ -36,11 +36,10 @@ bunx ax-depute add escalation-router
 
 A high-severity intervention surface. When an agent critically fails (e.g., gets stuck in a loop, hits a rate limit, or crashes), `EscalationRouter` surfaces the error trace and provides the human supervisor with three deterministic resolution paths: Retry, Reassign, or Cancel.
 
-<Callout>
-  **Interactive Demo:** See the [Storybook catalog](https://iambizi.github.io/depute/?path=/story/ax-components-v1-escalationrouter--default) for live interactive examples of EscalationRouter.
-</Callout>
 
-<EscalationRouterDemo />
+<ComponentPreview>
+  <EscalationRouterDemo />
+</ComponentPreview>
 
 ## Usage
 

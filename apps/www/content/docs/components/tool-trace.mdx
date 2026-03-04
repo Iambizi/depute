@@ -3,9 +3,9 @@ title: ToolTrace
 description: Live timeline of every tool call with inputs, outputs, and policy flags.
 ---
 
-import { Callout } from 'fumadocs-ui/components/callout';
 import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
 import { ToolTraceDemo } from '@/components/demos/ToolTraceDemo';
+import { ComponentPreview } from '@/components/component-preview';
 
 ## Install
 
@@ -36,11 +36,10 @@ bunx ax-depute add tool-trace
 
 Auto-scrolling timeline representing the agent's inner loop. Entries with `policyFlags` (`requiresApproval`, `writesState`, `externalAction`) are visually distinguished from routine calls.
 
-<Callout>
-  **Interactive Demo:** See the [Storybook catalog](https://iambizi.github.io/depute/?path=/story/ax-components-tooltrace--default) for live interactive examples of ToolTrace.
-</Callout>
 
-<ToolTraceDemo />
+<ComponentPreview>
+  <ToolTraceDemo />
+</ComponentPreview>
 
 ## Usage
 

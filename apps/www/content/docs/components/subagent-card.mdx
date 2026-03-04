@@ -3,9 +3,9 @@ title: SubagentCard
 description: A compact embeddable card for a single sub-agent.
 ---
 
-import { Callout } from 'fumadocs-ui/components/callout';
 import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
 import { SubagentCardDemo } from '@/components/demos/SubagentCardDemo';
+import { ComponentPreview } from '@/components/component-preview';
 
 ## Install
 
@@ -36,11 +36,10 @@ bunx ax-depute add subagent-card
 
 A versatile, compact card component used to represent individual workers. It surfaces the most critical agent telemetry (current task, plan progress, token burn, and status) and provides an expansion point to drill down into the agent's full v0 detail panel.
 
-<Callout>
-  **Interactive Demo:** See the [Storybook catalog](https://iambizi.github.io/depute/?path=/story/ax-components-v1-subagentcard--default) for live interactive examples of SubagentCard.
-</Callout>
 
-<SubagentCardDemo />
+<ComponentPreview>
+  <SubagentCardDemo />
+</ComponentPreview>
 
 ## Usage
 

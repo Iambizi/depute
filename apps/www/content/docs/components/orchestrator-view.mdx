@@ -3,9 +3,9 @@ title: OrchestratorView
 description: Visualize the full agent hierarchy as a collapsible tree.
 ---
 
-import { Callout } from 'fumadocs-ui/components/callout';
 import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
 import { OrchestratorViewDemo } from '@/components/demos/OrchestratorViewDemo';
+import { ComponentPreview } from '@/components/component-preview';
 
 ## Install
 
@@ -36,11 +36,10 @@ bunx ax-depute add orchestrator-view
 
 A recursive tree graph representing the Orchestrator and all of its spawned worker sub-agents. It provides a macro-view of the swarm's structure and highlights blocked or failed nodes that require human attention.
 
-<Callout>
-  **Interactive Demo:** See the [Storybook catalog](https://iambizi.github.io/depute/?path=/story/ax-components-v1-orchestratorview--default) for live interactive examples of OrchestratorView.
-</Callout>
 
-<OrchestratorViewDemo />
+<ComponentPreview>
+  <OrchestratorViewDemo />
+</ComponentPreview>
 
 ## Usage
 

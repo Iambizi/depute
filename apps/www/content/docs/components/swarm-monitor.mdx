@@ -3,9 +3,9 @@ title: SwarmMonitor
 description: Aggregate health grid showing throughput, tokens, and global controls.
 ---
 
-import { Callout } from 'fumadocs-ui/components/callout';
 import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
 import { SwarmMonitorDemo } from '@/components/demos/SwarmMonitorDemo';
+import { ComponentPreview } from '@/components/component-preview';
 
 ## Install
 
@@ -36,11 +36,10 @@ bunx ax-depute add swarm-monitor
 
 A macro-level dashboard header. It aggregates the operating health of the entire swarm into a single row of KPIs, and features a prominent "global kill switch" for emergency overrides. Use this alongside `AgentRoster` for per-agent drill-downs.
 
-<Callout>
-  **Interactive Demo:** See the [Storybook catalog](https://iambizi.github.io/depute/?path=/story/ax-components-v1-swarmmonitor--default) for live interactive examples of SwarmMonitor.
-</Callout>
 
-<SwarmMonitorDemo />
+<ComponentPreview>
+  <SwarmMonitorDemo />
+</ComponentPreview>
 
 ## Usage
 

@@ -1,0 +1,114 @@
+.wrapper {
+  border: 1px solid hsl(0 0% 86%);
+  border-radius: 0.75rem;
+  overflow: hidden;
+  margin: 1.5rem 0;
+}
+
+:global([data-theme="dark"]) .wrapper {
+  border-color: hsl(0 0% 22%);
+}
+
+/* ---- Tab bar ---- */
+
+.tabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 1px solid hsl(0 0% 86%);
+  background: hsl(0 0% 97%);
+}
+
+:global([data-theme="dark"]) .tabs {
+  border-color: hsl(0 0% 22%);
+  background: hsl(0 0% 10%);
+}
+
+.tab {
+  padding: 0.5rem 1rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  border: none;
+  background: transparent;
+  color: hsl(0 0% 46%);
+  cursor: pointer;
+  position: relative;
+  transition: color 0.15s ease;
+}
+
+.tab:hover {
+  color: hsl(0 0% 9%);
+}
+
+:global([data-theme="dark"]) .tab:hover {
+  color: hsl(0 0% 93%);
+}
+
+.tab.active {
+  color: hsl(0 0% 9%);
+}
+
+:global([data-theme="dark"]) .tab.active {
+  color: hsl(0 0% 93%);
+}
+
+.tab.active::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: hsl(0 0% 9%);
+}
+
+:global([data-theme="dark"]) .tab.active::after {
+  background: hsl(0 0% 93%);
+}
+
+/* ---- Preview pane ---- */
+
+.preview {
+  padding: 2.5rem 2rem;
+  min-height: 5rem;
+  background-color: hsl(0 0% 98.5%);
+  background-image:
+    radial-gradient(circle, hsl(0 0% 82%) 1px, transparent 1px);
+  background-size: 16px 16px;
+}
+
+:global([data-theme="dark"]) .preview {
+  background-color: hsl(0 0% 7%);
+  background-image:
+    radial-gradient(circle, hsl(0 0% 20%) 1px, transparent 1px);
+}
+
+.preview.center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ---- Code pane ---- */
+
+.codePane {
+  max-height: 28rem;
+  overflow: auto;
+  background: hsl(0 0% 97%);
+}
+
+:global([data-theme="dark"]) .codePane {
+  background: hsl(0 0% 10%);
+}
+
+.codeBlock {
+  margin: 0;
+  padding: 1rem 1.25rem;
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  white-space: pre;
+  overflow-x: auto;
+}
+
+.codeBlock code {
+  font-family: ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo, Consolas, monospace;
+}

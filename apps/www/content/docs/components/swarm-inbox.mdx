@@ -3,9 +3,9 @@ title: SwarmInbox
 description: Prioritized inbox for approval requests, escalations, and violations.
 ---
 
-import { Callout } from 'fumadocs-ui/components/callout';
 import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
 import { SwarmInboxDemo } from '@/components/demos/SwarmInboxDemo';
+import { ComponentPreview } from '@/components/component-preview';
 
 ## Install
 
@@ -36,11 +36,10 @@ bunx ax-depute add swarm-inbox
 
 A centralized attention triage surface for the swarm supervisor. It aggregates critical events (like permission requests, failed nodes, or policy violations) from across the entire agent fleet into a single, prioritized inbox with one-click drill-down actions.
 
-<Callout>
-  **Interactive Demo:** See the [Storybook catalog](https://iambizi.github.io/depute/?path=/story/ax-components-v1-swarminbox--default) for live interactive examples of SwarmInbox.
-</Callout>
 
-<SwarmInboxDemo />
+<ComponentPreview>
+  <SwarmInboxDemo />
+</ComponentPreview>
 
 ## Usage
 

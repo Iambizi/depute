@@ -3,9 +3,9 @@ title: ApprovalGate
 description: Block execution and ask the user to approve a risky or high-stakes agent action.
 ---
 
-import { Callout } from 'fumadocs-ui/components/callout';
 import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
 import { ApprovalGateDemo } from '@/components/demos/ApprovalGateDemo';
+import { ComponentPreview } from '@/components/component-preview';
 
 ## Install
 
@@ -38,11 +38,10 @@ bunx ax-depute add approval-gate
 
 The key design principle (from Stripe's SPT pattern): **approvals are scoped grants, not binary yes/no decisions**. A user approving "send emails" shouldn't be approving "send unlimited emails forever."
 
-<Callout>
-  **Interactive Demo:** See the [Storybook catalog](https://iambizi.github.io/depute/?path=/story/ax-components-approvalgate--default) for live interactive examples of ApprovalGate.
-</Callout>
 
-<ApprovalGateDemo />
+<ComponentPreview>
+  <ApprovalGateDemo />
+</ComponentPreview>
 
 ## Basic usage
 

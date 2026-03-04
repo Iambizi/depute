@@ -3,9 +3,9 @@ title: DelegationGate
 description: Approval surface for spawning a new autonomous sub-agent.
 ---
 
-import { Callout } from 'fumadocs-ui/components/callout';
 import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
 import { DelegationGateDemo } from '@/components/demos/DelegationGateDemo';
+import { ComponentPreview } from '@/components/component-preview';
 
 ## Install
 
@@ -36,11 +36,10 @@ bunx ax-depute add delegation-gate
 
 A specialized approval surface explicitly designed for the creation of new autonomous entities. It surfaces the proposed agent's mandate, tool constraints, and forecasted economic cost before the agent is allowed to execute.
 
-<Callout>
-  **Interactive Demo:** See the [Storybook catalog](https://iambizi.github.io/depute/?path=/story/ax-components-v1-delegationgate--default) for live interactive examples of DelegationGate.
-</Callout>
 
-<DelegationGateDemo />
+<ComponentPreview>
+  <DelegationGateDemo />
+</ComponentPreview>
 
 ## Usage
 

@@ -3,9 +3,9 @@ title: ArtifactCard
 description: Render the final output of an agentic workflow with export and provenance tracing.
 ---
 
-import { Callout } from 'fumadocs-ui/components/callout';
 import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
 import { ArtifactCardDemo } from '@/components/demos/ArtifactCardDemo';
+import { ComponentPreview } from '@/components/component-preview';
 
 ## Install
 
@@ -36,11 +36,10 @@ bunx ax-depute add artifact-card
 
 The agent's "receipt" of work completed. It renders the final output alongside crucial provenance data: precisely which plan step and tool calls generated it. It also provides integrated export options.
 
-<Callout>
-  **Interactive Demo:** See the [Storybook catalog](https://iambizi.github.io/depute/?path=/story/ax-components-artifactcard--default) for live interactive examples of ArtifactCard.
-</Callout>
 
-<ArtifactCardDemo />
+<ComponentPreview>
+  <ArtifactCardDemo />
+</ComponentPreview>
 
 ## Usage
 

@@ -3,9 +3,9 @@ title: SharedContextLedger
 description: Read-only viewer for shared memory across agents, with provenance.
 ---
 
-import { Callout } from 'fumadocs-ui/components/callout';
 import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
 import { SharedContextLedgerDemo } from '@/components/demos/SharedContextLedgerDemo';
+import { ComponentPreview } from '@/components/component-preview';
 
 ## Install
 
@@ -36,11 +36,10 @@ bunx ax-depute add shared-context-ledger
 
 A read-only surface that visualizes the "black board" or shared memory of the swarm. It tracks facts, decisions, and constraints written by multi-agent workflows, strictly maintaining cryptographic-style provenance (who wrote what, and when).
 
-<Callout>
-  **Interactive Demo:** See the [Storybook catalog](https://iambizi.github.io/depute/?path=/story/ax-components-v1-sharedcontextledger--default) for live interactive examples of SharedContextLedger.
-</Callout>
 
-<SharedContextLedgerDemo />
+<ComponentPreview>
+  <SharedContextLedgerDemo />
+</ComponentPreview>
 
 ## Usage
 

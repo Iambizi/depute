@@ -3,9 +3,9 @@ title: TaskQueue
 description: A backlog of pending swarm tasks with priority routing.
 ---
 
-import { Callout } from 'fumadocs-ui/components/callout';
 import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
 import { TaskQueueDemo } from '@/components/demos/TaskQueueDemo';
+import { ComponentPreview } from '@/components/component-preview';
 
 ## Install
 
@@ -36,11 +36,10 @@ bunx ax-depute add task-queue
 
 A structured list of pending and assigned tasks before they are executed by the swarm. It surfaces task priority, routing status, and provides manual override actions (promote, assign, cancel) to the human supervisor.
 
-<Callout>
-  **Interactive Demo:** See the [Storybook catalog](https://iambizi.github.io/depute/?path=/story/ax-components-v1-taskqueue--default) for live interactive examples of TaskQueue.
-</Callout>
 
-<TaskQueueDemo />
+<ComponentPreview>
+  <TaskQueueDemo />
+</ComponentPreview>
 
 ## Usage
 

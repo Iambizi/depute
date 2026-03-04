@@ -3,9 +3,9 @@ title: ConfidenceMeter
 description: Show how confident the agent is in its next step.
 ---
 
-import { Callout } from 'fumadocs-ui/components/callout';
 import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
 import { ConfidenceMeterDemo } from '@/components/demos/ConfidenceMeterDemo';
+import { ComponentPreview } from '@/components/component-preview';
 
 ## Install
 
@@ -36,11 +36,10 @@ bunx ax-depute add confidence-meter
 
 Displays an agent's confidence score with optional reasoning. Supports a full `meter` display (a horizontal bar) as well as a compact `badge` display for tight spaces like roster rows in `SubagentCard`.
 
-<Callout>
-  **Interactive Demo:** See the [Storybook catalog](https://iambizi.github.io/depute/?path=/story/ax-components-confidencemeter--default) for live interactive examples of ConfidenceMeter.
-</Callout>
 
-<ConfidenceMeterDemo />
+<ComponentPreview>
+  <ConfidenceMeterDemo />
+</ComponentPreview>
 
 ## Usage
 
