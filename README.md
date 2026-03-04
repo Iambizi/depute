@@ -1,5 +1,7 @@
 # Depute
 
+[![npm](https://img.shields.io/npm/v/ax-depute?style=flat-square&color=black)](https://www.npmjs.com/package/ax-depute) [![docs](https://img.shields.io/badge/docs-depute.dev-blue?style=flat-square)](https://www-one-rho-67.vercel.app)
+
 > The React component library for Delegation UI
 
 Software UI has gone through two eras. **Command Line:** you told the machine what to do, step by step. **Navigation:** you drove software through menus, flows, and screens. That paradigm held for thirty years — and it's the one that's dying.
