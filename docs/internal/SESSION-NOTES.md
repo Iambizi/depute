@@ -15,6 +15,22 @@
 
 ---
 
+## Session 24 - March 4, 2026
+
+### Overview
+Softened the harsh component wrapper borders on the docs site to match the native Fuma Docs semi-transparent aesthetic. Fixed a CSS cascade issue where Tailwind v4's preflight overrode the Fuma Docs themed border variables.
+
+### Accomplishments
+
+#### 87. Docs Site Border Softening
+- ✅ Updated `--ax-border-color` in `tokens.css` to map to `var(--color-fd-border)` natively.
+- ✅ Added exact Fuma Docs `hsla` fallbacks for standalone usage: `hsla(0, 0%, 80%, 50%)` (light) and `hsla(0, 0%, 40%, 20%)` (dark).
+- ✅ Reordered `globals.css` imports to place `@import 'tailwindcss';` at the top, allowing Fuma Docs' CSS variables to properly override Tailwind's `currentColor` baseline resets.
+- ✅ Replaced hardcoded opaque grays (`hsl(0 0% 86%)`) in `component-preview.module.css` with `var(--color-fd-border)`.
+- ✅ Resolved Turbopack build crash caused by out-of-bounds `tokens.css` imports by syncing to the local `src/depute/styles/tokens.css` copy.
+
+---
+
 ## Session 23 - March 2, 2026
 
 ### Overview

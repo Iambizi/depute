@@ -209,12 +209,20 @@
   --ax-surface-elevated: #ffffff;
 
   /* Borders */
-  --ax-border-color: var(--ax-color-gray-200);
+  --ax-border-color: var(--color-fd-border, hsla(0, 0%, 80%, 50%)); /* inherits from fuma docs, falls back to fuma's light mode styling */
   --ax-border-width: 1px;
 
   /* Text */
   --ax-text-primary: var(--ax-color-gray-900);
   --ax-text-secondary: var(--ax-color-gray-600);
   --ax-text-tertiary: var(--ax-color-gray-400);
-  --ax-text-inverse: #ffffff;
+}
+
+/* ============================================
+   Dark Mode Overrides
+   ============================================ */
+
+:root[data-theme="dark"],
+.dark {
+  --ax-border-color: var(--color-fd-border, hsla(0, 0%, 40%, 20%)); /* inherits from fuma docs, falls back to fuma's dark mode styling */
 }
