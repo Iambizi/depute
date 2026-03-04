@@ -137,7 +137,7 @@ export default function HomePage() {
             Agents act. <span className="text-fd-muted-foreground">Humans supervise.</span>
           </h2>
           <p className="text-lg md:text-xl text-fd-muted-foreground leading-relaxed">
-            As AI transitions from generating text to executing irreversible actions in the real world, the primary bottleneck is no longer intelligence—it&apos;s oversight. Depute provides the UI primitives required to build safe, auditable agentic systems where humans remain in the loop.
+            As AI transitions from generating text to executing irreversible actions in the real world, the primary bottleneck is no longer intelligence; it&apos;s oversight. Depute provides the UI primitives required to build safe, auditable agentic systems where humans remain in the loop.
           </p>
         </motion.div>
       </section>
