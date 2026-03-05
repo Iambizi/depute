@@ -14,7 +14,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 16px;
+  padding: 14px 20px;
   background: var(--ax-bg-secondary, #f9fafb);
   border-bottom: 1px solid var(--ax-border-color, #e5e7eb);
 }
@@ -68,7 +68,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 14px 8px;
+  padding: 16px 12px;
   border-right: 1px solid var(--ax-border-color, #f3f4f6);
   position: relative;
   gap: 2px;
@@ -127,7 +127,7 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 10px 16px;
+  padding: 12px 20px;
 }
 
 .completionLabel {

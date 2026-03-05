@@ -17,7 +17,7 @@
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 8px;
-  padding: 10px 16px;
+  padding: 14px 20px;
   background: var(--ax-bg-secondary, #f9fafb);
   border-bottom: 1px solid var(--ax-border-color, #e5e7eb);
 }
@@ -74,7 +74,7 @@
 }
 
 .headCell {
-  padding: 8px 12px;
+  padding: 10px 16px;
   text-align: left;
   font-size: 10px;
   font-weight: 600;
@@ -114,22 +114,22 @@
 
 /* Cells */
 .cellStatus {
-  padding: 10px 0 10px 16px;
+  padding: 10px 0 10px 20px;
   width: 24px;
 }
 
 .cellName {
-  padding: 8px 12px;
+  padding: 10px 16px;
   min-width: 150px;
 }
 
 .cellTask {
-  padding: 8px 12px;
+  padding: 10px 16px;
   max-width: 280px;
 }
 
 .cellMeta {
-  padding: 8px 12px;
+  padding: 10px 16px;
   white-space: nowrap;
   color: var(--ax-text-secondary, #64748b);
 }

@@ -114,7 +114,7 @@
 /* ------------------------------------------------------------------ */
 
 .metadata {
-  padding: var(--ax-space-3) var(--ax-space-5);
+  padding: var(--ax-space-4) var(--ax-space-5);
   border-top: var(--ax-border-width) solid var(--ax-border-color);
 }
 
@@ -190,7 +190,7 @@
 /* ------------------------------------------------------------------ */
 
 .provenance {
-  padding: var(--ax-space-2) var(--ax-space-5);
+  padding: var(--ax-space-3) var(--ax-space-5);
   border-top: var(--ax-border-width) solid var(--ax-border-color);
   font-size: var(--ax-font-size-xs);
   color: var(--ax-text-tertiary);
