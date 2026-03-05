@@ -6,6 +6,7 @@
   border-radius: 8px;
   border: 1px solid var(--ax-border-color, #e5e7eb);
   background: var(--ax-bg-primary, #ffffff);
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
   font-family: var(--ax-font-sans, system-ui, sans-serif);
   overflow: hidden;
 }
@@ -66,11 +67,12 @@
   width: 100%;
   border-collapse: collapse;
   font-size: 12px;
+  background: transparent !important;
 }
 
 /* Head row */
 .headRow {
-  background: var(--ax-bg-secondary, #f9fafb);
+  background: var(--ax-bg-secondary, #f9fafb) !important;
 }
 
 .headCell {
@@ -81,18 +83,34 @@
   text-transform: uppercase;
   letter-spacing: 0.05em;
   color: var(--ax-text-secondary, #6b7280);
-  border-bottom: 1px solid var(--ax-border-color, #e5e7eb);
+  border-bottom: 1px solid var(--ax-border-color, #e5e7eb) !important;
+  border-left: none !important;
+  border-right: none !important;
+  border-top: none !important;
+  background: transparent !important;
   white-space: nowrap;
+}
+
+/* Base table bleed resets */
+.table tr {
+  background: var(--ax-bg-primary, #ffffff) !important;
+  border: none !important;
+}
+
+.table td {
+  background: transparent !important;
+  border: none !important;
 }
 
 /* Body rows */
 .row {
-  border-bottom: 1px solid var(--ax-border-color, #f3f4f6);
+  border-bottom: 1px solid var(--ax-border-color, #f3f4f6) !important;
   transition: background 0.12s ease;
+  background: var(--ax-bg-primary, #ffffff) !important;
 }
 
 .row:last-child {
-  border-bottom: none;
+  border-bottom: none !important;
 }
 
 .rowClickable {
@@ -100,7 +118,7 @@
 }
 
 .rowClickable:hover {
-  background: var(--ax-bg-secondary, #f9fafb);
+  background: var(--ax-bg-secondary, #f9fafb) !important;
 }
 
 .rowClickable:focus-visible {

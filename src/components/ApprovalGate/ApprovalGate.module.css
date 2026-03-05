@@ -217,6 +217,12 @@
 .metadataTable td {
   padding: var(--ax-space-1) var(--ax-space-2);
   border-bottom: var(--ax-border-width) solid var(--ax-border-color);
+  background: transparent !important;
+}
+
+.metadataTable tr {
+  background: transparent !important;
+  border: none !important;
 }
 
 .metadataTable td:first-child {
