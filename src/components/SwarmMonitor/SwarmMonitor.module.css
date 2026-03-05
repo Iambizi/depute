@@ -3,11 +3,13 @@
 .base {
   display: flex;
   flex-direction: column;
+  width: 100%;
   border-radius: 8px;
   border: 1px solid var(--ax-border-color, #e5e7eb);
   background: var(--ax-bg-primary, #fff);
   font-family: var(--ax-font-sans, system-ui, sans-serif);
   overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
 .header {
@@ -32,6 +34,9 @@
 
 .btnPause,
 .btnKill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
   font-size: 11px;
   font-weight: 500;
   padding: 5px 12px;
@@ -60,7 +65,7 @@
 /* Metrics grid */
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
   border-bottom: 1px solid var(--ax-border-color, #e5e7eb);
 }
 

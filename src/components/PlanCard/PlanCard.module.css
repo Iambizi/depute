@@ -13,7 +13,7 @@
   background: var(--ax-surface-primary);
   border: var(--ax-border-width) solid var(--ax-border-color);
   border-radius: var(--ax-radius-lg);
-  box-shadow: var(--ax-shadow-sm);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   overflow: hidden;
 }
 
@@ -57,8 +57,8 @@
 .step {
   display: flex;
   align-items: flex-start;
-  gap: var(--ax-space-3);
-  padding: var(--ax-space-1) var(--ax-space-5);
+  gap: var(--ax-space-4);
+  padding: var(--ax-space-2) var(--ax-space-6);
   transition: background-color var(--ax-duration-fast) var(--ax-ease-default);
 }
 
@@ -82,40 +82,41 @@
 
 .stepIcon {
   flex-shrink: 0;
-  width: 1.25rem;
-  height: 1.25rem;
+  width: 1.5rem;
+  height: 1.5rem;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: var(--ax-radius-full);
   margin-top: 0.125rem;
-  font-size: var(--ax-font-size-xs);
+  font-size: var(--ax-font-size-sm);
   font-weight: var(--ax-font-weight-bold);
+  background: transparent;
+  border: 2px solid;
 }
 
 .stepIconPending {
-  background: var(--ax-status-pending-bg);
   color: var(--ax-status-pending-color);
-  border: var(--ax-border-width) solid var(--ax-status-pending-border);
+  border-color: var(--ax-status-pending-border);
 }
 
 .stepIconActive {
-  background: var(--ax-status-active-bg);
   color: var(--ax-status-active-color);
-  border: var(--ax-border-width) solid var(--ax-status-active-border);
+  border-color: var(--ax-status-active-color);
+  box-shadow: 0 0 8px var(--ax-status-active-bg);
   animation: ax-pulse var(--ax-duration-slow) var(--ax-ease-default) infinite;
 }
 
 .stepIconCompleted {
-  background: var(--ax-status-completed-bg);
   color: var(--ax-status-completed-color);
-  border: var(--ax-border-width) solid var(--ax-status-completed-border);
+  border-color: var(--ax-status-completed-color);
 }
 
 .stepIconFailed {
   background: var(--ax-status-failed-bg);
   color: var(--ax-status-failed-color);
   border: var(--ax-border-width) solid var(--ax-status-failed-border);
+  box-shadow: 0 0 6px rgba(239, 68, 68, 0.2);
 }
 
 /* ------------------------------------------------------------------ */
@@ -128,9 +129,9 @@
 }
 
 .stepLabel {
-  font-size: var(--ax-font-size-sm);
+  font-size: var(--ax-font-size-base);
   font-weight: var(--ax-font-weight-medium);
-  color: var(--ax-text-primary);
+  color: var(--ax-color-gray-900);
   line-height: var(--ax-line-height-normal);
 }
 
@@ -140,8 +141,8 @@
 
 .stepDescription {
   margin-top: var(--ax-space-1);
-  font-size: var(--ax-font-size-xs);
-  color: var(--ax-text-secondary);
+  font-size: var(--ax-font-size-sm);
+  color: var(--ax-color-gray-600);
   line-height: var(--ax-line-height-normal);
 }
 
@@ -166,6 +167,8 @@
   padding: var(--ax-space-1) var(--ax-space-2);
   border-radius: var(--ax-radius-full);
   white-space: nowrap;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+  border: var(--ax-border-width) solid var(--ax-border-color);
 }
 
 .confidenceHigh {
@@ -264,4 +267,66 @@
   text-align: center;
   color: var(--ax-text-tertiary);
   font-size: var(--ax-font-size-sm);
+}
+
+/* ------------------------------------------------------------------ */
+/* Interactive Actions                                                 */
+/* ------------------------------------------------------------------ */
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: var(--ax-space-3);
+  padding: var(--ax-space-4) var(--ax-space-6);
+  border-top: var(--ax-border-width) solid var(--ax-color-gray-200);
+  background: var(--ax-color-gray-50);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ax-space-2);
+  padding: var(--ax-space-2) var(--ax-space-4);
+  border-radius: var(--ax-radius-full);
+  font-family: var(--ax-font-family);
+  font-size: var(--ax-font-size-sm);
+  font-weight: var(--ax-font-weight-medium);
+  border: var(--ax-border-width) solid transparent;
+  cursor: pointer;
+  transition: all var(--ax-duration-fast) var(--ax-ease-default);
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--ax-color-blue-500);
+  outline-offset: 2px;
+}
+
+.btnPrimary {
+  background: var(--ax-color-blue-600);
+  color: var(--ax-surface-primary);
+  border-color: transparent;
+  box-shadow: 0 4px 12px var(--ax-color-blue-100);
+}
+
+.btnPrimary:hover {
+  background: var(--ax-color-blue-700);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px var(--ax-color-blue-200);
+}
+
+.btnSecondary {
+  background: var(--ax-surface-primary);
+  color: var(--ax-color-gray-700);
+  border-color: var(--ax-color-gray-300);
+}
+
+.btnSecondary:hover {
+  background: var(--ax-color-gray-50);
+  color: var(--ax-color-gray-900);
+  border-color: var(--ax-color-gray-400);
+}
+
+.actionsSpacerRight {
+  margin-left: auto;
 }

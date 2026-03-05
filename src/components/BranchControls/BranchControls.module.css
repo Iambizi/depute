@@ -9,6 +9,7 @@
   background: var(--ax-bg-primary, #fff);
   font-family: var(--ax-font-sans, system-ui, sans-serif);
   overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
 /* Status-based border accent */
@@ -60,9 +61,9 @@
   flex-shrink: 0;
 }
 
-.dotRunning      { background: #10b981; }
-.dotPaused       { background: #f59e0b; }
-.dotQuarantined  { background: #ef4444; }
+.dotRunning      { background: #10b981; box-shadow: 0 0 6px #10b981; }
+.dotPaused       { background: #f59e0b; box-shadow: 0 0 6px #f59e0b; }
+.dotQuarantined  { background: #ef4444; box-shadow: 0 0 6px #ef4444; }
 
 .dotPulsing {
   animation: bcPulse 1.5s ease-in-out infinite;
@@ -99,6 +100,9 @@
 .btnSecondary,
 .btnWarning,
 .btnDanger {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
   font-size: 11px;
   font-weight: 600;
   padding: 6px 12px;

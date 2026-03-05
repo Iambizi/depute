@@ -14,14 +14,14 @@
   background: var(--ax-surface-primary);
   border: var(--ax-border-width) solid var(--ax-border-color);
   border-radius: var(--ax-radius-lg);
-  box-shadow: var(--ax-shadow-md);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
   overflow: hidden;
   position: relative;
 }
 
 .approvalGatePending {
-  border-color: var(--ax-status-waiting-border);
-  box-shadow: var(--ax-shadow-md), 0 0 0 1px var(--ax-status-waiting-border);
+  border-color: var(--ax-color-gray-200); /* Neutral border */
+  box-shadow: 0 12px 48px var(--ax-color-amber-50), 0 0 0 1px var(--ax-status-waiting-bg);
 }
 
 .approvalGateApproved {
@@ -43,21 +43,20 @@
 
 .header {
   display: flex;
-  align-items: center;
-  gap: var(--ax-space-3);
-  padding: var(--ax-space-4) var(--ax-space-5);
-  border-bottom: var(--ax-border-width) solid var(--ax-border-color);
+  align-items: flex-start;
+  gap: var(--ax-space-4);
+  padding: var(--ax-space-6) var(--ax-space-6);
+  border-bottom: var(--ax-border-width) solid var(--ax-color-gray-200);
 }
 
 .statusIcon {
   flex-shrink: 0;
-  width: 2rem;
-  height: 2rem;
+  width: 2.5rem;
+  height: 2.5rem;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: var(--ax-radius-full);
-  font-size: var(--ax-font-size-base);
 }
 
 .statusIconPending {
@@ -67,13 +66,13 @@
 }
 
 .statusIconApproved {
-  background: var(--ax-status-completed-bg);
-  color: var(--ax-status-completed-color);
+  background: var(--ax-color-green-50);
+  color: var(--ax-color-green-600);
 }
 
 .statusIconRejected {
-  background: var(--ax-status-failed-bg);
-  color: var(--ax-status-failed-color);
+  background: var(--ax-color-red-50);
+  color: var(--ax-color-red-600);
 }
 
 .statusIconExpired {
@@ -88,18 +87,21 @@
 
 .title {
   margin: 0;
-  font-size: var(--ax-font-size-lg);
-  font-weight: var(--ax-font-weight-semibold);
+  font-size: var(--ax-font-size-xl);
+  font-weight: var(--ax-font-weight-bold);
   line-height: var(--ax-line-height-tight);
-  color: var(--ax-text-primary);
+  color: var(--ax-color-gray-900);
+  letter-spacing: -0.02em;
 }
 
 .statusLabel {
+  display: inline-block;
   font-size: var(--ax-font-size-xs);
-  color: var(--ax-text-secondary);
+  font-weight: var(--ax-font-weight-medium);
+  color: var(--ax-color-gray-500);
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  margin-top: var(--ax-space-1);
+  letter-spacing: 0.1em;
+  margin-top: var(--ax-space-2);
 }
 
 /* ------------------------------------------------------------------ */
@@ -107,31 +109,31 @@
 /* ------------------------------------------------------------------ */
 
 .body {
-  padding: var(--ax-space-4) var(--ax-space-5);
+  padding: var(--ax-space-6) var(--ax-space-6);
 }
 
 .description {
-  font-size: var(--ax-font-size-sm);
-  color: var(--ax-text-secondary);
+  font-size: var(--ax-font-size-base);
+  color: var(--ax-color-gray-700);
   line-height: var(--ax-line-height-relaxed);
-  margin-bottom: var(--ax-space-3);
+  margin-bottom: var(--ax-space-5);
 }
 
 .reasoning {
-  padding: var(--ax-space-3);
-  background: var(--ax-surface-secondary);
-  border-radius: var(--ax-radius-md);
-  font-size: var(--ax-font-size-xs);
-  color: var(--ax-text-secondary);
+  padding: var(--ax-space-4);
+  background: var(--ax-color-gray-50);
+  border-radius: var(--ax-radius-lg);
+  font-size: var(--ax-font-size-sm);
+  color: var(--ax-color-gray-700);
   line-height: var(--ax-line-height-relaxed);
-  margin-bottom: var(--ax-space-3);
+  margin-bottom: var(--ax-space-5);
 }
 
 .reasoningLabel {
   font-weight: var(--ax-font-weight-semibold);
-  color: var(--ax-text-primary);
-  margin-bottom: var(--ax-space-1);
-  font-size: var(--ax-font-size-xs);
+  color: var(--ax-color-gray-900);
+  margin-bottom: var(--ax-space-2);
+  font-size: var(--ax-font-size-sm);
 }
 
 /* ------------------------------------------------------------------ */
@@ -308,8 +310,8 @@
   display: flex;
   align-items: center;
   gap: var(--ax-space-3);
-  padding: var(--ax-space-4) var(--ax-space-5);
-  border-top: var(--ax-border-width) solid var(--ax-border-color);
+  padding: var(--ax-space-5) var(--ax-space-6);
+  border-top: var(--ax-border-width) solid var(--ax-color-gray-200);
 }
 
 .btn {
@@ -318,7 +320,7 @@
   justify-content: center;
   gap: var(--ax-space-2);
   padding: var(--ax-space-2) var(--ax-space-4);
-  border-radius: var(--ax-radius-md);
+  border-radius: var(--ax-radius-full);
   font-family: var(--ax-font-family);
   font-size: var(--ax-font-size-sm);
   font-weight: var(--ax-font-weight-medium);
@@ -333,23 +335,28 @@
 }
 
 .btnApprove {
-  background: var(--ax-color-green-600);
-  color: #ffffff;
-  border-color: var(--ax-color-green-700);
+  background: var(--ax-color-blue-600);
+  color: var(--ax-surface-primary);
+  border-color: transparent;
+  box-shadow: 0 4px 12px var(--ax-color-blue-100);
 }
 
 .btnApprove:hover {
-  background: var(--ax-color-green-700);
+  background: var(--ax-color-blue-700);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px var(--ax-color-blue-200);
 }
 
 .btnReject {
-  background: var(--ax-surface-primary);
+  background: transparent;
   color: var(--ax-color-red-600);
-  border-color: var(--ax-color-red-300);
+  border-color: var(--ax-color-red-600);
+  box-shadow: none;
 }
 
 .btnReject:hover {
   background: var(--ax-color-red-50);
+  border-color: var(--ax-color-red-700);
 }
 
 .btnSecondary {

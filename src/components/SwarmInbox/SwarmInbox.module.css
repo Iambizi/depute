@@ -8,6 +8,7 @@
   background: var(--ax-bg-primary, #fff);
   font-family: var(--ax-font-sans, system-ui, sans-serif);
   overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
 .header {
@@ -100,10 +101,12 @@
 
 .item[role="button"] {
   cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .item[role="button"]:hover {
   background: var(--ax-bg-secondary, #f9fafb);
+  transform: translateY(-1px);
 }
 
 .item[role="button"]:focus-visible {
@@ -117,9 +120,12 @@
 .itemInfo     { border-left: 3px solid #3b82f6; background: var(--ax-bg-primary, #fff); }
 
 .typeIcon {
-  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ax-text-secondary, #6b7280);
   flex-shrink: 0;
-  margin-top: 1px;
+  margin-top: 2px;
 }
 
 .itemContent {

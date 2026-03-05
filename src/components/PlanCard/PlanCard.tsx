@@ -20,11 +20,11 @@ import styles from './PlanCard.module.css';
 // Status icon map
 // ---------------------------------------------------------------------------
 
-const STATUS_ICONS: Record<PlanStepStatus, string> = {
-  pending: '○',
-  active: '●',
-  completed: '✓',
-  failed: '✕',
+const STATUS_ICONS: Record<PlanStepStatus, React.ReactNode> = {
+  pending: <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle></svg>,
+  active: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="4" fill="currentColor"></circle></svg>,
+  completed: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="16 8 10 16 6 12"></polyline></svg>,
+  failed: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>,
 };
 
 const STATUS_ICON_CLASSES: Record<PlanStepStatus, string> = {
@@ -80,9 +80,11 @@ export function PlanCard({
   reasoning,
   activeStepId,
   onStepClick,
+  onProceed,
+  onModify,
   showConfidence = false,
   className,
-}: PlanCardProps) {
+}: PlanCardProps & { onProceed?: () => void; onModify?: () => void; }) {
   const [expandedSections, setExpandedSections] = useState<Set<string>>(
     () => new Set()
   );
@@ -268,7 +270,7 @@ export function PlanCard({
                   }`}
                   aria-hidden="true"
                 >
-                  ▶
+                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
                 </span>
                 Assumptions ({assumptions.length})
               </button>
@@ -299,7 +301,7 @@ export function PlanCard({
                   }`}
                   aria-hidden="true"
                 >
-                  ▶
+                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
                 </span>
                 Reasoning
               </button>
@@ -311,7 +313,31 @@ export function PlanCard({
         </div>
       )}
 
-      <AnnouncerRegion />
+      {/* Interactive Actions */}
+      {(onProceed || onModify) && (
+        <div className={styles.actions}>
+          {onModify && (
+            <button
+              className={`${styles.btn} ${styles.btnSecondary}`}
+              onClick={onModify}
+              type="button"
+            >
+              Modify Plan
+            </button>
+          )}
+          <span className={styles.actionsSpacerRight} />
+          {onProceed && (
+            <button
+              className={`${styles.btn} ${styles.btnPrimary}`}
+              onClick={onProceed}
+              type="button"
+            >
+              Proceed
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            </button>
+          )}
+        </div>
+      )}
     </div>
   );
 }

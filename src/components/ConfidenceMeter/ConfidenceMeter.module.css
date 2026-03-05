@@ -24,6 +24,7 @@
   background: var(--ax-color-gray-100);
   border-radius: var(--ax-radius-full);
   overflow: hidden;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.06);
 }
 
 .meterTrackSm { height: 0.25rem; }
@@ -40,9 +41,9 @@
   transition: none;
 }
 
-.meterFillHigh { background: var(--ax-confidence-high-color); }
-.meterFillMedium { background: var(--ax-confidence-medium-color); }
-.meterFillLow { background: var(--ax-confidence-low-color); }
+.meterFillHigh { background: linear-gradient(90deg, var(--ax-color-green-500), var(--ax-color-green-600)); }
+.meterFillMedium { background: linear-gradient(90deg, var(--ax-color-amber-500), var(--ax-color-amber-600)); }
+.meterFillLow { background: linear-gradient(90deg, var(--ax-color-red-500), var(--ax-color-red-600)); }
 
 /* ------------------------------------------------------------------ */
 /* Badge display (compact inline)                                      */
@@ -55,6 +56,8 @@
   font-weight: var(--ax-font-weight-medium);
   border-radius: var(--ax-radius-full);
   white-space: nowrap;
+  border: var(--ax-border-width) solid var(--ax-border-color);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
 .badgeSm {
@@ -112,9 +115,18 @@
   border-radius: var(--ax-radius-full);
 }
 
-.dotHigh { background: var(--ax-confidence-high-color); }
-.dotMedium { background: var(--ax-confidence-medium-color); }
-.dotLow { background: var(--ax-confidence-low-color); }
+.dotHigh { 
+  background: var(--ax-confidence-high-color); 
+  box-shadow: 0 0 4px var(--ax-confidence-high-color);
+}
+.dotMedium { 
+  background: var(--ax-confidence-medium-color); 
+  box-shadow: 0 0 4px var(--ax-confidence-medium-color);
+}
+.dotLow { 
+  background: var(--ax-confidence-low-color); 
+  box-shadow: 0 0 4px var(--ax-confidence-low-color);
+}
 
 /* ------------------------------------------------------------------ */
 /* Reasoning                                                           */

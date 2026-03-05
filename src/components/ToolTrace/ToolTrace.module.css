@@ -6,6 +6,7 @@
   border: var(--ax-border-width) solid var(--ax-border-color);
   border-radius: var(--ax-radius-lg);
   overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
 .scrollContainer {
@@ -67,8 +68,8 @@
 
 .dot {
   flex-shrink: 0;
-  width: 1rem;
-  height: 1rem;
+  width: 1.125rem;
+  height: 1.125rem;
   border-radius: var(--ax-radius-full);
   display: flex;
   align-items: center;
@@ -85,6 +86,7 @@
 
 .dotRunning {
   border: 2px solid var(--ax-status-active-color);
+  box-shadow: 0 0 6px var(--ax-status-active-color);
   animation: ax-pulse var(--ax-duration-slow) var(--ax-ease-default) infinite;
 }
 
@@ -92,12 +94,14 @@
   background: var(--ax-status-completed-bg);
   color: var(--ax-status-completed-color);
   border: 2px solid var(--ax-status-completed-border);
+  box-shadow: 0 0 6px rgba(16, 185, 129, 0.2);
 }
 
 .dotFailed {
   background: var(--ax-status-failed-bg);
   color: var(--ax-status-failed-color);
   border: 2px solid var(--ax-status-failed-border);
+  box-shadow: 0 0 6px rgba(239, 68, 68, 0.2);
 }
 
 /* ------------------------------------------------------------------ */

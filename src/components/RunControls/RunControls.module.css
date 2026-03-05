@@ -5,6 +5,11 @@
   display: inline-flex;
   align-items: center;
   gap: var(--ax-space-2);
+  background: var(--ax-surface-primary);
+  border: var(--ax-border-width) solid var(--ax-border-color);
+  border-radius: 9999px;
+  padding: var(--ax-space-1) var(--ax-space-3);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 /* ------------------------------------------------------------------ */
@@ -42,67 +47,30 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 2rem;
-  height: 2rem;
-  border-radius: var(--ax-radius-md);
-  border: var(--ax-border-width) solid var(--ax-border-color);
-  background: var(--ax-surface-primary);
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: var(--ax-radius-full);
+  border: none;
+  background: transparent;
   color: var(--ax-text-primary);
   cursor: pointer;
-  font-size: var(--ax-font-size-sm);
   transition: all var(--ax-duration-fast) var(--ax-ease-default);
 }
+.btn:hover { background: var(--ax-surface-secondary); }
+.btn:focus-visible { outline: 2px solid var(--ax-color-blue-500); outline-offset: 2px; }
+.btn:disabled { opacity: 0.4; cursor: not-allowed; }
 
-.btn:hover {
-  background: var(--ax-surface-secondary);
-  border-color: var(--ax-color-gray-400);
-}
+.btnStart { color: var(--ax-color-green-600); }
+.btnStart:hover { background: var(--ax-color-green-50); color: var(--ax-color-green-700); }
 
-.btn:focus-visible {
-  outline: 2px solid var(--ax-color-blue-500);
-  outline-offset: 2px;
-}
+.btnPause { color: var(--ax-color-amber-600); }
+.btnPause:hover { background: var(--ax-color-amber-50); color: var(--ax-color-amber-700); }
 
-.btn:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
-}
+.btnStop { color: var(--ax-color-red-600); }
+.btnStop:hover { background: var(--ax-color-red-50); color: var(--ax-color-red-700); }
 
-.btnStart {
-  color: var(--ax-color-green-600);
-  border-color: var(--ax-color-green-300);
-}
-
-.btnStart:hover {
-  background: var(--ax-color-green-50);
-}
-
-.btnPause {
-  color: var(--ax-color-amber-600);
-  border-color: var(--ax-color-amber-300);
-}
-
-.btnPause:hover {
-  background: var(--ax-color-amber-50);
-}
-
-.btnStop {
-  color: var(--ax-color-red-600);
-  border-color: var(--ax-color-red-300);
-}
-
-.btnStop:hover {
-  background: var(--ax-color-red-50);
-}
-
-.btnRetry {
-  color: var(--ax-color-blue-600);
-  border-color: var(--ax-color-blue-300);
-}
-
-.btnRetry:hover {
-  background: var(--ax-color-blue-50);
-}
+.btnRetry { color: var(--ax-color-blue-600); }
+.btnRetry:hover { background: var(--ax-color-blue-50); color: var(--ax-color-blue-700); }
 
 /* ------------------------------------------------------------------ */
 /* Actions slot separator                                              */

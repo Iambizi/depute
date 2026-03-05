@@ -8,6 +8,7 @@
   background: var(--ax-bg-primary, #fff);
   font-family: var(--ax-font-sans, system-ui, sans-serif);
   overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
 .header {
@@ -168,17 +169,16 @@
 .btnPromote,
 .btnAssign,
 .btnCancel {
-  background: none;
+  background: transparent;
   border: 1px solid var(--ax-border-color, #e5e7eb);
-  border-radius: 4px;
-  width: 22px;
-  height: 22px;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
   cursor: pointer;
-  font-size: 11px;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background 0.1s ease;
+  transition: all 0.2s ease;
   color: var(--ax-text-secondary, #374151);
 }
 

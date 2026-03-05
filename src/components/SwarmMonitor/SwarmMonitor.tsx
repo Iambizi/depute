@@ -27,12 +27,14 @@ export const SwarmMonitor: React.FC<SwarmMonitorProps> = ({
         <div className={styles.controls}>
           {onGlobalPause && (
             <button className={styles.btnPause} onClick={onGlobalPause} aria-label="Pause all agents">
-              ⏸ Pause All
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>
+              Pause All
             </button>
           )}
           {onGlobalKill && (
             <button className={styles.btnKill} onClick={onGlobalKill} aria-label="Kill all agents">
-              ⏹ Kill All
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect></svg>
+              Kill All
             </button>
           )}
         </div>

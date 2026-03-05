@@ -23,11 +23,11 @@ import styles from './ApprovalGate.module.css';
 // Status helpers
 // ---------------------------------------------------------------------------
 
-const STATUS_ICONS: Record<string, string> = {
-  pending: '⏳',
-  approved: '✓',
-  rejected: '✕',
-  expired: '⌛',
+const STATUS_ICONS: Record<string, React.ReactNode> = {
+  pending: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>,
+  approved: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>,
+  rejected: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>,
+  expired: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 22h14"></path><path d="M5 2h14"></path><path d="M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22"></path><path d="M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2"></path></svg>,
 };
 
 const STATUS_LABELS: Record<string, string> = {
@@ -204,13 +204,17 @@ export function ApprovalGate({
       {mode === 'staged' && isPending && (
         <div className={styles.stageIndicator} aria-label="Approval stages">
           <span className={`${styles.stage} ${stagedStep === 'previewing' ? styles.stageActive : styles.stageCompleted}`}>
-            {stagedStep === 'confirming' ? '✓' : '1.'} Preview
+            {stagedStep === 'confirming' ? <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg> : '1.'} Preview
           </span>
-          <span className={styles.stageSeparator} aria-hidden="true">→</span>
+          <span className={styles.stageSeparator} aria-hidden="true">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+          </span>
           <span className={`${styles.stage} ${stagedStep === 'confirming' ? styles.stageActive : ''}`}>
             2. Confirm
           </span>
-          <span className={styles.stageSeparator} aria-hidden="true">→</span>
+          <span className={styles.stageSeparator} aria-hidden="true">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+          </span>
           <span className={styles.stage}>3. Execute</span>
         </div>
       )}
@@ -291,7 +295,8 @@ export function ApprovalGate({
               onClick={handleBack}
               type="button"
             >
-              ← Back
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+              Back
             </button>
           )}
 
@@ -311,9 +316,19 @@ export function ApprovalGate({
             type="button"
           >
             {mode === 'staged' && stagedStep === 'previewing'
-              ? 'Preview & Continue →'
+              ? (
+                  <>
+                    Preview & Continue
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                  </>
+                )
               : mode === 'staged' && stagedStep === 'confirming'
-                ? 'Confirm & Execute ✓'
+                ? (
+                    <>
+                      Confirm & Execute
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    </>
+                  )
                 : 'Approve'}
           </button>
         </div>

@@ -8,7 +8,7 @@
   background: var(--ax-bg-primary, #fff);
   font-family: var(--ax-font-sans, system-ui, sans-serif);
   overflow: hidden;
-  box-shadow: 0 4px 16px rgba(185, 28, 28, 0.08);
+  box-shadow: 0 8px 32px rgba(185, 28, 28, 0.12);
 }
 
 .header {
@@ -149,6 +149,10 @@
 .btnRetry,
 .btnReassign,
 .btnCancel {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
   font-size: 12px;
   font-weight: 600;
   padding: 7px 14px;
