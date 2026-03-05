@@ -1,9 +1,9 @@
 # Current Status & Next Steps
 
-**Last Updated:** March 4, 2026
+**Last Updated:** March 5, 2026
 **Updated By:** AI Assistant
 **Current Branch:** `main`
-**Overall Progress:** Skill layer ✅ · Audit Mode ✅ · Docs site deployed + polished ✅ · Native component demos ✅ · Package manager tabs ✅ · Search (Orama) ✅ · OG images ✅ · Brand (Depute + Geist Pixel) ✅ · Landing page redesign ✅ · **Next: Preview/Code toggle → Component visual polish → PoC app**
+**Overall Progress:** Skill layer ✅ · Audit Mode ✅ · Docs site deployed + polished ✅ · Native component demos ✅ · Package manager tabs ✅ · Search (Orama) ✅ · OG images ✅ · Brand (Depute + Geist Pixel) ✅ · Landing page redesign ✅ · README rewritten (Delegation UI) ✅ · Strategic research (WebMCP, Agent DX, Verticals, Audit Distribution) ✅ · **Next: Component visual polish → Audit export formats → PoC app (Agent Wallet Console)**
 
 **IMPORTANT:** See `docs/internal/DEFERRED-LOG.md` for the latest strategic context and deferred triggers.
 
@@ -12,6 +12,35 @@
 # Depute - Session Notes
 
 *Latest sessions appear at the top*
+
+---
+
+## Session 26 - March 5, 2026
+
+### Overview
+Captured two strategic research insights into the docs: (1) **WebMCP** (Web Model Context Protocol) — a new browser standard from Google/Microsoft/W3C that makes depute's oversight layer more necessary as agents gain reliable tool execution, and (2) **Agent DX vs Human Oversight** — the "perpendicular boundary" framing showing depute and Agent DX tooling are complementary, not competitive.
+
+### Accomplishments
+
+#### 90. WebMCP Implications Research Note
+- ✅ Created `docs/internal/research/architecture-and-protocols/WEBMCP-IMPLICATIONS.md`
+- ✅ Documented the complementary layer model: WebMCP = agent-to-product, depute = human-to-agent
+- ✅ Identified new component category: "Agent Handshake UI"
+- ✅ Mapped the pre-action / at-action / post-action temporal structure to existing depute primitives
+- ✅ Noted audit mode opportunity: keying off WebMCP tool declarations
+- ✅ Added to `DEFERRED-LOG.md` — trigger: v2 primitive design or WebMCP stable support
+
+#### 91. Agent DX Boundary Research Note
+- ✅ Created `docs/internal/research/architecture-and-protocols/AGENT-DX-BOUNDARY.md`
+- ✅ Source: "You Need to Rewrite Your CLI for AI Agents" — Justin Poehnelt, Google (Mar 4, 2026)
+- ✅ Documented the "perpendicular boundary" framing: Agent DX makes products legible to agents; depute makes agent actions legible to humans
+- ✅ Captured sharpened positioning line: *"we make agent actions legible and controllable for the humans on the other side of them"*
+- ✅ Linked to WebMCP entry in `DEFERRED-LOG.md` — same boundary, different direction
+
+### Key Decisions
+1. **Both insights validate, don't redirect.** WebMCP and Agent DX maturation make depute *more* necessary, not less. No roadmap changes needed.
+2. **Priority: high to capture, low to execute against.** The sharpened positioning copy is ready to use anytime, but no code changes required.
+3. **Post-action primitives are v2.** Diff views, rollback UI, and action history are flagged as future work — WebMCP makes them more urgent but they depend on v2 design.
 
 ---
 
