@@ -122,10 +122,19 @@
   width: 100%;
   border-collapse: collapse;
   font-size: var(--ax-font-size-xs);
+  background: transparent;
+  border: none;
+}
+
+.metadataTable tr {
+  background: transparent !important;
+  border: none !important;
 }
 
 .metadataTable td {
   padding: 2px 0;
+  background: transparent !important;
+  border: none !important;
 }
 
 .metadataTable td:first-child {
