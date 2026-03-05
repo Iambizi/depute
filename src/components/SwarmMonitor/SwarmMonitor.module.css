@@ -20,7 +20,7 @@
 }
 
 .title {
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
   color: var(--ax-text-primary, #111827);
 }
@@ -34,7 +34,7 @@
 .btnKill {
   font-size: 11px;
   font-weight: 500;
-  padding: 4px 10px;
+  padding: 5px 12px;
   border-radius: 5px;
   cursor: pointer;
   transition: all 0.15s ease;
@@ -60,7 +60,7 @@
 /* Metrics grid */
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
   border-bottom: 1px solid var(--ax-border-color, #e5e7eb);
 }
 
