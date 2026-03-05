@@ -110,6 +110,12 @@ Docs site polish session. Added three features (Storybook iframe embeds, Orama s
 - ✅ Replaced v0/v1 tier labels with "Single Agent" / "Multi-Agent" on introduction page
 - ✅ Removed "Interactive Demo: See the Storybook catalog" callouts from all 17 component pages
 
+#### 87. Component Internal Spacing Fixes
+- ✅ AgentRoster: header 10→14px, cells 8→10px 16px, status column left padding 16→20px
+- ✅ SwarmMonitor: header 10→14px, metric cells 14→16px, completion row 10→12px
+- ✅ SharedContextLedger: header 12→14px + flex-wrap for responsive, title 14→15px, list 16→20px
+- ✅ ArtifactCard: metadata padding space-3→space-4, provenance space-2→space-3
+- PlanCard: header spacing already adequate with design tokens (space-4/space-5)
 
 ### Key Decisions
 1. **Depute (capital D) for branding only.** npm package (`ax-depute`), repo URL, CLI commands, imports all stay lowercase. Same pattern as Next.js/Tailwind.
@@ -119,12 +125,11 @@ Docs site polish session. Added three features (Storybook iframe embeds, Orama s
 5. **Prebuild copy over alias/symlink.** Next.js 16 Turbopack cannot resolve symlinks or path aliases pointing outside the app root. Copying root `src/` into the docs app pre-build is the most reliable approach.
 
 ### Next Steps
-1. **Component Internal Spacing Fix** — Several components have cramped headers and edge spacing now that they're in the preview container: PlanCard (title/count), SharedContextLedger (title/scope tabs), SwarmMonitor (title/button), ArtifactCard (content edges), AgentRoster (table edges). Fix internal padding/margins in the component CSS itself, not the preview wrapper.
-2. **Preview / Code Toggle** — Wire actual source code strings into each `ComponentPreview` so users can toggle between the rendered preview and its code.
-3. **Multi-State Inline Demos** — Add variant demos per component page (e.g., ApprovalGate: pending/approved/rejected) to eliminate the need for Storybook links.
-4. **Component Visual Polish** — Borrow design patterns from shadcn/ui (borders, shadows, radius, color tokens, hover states) to elevate the visual quality beyond "functional but basic."
-5. **PoC App (Agent Wallet Console)** — Build a dogfooding app that uses depute components in a real scenario.
-6. **Audit Export Formats** — Implement structured output formats for the Audit Mode skill.
+1. **Preview / Code Toggle** — Wire actual source code strings into each `ComponentPreview` so users can toggle between the rendered preview and its code.
+2. **Multi-State Inline Demos** — Add variant demos per component page (e.g., ApprovalGate: pending/approved/rejected) to eliminate the need for Storybook links.
+3. **Component Visual Polish** — Borrow design patterns from shadcn/ui (borders, shadows, radius, color tokens, hover states) to elevate the visual quality beyond "functional but basic."
+4. **PoC App (Agent Wallet Console)** — Build a dogfooding app that uses depute components in a real scenario.
+5. **Audit Export Formats** — Implement structured output formats for the Audit Mode skill.
 
 ---
 
