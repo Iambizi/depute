@@ -34,8 +34,8 @@
 .criticalBadge {
   font-size: 10px;
   font-weight: 700;
-  background: #fee2e2;
-  color: #991b1b;
+  background: var(--ax-color-red-100, #fee2e2);
+  color: var(--ax-color-red-800, #991b1b);
   padding: 1px 7px;
   border-radius: 10px;
   animation: inboxPulse 2s ease-in-out infinite;
@@ -49,7 +49,7 @@
 .totalBadge {
   font-size: 11px;
   font-weight: 600;
-  background: #e5e7eb;
+  background: var(--ax-color-gray-200, #e5e7eb);
   color: var(--ax-text-secondary, #374151);
   padding: 2px 8px;
   border-radius: 10px;
@@ -67,7 +67,7 @@
 
 .emptyIcon {
   font-size: 24px;
-  color: #10b981;
+  color: var(--ax-color-green-500, #10b981);
 }
 
 .empty p {
@@ -107,14 +107,14 @@
 }
 
 .item[role="button"]:focus-visible {
-  outline: 2px solid #3b82f6;
+  outline: 2px solid var(--ax-color-blue-500, #3b82f6);
   outline-offset: -2px;
 }
 
 /* Severity tints */
-.itemCritical { border-left: 3px solid #ef4444; background: #fff8f8; }
-.itemWarning  { border-left: 3px solid #f59e0b; background: #fffdf5; }
-.itemInfo     { border-left: 3px solid #3b82f6; background: var(--ax-bg-primary, #fff); }
+.itemCritical { border-left: 3px solid var(--ax-color-red-500, #ef4444); background: #fff8f8; }
+.itemWarning  { border-left: 3px solid var(--ax-color-amber-500, #f59e0b); background: #fffdf5; }
+.itemInfo     { border-left: 3px solid var(--ax-color-blue-500, #3b82f6); background: var(--ax-bg-primary, #fff); }
 
 .typeIcon {
   font-size: 16px;

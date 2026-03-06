@@ -36,6 +36,7 @@ export function ArtifactCardDemo() {
     <div style={{ padding: '1rem' }}>
       <ArtifactCard
         artifact={artifact}
+        exportFormats={['markdown', 'json', 'csv', 'pr']}
         onExport={(fmt) => alert("Export as " + fmt)}
       />
     </div>

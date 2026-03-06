@@ -12,9 +12,9 @@
 }
 
 /* Status-based border accent */
-.base_running { border-top: 3px solid #10b981; }
-.base_paused  { border-top: 3px solid #f59e0b; }
-.base_quarantined { border-top: 3px solid #ef4444; }
+.base_running { border-top: 3px solid var(--ax-color-green-500, #10b981); }
+.base_paused  { border-top: 3px solid var(--ax-color-amber-500, #f59e0b); }
+.base_quarantined { border-top: 3px solid var(--ax-color-red-500, #ef4444); }
 
 /* Header */
 .header {
@@ -60,9 +60,9 @@
   flex-shrink: 0;
 }
 
-.dotRunning      { background: #10b981; }
-.dotPaused       { background: #f59e0b; }
-.dotQuarantined  { background: #ef4444; }
+.dotRunning      { background: var(--ax-color-green-500, #10b981); }
+.dotPaused       { background: var(--ax-color-amber-500, #f59e0b); }
+.dotQuarantined  { background: var(--ax-color-red-500, #ef4444); }
 
 .dotPulsing {
   animation: bcPulse 1.5s ease-in-out infinite;
@@ -83,9 +83,9 @@
   border-radius: 10px;
 }
 
-.badge_running     { background: #d1fae5; color: #065f46; }
-.badge_paused      { background: #fef3c7; color: #92400e; }
-.badge_quarantined { background: #fee2e2; color: #991b1b; }
+.badge_running     { background: var(--ax-color-green-100, #d1fae5); color: var(--ax-color-green-800, #065f46); }
+.badge_paused      { background: var(--ax-color-amber-100, #fef3c7); color: var(--ax-color-amber-800, #92400e); }
+.badge_quarantined { background: var(--ax-color-red-100, #fee2e2); color: var(--ax-color-red-800, #991b1b); }
 
 /* Actions */
 .actions {
@@ -109,12 +109,12 @@
 }
 
 .btnPrimary {
-  background: #111827;
-  color: #fff;
-  border-color: #111827;
+  background: var(--ax-color-gray-900, #111827);
+  color: var(--ax-surface-primary, #fff);
+  border-color: var(--ax-color-gray-900, #111827);
 }
 
-.btnPrimary:hover { background: #374151; }
+.btnPrimary:hover { background: var(--ax-color-gray-700, #374151); }
 
 .btnSecondary {
   background: var(--ax-bg-primary, #fff);
@@ -125,17 +125,17 @@
 .btnSecondary:hover { background: var(--ax-bg-secondary, #f3f4f6); }
 
 .btnWarning {
-  background: #fffbeb;
-  color: #b45309;
-  border-color: #fde68a;
+  background: var(--ax-color-amber-50, #fffbeb);
+  color: var(--ax-color-amber-700, #b45309);
+  border-color: var(--ax-color-amber-200, #fde68a);
 }
 
-.btnWarning:hover { background: #fef3c7; }
+.btnWarning:hover { background: var(--ax-color-amber-100, #fef3c7); }
 
 .btnDanger {
-  background: #fef2f2;
-  color: #b91c1c;
-  border-color: #fecaca;
+  background: var(--ax-color-red-50, #fef2f2);
+  color: var(--ax-color-red-700, #b91c1c);
+  border-color: var(--ax-color-red-200, #fecaca);
 }
 
-.btnDanger:hover { background: #fee2e2; }
+.btnDanger:hover { background: var(--ax-color-red-100, #fee2e2); }

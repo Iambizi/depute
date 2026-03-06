@@ -19,10 +19,7 @@
   position: relative;
 }
 
-.approvalGatePending {
-  border-color: var(--ax-status-waiting-border);
-  box-shadow: var(--ax-shadow-md), 0 0 0 1px var(--ax-status-waiting-border);
-}
+
 
 .approvalGateApproved {
   border-color: var(--ax-status-completed-border);
@@ -334,7 +331,7 @@
 
 .btnApprove {
   background: var(--ax-color-green-600);
-  color: #ffffff;
+  color: var(--ax-surface-primary, #ffffff);
   border-color: var(--ax-color-green-700);
 }
 
