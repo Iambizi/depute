@@ -69,8 +69,20 @@ Components are **copied into your project** — not imported from `node_modules`
 | **`TaskQueue`** | Ordered list of pending tasks assigned to an agent, with priority and status |
 | **`DelegationGate`** | Approval surface for cross-agent delegation events — accepts, modifies, or blocks handoffs |
 | **`HandoffProtocol`** | Visual card for structured agent handoffs, including context bundle and acceptance state |
-| **`SharedContextLedger`** | Read-only log of the shared memory/context being passed between agents in a run |
 | **`EscalationRouter`** | Displays escalation events from sub-agents, with routing recommendation and override controls |
+
+### v2 — Roadmap (Strict Compliance & Forensics)
+
+*Drafting phase. Triggered by the maturation of WebMCP and Mastercard's "Verifiable Intent" protocol.*
+
+As agents gain the ability to execute completely headless, reliable tool calls, the UI requirements shift from *visibility* to *provability*. In high-stakes environments (Fintech, Healthcare, DevOps), an approval isn't just a UI state change — it's a cryptographically binding signature. 
+
+**Upcoming v2 primitives focus on:**
+- **Mutation & Regression:** `<StateDiff />` (visual payload translation) and `<RollbackTimeline />`.
+- **The Agent Handshake:** `<CapabilityMatrix />` (making tool contracts visible) and `<PolicyBanner />`.
+- **Cryptographic Intent:** `<BindingApproval />` (friction-first, protocol-level signature capture) and `<TransactionReceipt />` (immutable audit log). 
+
+*See the [RFC for the `isSigning` state](https://github.com/Iambizi/depute/issues/3).*
 
 ---
 
