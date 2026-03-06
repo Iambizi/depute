@@ -130,10 +130,10 @@
 }
 
 /* Depth-based left accent */
-.depth0 { border-left: 3px solid var(--ax-color-indigo-500, #6366f1); }
-.depth1 { border-left: 3px solid #0ea5e9; }
-.depth2 { border-left: 3px solid var(--ax-color-green-500, #10b981); }
-.depth3 { border-left: 3px solid var(--ax-color-amber-500, #f59e0b); }
+.depth0 { border-left: 3px solid var(--ax-depth-0, var(--ax-color-indigo-500, #6366f1)); }
+.depth1 { border-left: 3px solid var(--ax-depth-1, #0ea5e9); }
+.depth2 { border-left: 3px solid var(--ax-depth-2, var(--ax-color-green-500, #10b981)); }
+.depth3 { border-left: 3px solid var(--ax-depth-3, var(--ax-color-amber-500, #f59e0b)); }
 
 /* Expand/collapse toggle */
 .toggle {

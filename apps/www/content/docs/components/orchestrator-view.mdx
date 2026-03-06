@@ -6,6 +6,7 @@ description: Visualize the full agent hierarchy as a collapsible tree.
 import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
 import { OrchestratorViewDemo } from '@/components/demos/OrchestratorViewDemo';
 import { ComponentPreview } from '@/components/component-preview';
+import { StorybookEmbed } from '@/components/storybook-embed';
 
 ## Install
 
@@ -40,6 +41,8 @@ A recursive tree graph representing the Orchestrator and all of its spawned work
 <ComponentPreview>
   <OrchestratorViewDemo />
 </ComponentPreview>
+
+<StorybookEmbed story="ax-components-v1-orchestratorview--default" />
 
 ## Usage
 
@@ -113,6 +116,13 @@ export interface OrchestratorNode {
   children?: OrchestratorNode[];
 }
 ```
+
+## Composition
+
+`OrchestratorView` acts as the navigation tree for a complex, hierarchical swarm.
+- Use it as the left-pane side navigation in a specialized dashboard.
+- Pair it with **`SwarmMonitor`** at the top of the viewport for aggregate metrics spanning the entire tree.
+- When an individual node is clicked (`onNodeClick`), render a **`PlanCard`** + **`ToolTrace`** + **`RunControls`** trio in the main right-hand pane to inspect that specific sub-agent.
 
 ## Design Rationale
 

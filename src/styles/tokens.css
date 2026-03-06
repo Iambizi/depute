@@ -54,6 +54,17 @@
 }
 
 /* ============================================
+   Hierarchical Depth Colors
+   ============================================ */
+
+:root {
+  --ax-depth-0: var(--ax-color-indigo-500);
+  --ax-depth-1: #0ea5e9;
+  --ax-depth-2: var(--ax-color-green-500);
+  --ax-depth-3: var(--ax-color-amber-500);
+}
+
+/* ============================================
    Semantic Status Colors
    ============================================ */
 

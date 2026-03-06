@@ -10,6 +10,9 @@ import type { ApprovalStatus } from '../../types/common';
 export type StagedStep = 'previewing' | 'confirming';
 
 export interface ApprovalGateProps {
+  /** Optional custom icon to display in the header (overrides defaults and removes pending clock icon logic) */
+  icon?: React.ReactNode;
+
   /** Title of the approval request */
   title: string;
 

@@ -23,8 +23,8 @@ import styles from './ApprovalGate.module.css';
 // Status helpers
 // ---------------------------------------------------------------------------
 
-const STATUS_ICONS: Record<string, string> = {
-  pending: '⏳',
+const STATUS_ICONS: Record<string, string | null> = {
+  pending: null,
   approved: '✓',
   rejected: '✕',
   expired: '⌛',
@@ -68,6 +68,7 @@ function formatTime(seconds: number): string {
 // ---------------------------------------------------------------------------
 
 export function ApprovalGate({
+  icon,
   title,
   description,
   agentReasoning,
@@ -178,12 +179,14 @@ export function ApprovalGate({
     >
       {/* Header */}
       <div className={styles.header}>
-        <span
-          className={`${styles.statusIcon} ${getIconClass(status)}`}
-          aria-hidden="true"
-        >
-          {STATUS_ICONS[status]}
-        </span>
+        {(icon || STATUS_ICONS[status]) && (
+          <span
+            className={`${styles.statusIcon} ${getIconClass(status)}`}
+            aria-hidden="true"
+          >
+            {icon || STATUS_ICONS[status]}
+          </span>
+        )}
         <div className={styles.headerContent}>
           <h3 className={styles.title}>{title}</h3>
           <div className={styles.statusLabel}>{STATUS_LABELS[status]}</div>
@@ -330,7 +333,7 @@ export function ApprovalGate({
                 : styles.resolvedExpired
           }`}
         >
-          {STATUS_ICONS[status]} {STATUS_LABELS[status]}
+          {(icon || STATUS_ICONS[status]) && <span>{icon || STATUS_ICONS[status]}</span>} {STATUS_LABELS[status]}
         </div>
       )}
 
