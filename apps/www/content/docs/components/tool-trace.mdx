@@ -6,6 +6,7 @@ description: Live timeline of every tool call with inputs, outputs, and policy f
 import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
 import { ToolTraceDemo } from '@/components/demos/ToolTraceDemo';
 import { ComponentPreview } from '@/components/component-preview';
+import { StorybookEmbed } from '@/components/storybook-embed';
 
 ## Install
 
@@ -40,6 +41,12 @@ Auto-scrolling timeline representing the agent's inner loop. Entries with `polic
 <ComponentPreview>
   <ToolTraceDemo />
 </ComponentPreview>
+
+## Storybook / Interactive States
+
+While the preview above is static, you can access the fully interactive component in our standalone Storybook. Test edge cases, toggle props, and trigger all possible states.
+
+<StorybookEmbed story="ax-components-tooltrace--default" />
 
 ## Usage
 

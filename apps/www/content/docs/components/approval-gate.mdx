@@ -46,73 +46,8 @@ The key design principle (from Stripe's SPT pattern): **approvals are scoped gra
 
 ## Storybook / Interactive States
 
-While the preview above is static, here is the fully interactive component allowing you to cycle between pending, approved, and rejected states, and view the scoped variants.
+While the preview above is static, you can access the fully interactive component in our standalone Storybook. Test edge cases, toggle props, and trigger all possible states.
 
-<StorybookEmbed story="ax-components-approvalgate--default" height={360} />
+<StorybookEmbed story="ax-components-approvalgate--default" />
 
-## Basic usage
-
-```tsx
-<ApprovalGate
-  title="Send email to customer"
-  description="The agent will send a follow-up to 3 recipients."
-  agentReasoning="Task requires notifying stakeholders of completed analysis."
-  status="pending"
-  onApprove={() => agent.continue()}
-  onReject={() => agent.abort()}
-/>
-```
-
-## With scoped grant
-
-```tsx
-<ApprovalGate
-  title="Charge payment method"
-  description="The agent will charge $49.00 to the customer's card on file."
-  agentReasoning="Subscription renewal detected. Auto-charge is enabled for this account."
-  mode="simple"
-  status="pending"
-  scope={{
-    target: 'Stripe API',
-    resourceLimit: 4900,     // in cents
-    durationSeconds: 300,    // expires in 5 minutes
-  }}
-  onApprove={() => agent.continue()}
-  onReject={() => agent.abort()}
-/>
-```
-
-## Staged mode (Preview → Confirm → Execute)
-
-For high-risk multi-step actions, use `mode="staged"` to walk the user through three phases before execution:
-
-```tsx
-<ApprovalGate
-  title="Deploy to production"
-  description="The agent will deploy the current build to the production environment."
-  agentReasoning="All tests passed. Deployment window is clear."
-  mode="staged"
-  status="pending"
-  onApprove={() => agent.deploy()}
-  onReject={() => agent.cancelDeploy()}
-/>
-```
-
-## Props
-
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `title` | `string` | — | Short label for the action being approved |
-| `description` | `string` | — | Human-readable explanation of what the agent will do |
-| `agentReasoning` | `string` | — | Why the agent thinks this action is necessary |
-| `mode` | `'simple' \| 'staged'` | `'simple'` | Staged adds Preview → Confirm → Execute steps |
-| `status` | `'pending' \| 'approved' \| 'rejected'` | `'pending'` | Controls gate state |
-| `scope` | `ApprovalScope` | — | Optional scoped grant (target, resourceLimit, durationSeconds) |
-| `onApprove` | `() => void` | — | Called when user approves |
-| `onReject` | `() => void` | — | Called when user rejects |
-
-## Design rationale
-
-**Why `scope`?** Binary approve/reject is the wrong mental model for agents. Stripe never approves an action with a simple yes/no — they issue capability grants scoped to a specific target, resource limit, and time window.
-
-**Why `mode="staged"`?** Agent flows are state machines, not request-response cycles. `staged` mode maps to Stripe's Authorization Chain pattern: Intent → Plan → Permission Check → Execution → Audit. Each phase can fail or pause for human input.
+## Usageundefined
