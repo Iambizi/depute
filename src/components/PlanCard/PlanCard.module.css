@@ -288,7 +288,7 @@
   justify-content: center;
   gap: var(--ax-space-2);
   padding: var(--ax-space-2) var(--ax-space-4);
-  border-radius: var(--ax-radius-full);
+  border-radius: var(--ax-radius-md);
   font-family: var(--ax-font-family);
   font-size: var(--ax-font-size-sm);
   font-weight: var(--ax-font-weight-medium);
@@ -306,13 +306,10 @@
   background: var(--ax-color-blue-600);
   color: var(--ax-surface-primary);
   border-color: transparent;
-  box-shadow: 0 4px 12px var(--ax-color-blue-100);
 }
 
 .btnPrimary:hover {
   background: var(--ax-color-blue-700);
-  transform: translateY(-1px);
-  box-shadow: 0 6px 16px var(--ax-color-blue-200);
 }
 
 .btnSecondary {
