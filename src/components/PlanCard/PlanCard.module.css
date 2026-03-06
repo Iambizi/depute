@@ -87,36 +87,24 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: var(--ax-radius-full);
   margin-top: 0.125rem;
-  font-size: var(--ax-font-size-sm);
-  font-weight: var(--ax-font-weight-bold);
   background: transparent;
-  border: 2px solid;
 }
 
 .stepIconPending {
-  color: var(--ax-status-pending-color);
-  border-color: var(--ax-status-pending-border);
+  color: var(--ax-status-pending-border);
 }
 
 .stepIconActive {
-  color: var(--ax-status-active-color);
-  border-color: var(--ax-status-active-color);
-  box-shadow: 0 0 8px var(--ax-status-active-bg);
-  animation: ax-pulse var(--ax-duration-slow) var(--ax-ease-default) infinite;
+  color: var(--ax-color-blue-600, #2563eb);
 }
 
 .stepIconCompleted {
   color: var(--ax-status-completed-color);
-  border-color: var(--ax-status-completed-color);
 }
 
 .stepIconFailed {
-  background: var(--ax-status-failed-bg);
-  color: var(--ax-status-failed-color);
-  border: var(--ax-border-width) solid var(--ax-status-failed-border);
-  box-shadow: 0 0 6px var(--ax-color-red-200, rgba(239,0,0,0.2));
+  color: var(--ax-status-failed-border);
 }
 
 /* ------------------------------------------------------------------ */
