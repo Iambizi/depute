@@ -6,6 +6,7 @@ description: Aggregate health grid showing throughput, tokens, and global contro
 import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
 import { SwarmMonitorDemo } from '@/components/demos/SwarmMonitorDemo';
 import { ComponentPreview } from '@/components/component-preview';
+import { StorybookEmbed } from '@/components/storybook-embed';
 
 ## Install
 
@@ -40,6 +41,12 @@ A macro-level dashboard header. It aggregates the operating health of the entire
 <ComponentPreview>
   <SwarmMonitorDemo />
 </ComponentPreview>
+
+## Storybook / Interactive States
+
+While the preview above is static, here is the fully interactive component allowing you to adjust metrics (like dragging `errorRate` up to see the 15% severity color shift) and trigger global controls.
+
+<StorybookEmbed story="ax-components-v1-swarmmonitor--default" height={300} />
 
 ## Usage
 
@@ -95,6 +102,13 @@ export interface SwarmMonitorProps {
   };
 }
 ```
+
+## Composition
+
+`SwarmMonitor` is the apex header of a multi-agent dashboard.
+- Render it at the very top of complex pages to provide aggregate situational awareness.
+- Pair it with **`AgentRoster`** (for flat worker pools) or **`OrchestratorView`** (for hierarchical delegation trees) beneath it so users can drill into the specific agents causing the error rates reported in the monitor.
+- If the monitor shows a high error spike, the user clicks the prominent `onGlobalKill` button to halt the entire system at once.
 
 ## Design Rationale
 

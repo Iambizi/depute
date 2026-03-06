@@ -31,6 +31,15 @@ const FORMAT_LABELS: Record<ExportFormat, string> = {
 };
 
 // ---------------------------------------------------------------------------
+// Helpers
+// ---------------------------------------------------------------------------
+
+function truncateId(id: string, maxLength = 12): string {
+  if (id.length <= maxLength) return id;
+  return `${id.slice(0, maxLength)}...`;
+}
+
+// ---------------------------------------------------------------------------
 // ArtifactCard Component
 // ---------------------------------------------------------------------------
 
@@ -127,11 +136,17 @@ export function ArtifactCard({
       {hasProvenance && (
         <div className={styles.provenance}>
           {artifact.sourceStepId && (
-            <span>Step: {artifact.sourceStepId}</span>
+            <span title={artifact.sourceStepId}>Step: {truncateId(artifact.sourceStepId)}</span>
           )}
           {artifact.toolCallIds && artifact.toolCallIds.length > 0 && (
             <span>
-              Tools: {artifact.toolCallIds.join(', ')}
+              Tools:{' '}
+              {artifact.toolCallIds.map((id, index) => (
+                <span key={id} title={id}>
+                  {truncateId(id)}
+                  {index < artifact.toolCallIds!.length - 1 ? ', ' : ''}
+                </span>
+              ))}
             </span>
           )}
         </div>

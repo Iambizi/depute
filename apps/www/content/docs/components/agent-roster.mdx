@@ -6,6 +6,7 @@ description: Status dashboard for scanning all active sub-agents.
 import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
 import { AgentRosterDemo } from '@/components/demos/AgentRosterDemo';
 import { ComponentPreview } from '@/components/component-preview';
+import { StorybookEmbed } from '@/components/storybook-embed';
 
 ## Install
 
@@ -40,6 +41,12 @@ A dense table view designed for the "Flat Swarm" orchestration model (e.g., Open
 <ComponentPreview>
   <AgentRosterDemo />
 </ComponentPreview>
+
+## Storybook / Interactive States
+
+While the preview above is static, here is the fully interactive component allowing you to toggle different agent states (working, blocked, failed) to see how the roll-up metrics react in real time.
+
+<StorybookEmbed story="ax-components-v1-agentroster--default" height={340} />
 
 ## Usage
 
@@ -110,6 +117,12 @@ export interface AgentRosterItem {
   lastActive?: string;          // E.g., "2m ago"
 }
 ```
+
+## Composition
+
+`AgentRoster` is specifically designed for flat worker pools. 
+- Use it alongside **`SwarmMonitor`** at the top of the viewport to provide aggregate cost and error metrics for the entire fleet.
+- When a user clicks a specific row (`onAgentSelect`), surface the detail view for that agent using a combination of **`PlanCard`**, **`ToolTrace`**, and **`RunControls`**.
 
 ## Design Rationale
 

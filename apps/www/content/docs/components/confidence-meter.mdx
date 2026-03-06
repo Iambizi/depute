@@ -6,6 +6,7 @@ description: Show how confident the agent is in its next step.
 import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
 import { ConfidenceMeterDemo } from '@/components/demos/ConfidenceMeterDemo';
 import { ComponentPreview } from '@/components/component-preview';
+import { StorybookEmbed } from '@/components/storybook-embed';
 
 ## Install
 
@@ -40,6 +41,12 @@ Displays an agent's confidence score with optional reasoning. Supports a full `m
 <ComponentPreview>
   <ConfidenceMeterDemo />
 </ComponentPreview>
+
+## Storybook / Interactive States
+
+While the preview above is static, here is the fully interactive component allowing you to slide through confidence percentages to see the semantic colors change automatically.
+
+<StorybookEmbed story="ax-components-v1-confidencemeter--default" height={300} />
 
 ## Usage
 

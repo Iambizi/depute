@@ -6,6 +6,7 @@ description: Show the agent's proposed plan before it executes. Users see the tr
 import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
 import { PlanCardDemo } from '@/components/demos/PlanCardDemo';
 import { ComponentPreview } from '@/components/component-preview';
+import { StorybookEmbed } from '@/components/storybook-embed';
 
 ## Install
 
@@ -42,6 +43,12 @@ This lowers fear and increases informed consent. Users can see where they're goi
 <ComponentPreview>
   <PlanCardDemo />
 </ComponentPreview>
+
+## Storybook / Interactive States
+
+While the preview above is static, here is the fully interactive component where you can step through execution from pending, to active, to completed/failed statuses.
+
+<StorybookEmbed story="ax-components-v1-plancard--default" height={380} />
 
 ## Basic usage
 

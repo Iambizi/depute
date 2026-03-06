@@ -6,6 +6,7 @@ description: Block execution and ask the user to approve a risky or high-stakes 
 import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
 import { ApprovalGateDemo } from '@/components/demos/ApprovalGateDemo';
 import { ComponentPreview } from '@/components/component-preview';
+import { StorybookEmbed } from '@/components/storybook-embed';
 
 ## Install
 
@@ -42,6 +43,12 @@ The key design principle (from Stripe's SPT pattern): **approvals are scoped gra
 <ComponentPreview>
   <ApprovalGateDemo />
 </ComponentPreview>
+
+## Storybook / Interactive States
+
+While the preview above is static, here is the fully interactive component allowing you to cycle between pending, approved, and rejected states, and view the scoped variants.
+
+<StorybookEmbed story="ax-components-v1-approvalgate--default" height={360} />
 
 ## Basic usage
 

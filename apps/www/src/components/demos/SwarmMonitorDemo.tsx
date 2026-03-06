@@ -8,7 +8,7 @@ const metrics = generateMockSwarmMetrics();
 export function SwarmMonitorDemo() {
   return (
     <div style={{ padding: '1rem' }}>
-      <SwarmMonitor {...metrics} onGlobalPause={() => {}} />
+      <SwarmMonitor {...metrics} onGlobalPause={() => {}} onGlobalKill={() => {}} />
     </div>
   );
 }

@@ -6,6 +6,7 @@ description: Scoped execution controls for a single branch of the swarm.
 import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
 import { BranchControlsDemo } from '@/components/demos/BranchControlsDemo';
 import { ComponentPreview } from '@/components/component-preview';
+import { StorybookEmbed } from '@/components/storybook-embed';
 
 ## Install
 
@@ -40,6 +41,12 @@ While `RunControls` operates on a single agent, and `SwarmMonitor` can kill the 
 <ComponentPreview>
   <BranchControlsDemo />
 </ComponentPreview>
+
+## Storybook / Interactive States
+
+While the preview above is static, here is the fully interactive component allowing you to cycle through the execution states of a specific workflow subtree.
+
+<StorybookEmbed story="ax-components-v1-branchcontrols--default" height={360} />
 
 ## Usage
 
