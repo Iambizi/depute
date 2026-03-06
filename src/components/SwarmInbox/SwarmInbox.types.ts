@@ -10,6 +10,8 @@ export interface SwarmInboxItem {
   timestamp: string;
   /** Optional one-liner description */
   detail?: string;
+  /** Optional custom icon. If omitted, it will just show a standard bullet. */
+  icon?: React.ReactNode;
 }
 
 export interface SwarmInboxProps {

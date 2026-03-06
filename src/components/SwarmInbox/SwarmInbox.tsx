@@ -6,15 +6,6 @@ import type { SwarmInboxItem, SwarmInboxProps } from './SwarmInbox.types';
 // Helpers
 // ---------------------------------------------------------------------------
 
-const TYPE_ICON: Record<string, string> = {
-  approval: '✋',
-  escalation: '⚠',
-  policy_violation: '⛔',
-  stalled: '⏳',
-  budget_overrun: '💸',
-  conflict: '⚡',
-};
-
 const SEVERITY_CLASS: Record<string, string> = {
   critical: styles.itemCritical,
   warning: styles.itemWarning,
@@ -42,7 +33,7 @@ function InboxRow({ item, onOpen, onDismiss }: InboxRowProps) {
       aria-label={`${item.title} from ${item.agentId}, ${item.severity}`}
     >
       <span className={styles.typeIcon} aria-hidden="true">
-        {TYPE_ICON[item.type] ?? '•'}
+        {item.icon ?? '•'}
       </span>
 
       <div className={styles.itemContent}>
@@ -65,7 +56,10 @@ function InboxRow({ item, onOpen, onDismiss }: InboxRowProps) {
           onClick={(e) => { e.stopPropagation(); onDismiss(item.id); }}
           aria-label={`Dismiss: ${item.title}`}
         >
-          ✕
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
         </button>
       )}
     </div>
@@ -109,7 +103,11 @@ export const SwarmInbox: React.FC<SwarmInboxProps> = ({
       {/* Items */}
       {items.length === 0 ? (
         <div className={styles.empty}>
-          <span className={styles.emptyIcon}>✓</span>
+          <span className={styles.emptyIcon}>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+          </span>
           <p>No items requiring attention.</p>
         </div>
       ) : (

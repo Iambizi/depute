@@ -16,11 +16,24 @@ import styles from './ToolTrace.module.css';
 // Status helpers
 // ---------------------------------------------------------------------------
 
-const STATUS_ICONS: Record<string, string> = {
-  pending: '',
-  running: '',
-  completed: '✓',
-  failed: '✕',
+const IconCheck = () => (
+  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+    <polyline points="20 6 9 17 4 12"></polyline>
+  </svg>
+);
+
+const IconX = () => (
+  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+    <line x1="18" y1="6" x2="6" y2="18"></line>
+    <line x1="6" y1="6" x2="18" y2="18"></line>
+  </svg>
+);
+
+const STATUS_ICONS: Record<string, React.ReactNode> = {
+  pending: null,
+  running: null,
+  completed: <IconCheck />,
+  failed: <IconX />,
 };
 
 const STATUS_DOT_CLASSES: Record<string, string> = {
