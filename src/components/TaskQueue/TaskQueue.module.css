@@ -28,7 +28,7 @@
 .totalBadge {
   font-size: 11px;
   color: var(--ax-text-secondary, #6b7280);
-  background: #e5e7eb;
+  background: var(--ax-color-gray-200, #e5e7eb);
   padding: 2px 8px;
   border-radius: 10px;
 }
@@ -100,8 +100,8 @@
 }
 
 /* Row status tints */
-.row_in_progress { background: #f0fdf4; }
-.row_assigned { background: #fefce8; }
+.row_in_progress { background: var(--ax-color-green-50, #f0fdf4); }
+.row_assigned { background: var(--ax-color-amber-50, #fefce8); }
 .row_pending { background: var(--ax-bg-primary, #fff); }
 
 /* Priority chip */
@@ -116,10 +116,10 @@
   margin-top: 2px;
 }
 
-.priorityCritical { background: #fee2e2; color: #991b1b; }
+.priorityCritical { background: var(--ax-color-red-100, #fee2e2); color: var(--ax-color-red-800, #991b1b); }
 .priorityHigh     { background: #ffedd5; color: #9a3412; }
-.priorityMedium   { background: #dbeafe; color: #1e40af; }
-.priorityLow      { background: #f3f4f6; color: #6b7280; }
+.priorityMedium   { background: var(--ax-color-blue-100, #dbeafe); color: var(--ax-color-blue-800, #1e40af); }
+.priorityLow      { background: var(--ax-color-gray-100, #f3f4f6); color: var(--ax-color-gray-500, #6b7280); }
 
 /* Content */
 .taskContent {
@@ -182,6 +182,6 @@
   color: var(--ax-text-secondary, #374151);
 }
 
-.btnPromote:hover { background: #dbeafe; color: #1e40af; }
-.btnAssign:hover  { background: #d1fae5; color: #065f46; }
-.btnCancel:hover  { background: #fee2e2; color: #991b1b; }
+.btnPromote:hover { background: var(--ax-color-blue-100, #dbeafe); color: var(--ax-color-blue-800, #1e40af); }
+.btnAssign:hover  { background: var(--ax-color-green-100, #d1fae5); color: var(--ax-color-green-800, #065f46); }
+.btnCancel:hover  { background: var(--ax-color-red-100, #fee2e2); color: var(--ax-color-red-800, #991b1b); }

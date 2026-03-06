@@ -6,7 +6,7 @@
   border-radius: 8px;
   border: 1px solid var(--ax-border-color, #e5e7eb);
   background: var(--ax-bg-primary, #ffffff);
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  box-shadow: var(--ax-shadow-sm);
   font-family: var(--ax-font-sans, system-ui, sans-serif);
   overflow: hidden;
 }
@@ -44,11 +44,11 @@
   border-radius: 10px;
 }
 
-.pillWorking { background: #d1fae5; color: #065f46; }
-.pillBlocked { background: #fef3c7; color: #92400e; }
-.pillFailed { background: #fee2e2; color: #991b1b; }
-.pillIdle { background: #f3f4f6; color: #6b7280; }
-.pillCompleted { background: #ede9fe; color: #4c1d95; }
+.pillWorking { background: var(--ax-color-green-100, #d1fae5); color: var(--ax-color-green-800, #065f46); }
+.pillBlocked { background: var(--ax-color-amber-100, #fef3c7); color: var(--ax-color-amber-800, #92400e); }
+.pillFailed { background: var(--ax-color-red-100, #fee2e2); color: var(--ax-color-red-800, #991b1b); }
+.pillIdle { background: var(--ax-color-gray-100, #f3f4f6); color: var(--ax-color-gray-500, #6b7280); }
+.pillCompleted { background: var(--ax-color-indigo-50, #ede9fe); color: var(--ax-color-indigo-900, #4c1d95); }
 
 /* Empty */
 .empty {
@@ -122,12 +122,12 @@
 }
 
 .rowClickable:focus-visible {
-  outline: 2px solid #3b82f6;
+  outline: 2px solid var(--ax-color-blue-500, #3b82f6);
   outline-offset: -2px;
 }
 
 .rowSelected {
-  background: #eff6ff !important;
+  background: var(--ax-color-blue-50, #eff6ff) !important;
 }
 
 /* Cells */
@@ -160,11 +160,11 @@
   border-radius: 50%;
 }
 
-.dotIdle { background: #d1d5db; }
-.dotWorking { background: #10b981; }
-.dotBlocked { background: #f59e0b; }
-.dotFailed { background: #ef4444; }
-.dotCompleted { background: #6366f1; }
+.dotIdle { background: var(--ax-color-gray-300, #d1d5db); }
+.dotWorking { background: var(--ax-color-green-500, #10b981); }
+.dotBlocked { background: var(--ax-color-amber-500, #f59e0b); }
+.dotFailed { background: var(--ax-color-red-500, #ef4444); }
+.dotCompleted { background: var(--ax-color-indigo-500, #6366f1); }
 
 .dotPulsing {
   animation: rosterPulse 1.5s ease-in-out infinite;

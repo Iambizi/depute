@@ -20,11 +20,30 @@ import styles from './PlanCard.module.css';
 // Status icon map
 // ---------------------------------------------------------------------------
 
-const STATUS_ICONS: Record<PlanStepStatus, string> = {
-  pending: '○',
-  active: '●',
-  completed: '✓',
-  failed: '✕',
+const STATUS_ICONS: Record<PlanStepStatus, React.ReactNode> = {
+  pending: (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="12" cy="12" r="9" fill="currentColor" fillOpacity="0.1" stroke="currentColor" strokeWidth="1.5"/>
+    </svg>
+  ),
+  active: (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="12" cy="12" r="9" fill="currentColor" fillOpacity="0.1" stroke="currentColor" strokeWidth="1.5"/>
+      <circle cx="12" cy="12" r="4" fill="currentColor"/>
+    </svg>
+  ),
+  completed: (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="12" cy="12" r="9" fill="currentColor" fillOpacity="0.1" stroke="currentColor" strokeWidth="1.5"/>
+      <path d="M8.5 12L10.5 14L15.5 9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  ),
+  failed: (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="12" cy="12" r="9" fill="currentColor" fillOpacity="0.1" stroke="currentColor" strokeWidth="1.5"/>
+      <path d="M9 9L15 15M15 9L9 15" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  ),
 };
 
 const STATUS_ICON_CLASSES: Record<PlanStepStatus, string> = {
@@ -80,9 +99,11 @@ export function PlanCard({
   reasoning,
   activeStepId,
   onStepClick,
+  onProceed,
+  onModify,
   showConfidence = false,
   className,
-}: PlanCardProps) {
+}: PlanCardProps & { onProceed?: () => void; onModify?: () => void; }) {
   const [expandedSections, setExpandedSections] = useState<Set<string>>(
     () => new Set()
   );
@@ -268,7 +289,7 @@ export function PlanCard({
                   }`}
                   aria-hidden="true"
                 >
-                  ▶
+                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
                 </span>
                 Assumptions ({assumptions.length})
               </button>
@@ -299,7 +320,7 @@ export function PlanCard({
                   }`}
                   aria-hidden="true"
                 >
-                  ▶
+                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
                 </span>
                 Reasoning
               </button>
@@ -311,7 +332,31 @@ export function PlanCard({
         </div>
       )}
 
-      <AnnouncerRegion />
+      {/* Interactive Actions */}
+      {(onProceed || onModify) && (
+        <div className={styles.actions}>
+          {onModify && (
+            <button
+              className={`${styles.btn} ${styles.btnSecondary}`}
+              onClick={onModify}
+              type="button"
+            >
+              Modify Plan
+            </button>
+          )}
+          <span className={styles.actionsSpacerRight} />
+          {onProceed && (
+            <button
+              className={`${styles.btn} ${styles.btnPrimary}`}
+              onClick={onProceed}
+              type="button"
+            >
+              Proceed
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            </button>
+          )}
+        </div>
+      )}
     </div>
   );
 }

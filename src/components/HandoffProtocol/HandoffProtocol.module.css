@@ -17,7 +17,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 12px 16px;
-  background: linear-gradient(135deg, #eff6ff 0%, #fafafa 100%);
+  background: linear-gradient(135deg, var(--ax-color-blue-50, #eff6ff) 0%, #fafafa 100%);
   border-bottom: 1px solid var(--ax-border-color, #e5e7eb);
 }
 
@@ -40,7 +40,7 @@
 
 .arrow {
   font-size: 16px;
-  color: #3b82f6;
+  color: var(--ax-color-blue-500, #3b82f6);
   font-weight: 700;
 }
 
@@ -49,8 +49,8 @@
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  color: #3b82f6;
-  background: #dbeafe;
+  color: var(--ax-color-blue-500, #3b82f6);
+  background: var(--ax-color-blue-100, #dbeafe);
   padding: 2px 8px;
   border-radius: 10px;
 }
@@ -145,23 +145,23 @@
 }
 
 .btnAccept {
-  background: #111827;
-  color: #fff;
-  border-color: #111827;
+  background: var(--ax-color-gray-900, #111827);
+  color: var(--ax-surface-primary, #fff);
+  border-color: var(--ax-color-gray-900, #111827);
 }
 
 .btnAccept:hover {
-  background: #374151;
+  background: var(--ax-color-gray-700, #374151);
 }
 
 .btnIntercept {
-  background: #fffbeb;
-  color: #b45309;
-  border-color: #fde68a;
+  background: var(--ax-color-amber-50, #fffbeb);
+  color: var(--ax-color-amber-700, #b45309);
+  border-color: var(--ax-color-amber-200, #fde68a);
 }
 
 .btnIntercept:hover {
-  background: #fef3c7;
+  background: var(--ax-color-amber-100, #fef3c7);
 }
 
 .btnCancel {

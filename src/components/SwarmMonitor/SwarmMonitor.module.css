@@ -42,20 +42,20 @@
 }
 
 .btnPause {
-  background: #fffbeb;
-  color: #b45309;
-  border-color: #fde68a;
+  background: var(--ax-color-amber-50, #fffbeb);
+  color: var(--ax-color-amber-700, #b45309);
+  border-color: var(--ax-color-amber-200, #fde68a);
 }
 
-.btnPause:hover { background: #fef3c7; }
+.btnPause:hover { background: var(--ax-color-amber-100, #fef3c7); }
 
 .btnKill {
-  background: #fef2f2;
-  color: #b91c1c;
-  border-color: #fecaca;
+  background: var(--ax-color-red-50, #fef2f2);
+  color: var(--ax-color-red-700, #b91c1c);
+  border-color: var(--ax-color-red-200, #fecaca);
 }
 
-.btnKill:hover { background: #fee2e2; }
+.btnKill:hover { background: var(--ax-color-red-100, #fee2e2); }
 
 /* Metrics grid */
 .grid {
@@ -95,14 +95,14 @@
 }
 
 /* Error severity tints */
-.metricError_medium { background: #fefce8; }
+.metricError_medium { background: var(--ax-color-amber-50, #fefce8); }
 .metricError_low { background: transparent; }
 .metricError_high {
-  background: #fef2f2;
+  background: var(--ax-color-red-50, #fef2f2);
 }
 
-.metricError_high .metricValue { color: #b91c1c; }
-.metricError_medium .metricValue { color: #b45309; }
+.metricError_high .metricValue { color: var(--ax-color-red-700, #b91c1c); }
+.metricError_medium .metricValue { color: var(--ax-color-amber-700, #b45309); }
 
 /* Status dot in metric tile */
 .dot {
@@ -114,8 +114,8 @@
   border-radius: 50%;
 }
 
-.dotWorking { background: #10b981; animation: smPulse 1.5s ease-in-out infinite; }
-.dotIdle { background: #d1d5db; }
+.dotWorking { background: var(--ax-color-green-500, #10b981); animation: smPulse 1.5s ease-in-out infinite; }
+.dotIdle { background: var(--ax-color-gray-300, #d1d5db); }
 
 @keyframes smPulse {
   0%, 100% { opacity: 1; }
@@ -149,7 +149,7 @@
 
 .progressFill {
   height: 100%;
-  background: linear-gradient(90deg, #10b981, #3b82f6);
+  background: linear-gradient(90deg, var(--ax-color-green-500, #10b981), var(--ax-color-blue-500, #3b82f6));
   border-radius: 4px;
   transition: width 0.4s ease;
 }

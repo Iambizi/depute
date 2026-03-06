@@ -52,7 +52,7 @@
 .tab.active {
   background-color: var(--ax-bg-primary, #ffffff);
   color: var(--ax-text-primary, #111827);
-  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+  box-shadow: var(--ax-shadow-sm);
 }
 
 .list {
@@ -87,8 +87,8 @@
 
 .entry.conflict {
   padding: 12px;
-  background-color: #fef2f2;
-  border: 1px solid #fca5a5;
+  background-color: var(--ax-color-red-50, #fef2f2);
+  border: 1px solid var(--ax-color-red-300, #fca5a5);
   border-radius: 6px;
 }
 
@@ -113,8 +113,8 @@
   border-radius: 4px;
 }
 
-.typeTag.fact { background-color: #dbeafe; color: #1e3a8a; }
-.typeTag.decision { background-color: #dcfce7; color: #14532d; }
+.typeTag.fact { background-color: var(--ax-color-blue-100, #dbeafe); color: #1e3a8a; }
+.typeTag.decision { background-color: var(--ax-color-green-100, #dcfce7); color: #14532d; }
 .typeTag.constraint { background-color: #fce7f3; color: #831843; }
 .typeTag.artifact { background-color: #f3e8ff; color: #581c87; }
 
@@ -128,8 +128,8 @@
 .conflictBadge {
   font-size: 11px;
   font-weight: 600;
-  color: #b91c1c;
-  background-color: #fee2e2;
+  color: var(--ax-color-red-700, #b91c1c);
+  background-color: var(--ax-color-red-100, #fee2e2);
   padding: 2px 8px;
   border-radius: 12px;
 }
@@ -149,8 +149,8 @@
 }
 
 .conflict .valueBox {
-  background-color: #ffffff;
-  border-color: #fecaca;
+  background-color: var(--ax-surface-primary, #ffffff);
+  border-color: var(--ax-color-red-200, #fecaca);
 }
 
 .provenance {
@@ -181,7 +181,7 @@
 .source {
   color: var(--ax-text-secondary, #4b5563);
   text-decoration: underline;
-  text-decoration-color: #e5e7eb;
+  text-decoration-color: var(--ax-color-gray-200, #e5e7eb);
 }
 
 .timestamp {
