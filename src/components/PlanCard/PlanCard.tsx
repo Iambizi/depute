@@ -23,26 +23,26 @@ import styles from './PlanCard.module.css';
 const STATUS_ICONS: Record<PlanStepStatus, React.ReactNode> = {
   pending: (
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="2"/>
+      <circle cx="12" cy="12" r="9.5" stroke="currentColor" strokeWidth="2.5" opacity="0.3"/>
     </svg>
   ),
   active: (
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="2"/>
+      <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="2.5"/>
       <circle cx="12" cy="12" r="4.5" fill="currentColor"/>
     </svg>
   ),
   completed: (
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="2"/>
-      <circle cx="12" cy="12" r="4.5" stroke="currentColor" strokeWidth="1.5"/>
-      <path d="M10 12L11 13L14 10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+      <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="2.5"/>
+      <circle cx="12" cy="12" r="5" stroke="currentColor" strokeWidth="1.5"/>
+      <path d="M10 12.5L11.5 14L14.5 9.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
     </svg>
   ),
   failed: (
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="2"/>
-      <path d="M9 9L15 15M15 9L9 15" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+      <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="2.5"/>
+      <path d="M9 9L15 15M15 9L9 15" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
     </svg>
   ),
 };
