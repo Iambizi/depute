@@ -97,9 +97,7 @@ export const PrototypeQuickStart: Story = {
           onExport={(fmt) => setExported(fmt)}
         />
         {exported && (
-          <span style={{ fontFamily: 'sans-serif', fontSize: '0.75rem', color: '#6b7280' }}>
-            ✓ Exported as {exported}
-          </span>
+          <span style={{ color: '#059669', fontSize: '0.875rem' }}>Exported as {exported}</span>
         )}
       </div>
     );
@@ -163,8 +161,8 @@ export const SimulateRealTimeUpdates: Story = {
           onExport={handleExport}
         />
         <div style={{ fontFamily: 'sans-serif', fontSize: '0.75rem', color: '#6b7280', display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
-          {exportingFmt && <span>⏳ Exporting as {exportingFmt}...</span>}
-          {done.map((f, i) => <span key={i}>✓ Exported as {f}</span>)}
+          {exportingFmt && <span>Exporting as {exportingFmt}...</span>}
+          {done.map((f, i) => <span key={i}>Exported as {f}</span>)}
         </div>
       </div>
     );

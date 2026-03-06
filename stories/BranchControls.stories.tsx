@@ -62,7 +62,7 @@ export const PrototypeStatusCycle: Story = {
           status={status}
           onPause={() => { setStatus('paused'); addLog('⏸ Branch paused'); }}
           onResume={() => { setStatus('running'); addLog('▶ Branch resumed'); }}
-          onQuarantine={() => { setStatus('quarantined'); addLog('🔒 Branch quarantined'); }}
+          onQuarantine={() => { setStatus('quarantined'); addLog('Quarantined: Branch isolated'); }}
           onThrottle={() => addLog('↓ Throttle applied')}
           onCancel={() => addLog('⊘ Branch cancelled')}
         />

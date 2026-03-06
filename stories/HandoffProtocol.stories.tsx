@@ -73,9 +73,9 @@ export const PrototypeInteractive: Story = {
     return (
       <HandoffProtocol
         {...data}
-        onAccept={() => setOutcome('✅ Handoff accepted')}
-        onIntercept={() => setOutcome('⚠️ Intercepted — user is overriding')}
-        onCancel={() => setOutcome('❌ Handoff cancelled')}
+        onAccept={() => setOutcome('Handoff accepted')}
+        onIntercept={() => setOutcome('Intercepted — user is overriding')}
+        onCancel={() => setOutcome('Handoff cancelled')}
       />
     );
   },

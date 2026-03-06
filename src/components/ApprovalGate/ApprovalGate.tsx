@@ -23,11 +23,33 @@ import styles from './ApprovalGate.module.css';
 // Status helpers
 // ---------------------------------------------------------------------------
 
-const STATUS_ICONS: Record<string, string | null> = {
+const IconCheck = () => (
+  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+    <polyline points="20 6 9 17 4 12"></polyline>
+  </svg>
+);
+
+const IconX = () => (
+  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+    <line x1="18" y1="6" x2="6" y2="18"></line>
+    <line x1="6" y1="6" x2="18" y2="18"></line>
+  </svg>
+);
+
+const IconHourglass = () => (
+  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M5 22h14"></path>
+    <path d="M5 2h14"></path>
+    <path d="M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22"></path>
+    <path d="M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2"></path>
+  </svg>
+);
+
+const STATUS_ICONS: Record<string, React.ReactNode | null> = {
   pending: null,
-  approved: '✓',
-  rejected: '✕',
-  expired: '⌛',
+  approved: <IconCheck />,
+  rejected: <IconX />,
+  expired: <IconHourglass />,
 };
 
 const STATUS_LABELS: Record<string, string> = {

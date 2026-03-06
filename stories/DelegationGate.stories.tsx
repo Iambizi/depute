@@ -80,8 +80,8 @@ export const PrototypeInteractive: Story = {
     return (
       <DelegationGate
         {...data}
-        onApprove={() => setOutcome('✅ Spawn approved — new agent is launching')}
-        onDeny={() => setOutcome('❌ Spawn denied — task returned to orchestrator')}
+        onApprove={() => setOutcome('Spawn approved — new agent is launching')}
+        onDeny={() => setOutcome('Spawn denied — task returned to orchestrator')}
       />
     );
   },

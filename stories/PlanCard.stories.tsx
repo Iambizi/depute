@@ -182,14 +182,14 @@ export const PrototypeLiveExecution: Story = {
             disabled={running}
             style={{ padding: '6px 16px', borderRadius: '6px', cursor: running ? 'default' : 'pointer' }}
           >
-            ▶ Start simulation
+            Start simulation
           </button>
           <button
             onClick={handleStop}
             disabled={!running}
             style={{ padding: '6px 16px', borderRadius: '6px', cursor: !running ? 'default' : 'pointer' }}
           >
-            ✕ Stop
+            Stop
           </button>
         </div>
         <PlanCard
