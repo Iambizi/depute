@@ -101,6 +101,15 @@ export interface HandoffPayloadItem {
 }
 ```
 
+## Composition flow
+
+`Handoff Protocol` sits securely between two agents when ownership or state transfers:
+
+```text
+Source Agent → [Handoff Protocol] → Destination Agent
+```
+It gives the human a chance to intercept the transfer before the next agent begins.
+
 ## Design rationale
 **1. Comprehension Over Logging**  
 Agent handoffs are usually hidden deep in terminal logs (`Agent A passed context to Agent B`). `Handoff Protocol` pulls this event out of the log and formats it as a formal "shipping manifest," drastically increasing the human supervisor's situational awareness.

@@ -106,6 +106,15 @@ export interface TaskQueueItem {
 }
 ```
 
+## Composition flow
+
+`Task Queue` manages the pending backlog for a specific agent:
+
+```text
+Orchestrator → [Task Queue] → Active Plan Card
+```
+It allows humans to re-prioritize work before the agent officially plans it.
+
 ## Design rationale
 **1. Exposing the Routing Layer**  
 In an autonomous swarm, tasks are often dynamically generated and routed without human input. `Task Queue` forcibly visualizes this "pending state," transforming invisible background queues into a tangible list of upcoming work.

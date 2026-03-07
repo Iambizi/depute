@@ -86,6 +86,15 @@ export function App() {
 | `onExpand` | `() => void` | `undefined` | Callback fired when the user clicks the "expand" or drill-down button. |
 | `className` | `string` | `undefined` | Additional CSS class for the root element. |
 
+## Composition flow
+
+`Subagent Card` is designed for list or grid views of multiple agents.
+
+```text
+Orchestrator View → Agent Roster → [Subagent Card]
+```
+It provides a high-level summary of a single agent's identity and status.
+
 ## Design rationale
 **1. Contextual Embeds**  
 `Subagent Card` is designed to be embedded *inside* other orchestration components. It serves as the rich payload within `Orchestrator View` tree nodes, or as the dense grid item in a non-list swarm dashboard.

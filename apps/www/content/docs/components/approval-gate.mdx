@@ -107,6 +107,15 @@ For high-risk multi-step actions, use `mode="staged"` to walk the user through t
 | `onApprove` | `() => void` | — | Called when user approves |
 | `onReject` | `() => void` | — | Called when user rejects |
 
+## Composition flow
+
+`Approval Gate` usually sits immediately after a `Plan Card` and before `Run Controls`:
+
+```text
+Plan Card → [Approval Gate] → Run Controls → Tool Trace
+```
+It pauses execution and requires a human cryptographic signature (or explicit click) to proceed.
+
 ## Design rationale
 
 **Why `scope`?** Binary approve/reject is the wrong mental model for agents. Stripe never approves an action with a simple yes/no — they issue capability grants scoped to a specific target, resource limit, and time window.

@@ -118,6 +118,15 @@ export interface ContextLedgerEntry {
 }
 ```
 
+## Composition flow
+
+`Shared Context Ledger` provides a read-only overview of the "memory" being passed around the swarm:
+
+```text
+Agent A (State) → [Shared Context Ledger] ← Agent B (State)
+```
+It is typically rendered globally alongside the `Swarm Monitor`.
+
 ## Design rationale
 **1. The Epistemology Hub**  
 When multiple agents collaborate, hallucinations compound. If Agent A hallucinates a "fact" and writes it to shared memory, Agents B, C, and D will treat it as ground truth. The `Shared Context Ledger` exists to expose the swarm's epistemology to the human supervisor.

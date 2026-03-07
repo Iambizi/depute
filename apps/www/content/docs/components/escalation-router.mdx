@@ -80,6 +80,15 @@ export function App() {
 | `recommendation` | `'retry' \| 'reassign' \| 'cancel'` | `undefined` | The orchestrator's suggestion for how the human should resolve the issue (highlights the primary button). |
 | `className` | `string` | `undefined` | Additional CSS class for the root element. |
 
+## Composition flow
+
+`Escalation Router` surfaces hard blockers from deep within the swarm up to the human supervisor:
+
+```text
+Failed Subagent → [Escalation Router] → Human Override
+```
+It allows the user to re-route or manually resolve the blocker.
+
 ## Design rationale
 **1. The "Three-Way Intersection"**  
 When autonomous systems fail, they often just stop or loop infinitely. `Escalation Router` forces the system to pause and present a clear three-way intersection to the human: Try Again (transient errors), Give to Someone Else (capability errors), or Give Up (bad intent/unsolvable).

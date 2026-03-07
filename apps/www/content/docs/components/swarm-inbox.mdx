@@ -111,6 +111,15 @@ export interface SwarmInboxItem {
 }
 ```
 
+## Composition flow
+
+`Swarm Inbox` aggregates cross-agent communication. It is typically a top-level navigational element alongside the `Swarm Monitor` or `Agent Roster`:
+
+```text
+[Swarm Inbox] ← Inter-agent messages & escalations
+```
+It serves as the central notification center for human operators.
+
 ## Design rationale
 **1. The "Exception-Only" Workflow**  
 Supervising a multi-agent swarm requires shifting from "babysitting" to an "exception-only" workflow. The human should only look at the UI when the UI explicitly asks for help. `Swarm Inbox` is the funnel for all of those system interrupts.
