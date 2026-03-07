@@ -44,8 +44,7 @@ A centralized attention triage surface for the swarm supervisor. It aggregates c
 
 <StorybookEmbed story="ax-components-v1-swarminbox--default" />
 
-## Usage
-
+## Basic usage
 ```tsx
 import { SwarmInbox } from '@/components/SwarmInbox';
 import type { SwarmInboxItem } from '@/components/SwarmInbox/SwarmInbox.types';
@@ -112,8 +111,7 @@ export interface SwarmInboxItem {
 }
 ```
 
-## Design Rationale
-
+## Design rationale
 **1. The "Exception-Only" Workflow**  
 Supervising a multi-agent swarm requires shifting from "babysitting" to an "exception-only" workflow. The human should only look at the UI when the UI explicitly asks for help. `Swarm Inbox` is the funnel for all of those system interrupts.
 

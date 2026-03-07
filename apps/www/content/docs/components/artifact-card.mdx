@@ -44,10 +44,20 @@ The agent's "receipt" of work completed. It renders the final output alongside c
 
 <StorybookEmbed story="ax-components-artifactcard--default" />
 
-## Usage
+## Basic usage
 
 ```tsx
-import { ArtifactCard } from '@/components/ArtifactCard';
+<Artifact Card
+  artifact={myArtifactData}
+/>
+```
+
+## With mock data
+
+Because `Artifact Card` requires a full artifact object to render, here is an example of what that object looks like:
+
+```tsx
+import { Artifact Card } from '@/components/Artifact Card';
 import type { Artifact } from '@/types/ax-common';
 
 const mockArtifact: Artifact = {
@@ -62,7 +72,7 @@ const mockArtifact: Artifact = {
 
 export function App() {
   return (
-    <ArtifactCard 
+    <Artifact Card 
       artifact={mockArtifact} 
       exportFormats={['markdown', 'sql']} 
       onExport={(format) => console.log(`Exporting as ${format}`)}
@@ -75,21 +85,26 @@ export function App() {
 ## Props
 
 | Prop | Type | Default | Description |
-| :--- | :--- | :--- | :--- |
+|------|------|---------|-------------|
 | `artifact` | `Artifact` | **Required** | The artifact object to display (contains `title`, `type`, `content`, etc.). |
-| `exportFormats` | `ExportFormat[]` | `undefined` | Array of available export formats to show as action buttons. |
+| `exportFormats` | `ExportFormat[]` | `undefined` | Array of available export formats to show as action buttons (e.g., `'markdown'`, `'json'`). |
 | `onExport` | `(format: ExportFormat) => void` | `undefined` | Callback fired when an export button is clicked. |
 | `showPreview` | `boolean` | `true` | Whether to render a preview of the artifact's `content` inside the card. |
 | `maxPreviewHeight` | `string` | `'24rem'` | Maximum height of the content preview area before an internal scrollbar appears. |
-| `className` | `string` | `undefined` | Additional CSS class for the root element. |
 
-## Design Rationale
+## Composition flow
 
-**1. The "Receipt" Pattern**  
-In traditional SaaS, the UI *is* the application. In agentic software, the UI is often just the exhaust of the application. The `Artifact Card` treats the final output as a primary, shareable asset. 
+`Artifact Card` is the grand finale of a single-agent execution sequence:
 
-**2. Verifiable Provenance**  
-Trust requires auditability. The `sourceStepId` and `toolCallIds` metadata fields visually connect the final artifact back to the exact operations that produced it, preventing "hallucinated outputs" from passing without scrutiny.
+```text
+Plan Card → Approval Gate → Run Controls → Tool Trace → [Artifact Card]
+```
+Once the agent finishes its work, the trace concludes and this component is rendered to display the final, tangible output.
 
-**3. Actionability**  
-Agents excel at generation, but humans excel at distribution. Integrated `exportFormats` acknowledge that the artifact's lifecycle doesn't end in the chat UI—it needs to be pulled into PRs, Slack messages, or Google Docs.
+## Design rationale
+
+**Why the "Receipt" Pattern?** In traditional SaaS, the UI *is* the application. In agentic software, the UI is often just the exhaust of the application. The `Artifact Card` treats the final output as a primary, shareable asset. 
+
+**Why verifiable provenance?** Trust requires auditability. The `sourceStepId` and `toolCallIds` metadata fields visually connect the final artifact back to the exact operations that produced it, preventing "hallucinated outputs" from passing without scrutiny.
+
+**Why focus on actionability?** Agents excel at generation, but humans excel at distribution. Integrated `exportFormats` acknowledge that the artifact's lifecycle doesn't end in the chat UI—it needs to be pulled into PRs, Slack messages, or Google Docs.

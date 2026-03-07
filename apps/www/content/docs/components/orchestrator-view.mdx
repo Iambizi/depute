@@ -44,8 +44,7 @@ A recursive tree graph representing the Orchestrator and all of its spawned work
 
 <StorybookEmbed story="ax-components-v1-orchestratorview--default" />
 
-## Usage
-
+## Basic usage
 ```tsx
 import { useState } from 'react';
 import { OrchestratorView } from '@/components/OrchestratorView';
@@ -117,15 +116,13 @@ export interface OrchestratorNode {
 }
 ```
 
-## Composition
-
+## Composition flow
 `Orchestrator View` acts as the navigation tree for a complex, hierarchical swarm.
 - Use it as the left-pane side navigation in a specialized dashboard.
 - Pair it with **Swarm Monitor** at the top of the viewport for aggregate metrics spanning the entire tree.
 - When an individual node is clicked (`onNodeClick`), render a **Plan Card** + **Tool Trace** + **Run Controls** trio in the main right-hand pane to inspect that specific sub-agent.
 
-## Design Rationale
-
+## Design rationale
 **1. The Macro/Micro Split**  
 When multiple agents are running in a swarm, a single terminal log or chat thread becomes impossible to follow. `Orchestrator View` serves as the "macro" view—a structural map of *who* is doing what. Clicking a node typically updates an adjacent pane with the "micro" view (a standard `Plan Card` + `Tool Trace` for that specific agent).
 

@@ -44,8 +44,7 @@ A "Comprehension UI" that visualizes the transfer of state between two agents (o
 
 <StorybookEmbed story="ax-components-v1-handoffprotocol--default" />
 
-## Usage
-
+## Basic usage
 ```tsx
 import { HandoffProtocol } from '@/components/HandoffProtocol';
 
@@ -102,8 +101,7 @@ export interface HandoffPayloadItem {
 }
 ```
 
-## Design Rationale
-
+## Design rationale
 **1. Comprehension Over Logging**  
 Agent handoffs are usually hidden deep in terminal logs (`Agent A passed context to Agent B`). `Handoff Protocol` pulls this event out of the log and formats it as a formal "shipping manifest," drastically increasing the human supervisor's situational awareness.
 

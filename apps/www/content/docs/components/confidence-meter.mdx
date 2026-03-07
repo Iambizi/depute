@@ -44,38 +44,33 @@ Displays an agent's confidence score with optional reasoning. Supports a full `m
 
 <StorybookEmbed story="ax-components-confidencemeter--default" />
 
-## Usage
+## Basic usage
 
 ```tsx
-import { ConfidenceMeter } from '@/components/ConfidenceMeter';
+<Confidence Meter
+  value={85}
+  showLabel={true}
+  showValue={true}
+  reasoning="I have successfully retrieved the user's billing history."
+/>
+```
 
-export function App() {
-  return (
-    <div className="flex flex-col gap-6">
-      {/* Full Meter Display */}
-      <ConfidenceMeter 
-        value={85} 
-        display="meter"
-        showLabel={true}
-        showValue={true}
-        reasoning="I have successfully retrieved the user's billing history."
-      />
+## Compact Badge Display
 
-      {/* Compact Badge Display */}
-      <ConfidenceMeter 
-        value={42} 
-        display="badge"
-        size="sm"
-      />
-    </div>
-  );
-}
+For tight UI spaces like tables or agent rosters, use the `badge` variant.
+
+```tsx
+<Confidence Meter
+  value={42}
+  display="badge"
+  size="sm"
+/>
 ```
 
 ## Props
 
 | Prop | Type | Default | Description |
-| :--- | :--- | :--- | :--- |
+|------|------|---------|-------------|
 | `value` | `number` | `undefined` | Confidence score from 0-100. If omitted, meter shows an indeterminate pulsing state. |
 | `display` | `'meter' \| 'badge'` | `'meter'` | Structural variant: full horizontal bar (`meter`) or a compact inline pill (`badge`). |
 | `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | Size of the component. |
@@ -83,15 +78,18 @@ export function App() {
 | `showLabel` | `boolean` | `true` | Whether to display a textual confidence category (e.g., "High", "Medium", "Low"). |
 | `reasoning` | `string` | `undefined` | An optional explanation from the agent justifying its confidence score. |
 | `animate` | `boolean` | `true` | Whether to animate the bar filling and color transitions when the value changes. |
-| `className` | `string` | `undefined` | Additional CSS class for the root element. |
 
-## Design Rationale
+## Composition flow
 
-**1. Quantitative Trust Signaling**  
-Humans struggle to calibrate trust in LLMs. By forcing the agent to output a confidence score *before* execution, the UI shifts from "black box" to a measurable partnership.
+`Confidence Meter` is typically evaluated continuously during an agent's runtime, often surfaced right before an `Approval Gate`:
 
-**2. The Color-Coded Spectrum**  
-Scores are mapped to strict semantic buckets: Green (80-100%, high confidence), Amber (50-79%, moderate certainty), and Red (&lt;50%, high risk). This leverages existing mental models of traffic lights for instant comprehension.
+```text
+Plan Card → [Confidence Meter] → Approval Gate → Run Controls
+```
+If confidence drops below a specified threshold, the flow can be automatically paused for human review.
 
-**3. "Show Your Math"**  
-A score without rationale is opaque. The `reasoning` prop provides space for the agent to explicitly state *why* it arrived at its score (e.g., "I found 3 distinct APIs matching the intent, which introduces ambiguity"), which is crucial for human intervention.
+## Design rationale
+
+**Why quantitative trust signaling?**  Humans struggle to calibrate trust in LLMs. By forcing the agent to output a confidence score *before* execution, the UI shifts from a "black box" to a measurable partnership.
+
+**Why the "reasoning" prop?**  A score without rationale is opaque. The `reasoning` prop provides space for the agent to explicitly state *why* it arrived at its score (e.g., "I found 3 distinct APIs matching the intent, which introduces ambiguity"), which is crucial for human intervention.

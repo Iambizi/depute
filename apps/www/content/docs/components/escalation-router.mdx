@@ -44,8 +44,7 @@ A high-severity intervention surface. When an agent critically fails (e.g., gets
 
 <StorybookEmbed story="ax-components-v1-escalationrouter--default" />
 
-## Usage
-
+## Basic usage
 ```tsx
 import { EscalationRouter } from '@/components/EscalationRouter';
 
@@ -81,8 +80,7 @@ export function App() {
 | `recommendation` | `'retry' \| 'reassign' \| 'cancel'` | `undefined` | The orchestrator's suggestion for how the human should resolve the issue (highlights the primary button). |
 | `className` | `string` | `undefined` | Additional CSS class for the root element. |
 
-## Design Rationale
-
+## Design rationale
 **1. The "Three-Way Intersection"**  
 When autonomous systems fail, they often just stop or loop infinitely. `Escalation Router` forces the system to pause and present a clear three-way intersection to the human: Try Again (transient errors), Give to Someone Else (capability errors), or Give Up (bad intent/unsolvable).
 

@@ -44,8 +44,7 @@ A specialized approval surface explicitly designed for the creation of new auton
 
 <StorybookEmbed story="ax-components-v1-delegationgate--default" />
 
-## Usage
-
+## Basic usage
 ```tsx
 import { DelegationGate } from '@/components/DelegationGate';
 
@@ -97,8 +96,7 @@ export interface ProposedSubagent {
 }
 ```
 
-## Design Rationale
-
+## Design rationale
 **1. Semantic Distinction from Approval Gate**  
 `Approval Gate` (v0) is used before an agent takes a specific, discrete action (like charging a credit card or dropping a database table). `Delegation Gate` (v1) is used before an agent *creates another agent*. Approving an action is a validation of intent; approving an agent is an authorization of autonomy. The UI must reflect this higher-stakes decision.
 

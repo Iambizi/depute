@@ -44,8 +44,7 @@ While `Run Controls` operates on a single agent, and `Swarm Monitor` can kill th
 
 <StorybookEmbed story="ax-components-v1-branchcontrols--default" />
 
-## Usage
-
+## Basic usage
 ```tsx
 import { BranchControls } from '@/components/BranchControls';
 
@@ -79,8 +78,7 @@ export function App() {
 | `onThrottle` | `() => void` | `undefined` | Callback fired to artificially slow down the loop speed of this branch. |
 | `className` | `string` | `undefined` | Additional CSS class for the root element. |
 
-## Design Rationale
-
+## Design rationale
 **1. Surgical Intervention**  
 In a 20-agent swarm, one agent hitting a bad API shouldn't crash the other 19. `Branch Controls` provides the surgical tools needed to manage a complex hierarchical system. If a "Scraper" branch is misbehaving, you can pause it, adjust the scraper prompt, and resume it, all while the "Summary" branch continues to process the data already collected.
 

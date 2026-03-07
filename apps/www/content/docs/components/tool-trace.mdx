@@ -44,7 +44,18 @@ Auto-scrolling timeline representing the agent's inner loop. Entries with `polic
 
 <StorybookEmbed story="ax-components-tooltrace--default" />
 
-## Usage
+## Basic usage
+
+```tsx
+<Tool Trace
+  calls={[]}
+  autoScroll={true}
+/>
+```
+
+## With mock data
+
+Because `Tool Trace` requires an array of tool call objects to render its timeline, you'll typically pass in an array that looks like this:
 
 ```tsx
 import { ToolTrace } from '@/components/ToolTrace';
@@ -64,9 +75,8 @@ const mockCalls: ToolCall[] = [
 
 export function App() {
   return (
-    <ToolTrace 
+    <Tool Trace 
       calls={mockCalls} 
-      autoScroll={true} 
       expandable={true} 
     />
   );
@@ -76,21 +86,26 @@ export function App() {
 ## Props
 
 | Prop | Type | Default | Description |
-| :--- | :--- | :--- | :--- |
+|------|------|---------|-------------|
 | `calls` | `ToolCall[]` | **Required** | Array of tool calls to display in the trace timeline. |
 | `autoScroll` | `boolean` | `false` | Whether the timeline should automatically scroll to the latest entry when new calls are added. |
 | `maxHeight` | `string` | `undefined` | Maximum height of the container before an internal scrollbar appears (e.g., `'400px'`). |
 | `onEntryClick` | `(call: ToolCall) => void` | `undefined` | Callback fired when a user clicks on a tool call entry. |
 | `expandable` | `boolean` | `false` | If true, entries can be clicked to expand and reveal their raw JSON input and output. |
-| `className` | `string` | `undefined` | Additional CSS class for the root element. |
 
-## Design Rationale
+## Composition flow
 
-**1. Comprehension Over Logging**  
-Standard terminal logs are unreadable for non-engineers. Tool Trace formats JSON inputs and outputs into a structured UI, translating machine process into human-readable proof of work.
+`Tool Trace` is the primary visual feedback mechanism while an agent is actively running. It generally renders below `Run Controls`:
 
-**2. Policy Flagging**  
-Not all tools are equal. A `read_file` is routine, but a `execute_payment` is critical. The `policyFlags` system allows specific tool calls to bear visual severity tokens (e.g., an amber badge for `writesState`), breaking the monotony of the timeline and drawing the human's eye to high-risk actions.
+```text
+Plan Card → Approval Gate → Run Controls → [Tool Trace] → Artifact Card
+```
+It updates asynchronously. As soon as the agent completes its final tool call, the flow concludes with an `Artifact Card`.
 
-**3. Automatic Anchoring**  
-In an active stream, the human loses context if the UI doesn't track the edge of computation. The `autoScroll` logic ensures the most recent action is always in view, creating a sense of live Generative Momentum.
+## Design rationale
+
+**Why comprehension over logging?** Standard terminal logs are unreadable for non-engineers. Tool Trace formats JSON inputs and outputs into a structured UI, translating machine process into human-readable proof of work.
+
+**What is policy flagging?** Not all tools are equal. A `read_file` is routine, but a `execute_payment` is critical. The `policyFlags` system allows specific tool calls to bear visual severity tokens (e.g., an amber badge for `writesState`), breaking the monotony of the timeline and drawing the human's eye to high-risk actions.
+
+**Why automatic anchoring?** In an active stream, the human loses context if the UI doesn't track the edge of computation. The `autoScroll` logic ensures the most recent action is always in view, creating a sense of live generative momentum.

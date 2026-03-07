@@ -44,8 +44,7 @@ A macro-level dashboard header. It aggregates the operating health of the entire
 
 <StorybookEmbed story="ax-components-v1-swarmmonitor--default" />
 
-## Usage
-
+## Basic usage
 ```tsx
 import { SwarmMonitor } from '@/components/SwarmMonitor';
 
@@ -99,15 +98,13 @@ export interface SwarmMonitorProps {
 }
 ```
 
-## Composition
-
+## Composition flow
 `Swarm Monitor` is the apex header of a multi-agent dashboard.
 - Render it at the very top of complex pages to provide aggregate situational awareness.
 - Pair it with **Agent Roster** (for flat worker pools) or **Orchestrator View** (for hierarchical delegation trees) beneath it so users can drill into the specific agents causing the error rates reported in the monitor.
 - If the monitor shows a high error spike, the user clicks the prominent `onGlobalKill` button to halt the entire system at once.
 
-## Design Rationale
-
+## Design rationale
 **1. The "Big Red Button" at Scale**  
 While `Run Controls` stops a single agent, `Swarm Monitor` controls the fleet. When an unexpected loop or hallucination cascade begins, supervisors do not have time to find the specific rogue agent. The `onGlobalKill` action provides instant peace of mind.
 

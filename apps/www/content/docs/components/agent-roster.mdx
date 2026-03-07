@@ -44,8 +44,7 @@ A dense table view designed for the "Flat Swarm" orchestration model (e.g., Open
 
 <StorybookEmbed story="ax-components-v1-agentroster--default" />
 
-## Usage
-
+## Basic usage
 ```tsx
 import { useState } from 'react';
 import { AgentRoster } from '@/components/AgentRoster';
@@ -114,14 +113,12 @@ export interface AgentRosterItem {
 }
 ```
 
-## Composition
-
+## Composition flow
 `Agent Roster` is specifically designed for flat worker pools. 
 - Use it alongside **Swarm Monitor** at the top of the viewport to provide aggregate cost and error metrics for the entire fleet.
 - When a user clicks a specific row (`onAgentSelect`), surface the detail view for that agent using a combination of **Plan Card**, **Tool Trace**, and **Run Controls**.
 
-## Design Rationale
-
+## Design rationale
 **1. Data Density for Flat Swarms**  
 While `Orchestrator View` is best for hierarchical workflows, `Agent Roster` is designed for "flat" worker pools (like OpenAI Swarm). It prioritizes information density over structural mapping, allowing supervisors to monitor dozens of parallel tasks without scrolling.
 

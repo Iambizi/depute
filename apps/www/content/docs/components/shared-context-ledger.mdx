@@ -44,8 +44,7 @@ A read-only surface that visualizes the "black board" or shared memory of the sw
 
 <StorybookEmbed story="ax-components-v1-sharedcontextledger--default" />
 
-## Usage
-
+## Basic usage
 ```tsx
 import { SharedContextLedger } from '@/components/SharedContextLedger';
 import type { ContextLedgerEntry } from '@/components/SharedContextLedger/SharedContextLedger.types';
@@ -119,8 +118,7 @@ export interface ContextLedgerEntry {
 }
 ```
 
-## Design Rationale
-
+## Design rationale
 **1. The Epistemology Hub**  
 When multiple agents collaborate, hallucinations compound. If Agent A hallucinates a "fact" and writes it to shared memory, Agents B, C, and D will treat it as ground truth. The `Shared Context Ledger` exists to expose the swarm's epistemology to the human supervisor.
 

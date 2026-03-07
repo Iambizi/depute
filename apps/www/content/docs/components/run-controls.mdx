@@ -44,27 +44,34 @@ Minimal execution steering — pause, resume, stop, retry. Intentionally kept si
 
 <StorybookEmbed story="ax-components-runcontrols--default" />
 
-## Usage
+## Basic usage
+
+```tsx
+<Run Controls
+  state="running"
+  onPause={() => agent.pause()}
+  onStop={() => agent.kill()}
+/>
+```
+
+## With local state
 
 ```tsx
 import { useState } from 'react';
-import { RunControls } from '@/components/RunControls';
 import type { RunState } from '@/types/ax-common';
 
-export function App() {
+export function ExecutionWrapper() {
   const [state, setState] = useState<RunState>('running');
 
   return (
-    <div className="p-4 border border-zinc-200 dark:border-zinc-800 rounded-lg max-w-sm">
-      <RunControls 
-        state={state} 
-        onStart={() => setState('running')}
-        onPause={() => setState('paused')}
-        onStop={() => setState('stopped')}
-        onRetry={() => setState('running')}
-        showLabel={true}
-      />
-    </div>
+    <Run Controls 
+      state={state} 
+      showLabel={true}
+      onStart={() => setState('running')}
+      onPause={() => setState('paused')}
+      onStop={() => setState('stopped')}
+      onRetry={() => setState('running')}
+    />
   );
 }
 ```
@@ -72,23 +79,26 @@ export function App() {
 ## Props
 
 | Prop | Type | Default | Description |
-| :--- | :--- | :--- | :--- |
+|------|------|---------|-------------|
 | `state` | `RunState` | **Required** | Current execution state (`'idle' \| 'running' \| 'paused' \| 'completed' \| 'failed' \| 'stopped'`). |
 | `onStart` | `() => void` | `undefined` | Callback fired when user clicks start or resume. |
 | `onPause` | `() => void` | `undefined` | Callback fired when user clicks pause. |
 | `onStop` | `() => void` | `undefined` | Callback fired when user clicks stop (cancel execution entirely). |
 | `onRetry` | `() => void` | `undefined` | Callback fired when user clicks retry after a failure state. |
 | `showLabel` | `boolean` | `false` | Whether to display a text label showing the current state next to the pulsing indicator. |
-| `actions` | `React.ReactNode` | `undefined` | Slot for additional custom action buttons (e.g., an Undo button). |
-| `className` | `string` | `undefined` | Additional CSS class for the root element. |
+| `actions` | `ReactNode` | `undefined` | Slot for additional custom action buttons (e.g., an Undo button). |
 
-## Design Rationale
+## Composition flow
 
-**1. The "Big Red Button" Principle**  
-When an agent is operating autonomously, the human supervisor must always have an immediate, obvious way to halt it. `Run Controls` provides this physical-feeling override switch.
+`Run Controls` is the central execution steering wheel, usually placed immmediately before or right next to an agent's `Tool Trace`:
 
-**2. State-Dependent Visibility**  
-The controls automatically adapt to the `state` prop. If the agent is already `completed`, the pause and stop buttons disappear. If it is `failed`, the retry button appears. This prevents impossible state transitions.
+```text
+Plan Card → Approval Gate → [Run Controls] → Tool Trace → Artifact Card
+```
+It controls whether the `Tool Trace` continues to append new events or pauses execution.
 
-**3. Extensibility via Slots**  
-While `Run Controls` provides the core lifecycle buttons, the `actions` slot allows developers to bolt on domain-specific controls (like "Undo" or "Fork Branch") without forking the component code.
+## Design rationale
+
+**Why a "Big Red Button"?** When an agent is operating autonomously, the human supervisor must always have an immediate, obvious way to halt it. `Run Controls` provides this physical-feeling override switch.
+
+**Why adapt to the state prop?** The controls automatically adapt to the `state` prop. If the agent is already `completed`, the pause and stop buttons disappear. If it is `failed`, the retry button appears. This fundamentally prevents impossible state transitions without the developer writing extra UI conditional logic.

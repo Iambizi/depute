@@ -44,8 +44,7 @@ A versatile, compact card component used to represent individual workers. It sur
 
 <StorybookEmbed story="ax-components-v1-subagentcard--default" />
 
-## Usage
-
+## Basic usage
 ```tsx
 import { SubagentCard } from '@/components/SubagentCard';
 
@@ -87,8 +86,7 @@ export function App() {
 | `onExpand` | `() => void` | `undefined` | Callback fired when the user clicks the "expand" or drill-down button. |
 | `className` | `string` | `undefined` | Additional CSS class for the root element. |
 
-## Design Rationale
-
+## Design rationale
 **1. Contextual Embeds**  
 `Subagent Card` is designed to be embedded *inside* other orchestration components. It serves as the rich payload within `Orchestrator View` tree nodes, or as the dense grid item in a non-list swarm dashboard.
 
