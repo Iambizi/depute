@@ -28,7 +28,7 @@ export async function runAdd(args) {
 
   if (!componentName) {
     console.error(`\n  ${c.red('Error:')} Please specify a component name.\n`);
-    console.error(`  Usage: ${c.bold('npx ax-depute add <component-name>')}\n`);
+    console.error(`  Usage: ${c.bold('npx ax-depute@latest add <component-name>')}\n`);
     console.error(`  Run ${c.bold('npx ax-depute list')} to see available components.\n`);
     process.exit(1);
   }

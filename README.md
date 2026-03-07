@@ -34,8 +34,8 @@ These aren't hard to build once. They're hard to build **correctly** — with th
 ## Install a component
 
 ```bash
-npx ax-depute add approval-gate
-npx ax-depute add orchestrator-view
+npx ax-depute@latest add approval-gate
+npx ax-depute@latest add orchestrator-view
 npx ax-depute list
 ```
 
@@ -90,7 +90,7 @@ As agents gain the ability to execute completely headless, reliable tool calls, 
 
 ```bash
 # Add a component to your project
-npx ax-depute add approval-gate
+npx ax-depute@latest add approval-gate
 
 # Files are written to src/components/ApprovalGate/
 # Shared types are added once to src/types/ax-common.ts
@@ -154,7 +154,7 @@ npm test              # 219 tests across 17 components
 ```bash
 # CLI: copy components into any React project
 npx ax-depute list
-npx ax-depute add <component-name>
+npx ax-depute@latest add <component-name>
 ```
 
 CLI source: [packages/cli](./packages/cli) · npm: [ax-depute](https://www.npmjs.com/package/ax-depute)

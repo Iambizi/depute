@@ -152,4 +152,4 @@ Agents (and the developers building with them) need to **read and edit the UI co
 - Developers can't customize it for their domain without forking
 - Updates become breaking changes, not choices
 
-The copy-paste model (like shadcn/ui) means the source lives in your repo. You own it. The agent can read it. You can modify it. The CLI (`npx ax-depute add`) delivers it, but you keep it.
+The copy-paste model (like shadcn/ui) means the source lives in your repo. You own it. The agent can read it. You can modify it. The CLI (`npx ax-depute@latest add`) delivers it, but you keep it.

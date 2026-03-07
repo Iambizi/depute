@@ -30,28 +30,28 @@ When in doubt, start with v0. v1 wraps v0 — drilling into any v1 node should r
 
 | Need | Component | Install |
 |------|-----------|---------|
-| Show the agent's proposed plan before it runs | `Plan Card` | `npx ax-depute add plan-card` |
-| Block execution and ask the user to approve a risky action | `Approval Gate` | `npx ax-depute add approval-gate` |
-| Show how confident the agent is in its next step | `Confidence Meter` | `npx ax-depute add confidence-meter` |
-| Let user pause, resume, stop, or retry a running agent | `Run Controls` | `npx ax-depute add run-controls` |
-| Show a live timeline of every tool call (input, output, errors) | `Tool Trace` | `npx ax-depute add tool-trace` |
-| Render the final output of a workflow with export and provenance | `Artifact Card` | `npx ax-depute add artifact-card` |
+| Show the agent's proposed plan before it runs | `Plan Card` | `npx ax-depute@latest add plan-card` |
+| Block execution and ask the user to approve a risky action | `Approval Gate` | `npx ax-depute@latest add approval-gate` |
+| Show how confident the agent is in its next step | `Confidence Meter` | `npx ax-depute@latest add confidence-meter` |
+| Let user pause, resume, stop, or retry a running agent | `Run Controls` | `npx ax-depute@latest add run-controls` |
+| Show a live timeline of every tool call (input, output, errors) | `Tool Trace` | `npx ax-depute@latest add tool-trace` |
+| Render the final output of a workflow with export and provenance | `Artifact Card` | `npx ax-depute@latest add artifact-card` |
 
 **v1 — Multi-Agent Orchestration**
 
 | Need | Component | Install |
 |------|-----------|---------|
-| Visualize the full agent hierarchy as a collapsible tree | `Orchestrator View` | `npx ax-depute add orchestrator-view` |
-| Status dashboard for all active sub-agents | `Agent Roster` | `npx ax-depute add agent-roster` |
-| Single-agent card: identity, status, tool usage, task context | `Subagent Card` | `npx ax-depute add subagent-card` |
-| Scoped pause/resume/quarantine for one branch of the tree | `Branch Controls` | `npx ax-depute add branch-controls` |
-| High-level grid: throughput, blocked agents, token spend | `Swarm Monitor` | `npx ax-depute add swarm-monitor` |
-| Inbox for inter-agent messages — review, approve, or redirect | `Swarm Inbox` | `npx ax-depute add swarm-inbox` |
-| Ordered task queue for a single agent, with priority and status | `Task Queue` | `npx ax-depute add task-queue` |
-| Approval surface for cross-agent delegation / agent spawning | `Delegation Gate` | `npx ax-depute add delegation-gate` |
-| Visual card for structured handoffs between agents | `Handoff Protocol` | `npx ax-depute add handoff-protocol` |
-| Read-only log of shared memory/context passed between agents | `Shared Context Ledger` | `npx ax-depute add shared-context-ledger` |
-| Display escalation events from sub-agents with routing overrides | `Escalation Router` | `npx ax-depute add escalation-router` |
+| Visualize the full agent hierarchy as a collapsible tree | `Orchestrator View` | `npx ax-depute@latest add orchestrator-view` |
+| Status dashboard for all active sub-agents | `Agent Roster` | `npx ax-depute@latest add agent-roster` |
+| Single-agent card: identity, status, tool usage, task context | `Subagent Card` | `npx ax-depute@latest add subagent-card` |
+| Scoped pause/resume/quarantine for one branch of the tree | `Branch Controls` | `npx ax-depute@latest add branch-controls` |
+| High-level grid: throughput, blocked agents, token spend | `Swarm Monitor` | `npx ax-depute@latest add swarm-monitor` |
+| Inbox for inter-agent messages — review, approve, or redirect | `Swarm Inbox` | `npx ax-depute@latest add swarm-inbox` |
+| Ordered task queue for a single agent, with priority and status | `Task Queue` | `npx ax-depute@latest add task-queue` |
+| Approval surface for cross-agent delegation / agent spawning | `Delegation Gate` | `npx ax-depute@latest add delegation-gate` |
+| Visual card for structured handoffs between agents | `Handoff Protocol` | `npx ax-depute@latest add handoff-protocol` |
+| Read-only log of shared memory/context passed between agents | `Shared Context Ledger` | `npx ax-depute@latest add shared-context-ledger` |
+| Display escalation events from sub-agents with routing overrides | `Escalation Router` | `npx ax-depute@latest add escalation-router` |
 
 For deep component details, prop shapes, composition flows, and triage decisions, see:
 - `references/v0-components.md`
@@ -64,7 +64,7 @@ For deep component details, prop shapes, composition flows, and triage decisions
 npx ax-depute list
 
 # Copy component source into your project (you own the code)
-npx ax-depute add approval-gate
+npx ax-depute@latest add approval-gate
 ```
 
 Components are written to `src/components/<ComponentName>/`. Shared types land once in `src/types/ax-common.ts`. No lock-in — customize freely.
@@ -178,8 +178,8 @@ The most common AX flow — show the plan, gate high-risk actions, then display 
 
 | # | Severity | File | Line(s) | Gap | Recommendation | Install |
 |---|----------|------|---------|-----|----------------|----------|
-| 1 | 🔴 Critical | src/agent/run.ts | 42-58 | Sends email without approval | Add `ApprovalGate` before `sendEmail()` | `npx ax-depute add approval-gate` |
-| 2 | 🟡 Warning | src/agent/classify.ts | 91 | Classification score not shown to user | Surface with `ConfidenceMeter` | `npx ax-depute add confidence-meter` |
+| 1 | 🔴 Critical | src/agent/run.ts | 42-58 | Sends email without approval | Add `ApprovalGate` before `sendEmail()` | `npx ax-depute@latest add approval-gate` |
+| 2 | 🟡 Warning | src/agent/classify.ts | 91 | Classification score not shown to user | Surface with `ConfidenceMeter` | `npx ax-depute@latest add confidence-meter` |
 | ... | | | | | | |
 
 ### Summary
@@ -189,7 +189,7 @@ The most common AX flow — show the plan, gate high-risk actions, then display 
 
 ### Quick Fix
 Run these commands to install all missing components:
-[list the unique npx ax-depute add commands]
+[list the unique npx ax-depute@latest add commands]
 ```
 
 4. **Offer to install.** After presenting the report, ask: "Want me to install any of these missing components and wire them into your code?"
@@ -213,7 +213,7 @@ Use this format if the user wants to consume the results programmatically (e.g.,
       "lines": [42, 58],
       "gap": "Sends email without approval",
       "recommendation": "Add ApprovalGate before sendEmail()",
-      "installCommand": "npx ax-depute add approval-gate"
+      "installCommand": "npx ax-depute@latest add approval-gate"
     }
   ]
 }
@@ -243,7 +243,7 @@ Use this format if the user wants a human-readable artifact to attach to a Jira 
 
 ## Troubleshooting
 
-**Component not found after `npx ax-depute add`**
+**Component not found after `npx ax-depute@latest add`**
 Run `npx ax-depute list` to see exact component slugs. Use kebab-case (e.g., `approval-gate` not `Approval Gate`).
 
 **TypeScript errors on shared types**

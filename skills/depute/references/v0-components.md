@@ -127,7 +127,7 @@ Three research candidates were absorbed into v0 primitives rather than shipped s
 
 ## Shared Types (ax-common.ts)
 
-Key types installed automatically on first `npx ax-depute add` run:
+Key types installed automatically on first `npx ax-depute@latest add` run:
 
 ```ts
 interface PlanStep {

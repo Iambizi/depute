@@ -26,9 +26,9 @@ export function printHelp() {
   ${c.cyan(c.bold('Examples'))}
 
     npx ax-depute list
-    npx ax-depute add approval-gate
-    npx ax-depute add orchestrator-view
-    npx ax-depute add plan-card --dir components/ax
+    npx ax-depute@latest add approval-gate
+    npx ax-depute@latest add orchestrator-view
+    npx ax-depute@latest add plan-card --dir components/ax
 
   ${c.cyan(c.bold('Options for add'))}
 

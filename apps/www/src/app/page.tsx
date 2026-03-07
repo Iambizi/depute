@@ -23,7 +23,7 @@ const features = [
     icon: <Terminal className="w-5 h-5" />,
     label: 'CLI',
     count: 'npx',
-    items: ['ax-depute add <component>', 'Copy source into your project', 'You own the code'],
+    items: ['ax-depute@latest add <component>', 'Copy source into your project', 'You own the code'],
   },
 ];
 
@@ -191,7 +191,7 @@ export default function HomePage() {
           </h2>
           <div className="inline-flex items-center gap-4 px-6 py-4 font-mono text-sm text-fd-muted-foreground bg-fd-card border border-fd-border rounded-xl shadow-sm hover:shadow-md transition-shadow">
             <span className="text-fd-muted-foreground/60">$</span> 
-            <span className="text-fd-foreground">npx ax-depute add {'<component>'}</span>
+            <span className="text-fd-foreground">npx ax-depute@latest add {'<component>'}</span>
             <div className="h-4 w-px bg-fd-border mx-2" />
             <span className="text-xs opacity-50 uppercase tracking-widest">Copy Source</span>
           </div>

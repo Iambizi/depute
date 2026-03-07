@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **depute** is an open-source (MIT) React component library for Agentic Experience (AX) design — purpose-built UI primitives for AI agent supervision and human oversight.
 
-**Distribution:** CLI copy-paste model (like shadcn/ui). `npx ax-depute add <component>` copies source files into the user's project. No npm black box.
+**Distribution:** CLI copy-paste model (like shadcn/ui). `npx ax-depute@latest add <component>` copies source files into the user's project. No npm black box.
 
 **Brand:** `depute` (lowercase in prose). CLI package: `ax-depute`. GitHub: `Iambizi/depute`.
 
@@ -105,7 +105,7 @@ depute/
 
 ## Distribution Architecture
 
-- **CLI:** `npx ax-depute add <component>` — fetches from GitHub raw, copies into user's `src/components/`
+- **CLI:** `npx ax-depute@latest add <component>` — fetches from GitHub raw, copies into user's `src/components/`
 - **Registry:** `registry/registry.json` — manifest of all 17 components with file lists and metadata
 - **Shared Files:** `src/types/ax-common.ts` and `src/utils/ax-a11y.tsx` auto-installed on first `add`
 - **Config:** All URLs centralized in `packages/cli/src/config.js` — single line to update if repo changes

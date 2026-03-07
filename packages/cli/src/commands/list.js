@@ -44,5 +44,5 @@ export async function runList() {
   }
 
   console.log(`  ${c.dim('Usage:')} npx ax-depute ${c.bold('<component-name>')}`);
-  console.log(`  ${c.dim('Example:')} npx ax-depute add approval-gate\n`);
+  console.log(`  ${c.dim('Example:')} npx ax-depute@latest add approval-gate\n`);
 }
