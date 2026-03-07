@@ -1,5 +1,5 @@
 ---
-title: ToolTrace
+title: Tool Trace
 description: Live timeline of every tool call with inputs, outputs, and policy flags.
 ---
 
@@ -87,7 +87,7 @@ export function App() {
 ## Design Rationale
 
 **1. Comprehension Over Logging**  
-Standard terminal logs are unreadable for non-engineers. ToolTrace formats JSON inputs and outputs into a structured UI, translating machine process into human-readable proof of work.
+Standard terminal logs are unreadable for non-engineers. Tool Trace formats JSON inputs and outputs into a structured UI, translating machine process into human-readable proof of work.
 
 **2. Policy Flagging**  
 Not all tools are equal. A `read_file` is routine, but a `execute_payment` is critical. The `policyFlags` system allows specific tool calls to bear visual severity tokens (e.g., an amber badge for `writesState`), breaking the monotony of the timeline and drawing the human's eye to high-risk actions.

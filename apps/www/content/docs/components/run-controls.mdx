@@ -1,5 +1,5 @@
 ---
-title: RunControls
+title: Run Controls
 description: Let users pause, resume, or stop a running agent.
 ---
 
@@ -85,10 +85,10 @@ export function App() {
 ## Design Rationale
 
 **1. The "Big Red Button" Principle**  
-When an agent is operating autonomously, the human supervisor must always have an immediate, obvious way to halt it. `RunControls` provides this physical-feeling override switch.
+When an agent is operating autonomously, the human supervisor must always have an immediate, obvious way to halt it. `Run Controls` provides this physical-feeling override switch.
 
 **2. State-Dependent Visibility**  
 The controls automatically adapt to the `state` prop. If the agent is already `completed`, the pause and stop buttons disappear. If it is `failed`, the retry button appears. This prevents impossible state transitions.
 
 **3. Extensibility via Slots**  
-While `RunControls` provides the core lifecycle buttons, the `actions` slot allows developers to bolt on domain-specific controls (like "Undo" or "Fork Branch") without forking the component code.
+While `Run Controls` provides the core lifecycle buttons, the `actions` slot allows developers to bolt on domain-specific controls (like "Undo" or "Fork Branch") without forking the component code.

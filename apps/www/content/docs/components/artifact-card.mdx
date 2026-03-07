@@ -1,5 +1,5 @@
 ---
-title: ArtifactCard
+title: Artifact Card
 description: Render the final output of an agentic workflow with export and provenance tracing.
 ---
 
@@ -86,7 +86,7 @@ export function App() {
 ## Design Rationale
 
 **1. The "Receipt" Pattern**  
-In traditional SaaS, the UI *is* the application. In agentic software, the UI is often just the exhaust of the application. The `ArtifactCard` treats the final output as a primary, shareable asset. 
+In traditional SaaS, the UI *is* the application. In agentic software, the UI is often just the exhaust of the application. The `Artifact Card` treats the final output as a primary, shareable asset. 
 
 **2. Verifiable Provenance**  
 Trust requires auditability. The `sourceStepId` and `toolCallIds` metadata fields visually connect the final artifact back to the exact operations that produced it, preventing "hallucinated outputs" from passing without scrutiny.

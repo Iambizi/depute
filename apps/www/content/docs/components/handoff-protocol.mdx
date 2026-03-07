@@ -1,5 +1,5 @@
 ---
-title: HandoffProtocol
+title: Handoff Protocol
 description: Structured comprehension UI for context transfers between agents.
 ---
 
@@ -105,10 +105,10 @@ export interface HandoffPayloadItem {
 ## Design Rationale
 
 **1. Comprehension Over Logging**  
-Agent handoffs are usually hidden deep in terminal logs (`Agent A passed context to Agent B`). `HandoffProtocol` pulls this event out of the log and formats it as a formal "shipping manifest," drastically increasing the human supervisor's situational awareness.
+Agent handoffs are usually hidden deep in terminal logs (`Agent A passed context to Agent B`). `Handoff Protocol` pulls this event out of the log and formats it as a formal "shipping manifest," drastically increasing the human supervisor's situational awareness.
 
 **2. Not Inherently a Gate**  
 Unless `canIntercept` is `true`, this component is purely a *Comprehension UI*. It exists to be read, not clicked. In full autonomous mode, these cards stream by as a verifiable record of context transfer.
 
 **3. The Intercept Hook**  
-When an AI orchestrator realizes it is stuck or routing incorrectly, it can use the `HandoffProtocol` with `canIntercept={true}`. The "Intercept" action allows the human to break the chain, take the accumulated context, and manually complete or reroute the task.
+When an AI orchestrator realizes it is stuck or routing incorrectly, it can use the `Handoff Protocol` with `canIntercept={true}`. The "Intercept" action allows the human to break the chain, take the accumulated context, and manually complete or reroute the task.

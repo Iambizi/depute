@@ -1,5 +1,5 @@
 ---
-title: EscalationRouter
+title: Escalation Router
 description: Alert feed for sub-agent failures with routing options.
 ---
 
@@ -35,7 +35,7 @@ bunx ax-depute add escalation-router
 
 ## Overview
 
-A high-severity intervention surface. When an agent critically fails (e.g., gets stuck in a loop, hits a rate limit, or crashes), `EscalationRouter` surfaces the error trace and provides the human supervisor with three deterministic resolution paths: Retry, Reassign, or Cancel.
+A high-severity intervention surface. When an agent critically fails (e.g., gets stuck in a loop, hits a rate limit, or crashes), `Escalation Router` surfaces the error trace and provides the human supervisor with three deterministic resolution paths: Retry, Reassign, or Cancel.
 
 
 <ComponentPreview>
@@ -84,7 +84,7 @@ export function App() {
 ## Design Rationale
 
 **1. The "Three-Way Intersection"**  
-When autonomous systems fail, they often just stop or loop infinitely. `EscalationRouter` forces the system to pause and present a clear three-way intersection to the human: Try Again (transient errors), Give to Someone Else (capability errors), or Give Up (bad intent/unsolvable).
+When autonomous systems fail, they often just stop or loop infinitely. `Escalation Router` forces the system to pause and present a clear three-way intersection to the human: Try Again (transient errors), Give to Someone Else (capability errors), or Give Up (bad intent/unsolvable).
 
 **2. Visual Urgency**  
 This is one of the few components in the library that uses aggressive Red styling by default. It acts as an `alertdialog`, breaking the user out of passive monitoring and demanding active resolution.

@@ -36,28 +36,28 @@ AX is the design discipline for interfaces where AI agents act on behalf of user
 
 | Component | AX Problem Solved |
 |-----------|-------------------|
-| `PlanCard` | Show agent's proposed plan before execution |
-| `ApprovalGate` | Gate high-risk actions with human approval (supports scoped/staged grants) |
-| `ConfidenceMeter` | Surface agent confidence (meter + badge displays) |
-| `RunControls` | Pause, resume, stop, retry a running agent |
-| `ToolTrace` | Live timeline of every tool call with I/O |
-| `ArtifactCard` | Render final output with export and provenance |
+| `Plan Card` | Show agent's proposed plan before execution |
+| `Approval Gate` | Gate high-risk actions with human approval (supports scoped/staged grants) |
+| `Confidence Meter` | Surface agent confidence (meter + badge displays) |
+| `Run Controls` | Pause, resume, stop, retry a running agent |
+| `Tool Trace` | Live timeline of every tool call with I/O |
+| `Artifact Card` | Render final output with export and provenance |
 
 ### v1 — Multi-Agent Orchestration
 
 | Component | AX Problem Solved |
 |-----------|-------------------|
-| `OrchestratorView` | Recursive tree of agent hierarchy |
-| `AgentRoster` | Dense status dashboard for 20+ agents |
-| `SubagentCard` | Single-agent card with task/token context |
-| `BranchControls` | Scoped pause/resume/quarantine per branch |
-| `SwarmMonitor` | KPI grid: throughput, errors, token spend |
-| `SwarmInbox` | Attention-triage inbox for agent messages |
-| `TaskQueue` | Ordered task backlog with priority |
-| `DelegationGate` | Gate for agent spawning/delegation |
-| `HandoffProtocol` | Structured handoff viewer |
-| `SharedContextLedger` | Read-only shared memory viewer |
-| `EscalationRouter` | Error escalation with 3-way resolution |
+| `Orchestrator View` | Recursive tree of agent hierarchy |
+| `Agent Roster` | Dense status dashboard for 20+ agents |
+| `Subagent Card` | Single-agent card with task/token context |
+| `Branch Controls` | Scoped pause/resume/quarantine per branch |
+| `Swarm Monitor` | KPI grid: throughput, errors, token spend |
+| `Swarm Inbox` | Attention-triage inbox for agent messages |
+| `Task Queue` | Ordered task backlog with priority |
+| `Delegation Gate` | Gate for agent spawning/delegation |
+| `Handoff Protocol` | Structured handoff viewer |
+| `Shared Context Ledger` | Read-only shared memory viewer |
+| `Escalation Router` | Error escalation with 3-way resolution |
 
 ## Tech Stack
 

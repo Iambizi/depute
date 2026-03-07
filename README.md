@@ -49,27 +49,27 @@ Components are **copied into your project** — not imported from `node_modules`
 
 | Component | What it does |
 |-----------|--------------|
-| **`PlanCard`** | Shows the agent's proposed plan — steps, assumptions, expected output — before execution begins |
-| **`ApprovalGate`** | Halts execution and surfaces a human approval request for high-risk or irreversible actions |
-| **`ConfidenceMeter`** | Communicates the agent's confidence in its next action, with reasoning and signal breakdown |
-| **`RunControls`** | Pause, resume, stop, and retry buttons for an active agent run |
-| **`ToolTrace`** | Live, expandable timeline of every tool call — input, output, duration, errors |
-| **`ArtifactCard`** | Renders the final output of a workflow (markdown, JSON, code) with export and provenance |
+| **Plan Card** | Shows the agent's proposed plan — steps, assumptions, expected output — before execution begins |
+| **Approval Gate** | Halts execution and surfaces a human approval request for high-risk or irreversible actions |
+| **Confidence Meter** | Communicates the agent's confidence in its next action, with reasoning and signal breakdown |
+| **Run Controls** | Pause, resume, stop, and retry buttons for an active agent run |
+| **Tool Trace** | Live, expandable timeline of every tool call — input, output, duration, errors |
+| **Artifact Card** | Renders the final output of a workflow (markdown, JSON, code) with export and provenance |
 
 ### v1 — Multi-Agent Orchestration
 
 | Component | What it does |
 |-----------|--------------|
-| **`OrchestratorView`** | Collapsible tree visualizing a multi-agent hierarchy — who spawned whom, what each is doing |
-| **`AgentRoster`** | Status dashboard for all active sub-agents: role, current task, live state |
-| **`SubagentCard`** | Single-agent card showing identity, status, tool usage, and task context |
-| **`BranchControls`** | Scoped pause / resume / quarantine controls for a specific branch of the agent tree |
-| **`SwarmMonitor`** | High-level grid view of a running swarm — throughput, blocked agents, token spend |
-| **`SwarmInbox`** | Inbox for messages passed between agents — review, approve, or redirect mid-run |
-| **`TaskQueue`** | Ordered list of pending tasks assigned to an agent, with priority and status |
-| **`DelegationGate`** | Approval surface for cross-agent delegation events — accepts, modifies, or blocks handoffs |
-| **`HandoffProtocol`** | Visual card for structured agent handoffs, including context bundle and acceptance state |
-| **`EscalationRouter`** | Displays escalation events from sub-agents, with routing recommendation and override controls |
+| **Orchestrator View** | Collapsible tree visualizing a multi-agent hierarchy — who spawned whom, what each is doing |
+| **Agent Roster** | Status dashboard for all active sub-agents: role, current task, live state |
+| **Subagent Card** | Single-agent card showing identity, status, tool usage, and task context |
+| **Branch Controls** | Scoped pause / resume / quarantine controls for a specific branch of the agent tree |
+| **Swarm Monitor** | High-level grid view of a running swarm — throughput, blocked agents, token spend |
+| **Swarm Inbox** | Inbox for messages passed between agents — review, approve, or redirect mid-run |
+| **Task Queue** | Ordered list of pending tasks assigned to an agent, with priority and status |
+| **Delegation Gate** | Approval surface for cross-agent delegation events — accepts, modifies, or blocks handoffs |
+| **Handoff Protocol** | Visual card for structured agent handoffs, including context bundle and acceptance state |
+| **Escalation Router** | Displays escalation events from sub-agents, with routing recommendation and override controls |
 
 ### v2 — Roadmap (Strict Compliance & Forensics)
 

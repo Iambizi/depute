@@ -1,5 +1,5 @@
 ---
-title: SwarmMonitor
+title: Swarm Monitor
 description: Aggregate health grid showing throughput, tokens, and global controls.
 ---
 
@@ -35,7 +35,7 @@ bunx ax-depute add swarm-monitor
 
 ## Overview
 
-A macro-level dashboard header. It aggregates the operating health of the entire swarm into a single row of KPIs, and features a prominent "global kill switch" for emergency overrides. Use this alongside `AgentRoster` for per-agent drill-downs.
+A macro-level dashboard header. It aggregates the operating health of the entire swarm into a single row of KPIs, and features a prominent "global kill switch" for emergency overrides. Use this alongside `Agent Roster` for per-agent drill-downs.
 
 
 <ComponentPreview>
@@ -101,18 +101,18 @@ export interface SwarmMonitorProps {
 
 ## Composition
 
-`SwarmMonitor` is the apex header of a multi-agent dashboard.
+`Swarm Monitor` is the apex header of a multi-agent dashboard.
 - Render it at the very top of complex pages to provide aggregate situational awareness.
-- Pair it with **`AgentRoster`** (for flat worker pools) or **`OrchestratorView`** (for hierarchical delegation trees) beneath it so users can drill into the specific agents causing the error rates reported in the monitor.
+- Pair it with **Agent Roster** (for flat worker pools) or **Orchestrator View** (for hierarchical delegation trees) beneath it so users can drill into the specific agents causing the error rates reported in the monitor.
 - If the monitor shows a high error spike, the user clicks the prominent `onGlobalKill` button to halt the entire system at once.
 
 ## Design Rationale
 
 **1. The "Big Red Button" at Scale**  
-While `RunControls` stops a single agent, `SwarmMonitor` controls the fleet. When an unexpected loop or hallucination cascade begins, supervisors do not have time to find the specific rogue agent. The `onGlobalKill` action provides instant peace of mind.
+While `Run Controls` stops a single agent, `Swarm Monitor` controls the fleet. When an unexpected loop or hallucination cascade begins, supervisors do not have time to find the specific rogue agent. The `onGlobalKill` action provides instant peace of mind.
 
 **2. Visualizing Severity (The 15% Rule)**  
 The `errorRate` metric is not a static number; it is a dynamic severity indicator. By default, it tints Amber if the error rate exceeds 5%, and solid Red if it exceeds 15% (the point at which a generative swarm is likely caught in a retry loop).
 
 **3. Progress vs. Time**  
-Generative workflows are non-deterministic, making time estimates notoriously inaccurate. `SwarmMonitor` centers the `taskCompletionRate` (a deterministic ratio of pending vs completed tasks) rather than a shaky countdown clock, grounding the human in reality.
+Generative workflows are non-deterministic, making time estimates notoriously inaccurate. `Swarm Monitor` centers the `taskCompletionRate` (a deterministic ratio of pending vs completed tasks) rather than a shaky countdown clock, grounding the human in reality.

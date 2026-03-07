@@ -1,5 +1,5 @@
 ---
-title: BranchControls
+title: Branch Controls
 description: Scoped execution controls for a single branch of the swarm.
 ---
 
@@ -35,7 +35,7 @@ bunx ax-depute add branch-controls
 
 ## Overview
 
-While `RunControls` operates on a single agent, and `SwarmMonitor` can kill the entire fleet, `BranchControls` operates on a specific *sub-tree*. It allows a supervisor to pause or quarantine a troubled workflow branch without freezing the rest of the healthy swarm.
+While `Run Controls` operates on a single agent, and `Swarm Monitor` can kill the entire fleet, `Branch Controls` operates on a specific *sub-tree*. It allows a supervisor to pause or quarantine a troubled workflow branch without freezing the rest of the healthy swarm.
 
 
 <ComponentPreview>
@@ -82,7 +82,7 @@ export function App() {
 ## Design Rationale
 
 **1. Surgical Intervention**  
-In a 20-agent swarm, one agent hitting a bad API shouldn't crash the other 19. `BranchControls` provides the surgical tools needed to manage a complex hierarchical system. If a "Scraper" branch is misbehaving, you can pause it, adjust the scraper prompt, and resume it, all while the "Summary" branch continues to process the data already collected.
+In a 20-agent swarm, one agent hitting a bad API shouldn't crash the other 19. `Branch Controls` provides the surgical tools needed to manage a complex hierarchical system. If a "Scraper" branch is misbehaving, you can pause it, adjust the scraper prompt, and resume it, all while the "Summary" branch continues to process the data already collected.
 
 **2. The Quarantine Concept**  
 Unlike "Pause" (which stops the agent from reasoning), "Quarantine" allows the branch to continue thinking but revokes its Write/Execute permissions. This is a critical debugging state: it lets the human observe *what the agent wants to do next* without actually letting it do it.

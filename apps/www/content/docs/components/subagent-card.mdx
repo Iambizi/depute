@@ -1,5 +1,5 @@
 ---
-title: SubagentCard
+title: Subagent Card
 description: A compact embeddable card for a single sub-agent.
 ---
 
@@ -90,10 +90,10 @@ export function App() {
 ## Design Rationale
 
 **1. Contextual Embeds**  
-`SubagentCard` is designed to be embedded *inside* other orchestration components. It serves as the rich payload within `OrchestratorView` tree nodes, or as the dense grid item in a non-list swarm dashboard.
+`Subagent Card` is designed to be embedded *inside* other orchestration components. It serves as the rich payload within `Orchestrator View` tree nodes, or as the dense grid item in a non-list swarm dashboard.
 
 **2. Progressive Disclosure via `onExpand`**  
-A single agent's full context (its `PlanCard`, `ToolTrace`, `RunControls`, and `ApprovalGate`) takes up an entire screen. The `SubagentCard` acts as the closed envelope; the `onExpand` handler allows developers to wire it up to a modal, slide-over, or detail pane where the human supervisor can actually debug the specific node.
+A single agent's full context (its `Plan Card`, `Tool Trace`, `Run Controls`, and `Approval Gate`) takes up an entire screen. The `Subagent Card` acts as the closed envelope; the `onExpand` handler allows developers to wire it up to a modal, slide-over, or detail pane where the human supervisor can actually debug the specific node.
 
 **3. Visual Mini-Plan**  
 If `planStepCount` is provided, a miniature progress bar appears. This leverages the established AX standard: always show the human the deterministic boundaries (a plan) around the non-deterministic generation.

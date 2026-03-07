@@ -22,7 +22,7 @@ React primitives for the human side of agentic AI. When an AI agent runs in your
 **Single agent acting on behalf of a user?** → Use v0 Core Primitives
 **Multiple agents coordinating, delegating, or running in parallel?** → Use v1 Multi-Agent Orchestration
 
-When in doubt, start with v0. v1 wraps v0 — drilling into any v1 node should reveal the familiar v0 toolkit (PlanCard, ToolTrace, ApprovalGate) scoped to that sub-agent.
+When in doubt, start with v0. v1 wraps v0 — drilling into any v1 node should reveal the familiar v0 toolkit (Plan Card, Tool Trace, Approval Gate) scoped to that sub-agent.
 
 ### Step 2: Select the right component
 
@@ -30,28 +30,28 @@ When in doubt, start with v0. v1 wraps v0 — drilling into any v1 node should r
 
 | Need | Component | Install |
 |------|-----------|---------|
-| Show the agent's proposed plan before it runs | `PlanCard` | `npx ax-depute add plan-card` |
-| Block execution and ask the user to approve a risky action | `ApprovalGate` | `npx ax-depute add approval-gate` |
-| Show how confident the agent is in its next step | `ConfidenceMeter` | `npx ax-depute add confidence-meter` |
-| Let user pause, resume, stop, or retry a running agent | `RunControls` | `npx ax-depute add run-controls` |
-| Show a live timeline of every tool call (input, output, errors) | `ToolTrace` | `npx ax-depute add tool-trace` |
-| Render the final output of a workflow with export and provenance | `ArtifactCard` | `npx ax-depute add artifact-card` |
+| Show the agent's proposed plan before it runs | `Plan Card` | `npx ax-depute add plan-card` |
+| Block execution and ask the user to approve a risky action | `Approval Gate` | `npx ax-depute add approval-gate` |
+| Show how confident the agent is in its next step | `Confidence Meter` | `npx ax-depute add confidence-meter` |
+| Let user pause, resume, stop, or retry a running agent | `Run Controls` | `npx ax-depute add run-controls` |
+| Show a live timeline of every tool call (input, output, errors) | `Tool Trace` | `npx ax-depute add tool-trace` |
+| Render the final output of a workflow with export and provenance | `Artifact Card` | `npx ax-depute add artifact-card` |
 
 **v1 — Multi-Agent Orchestration**
 
 | Need | Component | Install |
 |------|-----------|---------|
-| Visualize the full agent hierarchy as a collapsible tree | `OrchestratorView` | `npx ax-depute add orchestrator-view` |
-| Status dashboard for all active sub-agents | `AgentRoster` | `npx ax-depute add agent-roster` |
-| Single-agent card: identity, status, tool usage, task context | `SubagentCard` | `npx ax-depute add subagent-card` |
-| Scoped pause/resume/quarantine for one branch of the tree | `BranchControls` | `npx ax-depute add branch-controls` |
-| High-level grid: throughput, blocked agents, token spend | `SwarmMonitor` | `npx ax-depute add swarm-monitor` |
-| Inbox for inter-agent messages — review, approve, or redirect | `SwarmInbox` | `npx ax-depute add swarm-inbox` |
-| Ordered task queue for a single agent, with priority and status | `TaskQueue` | `npx ax-depute add task-queue` |
-| Approval surface for cross-agent delegation / agent spawning | `DelegationGate` | `npx ax-depute add delegation-gate` |
-| Visual card for structured handoffs between agents | `HandoffProtocol` | `npx ax-depute add handoff-protocol` |
-| Read-only log of shared memory/context passed between agents | `SharedContextLedger` | `npx ax-depute add shared-context-ledger` |
-| Display escalation events from sub-agents with routing overrides | `EscalationRouter` | `npx ax-depute add escalation-router` |
+| Visualize the full agent hierarchy as a collapsible tree | `Orchestrator View` | `npx ax-depute add orchestrator-view` |
+| Status dashboard for all active sub-agents | `Agent Roster` | `npx ax-depute add agent-roster` |
+| Single-agent card: identity, status, tool usage, task context | `Subagent Card` | `npx ax-depute add subagent-card` |
+| Scoped pause/resume/quarantine for one branch of the tree | `Branch Controls` | `npx ax-depute add branch-controls` |
+| High-level grid: throughput, blocked agents, token spend | `Swarm Monitor` | `npx ax-depute add swarm-monitor` |
+| Inbox for inter-agent messages — review, approve, or redirect | `Swarm Inbox` | `npx ax-depute add swarm-inbox` |
+| Ordered task queue for a single agent, with priority and status | `Task Queue` | `npx ax-depute add task-queue` |
+| Approval surface for cross-agent delegation / agent spawning | `Delegation Gate` | `npx ax-depute add delegation-gate` |
+| Visual card for structured handoffs between agents | `Handoff Protocol` | `npx ax-depute add handoff-protocol` |
+| Read-only log of shared memory/context passed between agents | `Shared Context Ledger` | `npx ax-depute add shared-context-ledger` |
+| Display escalation events from sub-agents with routing overrides | `Escalation Router` | `npx ax-depute add escalation-router` |
 
 For deep component details, prop shapes, composition flows, and triage decisions, see:
 - `references/v0-components.md`
@@ -156,14 +156,14 @@ The most common AX flow — show the plan, gate high-risk actions, then display 
 
 | # | Heuristic | What to look for | Missing component | Severity |
 |---|-----------|-------------------|-------------------|----------|
-| H1 | **Irreversible actions ungated** | The agent writes to a database, sends emails, calls external APIs, or deletes resources — with no human approval step before execution | `ApprovalGate` | 🔴 Critical |
-| H2 | **Confidence not surfaced** | The agent makes probabilistic decisions (classification, recommendation, triage) but the UI never shows how confident it is | `ConfidenceMeter` | 🟡 Warning |
-| H3 | **No pause/stop controls** | An agent run can last more than a few seconds but the user has no way to pause, cancel, or retry it | `RunControls` | 🔴 Critical |
-| H4 | **Tool calls invisible** | The agent calls tools/APIs but the user never sees what was called, with what input, or what came back | `ToolTrace` | 🟡 Warning |
-| H5 | **Plan not disclosed** | The agent executes a multi-step plan but the user doesn't see the steps before or during execution | `PlanCard` | 🟡 Warning |
-| H6 | **Output without provenance** | The agent produces a final artifact (report, code, summary) but there's no trace of which steps/tools produced it | `ArtifactCard` | 🟢 Info |
-| H7 | **Multi-agent coordination opaque** | Multiple agents coordinate, delegate, or run in parallel but there's no hierarchy view or status dashboard | `OrchestratorView` + `AgentRoster` | 🔴 Critical |
-| H8 | **Agent spawning ungated** | The system spawns new agents or delegates tasks to sub-agents without human approval of the delegation | `DelegationGate` | 🟡 Warning |
+| H1 | **Irreversible actions ungated** | The agent writes to a database, sends emails, calls external APIs, or deletes resources — with no human approval step before execution | `Approval Gate` | 🔴 Critical |
+| H2 | **Confidence not surfaced** | The agent makes probabilistic decisions (classification, recommendation, triage) but the UI never shows how confident it is | `Confidence Meter` | 🟡 Warning |
+| H3 | **No pause/stop controls** | An agent run can last more than a few seconds but the user has no way to pause, cancel, or retry it | `Run Controls` | 🔴 Critical |
+| H4 | **Tool calls invisible** | The agent calls tools/APIs but the user never sees what was called, with what input, or what came back | `Tool Trace` | 🟡 Warning |
+| H5 | **Plan not disclosed** | The agent executes a multi-step plan but the user doesn't see the steps before or during execution | `Plan Card` | 🟡 Warning |
+| H6 | **Output without provenance** | The agent produces a final artifact (report, code, summary) but there's no trace of which steps/tools produced it | `Artifact Card` | 🟢 Info |
+| H7 | **Multi-agent coordination opaque** | Multiple agents coordinate, delegate, or run in parallel but there's no hierarchy view or status dashboard | `Orchestrator View` + `Agent Roster` | 🔴 Critical |
+| H8 | **Agent spawning ungated** | The system spawns new agents or delegates tasks to sub-agents without human approval of the delegation | `Delegation Gate` | 🟡 Warning |
 
 3. **Produce the audit report.** Use this format:
 
@@ -211,7 +211,7 @@ Run these commands to install all missing components:
 ## Troubleshooting
 
 **Component not found after `npx ax-depute add`**
-Run `npx ax-depute list` to see exact component slugs. Use kebab-case (e.g., `approval-gate` not `ApprovalGate`).
+Run `npx ax-depute list` to see exact component slugs. Use kebab-case (e.g., `approval-gate` not `Approval Gate`).
 
 **TypeScript errors on shared types**
 Check that `src/types/ax-common.ts` exists — it's created on first install. If missing, re-run any `add` command.

@@ -1,5 +1,5 @@
 ---
-title: SharedContextLedger
+title: Shared Context Ledger
 description: Read-only viewer for shared memory across agents, with provenance.
 ---
 
@@ -122,7 +122,7 @@ export interface ContextLedgerEntry {
 ## Design Rationale
 
 **1. The Epistemology Hub**  
-When multiple agents collaborate, hallucinations compound. If Agent A hallucinates a "fact" and writes it to shared memory, Agents B, C, and D will treat it as ground truth. The `SharedContextLedger` exists to expose the swarm's epistemology to the human supervisor.
+When multiple agents collaborate, hallucinations compound. If Agent A hallucinates a "fact" and writes it to shared memory, Agents B, C, and D will treat it as ground truth. The `Shared Context Ledger` exists to expose the swarm's epistemology to the human supervisor.
 
 **2. Strict Provenance**  
 A memory without an author is useless for debugging. The UI forces the display of the `provenance` block. If a human sees a hallucination in the ledger, they can instantly trace it back to the specific `authorAgent` that wrote it and the `source` it originated from.

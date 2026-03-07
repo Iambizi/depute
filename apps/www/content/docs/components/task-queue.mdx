@@ -1,5 +1,5 @@
 ---
-title: TaskQueue
+title: Task Queue
 description: A backlog of pending swarm tasks with priority routing.
 ---
 
@@ -110,10 +110,10 @@ export interface TaskQueueItem {
 ## Design Rationale
 
 **1. Exposing the Routing Layer**  
-In an autonomous swarm, tasks are often dynamically generated and routed without human input. `TaskQueue` forcibly visualizes this "pending state," transforming invisible background queues into a tangible list of upcoming work.
+In an autonomous swarm, tasks are often dynamically generated and routed without human input. `Task Queue` forcibly visualizes this "pending state," transforming invisible background queues into a tangible list of upcoming work.
 
 **2. Manual Overrides**  
-AI orchestrators make routing mistakes. `TaskQueue` includes built-in action hooks (`promote`, `assign`, `cancel`) that allow the human supervisor to step in, re-prioritize a critical task, or cancel a low-value generation before compute limits are burned.
+AI orchestrators make routing mistakes. `Task Queue` includes built-in action hooks (`promote`, `assign`, `cancel`) that allow the human supervisor to step in, re-prioritize a critical task, or cancel a low-value generation before compute limits are burned.
 
 **3. Visual Grouping**  
 Tasks are automatically sorted and grouped by their `TaskStatus` (`in_progress` → `assigned` → `pending`). Priority badges use semantic color coding (Red for Critical, Amber for High) to ensure the most important work isn't lost in the backlog.

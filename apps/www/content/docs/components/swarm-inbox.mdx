@@ -1,5 +1,5 @@
 ---
-title: SwarmInbox
+title: Swarm Inbox
 description: Prioritized inbox for approval requests, escalations, and violations.
 ---
 
@@ -115,10 +115,10 @@ export interface SwarmInboxItem {
 ## Design Rationale
 
 **1. The "Exception-Only" Workflow**  
-Supervising a multi-agent swarm requires shifting from "babysitting" to an "exception-only" workflow. The human should only look at the UI when the UI explicitly asks for help. `SwarmInbox` is the funnel for all of those system interrupts.
+Supervising a multi-agent swarm requires shifting from "babysitting" to an "exception-only" workflow. The human should only look at the UI when the UI explicitly asks for help. `Swarm Inbox` is the funnel for all of those system interrupts.
 
 **2. Type-Driven Visual Sorting**  
 Not all interruptions are equal. A `policy_violation` (an agent trying to access a restricted tool) gets a distinct visual treatment from a standard `approval` loop. The `critical` severity visually dominates the list, pulsing if necessary, ensuring triage happens in the correct order.
 
 **3. Actionable Drill-Downs**  
-An inbox without actions is just a log. The `onOpenItem` callback is designed to transition the user smoothly from the macro view (the inbox) to the micro view (opening an `EscalationRouter` or an `ApprovalGate` inside a modal) to resolve the exact issue.
+An inbox without actions is just a log. The `onOpenItem` callback is designed to transition the user smoothly from the macro view (the inbox) to the micro view (opening an `Escalation Router` or an `Approval Gate` inside a modal) to resolve the exact issue.

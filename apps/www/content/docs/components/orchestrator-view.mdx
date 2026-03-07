@@ -1,5 +1,5 @@
 ---
-title: OrchestratorView
+title: Orchestrator View
 description: Visualize the full agent hierarchy as a collapsible tree.
 ---
 
@@ -119,15 +119,15 @@ export interface OrchestratorNode {
 
 ## Composition
 
-`OrchestratorView` acts as the navigation tree for a complex, hierarchical swarm.
+`Orchestrator View` acts as the navigation tree for a complex, hierarchical swarm.
 - Use it as the left-pane side navigation in a specialized dashboard.
-- Pair it with **`SwarmMonitor`** at the top of the viewport for aggregate metrics spanning the entire tree.
-- When an individual node is clicked (`onNodeClick`), render a **`PlanCard`** + **`ToolTrace`** + **`RunControls`** trio in the main right-hand pane to inspect that specific sub-agent.
+- Pair it with **Swarm Monitor** at the top of the viewport for aggregate metrics spanning the entire tree.
+- When an individual node is clicked (`onNodeClick`), render a **Plan Card** + **Tool Trace** + **Run Controls** trio in the main right-hand pane to inspect that specific sub-agent.
 
 ## Design Rationale
 
 **1. The Macro/Micro Split**  
-When multiple agents are running in a swarm, a single terminal log or chat thread becomes impossible to follow. `OrchestratorView` serves as the "macro" view—a structural map of *who* is doing what. Clicking a node typically updates an adjacent pane with the "micro" view (a standard `PlanCard` + `ToolTrace` for that specific agent).
+When multiple agents are running in a swarm, a single terminal log or chat thread becomes impossible to follow. `Orchestrator View` serves as the "macro" view—a structural map of *who* is doing what. Clicking a node typically updates an adjacent pane with the "micro" view (a standard `Plan Card` + `Tool Trace` for that specific agent).
 
 **2. Exception Highlighting**  
 The tree naturally collapses cognitive load by burying successful (`completed`) and waiting (`idle`) agents. However, `blocked` and `failed` nodes use high-contrast color codes to draw the supervisor's eye directly to the nodes requiring intervention, regardless of how deep they are nested.

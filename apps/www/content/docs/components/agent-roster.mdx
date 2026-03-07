@@ -1,5 +1,5 @@
 ---
-title: AgentRoster
+title: Agent Roster
 description: Status dashboard for scanning all active sub-agents.
 ---
 
@@ -116,14 +116,14 @@ export interface AgentRosterItem {
 
 ## Composition
 
-`AgentRoster` is specifically designed for flat worker pools. 
-- Use it alongside **`SwarmMonitor`** at the top of the viewport to provide aggregate cost and error metrics for the entire fleet.
-- When a user clicks a specific row (`onAgentSelect`), surface the detail view for that agent using a combination of **`PlanCard`**, **`ToolTrace`**, and **`RunControls`**.
+`Agent Roster` is specifically designed for flat worker pools. 
+- Use it alongside **Swarm Monitor** at the top of the viewport to provide aggregate cost and error metrics for the entire fleet.
+- When a user clicks a specific row (`onAgentSelect`), surface the detail view for that agent using a combination of **Plan Card**, **Tool Trace**, and **Run Controls**.
 
 ## Design Rationale
 
 **1. Data Density for Flat Swarms**  
-While `OrchestratorView` is best for hierarchical workflows, `AgentRoster` is designed for "flat" worker pools (like OpenAI Swarm). It prioritizes information density over structural mapping, allowing supervisors to monitor dozens of parallel tasks without scrolling.
+While `Orchestrator View` is best for hierarchical workflows, `Agent Roster` is designed for "flat" worker pools (like OpenAI Swarm). It prioritizes information density over structural mapping, allowing supervisors to monitor dozens of parallel tasks without scrolling.
 
 **2. Roll-Up Status Metrics**  
 The header of the roster automatically calculates and displays summary metric pills based on the `agents` array (e.g., showing how many agents are Working, Blocked, or Failed). This provides instant situational awareness of the swarm's health.
