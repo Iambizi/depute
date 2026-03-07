@@ -192,7 +192,40 @@ Run these commands to install all missing components:
 [list the unique npx ax-depute add commands]
 ```
 
-4. **Offer to install.** After presenting the report, ask: "Want me to install any of these components and wire them into your code?"
+4. **Offer to install.** After presenting the report, ask: "Want me to install any of these missing components and wire them into your code?"
+
+### Exporting the Audit
+
+If the user asks to "export" or "save" the audit results, you must generate the report in one of two strict formats:
+
+#### 1. JSON Export (`.json`)
+Use this format if the user wants to consume the results programmatically (e.g., for CI/CD pipelines). Write the file using this exact JSON schema:
+```json
+{
+  "project": "project-name",
+  "scannedAt": "YYYY-MM-DDTHH:mm:ssZ",
+  "summary": { "critical": 0, "warning": 0, "info": 0 },
+  "findings": [
+    {
+      "heuristicId": "H1",
+      "severity": "critical",
+      "file": "src/agent/run.ts",
+      "lines": [42, 58],
+      "gap": "Sends email without approval",
+      "recommendation": "Add ApprovalGate before sendEmail()",
+      "installCommand": "npx ax-depute add approval-gate"
+    }
+  ]
+}
+```
+
+#### 2. Markdown Export (`.md`)
+Use this format if the user wants a human-readable artifact to attach to a Jira ticket or GitHub issue. Write the file exactly matching the output structure from Step 3 above, with an additional checkbox checklist at the bottom:
+```markdown
+### Implementation Checklist
+- [ ] Install `approval-gate`
+- [ ] Wrap `src/agent/run.ts` lines 42-58 in `<Approval Gate>`
+```
 
 ---
 
