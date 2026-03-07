@@ -256,7 +256,7 @@ export function PlanCard({
                   }`}
                   aria-label={`Confidence: ${step.confidence}%`}
                 >
-                  {step.confidence}%
+                  {step.confidence}% conf
                 </span>
               )}
             </li>
