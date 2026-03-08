@@ -106,6 +106,22 @@ export default function HomePage() {
             GitHub
           </a>
         </motion.div>
+
+        {/* CTA Section */}
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.4, ease: 'easeOut' }}
+          className="max-w-2xl mx-auto text-center"
+        >
+          <h2 className="text-xl sm:text-2xl font-semibold tracking-tight text-fd-foreground mb-6">
+            Implement reliable human oversight today.
+          </h2>
+          <div className="inline-flex items-center gap-4 px-6 py-4 font-mono text-sm text-fd-muted-foreground bg-fd-card/50 backdrop-blur-sm border border-fd-border rounded-xl shadow-sm hover:shadow-md transition-shadow">
+            <span className="text-fd-muted-foreground/60">$</span> 
+            <span className="text-fd-foreground">npx ax-depute@latest add {'<component>'}</span>
+            <div className="h-4 w-px bg-fd-border mx-2" />
+            <span className="text-xs opacity-50 uppercase tracking-widest hidden sm:inline-block">Copy Source</span>
+          </div>
+        </motion.div>
       </section>
 
       {/* Show, Don't Tell Demo Section */}
@@ -186,23 +202,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="relative px-6 pb-32">
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, ease: 'easeOut' }}
-          className="max-w-2xl mx-auto text-center"
-        >
-          <h2 className="text-3xl font-semibold tracking-tight text-fd-foreground mb-8">
-            Implement reliable human oversight today.
-          </h2>
-          <div className="inline-flex items-center gap-4 px-6 py-4 font-mono text-sm text-fd-muted-foreground bg-fd-card border border-fd-border rounded-xl shadow-sm hover:shadow-md transition-shadow">
-            <span className="text-fd-muted-foreground/60">$</span> 
-            <span className="text-fd-foreground">npx ax-depute@latest add {'<component>'}</span>
-            <div className="h-4 w-px bg-fd-border mx-2" />
-            <span className="text-xs opacity-50 uppercase tracking-widest">Copy Source</span>
-          </div>
-        </motion.div>
-      </section>
+
     </main>
   );
 }
