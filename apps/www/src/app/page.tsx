@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { GeistPixelGrid, GeistPixelSquare } from 'geist/font/pixel';
+import { GeistPixelGrid } from 'geist/font/pixel';
 import { motion } from 'framer-motion';
 import { AgentRosterDemo } from '@/components/demos/AgentRosterDemo';
 import { Terminal, Shield, Workflow, ArrowRight } from 'lucide-react';
@@ -59,21 +59,11 @@ export default function HomePage() {
         </motion.div>
 
         <motion.div
-          initial={{ opacity: 0, scale: 0.9, y: 10 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-          className="mb-8 md:mb-12 flex justify-center mt-6"
-        >
-          <img src="/logo.png" alt="Depute Logo" className="w-64 h-64 md:w-80 md:h-80 object-contain drop-shadow-2xl scale-[1.5] md:scale-[2.0]" />
-        </motion.div>
-
-        <motion.h1
           initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.1, ease: 'easeOut' }}
-          className={`${GeistPixelSquare.className} text-7xl sm:text-8xl md:text-9xl tracking-tight mb-8 bg-gradient-to-b from-fd-foreground to-fd-muted-foreground bg-clip-text text-transparent relative z-10`}
-          style={{ WebkitTextStroke: '1px var(--color-fd-foreground)' }}
+          className="flex justify-center mb-8 relative z-10 px-4"
         >
-          Depute
-        </motion.h1>
+          <img src="/title-logo.svg" alt="Depute Title" className="w-[280px] sm:w-[400px] md:w-[600px] lg:w-[800px] h-auto drop-shadow-2xl" />
+        </motion.div>
 
         <motion.p 
           initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.2, ease: 'easeOut' }}
