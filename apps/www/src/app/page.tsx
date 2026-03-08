@@ -60,9 +60,9 @@ export default function HomePage() {
 
         <motion.div
           initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.1, ease: 'easeOut' }}
-          className="flex justify-center mb-8 relative z-10 px-4"
+          className="flex justify-center mb-8 relative z-10 px-4 -mt-4 md:-mt-8 -mb-4 md:-mb-8"
         >
-          <img src="/title-logo.svg" alt="Depute Title" className="w-[280px] sm:w-[400px] md:w-[600px] lg:w-[800px] h-auto drop-shadow-2xl" />
+          <img src="/title-logo.svg" alt="Depute Title" className="w-[340px] sm:w-[500px] md:w-[750px] lg:w-[950px] h-auto drop-shadow-2xl" />
         </motion.div>
 
         <motion.p 
