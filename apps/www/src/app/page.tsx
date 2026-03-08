@@ -62,9 +62,9 @@ export default function HomePage() {
           initial={{ opacity: 0, scale: 0.9, y: 10 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-          className="mb-2 md:mb-0 flex justify-center"
+          className="mb-8 md:mb-12 flex justify-center mt-6"
         >
-          <img src="/logo.png" alt="Depute Logo" className="w-64 h-64 md:w-96 md:h-96 -mt-16 -mb-12 md:-mt-24 md:-mb-20 drop-shadow-2xl" />
+          <img src="/logo.png" alt="Depute Logo" className="w-64 h-64 md:w-80 md:h-80 object-contain drop-shadow-2xl scale-[1.5] md:scale-[2.0]" />
         </motion.div>
 
         <motion.h1
