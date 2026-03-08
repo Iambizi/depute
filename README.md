@@ -1,3 +1,7 @@
+<p align="center">
+  <img src=".github/logo.png" width="120" alt="Depute Logo" />
+</p>
+
 # Depute
 
 [![npm](https://img.shields.io/npm/v/ax-depute?style=flat-square&color=black)](https://www.npmjs.com/package/ax-depute) [![docs](https://img.shields.io/badge/docs-depute.dev-blue?style=flat-square)](https://www-one-rho-67.vercel.app)

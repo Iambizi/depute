@@ -31,6 +31,7 @@ Executed a full standardization pass over the entire `apps/www/content/docs/comp
 - ✅ Updated all `ax-depute add` installation scripts across the documentation and internal CLI references to enforce `@latest` to ensure humans pull the newest binaries.
 - ✅ Fixed a major UX confusion in `PlanCard.tsx` where AI `confidence` scores were rendered as raw percentages (e.g. `95%`), leading users to mistakenly read them as step completion stats. Appended `conf` to the badge text (e.g. `95% conf`) to clarify intent.
 - ✅ Built and deployed the updated Storybook interactive playground to GitHub Pages.
+- ✅ **Brand Upgrade:** Integrated the new premium, transparent 3D logo across the GitHub `README.md`, the landing page hero section, and the Fumadocs navigation header, significantly elevating the high-fidelity feel of the project.
 
 ---
 

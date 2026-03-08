@@ -58,6 +58,15 @@ export default function HomePage() {
           </span>
         </motion.div>
 
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9, y: 10 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+          className="mb-6 flex justify-center"
+        >
+          <img src="/logo.png" alt="Depute Logo" className="w-32 h-32 md:w-36 md:h-36 drop-shadow-2xl" />
+        </motion.div>
+
         <motion.h1
           initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.1, ease: 'easeOut' }}
           className={`${GeistPixelSquare.className} text-7xl sm:text-8xl md:text-9xl tracking-tight mb-8 bg-gradient-to-b from-fd-foreground to-fd-muted-foreground bg-clip-text text-transparent`}
