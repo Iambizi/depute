@@ -8,8 +8,8 @@ export default function Layout({ children }: { children: ReactNode }) {
       tree={source.pageTree}
       nav={{ 
         title: (
-          <div className="flex items-center gap-2.5">
-            <img src="/logo.png" alt="Depute Logo" className="w-6 h-6 object-contain" />
+          <div className="flex items-center gap-3">
+            <img src="/logo.png" alt="Depute Logo" className="w-6 h-6 object-contain scale-[2.5] ml-2" />
             <span className="font-semibold tracking-tight">Depute</span>
           </div>
         )

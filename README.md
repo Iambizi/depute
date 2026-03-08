@@ -1,5 +1,5 @@
 <p align="center">
-  <img src=".github/logo.png" width="120" alt="Depute Logo" />
+  <img src=".github/logo.png" width="400" alt="Depute Logo" />
 </p>
 
 # Depute
