@@ -4,27 +4,25 @@ import Link from 'next/link';
 import { GeistPixelGrid } from 'geist/font/pixel';
 import { motion } from 'framer-motion';
 import { AgentRosterDemo } from '@/components/demos/AgentRosterDemo';
+import { ApprovalGateDemo } from '@/components/demos/ApprovalGateDemo';
 import { Terminal, Shield, Workflow, ArrowRight } from 'lucide-react';
 
-const features = [
+const highlightedComponents = [
   {
-    icon: <Shield className="w-5 h-5" />,
-    label: 'Single Agent',
-    count: '6',
-    items: ['PlanCard', 'ApprovalGate', 'ConfidenceMeter', 'RunControls', 'ToolTrace', 'ArtifactCard'],
+    name: 'ApprovalGate',
+    description: 'Pause execution to require explicit human sign-off before irreversible actions are taken.',
+    icon: <Shield className="w-5 h-5" />
   },
   {
-    icon: <Workflow className="w-5 h-5" />,
-    label: 'Multi-Agent',
-    count: '11',
-    items: ['OrchestratorView', 'AgentRoster', 'SwarmMonitor', 'DelegationGate', 'TaskQueue', '+6 more'],
+    name: 'ConfidenceMeter',
+    description: 'Visual indicator that surfaces an AI agent\'s certainty level before it proceeds.',
+    icon: <Terminal className="w-5 h-5" />
   },
   {
-    icon: <Terminal className="w-5 h-5" />,
-    label: 'CLI',
-    count: 'npx',
-    items: ['ax-depute@latest add <component>', 'Copy source into your project', 'You own the code'],
-  },
+    name: 'AgentRoster',
+    description: 'Monitor multi-agent swarms, their current status, and active delegation routes.',
+    icon: <Workflow className="w-5 h-5" />
+  }
 ];
 
 export default function HomePage() {
@@ -65,15 +63,22 @@ export default function HomePage() {
           <img src="/title-logo.svg" alt="Depute Title" className="w-[340px] sm:w-[500px] md:w-[750px] lg:w-[950px] h-auto drop-shadow-2xl" />
         </motion.div>
 
-        <motion.p 
+        <motion.div 
           initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.2, ease: 'easeOut' }}
-          className="max-w-xl text-xl text-fd-muted-foreground leading-relaxed mb-10"
+          className="max-w-xl text-xl text-fd-muted-foreground leading-relaxed mb-6"
         >
-          React primitives for the human side of agentic AI.
+          The UI layer for AI agent oversight.
           <br />
           <span className="text-fd-foreground font-medium">
-            Purpose-built UI for agent supervision and human oversight.
+            Components for humans who can't let agents run unchecked.
           </span>
+        </motion.div>
+
+        <motion.p 
+          initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.25, ease: 'easeOut' }}
+          className="max-w-2xl text-base text-fd-muted-foreground leading-relaxed mb-10"
+        >
+          AI agents can now send emails, execute trades, and deploy code. When actions are irreversible, oversight stops being optional.
         </motion.p>
 
         <motion.div 
@@ -105,22 +110,35 @@ export default function HomePage() {
       <section className="relative px-6 pb-32">
         <motion.div 
           initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-100px" }} transition={{ duration: 0.7, ease: 'easeOut' }}
-          className="max-w-5xl mx-auto"
+          className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8"
         >
           <div className="rounded-2xl border border-fd-border bg-fd-card/40 backdrop-blur-sm shadow-2xl overflow-hidden relative group">
             <div className="absolute inset-0 bg-gradient-to-br from-fd-foreground/5 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-            
             <div className="relative flex items-center px-4 py-3 border-b border-fd-border bg-fd-muted/50">
               <div className="flex gap-2">
                 <div className="w-3 h-3 rounded-full bg-fd-border/50" />
                 <div className="w-3 h-3 rounded-full bg-fd-border/50" />
                 <div className="w-3 h-3 rounded-full bg-fd-border/50" />
               </div>
-              <p className="mx-auto text-xs font-mono text-fd-muted-foreground absolute left-1/2 -translate-x-1/2">Oversight in action</p>
+              <p className="mx-auto text-xs font-mono text-fd-muted-foreground absolute left-1/2 -translate-x-1/2">AgentRoster</p>
             </div>
-            
-            <div className="relative p-8 md:p-12 bg-gradient-to-br from-fd-background to-fd-card">
+            <div className="relative p-8 flex items-center justify-center min-h-[350px] bg-gradient-to-br from-fd-background to-fd-card">
               <AgentRosterDemo />
+            </div>
+          </div>
+
+          <div className="rounded-2xl border border-fd-border bg-fd-card/40 backdrop-blur-sm shadow-2xl overflow-hidden relative group">
+            <div className="absolute inset-0 bg-gradient-to-br from-fd-foreground/5 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+            <div className="relative flex items-center px-4 py-3 border-b border-fd-border bg-fd-muted/50">
+              <div className="flex gap-2">
+                <div className="w-3 h-3 rounded-full bg-fd-border/50" />
+                <div className="w-3 h-3 rounded-full bg-fd-border/50" />
+                <div className="w-3 h-3 rounded-full bg-fd-border/50" />
+              </div>
+              <p className="mx-auto text-xs font-mono text-fd-muted-foreground absolute left-1/2 -translate-x-1/2">ApprovalGate</p>
+            </div>
+            <div className="relative p-8 flex items-center justify-center min-h-[350px] bg-gradient-to-br from-fd-background to-fd-card">
+              <ApprovalGateDemo />
             </div>
           </div>
         </motion.div>
@@ -141,12 +159,12 @@ export default function HomePage() {
         </motion.div>
       </section>
 
-      {/* Features Grid */}
+      {/* Components Overview */}
       <section className="relative px-6 pb-32">
         <div className="mx-auto grid max-w-5xl grid-cols-1 md:grid-cols-3 gap-6">
-          {features.map((feat, i) => (
+          {highlightedComponents.map((component, i) => (
             <motion.div
-              key={feat.label}
+              key={component.name}
               initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: i * 0.1, ease: 'easeOut' }}
               className="group relative rounded-2xl border border-fd-border bg-fd-card/50 p-8 transition-all duration-300 hover:-translate-y-1 hover:border-fd-foreground/30 hover:shadow-2xl hover:bg-fd-card"
             >
@@ -154,25 +172,15 @@ export default function HomePage() {
               <div className="relative">
                 <div className="flex items-center gap-3 mb-6">
                   <div className="p-2 rounded-lg bg-fd-muted text-fd-foreground shadow-sm">
-                    {feat.icon}
+                    {component.icon}
                   </div>
-                  <span className="text-xs font-semibold uppercase tracking-widest text-fd-muted-foreground">
-                    {feat.label}
+                  <span className="text-sm font-semibold tracking-tight text-fd-foreground">
+                    {component.name}
                   </span>
                 </div>
-                <div className="mb-6">
-                  <span className={`${GeistPixelGrid.className} text-5xl font-bold text-fd-foreground transition-colors duration-300`}>
-                    {feat.count}
-                  </span>
-                </div>
-                <ul className="space-y-3">
-                  {feat.items.map((item) => (
-                    <li key={item} className="flex items-center gap-2 text-sm text-fd-muted-foreground font-mono">
-                      <div className="w-1 h-1 rounded-full bg-fd-foreground/30 transition-colors" />
-                      {item}
-                    </li>
-                  ))}
-                </ul>
+                <p className="text-sm text-fd-muted-foreground leading-relaxed">
+                  {component.description}
+                </p>
               </div>
             </motion.div>
           ))}
@@ -186,7 +194,7 @@ export default function HomePage() {
           className="max-w-2xl mx-auto text-center"
         >
           <h2 className="text-3xl font-semibold tracking-tight text-fd-foreground mb-8">
-            Build safer agents today.
+            Implement reliable human oversight today.
           </h2>
           <div className="inline-flex items-center gap-4 px-6 py-4 font-mono text-sm text-fd-muted-foreground bg-fd-card border border-fd-border rounded-xl shadow-sm hover:shadow-md transition-shadow">
             <span className="text-fd-muted-foreground/60">$</span> 
