@@ -45,12 +45,12 @@ export default function HomePage() {
       />
 
       {/* Hero Section */}
-      <section className="relative flex flex-col items-center justify-center px-6 pt-32 pb-24 text-center">
+      <section className="relative flex flex-col items-center justify-center px-6 pt-20 pb-24 text-center">
         <motion.div 
           initial={{ opacity: 0, y: 15 }} 
           animate={{ opacity: 1, y: 0 }} 
           transition={{ duration: 0.5, ease: 'easeOut' }}
-          className="mb-8"
+          className="mb-4"
         >
           <span className="inline-flex items-center gap-2 px-3 py-1 text-xs font-mono font-medium rounded-full border border-fd-border bg-fd-muted text-fd-foreground shadow-sm">
             <span className="flex h-2 w-2 rounded-full bg-fd-primary animate-pulse" />
