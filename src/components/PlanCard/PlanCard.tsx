@@ -357,6 +357,7 @@ export function PlanCard({
           )}
         </div>
       )}
+      <AnnouncerRegion />
     </div>
   );
 }

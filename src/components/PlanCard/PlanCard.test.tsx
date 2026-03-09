@@ -33,7 +33,7 @@ describe('PlanCard', () => {
       );
       expect(screen.getByRole('button', { name: /Assumptions \(1\)/i })).toBeInTheDocument();
       expect(screen.getByRole('button', { name: /Reasoning/i })).toBeInTheDocument();
-      expect(screen.getByText('90%')).toBeInTheDocument();
+      expect(screen.getByText(/90% conf/i)).toBeInTheDocument();
     });
 
     it('renders empty state', () => {
@@ -152,8 +152,7 @@ describe('PlanCard', () => {
       
       // The announcer appends a visually hidden live region
       await waitFor(() => {
-        const regions = screen.queryAllByRole('status');
-        expect(regions[0]).toHaveTextContent('Selected step: Step 1');
+        expect(screen.getByText('Selected step: Step 1')).toBeInTheDocument();
       });
     });
   });

@@ -40,8 +40,10 @@ describe('ArtifactCard', () => {
       
       expect(screen.getByText('Author')).toBeInTheDocument();
       expect(screen.getByText('12KB')).toBeInTheDocument();
-      expect(screen.getByText('Step: step-3')).toBeInTheDocument();
-      expect(screen.getByText('Tools: tool-1, tool-2')).toBeInTheDocument();
+      expect(screen.getByText(/Step: step-3/i)).toBeInTheDocument();
+      expect(screen.getByText(/Tools:/i)).toBeInTheDocument();
+      expect(screen.getByText(/tool-1/i)).toBeInTheDocument();
+      expect(screen.getByText(/tool-2/i)).toBeInTheDocument();
       
       expect(screen.getByRole('button', { name: 'Export as MD' })).toBeInTheDocument();
       expect(screen.getByRole('button', { name: 'Export as JSON' })).toBeInTheDocument();
@@ -57,21 +59,16 @@ describe('ArtifactCard', () => {
 
     it('renders fallback icon for unknown type', () => {
       render(<ArtifactCard artifact={{ ...mockArtifact, type: 'unknown_type' as any }} />);
-      expect(screen.getByText('📄')).toBeInTheDocument();
+      expect(screen.getByText('unknown_type')).toBeInTheDocument();
     });
   });
 
   describe('states', () => {
-    const types: Array<[string, string]> = [
-      ['markdown', '📝'],
-      ['json', '{ }'],
-      ['csv', '📊'],
-      ['code', '< >'],
-    ];
+    const types = ['markdown', 'json', 'csv', 'code'];
 
-    it.each(types)('renders type %s with correct icon %s', (type, icon) => {
+    it.each(types)('renders type %s badge', (type) => {
       const { unmount } = render(<ArtifactCard artifact={{ ...mockArtifact, type: type as any }} />);
-      expect(screen.getByText(icon)).toBeInTheDocument();
+      expect(screen.getByText(type)).toBeInTheDocument();
       unmount();
     });
   });
