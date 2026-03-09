@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import type { ApprovalEvent, AutomationBiasThresholds } from '../components/AutomationBiasAlert/AutomationBiasAlert.types';
 
 const DEFAULT_THRESHOLDS: Required<AutomationBiasThresholds> = {
@@ -8,22 +8,26 @@ const DEFAULT_THRESHOLDS: Required<AutomationBiasThresholds> = {
 };
 
 export function useAutomationBias(
-  thresholds: AutomationBiasThresholds = {}
+  thresholds: Partial<AutomationBiasThresholds> = {}
 ) {
   const [history, setHistory] = useState<ApprovalEvent[]>([]);
   const [isAlertTriggered, setIsAlertTriggered] = useState(false);
-  const startTimeRef = useRef<number>(Date.now());
+  const [startTime, setStartTime] = useState(() => Date.now());
 
-  const mergedThresholds = { ...DEFAULT_THRESHOLDS, ...thresholds };
+  const mergedThresholds = useMemo(() => ({
+    ...DEFAULT_THRESHOLDS,
+    ...thresholds
+  }), [thresholds]);
 
   // Reset timer when a new action starts (or hook mounts)
   const resetTimer = useCallback(() => {
-    startTimeRef.current = Date.now();
+    setStartTime(Date.now());
   }, []);
 
   const recordAction = useCallback((action: 'approved' | 'rejected') => {
-    const durationMs = Date.now() - startTimeRef.current;
-    const event: ApprovalEvent = { timestamp: Date.now(), action, durationMs };
+    const now = Date.now();
+    const durationMs = now - startTime;
+    const event: ApprovalEvent = { timestamp: now, action, durationMs };
 
     setHistory((prev) => {
       const newHistory = [...prev, event].slice(-20); // Keep last 20 for session analysis
@@ -60,8 +64,9 @@ export function useAutomationBias(
       return newHistory;
     });
 
-    return Date.now() - startTimeRef.current;
-  }, [mergedThresholds]);
+    const endNow = Date.now();
+    return endNow - startTime;
+  }, [mergedThresholds, startTime]);
 
   const dismissAlert = useCallback(() => {
     setIsAlertTriggered(false);

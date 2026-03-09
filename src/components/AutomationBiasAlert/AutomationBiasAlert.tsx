@@ -16,6 +16,16 @@ export function AutomationBiasAlert({
   className,
 }: AutomationBiasAlertProps) {
   const [countdown, setCountdown] = useState(3);
+  const [prevIsActive, setPrevIsActive] = useState(false);
+
+  // Reset countdown when isActive becomes true
+  if (isActive && !prevIsActive) {
+    setCountdown(3);
+    setPrevIsActive(true);
+  } else if (!isActive && prevIsActive) {
+    setPrevIsActive(false);
+  }
+
   const isLocked = countdown > 0;
 
   useEffect(() => {
@@ -26,13 +36,6 @@ export function AutomationBiasAlert({
       return () => clearInterval(timer);
     }
   }, [isActive, countdown]);
-
-  // Reset countdown if it becomes inactive then active again
-  useEffect(() => {
-    if (!isActive) {
-      setCountdown(3);
-    }
-  }, [isActive]);
 
   const handleAcknowledge = () => {
     if (!isLocked) {
@@ -57,7 +60,7 @@ export function AutomationBiasAlert({
             
             <h3 className={styles.title}>Deliberate Review Required</h3>
             <p className={styles.description}>
-              You've approved several actions in rapid succession. Please take a moment to carefully review {actionName} before proceeding.
+              You&apos;ve approved several actions in rapid succession. Please take a moment to carefully review {actionName} before proceeding.
             </p>
 
             <div className={styles.actions}>

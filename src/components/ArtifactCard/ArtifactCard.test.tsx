@@ -58,7 +58,7 @@ describe('ArtifactCard', () => {
     });
 
     it('renders fallback icon for unknown type', () => {
-      render(<ArtifactCard artifact={{ ...mockArtifact, type: 'unknown_type' as any }} />);
+      render(<ArtifactCard artifact={{ ...mockArtifact, type: 'unknown_type' as 'markdown' }} />);
       expect(screen.getByText('unknown_type')).toBeInTheDocument();
     });
   });
@@ -67,7 +67,7 @@ describe('ArtifactCard', () => {
     const types = ['markdown', 'json', 'csv', 'code'];
 
     it.each(types)('renders type %s badge', (type) => {
-      const { unmount } = render(<ArtifactCard artifact={{ ...mockArtifact, type: type as any }} />);
+      const { unmount } = render(<ArtifactCard artifact={{ ...mockArtifact, type: type as 'markdown' }} />);
       expect(screen.getByText(type)).toBeInTheDocument();
       unmount();
     });
