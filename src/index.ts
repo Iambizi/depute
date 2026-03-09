@@ -43,6 +43,9 @@ export type { ToolTraceProps } from './components/ToolTrace';
 export { ArtifactCard } from './components/ArtifactCard';
 export type { ArtifactCardProps, ExportFormat } from './components/ArtifactCard';
 
+export { AutomationBiasAlert } from './components/AutomationBiasAlert';
+export type { AutomationBiasAlertProps, AutomationBiasThresholds, ApprovalEvent } from './components/AutomationBiasAlert';
+
 // --- v1 Orchestration Primitives ---
 export { OrchestratorView } from './components/OrchestratorView';
 export type { OrchestratorViewProps, OrchestratorNode, AgentStatus } from './components/OrchestratorView';
@@ -76,6 +79,9 @@ export type { BranchControlsProps } from './components/BranchControls';
 
 export { SharedContextLedger } from './components/SharedContextLedger';
 export type { SharedContextLedgerProps, ContextLedgerEntry } from './components/SharedContextLedger';
+
+// Hooks
+export { useAutomationBias } from './hooks';
 
 // Mock data utilities
 export {

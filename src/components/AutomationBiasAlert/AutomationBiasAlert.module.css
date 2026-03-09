@@ -1,0 +1,108 @@
+.automationBiasAlert {
+  position: relative;
+  width: 100%;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(4px);
+  border-radius: var(--ax-radius-lg, 12px);
+  padding: 1.5rem;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.card {
+  background: var(--ax-bg-card, #ffffff);
+  border: 1px solid var(--ax-border-urgent, #ff4d4d);
+  border-radius: var(--ax-radius-md, 8px);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+  max-width: 400px;
+  width: 100%;
+  color: var(--ax-text-primary, #111827);
+  text-align: center;
+}
+
+.icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+  margin-bottom: 1rem;
+}
+
+.title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: var(--ax-text-primary);
+}
+
+.description {
+  font-size: 0.875rem;
+  color: var(--ax-text-secondary, #4b5563);
+  margin-bottom: 1.5rem;
+  line-height: 1.5;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.625rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border-radius: var(--ax-radius-sm, 6px);
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+}
+
+.btnPrimary {
+  background: var(--ax-brand-primary, #111827);
+  color: white;
+}
+
+.btnPrimary:hover {
+  opacity: 0.9;
+}
+
+.btnSecondary {
+  background: transparent;
+  border: 1px solid var(--ax-border-base, #e5e7eb);
+  color: var(--ax-text-secondary);
+}
+
+.btnSecondary:hover {
+  background: var(--ax-bg-hover, #f9fafb);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Premium friction: The button could be disabled for X seconds */
+.btnDisabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
