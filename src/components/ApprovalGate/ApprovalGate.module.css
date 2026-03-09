@@ -19,8 +19,6 @@
   position: relative;
 }
 
-
-
 .approvalGateApproved {
   border-color: var(--ax-status-completed-border);
 }
@@ -330,23 +328,23 @@
 }
 
 .btnApprove {
-  background: var(--ax-color-green-600);
-  color: var(--ax-surface-primary, #ffffff);
-  border-color: var(--ax-color-green-700);
+  background: var(--ax-text-primary);
+  color: var(--ax-surface-primary);
+  border-color: var(--ax-text-primary);
 }
 
 .btnApprove:hover {
-  background: var(--ax-color-green-700);
+  background: var(--ax-color-gray-800);
 }
 
 .btnReject {
   background: var(--ax-surface-primary);
-  color: var(--ax-color-red-600);
-  border-color: var(--ax-color-red-300);
+  color: var(--ax-text-primary);
+  border-color: var(--ax-border-color);
 }
 
 .btnReject:hover {
-  background: var(--ax-color-red-50);
+  background: var(--ax-surface-secondary);
 }
 
 .btnSecondary {
