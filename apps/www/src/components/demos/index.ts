@@ -15,3 +15,4 @@ export { SwarmInboxDemo } from './SwarmInboxDemo';
 export { SwarmMonitorDemo } from './SwarmMonitorDemo';
 export { TaskQueueDemo } from './TaskQueueDemo';
 export { ToolTraceDemo } from './ToolTraceDemo';
+export { AutomationBiasAlertDemo } from './AutomationBiasAlertDemo';

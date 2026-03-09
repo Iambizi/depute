@@ -10,6 +10,7 @@
     "components/run-controls",
     "components/tool-trace",
     "components/artifact-card",
+    "components/automation-bias-alert",
     "---Multi-Agent---",
     "components/orchestrator-view",
     "components/agent-roster",

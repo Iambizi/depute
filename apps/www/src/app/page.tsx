@@ -72,7 +72,7 @@ export default function HomePage() {
           The UI layer for AI agent oversight.
           <br />
           <span className="text-fd-foreground font-medium">
-            Components for humans who can't let agents run unchecked.
+            Components for humans who can&apos;t let agents run unchecked.
           </span>
         </motion.div>
 

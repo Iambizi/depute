@@ -1,0 +1,79 @@
+---
+title: Automation Bias Alert
+description: Counteract "rubber-stamping" behavior by introducing deliberate friction when passive oversight is detected.
+---
+
+import { AutomationBiasAlertDemo } from '@/components/demos/AutomationBiasAlertDemo';
+import { ComponentPreview } from '@/components/component-preview';
+
+Automation bias occurs when humans over-trust automated systems, leading to passive oversight or "rubber-stamping" of errors. The `AutomationBiasAlert` component counteracts this by monitoring approval patterns and introducing a mandatory review pause when bypass behavior is detected.
+
+<ComponentPreview>
+  <AutomationBiasAlertDemo />
+</ComponentPreview>
+
+## Basic usage
+
+The component works as a wrapper around interactive oversight elements (like `ApprovalGate`). It uses the `useAutomationBias` hook to monitor events and trigger the alert.
+
+```tsx
+import { AutomationBiasAlert, useAutomationBias } from '@/depute';
+
+function MyOversightUI() {
+  const { isAlertTriggered, recordAction, dismissAlert } = useAutomationBias();
+
+  const handleAction = (action: 'approved' | 'rejected') => {
+    // Record the action to update internal bias heuristics
+    recordAction(action);
+    executeAction(action);
+  };
+
+  return (
+    <AutomationBiasAlert 
+      isActive={isAlertTriggered} 
+      onAcknowledge={dismissAlert}
+      actionName="this deployment"
+    >
+      <button onClick={() => handleAction('approved')}>Approve</button>
+    </AutomationBiasAlert>
+  );
+}
+```
+
+## Detection Heuristics
+
+The `useAutomationBias` hook monitors three specific behavioral signals:
+
+1. **Consecutive Approvals**: Detecting long streaks of approvals without a single rejection or modification.
+2. **Approval Velocity**: Measuring the time between the UI rendering and the user clicking "Approve". If it's faster than a human could realistically review the content, it triggers friction.
+3. **Session Ceilings**: Monitoring the overall approval-to-rejection ratio. If a user approves >90% of actions over a long period, it indicates potential over-trust.
+
+## Props
+
+### AutomationBiasAlert
+
+| Prop | Type | Default | Description |
+| :--- | :--- | :--- | :--- |
+| `children` | `ReactNode` | - | The interactive UI to be wrapped/protected. |
+| `isActive` | `boolean` | `false` | Whether the friction overlay should be displayed. |
+| `onAcknowledge` | `() => void` | - | Callback when the user acknowledges the alert after the pause. |
+| `actionName` | `string` | `'this action'` | The name of the action being gated, used in the alert message. |
+| `className` | `string` | - | Optional custom styling for the container. |
+
+### useAutomationBias
+
+| Option | Type | Default | Description |
+| :--- | :--- | :--- | :--- |
+| `consecutiveApprovals` | `number` | `5` | Trigger alert after this many consecutive approvals. |
+| `minApprovalTimeMs` | `number` | `1500` | Minimum ms required for a "valid" review. |
+| `approvalRateCeiling` | `number` | `0.9` | Trigger alert if overall approval rate exceeds this % (0-1). |
+
+## Design rationale
+
+Standard Human-in-the-Loop (HITL) designs often fail because they optimize for *efficiency* rather than *efficacy*. By making it "too easy" to approve agent actions, we inadvertently train users to ignore the details.
+
+`AutomationBiasAlert` is a **friction-first** primitive. It is designed to be annoying in exactly the right way: it forces the human brain to switch from "System 1" (fast, instinctive, emotional) to "System 2" (slower, more deliberative, logical) thinking.
+
+- **Non-blocking**: It doesn't stop the user from eventually approving, but it breaks the physical rhythm of repetitive clicking.
+- **Contextual**: It only appears when behavioral patterns suggest the human is no longer actually reviewing the data.
+- **Safety-Critical**: Essential for agents performing financial transactions, medical evaluations, or high-consequence code deployments.
