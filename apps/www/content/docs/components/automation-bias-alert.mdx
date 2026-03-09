@@ -3,14 +3,45 @@ title: Automation Bias Alert
 description: Counteract "rubber-stamping" behavior by introducing deliberate friction when passive oversight is detected.
 ---
 
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
 import { AutomationBiasAlertDemo } from '@/components/demos/AutomationBiasAlertDemo';
 import { ComponentPreview } from '@/components/component-preview';
+import { StorybookEmbed } from '@/components/storybook-embed';
+
+## Install
+
+<Tabs groupId="package-manager" items={["npm", "pnpm", "yarn", "bun"]} persist>
+  <Tab value="npm">
+```bash
+npx ax-depute@latest add automation-bias-alert
+```
+  </Tab>
+  <Tab value="pnpm">
+```bash
+pnpm dlx ax-depute@latest add automation-bias-alert
+```
+  </Tab>
+  <Tab value="yarn">
+```bash
+yarn dlx ax-depute@latest add automation-bias-alert
+```
+  </Tab>
+  <Tab value="bun">
+```bash
+bunx ax-depute@latest add automation-bias-alert
+```
+  </Tab>
+</Tabs>
+
+## Overview
 
 Automation bias occurs when humans over-trust automated systems, leading to passive oversight or "rubber-stamping" of errors. The `AutomationBiasAlert` component counteracts this by monitoring approval patterns and introducing a mandatory review pause when bypass behavior is detected.
 
 <ComponentPreview>
   <AutomationBiasAlertDemo />
 </ComponentPreview>
+
+<StorybookEmbed story="ax-components-automationbiasalert--default" />
 
 ## Basic usage
 
@@ -40,6 +71,18 @@ function MyOversightUI() {
 }
 ```
 
+## With custom thresholds
+
+You can tune the sensitivity of the bias detection by passing custom thresholds to the hook.
+
+```tsx
+const { isAlertTriggered, recordAction, dismissAlert } = useAutomationBias({
+  consecutiveApprovals: 3,   // Alert after 3 consecutive approvals
+  minApprovalTimeMs: 2500,  // Require 2.5s review time
+  approvalRateCeiling: 0.8  // Alert if approval rate > 80%
+});
+```
+
 ## Detection Heuristics
 
 The `useAutomationBias` hook monitors three specific behavioral signals:
@@ -67,6 +110,16 @@ The `useAutomationBias` hook monitors three specific behavioral signals:
 | `consecutiveApprovals` | `number` | `5` | Trigger alert after this many consecutive approvals. |
 | `minApprovalTimeMs` | `number` | `1500` | Minimum ms required for a "valid" review. |
 | `approvalRateCeiling` | `number` | `0.9` | Trigger alert if overall approval rate exceeds this % (0-1). |
+
+## Composition flow
+
+`AutomationBiasAlert` is an **interceptor layer**. It should wrap components that have `onApprove` or `onProceed` callbacks:
+
+```text
+Plan Card → [Automation Bias Alert → Approval Gate] → Run Controls
+```
+
+It monitors the final interaction point before an irreversible action is executed.
 
 ## Design rationale
 
