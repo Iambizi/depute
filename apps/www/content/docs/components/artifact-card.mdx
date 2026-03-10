@@ -82,6 +82,18 @@ export function App() {
 }
 ```
 
+## Streaming state
+
+When content is still arriving from a live backend, pass `isStreaming`. Adds `data-streaming="true"` to the root — no built-in animation; the host product styles it:
+
+```tsx
+<ArtifactCard
+  artifact={partialArtifact}
+  showPreview
+  isStreaming={agent.isStreaming}
+/>
+```
+
 ## Props
 
 | Prop | Type | Default | Description |
