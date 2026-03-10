@@ -14,6 +14,8 @@ const meta: Meta<typeof PlanCard> = {
   argTypes: {
     mode: { control: 'select', options: ['determinate', 'indeterminate'] },
     showConfidence: { control: 'boolean' },
+    isStreaming: { control: 'boolean' },
+    showReasoning: { control: 'boolean' },
   },
 };
 
@@ -112,6 +114,54 @@ export const StateEmpty: Story = {
   args: {
     title: 'Pending plan generation',
     steps: [],
+  },
+};
+
+export const StateStreaming: Story = {
+  name: 'State: Streaming (steps still arriving)',
+  args: {
+    title: 'Generating migration plan',
+    isStreaming: true,
+    mode: 'indeterminate',
+    steps: [
+      { id: 's1', label: 'Analyse schema diff', status: 'completed' },
+      { id: 's2', label: 'Generate ALTER TABLE statements', status: 'active' },
+    ],
+    assumptions: ['Database is PostgreSQL 15+'],
+  },
+};
+
+export const ShowReasoningToggle: Story = {
+  name: 'Feature: Show Reasoning (per step)',
+  args: {
+    title: 'Refactor authentication layer',
+    showReasoning: true,
+    showConfidence: true,
+    steps: [
+      { id: 's1', label: 'Audit existing auth code', status: 'completed', confidence: 92,
+        reasoning: 'Found 3 places where token refresh is duplicated across modules.' },
+      { id: 's2', label: 'Extract token refresh logic', status: 'active', confidence: 78,
+        reasoning: 'Isolating to a pure function decouples it from the HTTP client and makes it testable.' },
+      { id: 's3', label: 'Write unit tests', status: 'pending', confidence: 85,
+        reasoning: 'Need 90%+ branch coverage on the refresh path before the PR can merge.' },
+    ],
+  },
+};
+
+export const DefaultExpandedReasoning: Story = {
+  name: 'Feature: Default Expanded Reasoning (step 2)',
+  args: {
+    title: 'Implement OAuth 2.0 with PKCE',
+    showReasoning: true,
+    defaultExpandedStepId: 's2',
+    steps: [
+      { id: 's1', label: 'Research PKCE spec', status: 'completed',
+        reasoning: 'RFC 7636 mandates code_verifier length ≥ 43 characters.' },
+      { id: 's2', label: 'Design token storage strategy', status: 'active',
+        reasoning: 'httpOnly cookies are preferred over localStorage to mitigate XSS. This step\'s reasoning is expanded by default via defaultExpandedStepId="s2".' },
+      { id: 's3', label: 'Implement auth code flow', status: 'pending',
+        reasoning: 'Will use the PKCE challenge generated in step 2.' },
+    ],
   },
 };
 

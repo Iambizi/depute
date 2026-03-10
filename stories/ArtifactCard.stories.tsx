@@ -11,6 +11,7 @@ const meta: Meta<typeof ArtifactCard> = {
   argTypes: {
     showPreview: { control: 'boolean' },
     maxPreviewHeight: { control: 'text' },
+    isStreaming: { control: 'boolean' },
   },
 };
 
@@ -38,6 +39,21 @@ export const AllFeatures: Story = {
     showPreview: true,
     maxPreviewHeight: '10rem',
     onExport: (fmt) => alert(`Exporting as ${fmt}`),
+  },
+};
+
+export const StateStreaming: Story = {
+  name: 'State: Streaming (content still arriving)',
+  args: {
+    artifact: {
+      id: 'art-stream',
+      title: 'Customer Churn Analysis',
+      type: 'markdown',
+      content: '# Customer Churn Analysis\n\nAnalysing Q4 cohort data...',
+      timestamp: new Date().toISOString(),
+    },
+    isStreaming: true,
+    showPreview: true,
   },
 };
 
