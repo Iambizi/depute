@@ -14,7 +14,7 @@ const nextConfig: NextConfig = {
     return [
       {
         source: '/docs/components',
-        destination: '/docs/components/approval-gate',
+        destination: '/docs/components/plan-card',
         permanent: false,
       },
     ];
