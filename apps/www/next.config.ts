@@ -10,6 +10,15 @@ const nextConfig: NextConfig = {
     config.resolve.symlinks = true;
     return config;
   },
+  async redirects() {
+    return [
+      {
+        source: '/docs/components',
+        destination: '/docs/components/approval-gate',
+        permanent: false,
+      },
+    ];
+  },
 };
 
 const withMDX = createMDX();
