@@ -90,6 +90,6 @@ If confidence drops below a specified threshold, the flow can be automatically p
 
 ## Design rationale
 
-**Why quantitative trust signaling?**  Humans struggle to calibrate trust in LLMs. By surfacing a confidence score *before* execution, the UI shifts from a "black box" to a measurable partnership — giving the human a concrete signal to react to rather than just a gut feeling.
+**Why quantitative trust signaling?** Humans struggle to calibrate trust in LLMs. Without a signal, every agent response carries the same implicit weight — whether the model is 95% confident or guessing. Surfacing a score *before* execution creates a moment of deliberate comparison: the human sees the number, and that number reframes how they read the output. A 58% confidence on a financial recommendation is a different document than a 96% one.
 
-**Why the "reasoning" prop?**  A score without rationale is opaque. The `reasoning` prop provides space for the agent to explicitly state *why* it arrived at its score (e.g., "I found 3 distinct APIs matching the intent, which introduces ambiguity"), which is crucial for human intervention.
+**Why the `reasoning` prop?** A score without rationale is still partially opaque. An agent that outputs `58%` with no explanation is almost as unhelpful as no score at all. The `reasoning` prop gives the agent space to surface what it's uncertain about — missing context, competing interpretations, ambiguous inputs. That explanation is what makes the confidence score actionable rather than decorative, and what gives the human something to actually verify.
