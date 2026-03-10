@@ -81,11 +81,17 @@ When the agent is running, pass `activeStepId` to highlight the current step:
 
 ## Props
 
-| Prop | Type | Description |
-|------|------|-------------|
-| `steps` | `PlanStep[]` | Ordered list of plan steps |
-| `assumptions` | `string[]` | Agent's stated assumptions about the task |
-| `activeStepId` | `string` | ID of the currently executing step |
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `steps` | `PlanStep[]` | **Required** | Ordered list of plan steps |
+| `title` | `string` | **Required** | Title of the plan |
+| `assumptions` | `string[]` | `undefined` | Agent's stated assumptions |
+| `reasoning` | `string` | `undefined` | Agent's overall reasoning (collapsible) |
+| `activeStepId` | `string` | `undefined` | ID of the currently executing step |
+| `showConfidence` | `boolean` | `false` | Show confidence badge per step |
+| `isStreaming` | `boolean` | `false` | Signals that steps are still being generated. Adds `data-streaming="true"` to the root element — no built-in animation; style via CSS. |
+| `showReasoning` | `boolean` | `false` | Renders a collapsible reasoning toggle on each step that has a `reasoning` string. |
+| `defaultExpandedStepId` | `string` | `undefined` | ID of the step whose reasoning is expanded by default (uncontrolled). Follows the `activeStepId` pattern. |
 
 ## PlanStep type
 

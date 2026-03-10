@@ -102,10 +102,17 @@ export function PlanCard({
   onProceed,
   onModify,
   showConfidence = false,
+  isStreaming = false,
+  showReasoning = false,
+  defaultExpandedStepId,
   className,
 }: PlanCardProps & { onProceed?: () => void; onModify?: () => void; }) {
   const [expandedSections, setExpandedSections] = useState<Set<string>>(
-    () => new Set()
+    () => {
+      const initial = new Set<string>();
+      if (defaultExpandedStepId) initial.add(`step-reasoning-${defaultExpandedStepId}`);
+      return initial;
+    }
   );
   const [announce, AnnouncerRegion] = useAnnouncer();
 
@@ -169,6 +176,7 @@ export function PlanCard({
         className={`${styles.planCard} ${className ?? ''}`}
         role="region"
         aria-label="No plan available"
+        data-streaming={isStreaming || undefined}
       >
         <div className={styles.header}>
           <h3 className={styles.title}>{title}</h3>
@@ -184,6 +192,7 @@ export function PlanCard({
       className={`${styles.planCard} ${className ?? ''}`}
       role="region"
       aria-label={ariaLabel}
+      data-streaming={isStreaming || undefined}
     >
       {/* Header */}
       <div className={styles.header}>
@@ -238,9 +247,30 @@ export function PlanCard({
                   </div>
                 )}
 
-                {/* Show reasoning for active step */}
-                {isActive && step.reasoning && (
-                  <div className={styles.stepReasoning}>{step.reasoning}</div>
+                {/* Per-step reasoning — shown when showReasoning is true */}
+                {showReasoning && step.reasoning && (
+                  <div>
+                    <button
+                      className={styles.sectionToggle}
+                      onClick={() => toggleSection(`step-reasoning-${step.id}`)}
+                      aria-expanded={expandedSections.has(`step-reasoning-${step.id}`)}
+                    >
+                      <span
+                        className={`${styles.chevron} ${
+                          expandedSections.has(`step-reasoning-${step.id}`)
+                            ? styles.chevronOpen
+                            : ''
+                        }`}
+                        aria-hidden="true"
+                      >
+                        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                      </span>
+                      Reasoning
+                    </button>
+                    {expandedSections.has(`step-reasoning-${step.id}`) && (
+                      <div className={styles.stepReasoning}>{step.reasoning}</div>
+                    )}
+                  </div>
                 )}
               </div>
 

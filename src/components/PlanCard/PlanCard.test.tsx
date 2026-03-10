@@ -59,7 +59,21 @@ describe('PlanCard', () => {
     it('displays active state correctly', () => {
       render(<PlanCard title="Test" steps={mockSteps} />);
       expect(screen.getByRole('region', { name: 'Plan: Test, step 2 of 3 in progress' })).toBeInTheDocument();
-      // Step 2 is active so reasoning should show
+      // Reasoning is hidden by default even for the active step
+      expect(screen.queryByText('Thinking...')).not.toBeInTheDocument();
+    });
+
+    it('shows reasoning per step when showReasoning is true', () => {
+      render(<PlanCard title="Test" steps={mockSteps} showReasoning={true} />);
+      // Step 2 has reasoning; a toggle button should render
+      expect(screen.getAllByRole('button', { name: /Reasoning/i }).length).toBeGreaterThan(0);
+      // Content is collapsed by default
+      expect(screen.queryByText('Thinking...')).not.toBeInTheDocument();
+    });
+
+    it('expands reasoning for defaultExpandedStepId when showReasoning is true', () => {
+      render(<PlanCard title="Test" steps={mockSteps} showReasoning={true} defaultExpandedStepId="2" />);
+      // Step 2's reasoning should be visible without clicking
       expect(screen.getByText('Thinking...')).toBeInTheDocument();
     });
 

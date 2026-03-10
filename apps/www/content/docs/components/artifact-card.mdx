@@ -91,6 +91,7 @@ export function App() {
 | `onExport` | `(format: ExportFormat) => void` | `undefined` | Callback fired when an export button is clicked. |
 | `showPreview` | `boolean` | `true` | Whether to render a preview of the artifact's `content` inside the card. |
 | `maxPreviewHeight` | `string` | `'24rem'` | Maximum height of the content preview area before an internal scrollbar appears. |
+| `isStreaming` | `boolean` | `false` | Signals that content is still arriving. Adds `data-streaming="true"` to the root element — no built-in animation; style via CSS. |
 
 ## Composition flow
 

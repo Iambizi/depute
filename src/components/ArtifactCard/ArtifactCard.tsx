@@ -74,6 +74,7 @@ export function ArtifactCard({
   onExport,
   showPreview = true,
   maxPreviewHeight = '12rem',
+  isStreaming = false,
   className,
 }: ArtifactCardProps) {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -87,6 +88,7 @@ export function ArtifactCard({
     <article
       className={`${styles.artifactCard} ${className ?? ''}`}
       aria-label={`Artifact: ${artifact.title}`}
+      data-streaming={isStreaming || undefined}
     >
       {/* Header */}
       <div className={styles.header}>

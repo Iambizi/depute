@@ -24,6 +24,13 @@ export interface ArtifactCardProps {
   /** Maximum preview height before truncation */
   maxPreviewHeight?: string;
 
+  /**
+   * When true, indicates that artifact content is still arriving from a
+   * streaming backend. Exposes `data-streaming="true"` on the root element
+   * as a CSS hook — the consumer decides how to style the streaming state.
+   */
+  isStreaming?: boolean;
+
   /** Additional CSS class */
   className?: string;
 }
