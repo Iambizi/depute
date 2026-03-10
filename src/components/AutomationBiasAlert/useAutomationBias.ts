@@ -1,5 +1,5 @@
 import { useState, useCallback, useMemo } from 'react';
-import type { ApprovalEvent, AutomationBiasThresholds } from '../components/AutomationBiasAlert/AutomationBiasAlert.types';
+import type { ApprovalEvent, AutomationBiasThresholds } from './AutomationBiasAlert.types';
 
 const DEFAULT_THRESHOLDS: Required<AutomationBiasThresholds> = {
   consecutiveApprovals: 5,

@@ -1,1 +1,1 @@
-export { useAutomationBias } from './useAutomationBias';
+export { useAutomationBias } from '../components/AutomationBiasAlert/useAutomationBias';

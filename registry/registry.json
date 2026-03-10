@@ -281,6 +281,23 @@
       ],
       "registryDependencies": [],
       "axPrinciples": ["Transparency", "Context Visibility"]
+    },
+    {
+      "name": "automation-bias-alert",
+      "label": "AutomationBiasAlert",
+      "category": "Trust & Approval",
+      "description": "Counteracts \"rubber-stamping\" by introducing deliberate friction when passive oversight is detected",
+      "buildOrder": 18,
+      "type": "primitive",
+      "files": [
+        "src/components/AutomationBiasAlert/AutomationBiasAlert.tsx",
+        "src/components/AutomationBiasAlert/AutomationBiasAlert.module.css",
+        "src/components/AutomationBiasAlert/AutomationBiasAlert.types.ts",
+        "src/components/AutomationBiasAlert/useAutomationBias.ts",
+        "src/components/AutomationBiasAlert/index.ts"
+      ],
+      "registryDependencies": [],
+      "axPrinciples": ["Human-in-the-Loop", "Calibrated Trust", "Safety-Critical"]
     }
   ]
 }

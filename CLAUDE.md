@@ -11,7 +11,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 **Brand:** `depute` (lowercase in prose). CLI package: `ax-depute`. GitHub: `Iambizi/depute`.
 
 **Current State (March 2026):**
-- v0.1.0 released (6 core primitives) ✅
+- v0.1.0 released (7 core primitives) ✅
 - v0.2.0 released (11 orchestration primitives) ✅
 - CLI published to npm (`ax-depute@0.2.0`) ✅
 - Storybook deployed to GitHub Pages ✅
@@ -30,7 +30,7 @@ AX is the design discipline for interfaces where AI agents act on behalf of user
 - **Asynchronous operations**: Agent tasks may take seconds or minutes to complete
 - **Safe delegation**: Scoped, bounded, revocable control over what agents can do
 
-## Shipped Components (17 total)
+## Shipped Components (18 total)
 
 ### v0 — Core Primitives (Single Agent)
 
@@ -42,6 +42,7 @@ AX is the design discipline for interfaces where AI agents act on behalf of user
 | `Run Controls` | Pause, resume, stop, retry a running agent |
 | `Tool Trace` | Live timeline of every tool call with I/O |
 | `Artifact Card` | Render final output with export and provenance |
+| `Automation Bias Alert` | Counteract "rubber-stamping" with deliberate friction |
 
 ### v1 — Multi-Agent Orchestration
 
@@ -64,7 +65,7 @@ AX is the design discipline for interfaces where AI agents act on behalf of user
 - React 18+ with TypeScript (strict, no `any` types)
 - CSS Modules (NOT Tailwind) — components use `--ax-*` custom properties
 - Storybook for component documentation and live examples
-- Vitest + React Testing Library (219 tests, 17 test files)
+- Vitest + React Testing Library (223 tests, 18 test files)
 - Vite for library build (ES + CJS output)
 - Next.js + Fumadocs for docs site (`apps/www`)
 
@@ -73,7 +74,7 @@ AX is the design discipline for interfaces where AI agents act on behalf of user
 ```
 depute/
 ├── src/
-│   ├── components/          # All 17 React components
+│   ├── components/          # All 18 React components
 │   │   └── [ComponentName]/
 │   │       ├── [ComponentName].tsx
 │   │       ├── [ComponentName].types.ts
@@ -90,7 +91,7 @@ depute/
 │   │   ├── animations.css
 │   │   └── index.css
 │   └── index.ts
-├── stories/                 # Storybook stories (17 files)
+├── stories/                 # Storybook stories (18 files)
 ├── packages/cli/            # ax-depute CLI (npm package)
 ├── registry/                # registry.json (component manifest)
 ├── apps/www/                # Next.js + Fumadocs docs site
@@ -106,7 +107,7 @@ depute/
 ## Distribution Architecture
 
 - **CLI:** `npx ax-depute@latest add <component>` — fetches from GitHub raw, copies into user's `src/components/`
-- **Registry:** `registry/registry.json` — manifest of all 17 components with file lists and metadata
+- **Registry:** `registry/registry.json` — manifest of all 18 components with file lists and metadata
 - **Shared Files:** `src/types/ax-common.ts` and `src/utils/ax-a11y.tsx` auto-installed on first `add`
 - **Config:** All URLs centralized in `packages/cli/src/config.js` — single line to update if repo changes
 
@@ -118,7 +119,7 @@ Two identical skill files teach AI agents how to use depute:
 
 Both include:
 - Component selection decision tree (v0 vs v1)
-- Install commands for all 17 components
+- Install commands for all 18 components
 - Common composition patterns
 - **Audit Mode** — 8 heuristics for scanning codebases for missing oversight
 
@@ -144,7 +145,7 @@ Both include:
 ```bash
 npm install          # Install dependencies
 npm run storybook    # Run Storybook at localhost:6006
-npm test             # Run 219 tests
+npm test             # Run 223 tests
 npm run build        # Production build (Vite)
 npm run type-check   # tsc --noEmit (uses tsconfig.build.json)
 ```

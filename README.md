@@ -59,6 +59,7 @@ Components are **copied into your project** — not imported from `node_modules`
 | **Run Controls** | Pause, resume, stop, and retry buttons for an active agent run |
 | **Tool Trace** | Live, expandable timeline of every tool call — input, output, duration, errors |
 | **Artifact Card** | Renders the final output of a workflow (markdown, JSON, code) with export and provenance |
+| **Automation Bias Alert** | Counteracts "rubber-stamping" by introducing deliberate friction when passive oversight is detected |
 
 ### v1 — Multi-Agent Orchestration
 
@@ -148,7 +149,7 @@ const trace = generateMockToolCalls(3);
 ```bash
 npm install
 npm run storybook     # interactive component explorer at localhost:6006
-npm test              # 219 tests across 17 components
+npm test              # 223 tests across 18 components
 ```
 
 ---

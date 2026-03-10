@@ -10,8 +10,8 @@ const features = [
   {
     icon: <Shield className="w-5 h-5" />,
     label: 'Single Agent',
-    count: '6',
-    items: ['PlanCard', 'ApprovalGate', 'ConfidenceMeter', 'RunControls', 'ToolTrace', 'ArtifactCard'],
+    count: '7',
+    items: ['PlanCard', 'ApprovalGate', 'ConfidenceMeter', 'RunControls', 'ToolTrace', 'ArtifactCard', 'AutomationBiasAlert'],
   },
   {
     icon: <Workflow className="w-5 h-5" />,

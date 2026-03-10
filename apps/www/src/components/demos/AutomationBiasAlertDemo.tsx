@@ -1,9 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import { AutomationBiasAlert } from '@/depute/components/AutomationBiasAlert';
+import { AutomationBiasAlert, useAutomationBias } from '@/depute/components/AutomationBiasAlert';
 import { ApprovalGate } from '@/depute/components/ApprovalGate';
-import { useAutomationBias } from '@/depute/hooks/useAutomationBias';
 
 export function AutomationBiasAlertDemo() {
   const [gateStatus, setGateStatus] = useState<'pending' | 'approved' | 'rejected'>('pending');

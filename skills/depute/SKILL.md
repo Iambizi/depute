@@ -36,6 +36,7 @@ When in doubt, start with v0. v1 wraps v0 — drilling into any v1 node should r
 | Let user pause, resume, stop, or retry a running agent | `Run Controls` | `npx ax-depute@latest add run-controls` |
 | Show a live timeline of every tool call (input, output, errors) | `Tool Trace` | `npx ax-depute@latest add tool-trace` |
 | Render the final output of a workflow with export and provenance | `Artifact Card` | `npx ax-depute@latest add artifact-card` |
+| Counteract "rubber-stamping" with deliberate friction | `Automation Bias Alert` | `npx ax-depute@latest add automation-bias-alert` |
 
 **v1 — Multi-Agent Orchestration**
 
