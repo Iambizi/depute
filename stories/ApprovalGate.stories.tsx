@@ -202,3 +202,59 @@ export const ErrorHandling: Story = {
     timeoutSeconds: 60,
   },
 };
+// ============================================================
+// COMPOSITION STORIES
+// ============================================================
+
+export const WithAutomationBiasAlert: Story = {
+  name: 'Composition: With AutomationBiasAlert',
+  render: () => {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const { isAlertTriggered, recordAction, dismissAlert } = require('../src/hooks').useAutomationBias({
+       consecutiveApprovals: 2, // Trigger fast for demo
+    });
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const [status, setStatus] = useState<'pending' | 'approved' | 'rejected' | 'expired'>('pending');
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const [count, setCount] = useState(0);
+
+    const handleApprove = () => {
+      recordAction('approved');
+      setStatus('approved');
+      setCount(prev => prev + 1);
+    };
+
+    const handleReset = () => {
+      setStatus('pending');
+    };
+
+    const AutomationBiasAlert = require('../src/components/AutomationBiasAlert').AutomationBiasAlert;
+
+    return (
+      <div style={{ maxWidth: '600px' }}>
+        <p style={{ fontSize: '12px', color: '#666', marginBottom: '16px', fontFamily: 'sans-serif' }}>
+          <strong>Approvals:</strong> {count} | <strong>Tip:</strong> Approve twice in a row to trigger the Automation Bias alert.
+        </p>
+        <AutomationBiasAlert
+          isActive={isAlertTriggered}
+          onAcknowledge={dismissAlert}
+          actionName="the deployment of this script"
+        >
+          <ApprovalGate
+            {...generateMockApproval({ status, title: 'Production Script Deployment' })}
+            onApprove={handleApprove}
+            onReject={() => setStatus('rejected')}
+          />
+        </AutomationBiasAlert>
+        {status !== 'pending' && (
+          <button 
+            onClick={handleReset}
+            style={{ marginTop: '1rem', padding: '0.4rem 0.8rem', border: '1px solid #ccc', borderRadius: '4px', cursor: 'pointer', fontSize: '12px' }}
+          >
+            ↺ Reset for next action
+          </button>
+        )}
+      </div>
+    );
+  }
+};

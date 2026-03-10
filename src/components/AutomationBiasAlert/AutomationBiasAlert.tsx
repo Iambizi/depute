@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { useAutomationBias } from './useAutomationBias';
 import type { AutomationBiasAlertProps } from './AutomationBiasAlert.types';
 import styles from './AutomationBiasAlert.module.css';
 

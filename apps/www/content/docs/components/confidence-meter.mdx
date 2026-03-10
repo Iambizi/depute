@@ -90,6 +90,6 @@ If confidence drops below a specified threshold, the flow can be automatically p
 
 ## Design rationale
 
-**Why quantitative trust signaling?**  Humans struggle to calibrate trust in LLMs. By forcing the agent to output a confidence score *before* execution, the UI shifts from a "black box" to a measurable partnership.
+**Why quantitative trust signaling?**  Humans struggle to calibrate trust in LLMs. By surfacing a confidence score *before* execution, the UI shifts from a "black box" to a measurable partnership — giving the human a concrete signal to react to rather than just a gut feeling.
 
 **Why the "reasoning" prop?**  A score without rationale is opaque. The `reasoning` prop provides space for the agent to explicitly state *why* it arrived at its score (e.g., "I found 3 distinct APIs matching the intent, which introduces ambiguity"), which is crucial for human intervention.

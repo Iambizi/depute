@@ -106,6 +106,6 @@ It updates asynchronously. As soon as the agent completes its final tool call, t
 
 **Why comprehension over logging?** Standard terminal logs are unreadable for non-engineers. Tool Trace formats JSON inputs and outputs into a structured UI, translating machine process into human-readable proof of work.
 
-**What is policy flagging?** Not all tools are equal. A `read_file` is routine, but a `execute_payment` is critical. The `policyFlags` system allows specific tool calls to bear visual severity tokens (e.g., an amber badge for `writesState`), breaking the monotony of the timeline and drawing the human's eye to high-risk actions.
+**What is policy flagging?** Not all tools are equal. A `read_file` is routine, but a `execute_payment` is critical. The `policyFlags` system allows specific tool calls to bear visual severity tokens (e.g., an amber badge for `writesState`), distinguishing high-risk calls from routine ones at a glance and directing human attention where it matters.
 
 **Why automatic anchoring?** In an active stream, the human loses context if the UI doesn't track the edge of computation. The `autoScroll` logic ensures the most recent action is always in view, creating a sense of live generative momentum.

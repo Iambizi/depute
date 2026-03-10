@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
-import { AutomationBiasAlert } from '../src/components/AutomationBiasAlert';
+import { AutomationBiasAlert } from '../src/components/AutomationBiasAlert/AutomationBiasAlert';
 import { ApprovalGate } from '../src/components/ApprovalGate';
-import { useAutomationBias } from '../src/hooks/useAutomationBias';
+import { useAutomationBias } from '../src/hooks';
 import { generateMockApproval } from '../src/utils/mockData';
 
 const meta: Meta<typeof AutomationBiasAlert> = {

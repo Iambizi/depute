@@ -107,3 +107,57 @@ export const BasicUsage: Story = {
     onDeny: undefined,
   },
 };
+// ============================================================
+// COMPOSITION
+// ============================================================
+
+export const WithAutomationBiasAlert: Story = {
+  name: 'Composition: With AutomationBiasAlert',
+  render: () => {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const { isAlertTriggered, recordAction, dismissAlert } = require('../src/hooks').useAutomationBias({
+      consecutiveApprovals: 2, // Trigger fast for demo
+    });
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const [outcome, setOutcome] = useState<string | null>(null);
+    const data = generateMockDelegationGate();
+
+    if (outcome) {
+      return (
+        <div style={{ fontFamily: 'sans-serif', fontSize: '13px', padding: '16px', background: '#f9fafb', borderRadius: '8px', border: '1px solid #e5e7eb' }}>
+          Outcome: <strong>{outcome}</strong>
+          <button onClick={() => { setOutcome(null); recordAction('approved'); }} style={{ marginLeft: '12px', cursor: 'pointer', padding: '4px 10px', border: '1px solid #e5e7eb', borderRadius: '4px', fontSize: '11px' }}>
+            ↺ Trigger Another Spawn
+          </button>
+        </div>
+      );
+    }
+
+    const AutomationBiasAlert = require('../src/components/AutomationBiasAlert').AutomationBiasAlert;
+
+    return (
+      <div style={{ maxWidth: '600px' }}>
+        <p style={{ fontSize: '12px', color: '#666', marginBottom: '16px', fontFamily: 'sans-serif' }}>
+          <strong>Tip:</strong> Approve twice in a row to trigger the Automation Bias friction layer.
+        </p>
+        <AutomationBiasAlert
+          isActive={isAlertTriggered}
+          onAcknowledge={dismissAlert}
+          actionName="the spawning of a new autonomous agent"
+        >
+          <DelegationGate
+            {...data}
+            onApprove={() => {
+              recordAction('approved');
+              setOutcome('Spawn approved!');
+            }}
+            onDeny={() => {
+              recordAction('rejected');
+              setOutcome('Spawn denied.');
+            }}
+          />
+        </AutomationBiasAlert>
+      </div>
+    );
+  },
+};

@@ -98,16 +98,22 @@ export interface ProposedSubagent {
 
 ## Composition flow
 
-`Delegation Gate` specifically interrupts an orchestrator right before it spawns a new worker:
+## Composition flow
+
+`Delegation Gate` intercepts an orchestrator right before it spawns a new worker. 
+
+**Authorization is not just approval.**
+Because approving an agent is an authorization of *autonomy* (not just a single action), it represents a significantly higher-stakes decision. We strongly recommend wrapping this in `AutomationBiasAlert` to prevent "rubber-stamping" of agent authorizations:
 
 ```text
-Orchestrator View → [Delegation Gate] → Subagent spawned
+Orchestrator View → [AutomationBiasAlert → Delegation Gate] → Subagent spawned
 ```
+
 It ensures human oversight before compute is multiplied.
 
 ## Design rationale
-**1. Semantic Distinction from Approval Gate**  
-`Approval Gate` (v0) is used before an agent takes a specific, discrete action (like charging a credit card or dropping a database table). `Delegation Gate` (v1) is used before an agent *creates another agent*. Approving an action is a validation of intent; approving an agent is an authorization of autonomy. The UI must reflect this higher-stakes decision.
+**1. Intent vs. Autonomy**  
+`Approval Gate` (v0) is used before an agent takes a specific, discrete action. `Delegation Gate` (v1) is used before an agent *creates another agent*. Approving an action validates intent; approving an agent authorizes capacity. The UI reflects this shift from operational to structural decision-making.
 
 **2. The "Box" Model (Sandboxing)**  
 When humans manage humans, they create boundaries via job descriptions. When humans manage AI, they create boundaries via constraints. The `allowedTools` and `maxDepth` fields explicitly visualize the "sandbox" the new agent will be trapped in, increasing human trust that the sub-agent cannot escape its mandate.

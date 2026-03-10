@@ -123,10 +123,15 @@ It monitors the final interaction point before an irreversible action is execute
 
 ## Design rationale
 
-Standard Human-in-the-Loop (HITL) designs often fail because they optimize for *efficiency* rather than *efficacy*. By making it "too easy" to approve agent actions, we inadvertently train users to ignore the details.
+**Why friction?**
+When an interface is too smooth, users stop paying attention. They settle into a rhythm of clicking — "rubber-stamping" — and critical details slip past them unreviewed.
 
-`AutomationBiasAlert` is a **friction-first** primitive. It is designed to be annoying in exactly the right way: it forces the human brain to switch from "System 1" (fast, instinctive, emotional) to "System 2" (slower, more deliberative, logical) thinking.
+**Why does familiarity increase errors?**
+The more a user feels "in control" of an AI system, the more likely they are to blindly accept its suggestions. Research by [Shalaleh Rismani](https://shalalehrismani.com/), an AI safety researcher at McGill and Mila, confirms this: users who better understood an AI writing assistant trusted it more — and accepted significantly more errors as a result. More transparency doesn't always lead to better oversight; it often leads to more trust and less scrutiny.
 
-- **Non-blocking**: It doesn't stop the user from eventually approving, but it breaks the physical rhythm of repetitive clicking.
+**Why a mandatory pause?**
+`AutomationBiasAlert` detects when repeated approvals suggest a user has stopped actually reviewing — and introduces a pause to break the pattern. The discomfort is the point.
+
+- **Non-blocking**: It doesn't prevent the user from approving, but it breaks the physical rhythm of repetitive clicking.
 - **Contextual**: It only appears when behavioral patterns suggest the human is no longer actually reviewing the data.
 - **Safety-Critical**: Essential for agents performing financial transactions, medical evaluations, or high-consequence code deployments.
