@@ -60,9 +60,15 @@ export default function HomePage() {
 
         <motion.div
           initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.1, ease: 'easeOut' }}
-          className="flex justify-center mb-8 relative z-10 px-4 -mt-4 md:-mt-8 -mb-4 md:-mb-8"
+          className="relative z-10 px-4 -mt-4 md:-mt-8 -mb-4 md:-mb-8 max-w-[340px] sm:max-w-[500px] md:max-w-[750px] lg:max-w-[950px] mx-auto"
         >
-          <img src="/title-logo.svg" alt="Depute Title" className="w-[340px] sm:w-[500px] md:w-[750px] lg:w-[950px] h-auto drop-shadow-2xl" />
+          <img src="/title-logo.svg" alt="Depute Title" className="w-full h-auto drop-shadow-2xl" />
+          <motion.div 
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5, delay: 0.5 }}
+            className="absolute -bottom-2 md:-bottom-2 right-4 md:right-12 md:translate-x-12 text-[10px] md:text-sm font-mono text-fd-muted-foreground/60 w-max"
+          >
+            (dih-PYOOT)
+          </motion.div>
         </motion.div>
 
         <motion.div 
