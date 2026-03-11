@@ -10,7 +10,7 @@ export default function Layout({ children }: { children: ReactNode }) {
       nav={{ 
         title: (
           <div className="flex items-center">
-            <img src="/title-logo.svg" alt="Depute Logo" className="w-28 md:w-36 h-auto object-contain scale-[1.3] md:scale-[1.5] origin-left" />
+            <img src="/logo.svg" alt="Depute Logo" className="h-8 md:h-10 w-auto object-contain" />
           </div>
         )
       }}
