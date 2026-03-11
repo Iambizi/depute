@@ -65,7 +65,8 @@ export default function HomePage() {
           <img src="/title-logo.svg" alt="Depute Title" className="w-full h-auto drop-shadow-2xl" />
           <motion.div 
             initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5, delay: 0.5 }}
-            className="absolute -bottom-2 md:-bottom-2 right-4 md:right-12 md:translate-x-12 text-[10px] md:text-sm font-mono text-fd-muted-foreground/60 w-max"
+            className="absolute text-[10px] md:text-sm font-mono text-fd-muted-foreground/60 w-max"
+            style={{ bottom: "5%", right: "15%" }}
           >
             (dih-PYOOT)
           </motion.div>
