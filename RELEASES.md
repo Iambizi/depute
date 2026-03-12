@@ -27,7 +27,7 @@ The second release of **depute**, adding 11 new orchestration primitives for mul
 
 ## 📦 What's Included
 
-- **219 tests passing** across all 17 test files (11 v1 + 6 v0).
+- **223 tests passing** across all 18 test files (11 v1 + 7 v0).
 - **Full Storybook coverage** — each component has Default, state variants, interactive prototypes, and production examples.
 - **Mock data generators** for all 11 new components in `src/utils/mockData.ts`.
 - **`registry.json`** update incoming with v1 primitives (part of AXK CLI work).
