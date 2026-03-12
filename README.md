@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="apps/www/public/logo.svg" width="400" alt="Depute Logo" />
+  <img src="apps/www/public/title-logo.svg" width="400" alt="Depute Logo" />
 </p>
 
 # Depute
