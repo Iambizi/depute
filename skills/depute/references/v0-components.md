@@ -1,6 +1,6 @@
 # depute v0 — Core Primitives Reference
 
-**Status:** Locked (Feb 15, 2026) · 6 components · Single-agent oversight
+**Status:** Locked (Feb 15, 2026) · 7 components · Single-agent oversight
 
 ---
 
@@ -14,6 +14,7 @@
 | 4 | `RunControls` | "Pause / Resume / Stop" — execution steering |
 | 5 | `ToolTrace` | "Here's what I'm doing" — live tool call timeline with input/output |
 | 6 | `ArtifactCard` | "Here's what I made" — output with provenance, export, and metadata |
+| 7 | `AutomationBiasAlert` | "Slow down" — friction overlay to interrupt passive rubber-stamping |
 
 ---
 
@@ -22,15 +23,17 @@
 ```
 Agent proposes ──► PlanCard
                       │
-          User reviews ──► ApprovalGate (mode: simple | staged)
-                              │
-                Agent runs ──► RunControls (pause/resume/stop)
-                                  │
-                                  ├──► ToolTrace (watch calls live)
-                                  │
-                                  ├──► ConfidenceMeter (per-step: display="meter" | "badge")
-                                  │
-                                  └──► ArtifactCard (output + export)
+          User reviews ──► AutomationBiasAlert (wraps ApprovalGate to block rubber-stamping)
+                               │
+                    ──► ApprovalGate (mode: simple | staged)
+                               │
+                 Agent runs ──► RunControls (pause/resume/stop)
+                                   │
+                                   ├──► ToolTrace (watch calls live)
+                                   │
+                                   ├──► ConfidenceMeter (per-step: display="meter" | "badge")
+                                   │
+                                   └──► ArtifactCard (output + export)
 ```
 
 ---
@@ -96,7 +99,29 @@ Agent proposes ──► PlanCard
 />
 ```
 
----
+### AutomationBiasAlert
+
+```tsx
+// Wrap any approval surface to add deliberate friction
+<AutomationBiasAlert
+  isActive={isAlertTriggered}   // from useAutomationBias()
+  onAcknowledge={dismissAlert}  // user must actively confirm before proceeding
+  actionName="invoice batch processing"
+>
+  <ApprovalGate {...} />
+</AutomationBiasAlert>
+```
+
+**Important:** Use the bundled `useAutomationBias()` hook to track consecutive approvals and time-between-approvals. It fires `isActive` when passive oversight is detected. Wrap any `ApprovalGate` or `DelegationGate` that sees repeat automatic approvals.
+
+```tsx
+const { isAlertTriggered, recordAction, dismissAlert } = useAutomationBias({
+  consecutiveApprovals: 5,    // trigger after N approvals in a row
+  minApprovalTimeMs: 3000,    // trigger if user approves in < 3s
+  approvalRateCeiling: 0.95,  // trigger if approval rate exceeds 95%
+});
+```
+
 
 ## Triage Decisions — What's Absorbed
 
