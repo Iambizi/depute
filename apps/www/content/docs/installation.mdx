@@ -45,6 +45,35 @@ On first install, shared files are also added once:
 - `src/types/ax-common.ts` — shared TypeScript types (`PlanStep`, `ToolCall`, `Artifact`)
 - `src/utils/ax-a11y.tsx` — accessibility utilities used across components
 
+## Initialize the AI Skill Layer
+
+Depute ships with a native **Skill Layer** that teaches your AI agent (Claude Code, Cursor, Copilot) how to use the components you just installed. 
+
+<Tabs groupId="package-manager" items={["npm", "pnpm", "yarn", "bun"]} persist>
+  <Tab value="npm">
+```bash
+npx ax-depute@latest init
+```
+  </Tab>
+  <Tab value="pnpm">
+```bash
+pnpm dlx ax-depute@latest init
+```
+  </Tab>
+  <Tab value="yarn">
+```bash
+yarn dlx ax-depute@latest init
+```
+  </Tab>
+  <Tab value="bun">
+```bash
+bunx ax-depute@latest init
+```
+  </Tab>
+</Tabs>
+
+This command creates a `skills/depute/SKILL.md` entry in your repository. It instructs your agent on the exact composition flows and design rationale of all 18 Depute primitives, ensuring your agent builds reliable oversight UI on the first try.
+
 ## List all components
 
 <Tabs groupId="package-manager" items={["npm", "pnpm", "yarn", "bun"]} persist>
