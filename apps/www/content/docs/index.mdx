@@ -22,8 +22,9 @@ Most UI libraries build for CRUD apps. Depute builds for the moment *after* you 
 
 ## Use-Case Index (Problem-First)
 
-Not sure which component to use? Start with the UX problem you are trying to solve:
+Not sure which component to use? **Press `⌘K` to search by problem.** The docs are mapped to UX challenges (e.g., search for "cognitive load" or "context switch").
 
+Or start here:
 - *"I need to safely switch agent focus across a swarm"* → Use **`OrchestratorView`** + **`SharedContextLedger`**
 - *"I need to stop an agent from making an unrecoverable mistake"* → Use **`ApprovalGate`** + **`ToolTrace`**
 - *"I need to show the user what the agent is thinking"* → Use **`PlanCard`** + **`ConfidenceMeter`**
@@ -38,6 +39,12 @@ npx ax-depute@latest add approval-gate
 ```
 
 No lock-in. No black-box npm package the agent can't inspect.
+
+## The AI Skill Layer
+
+You aren't the only one building this app—your AI agent is too. Depute ships with a native **Skill Layer** built for Claude Code, Cursor, and Copilot.
+
+When you install a component, you get the UI code for the human *and* the structural reasoning instructions for your AI agent. The skill teaches your agent exactly when to use an `ApprovalGate` versus a `RunControls` boundary, ensuring the UI your agent helps you build is the same UI your agent knows how to use.
 
 ## Two tiers
 
