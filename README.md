@@ -149,7 +149,7 @@ const trace = generateMockToolCalls(3);
 ```bash
 npm install
 npm run storybook     # interactive component explorer at localhost:6006
-npm test              # 223 tests across 18 components
+npm test              # Run the comprehensive test suite across the library
 ```
 
 ---
