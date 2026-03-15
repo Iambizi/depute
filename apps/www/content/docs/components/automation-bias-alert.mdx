@@ -111,7 +111,7 @@ The `useAutomationBias` hook monitors three specific behavioral signals:
 | `minApprovalTimeMs` | `number` | `1500` | Minimum ms required for a "valid" review. |
 | `approvalRateCeiling` | `number` | `0.9` | Trigger alert if overall approval rate exceeds this % (0-1). |
 
-## Composition flow
+## Solution Patterns
 
 `AutomationBiasAlert` is an **interceptor layer**. It should wrap components that have `onApprove` or `onProceed` callbacks:
 

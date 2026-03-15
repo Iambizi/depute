@@ -20,6 +20,15 @@ Most UI libraries build for CRUD apps. Depute builds for the moment *after* you 
 - The agent is running → **Run Controls** let the user pause or stop at any time
 - Multiple agents are coordinating → **Orchestrator View** shows who's managing whom
 
+## Use-Case Index (Problem-First)
+
+Not sure which component to use? Start with the UX problem you are trying to solve:
+
+- *"I need to safely switch agent focus across a swarm"* → Use **`OrchestratorView`** + **`SharedContextLedger`**
+- *"I need to stop an agent from making an unrecoverable mistake"* → Use **`ApprovalGate`** + **`ToolTrace`**
+- *"I need to show the user what the agent is thinking"* → Use **`PlanCard`** + **`ConfidenceMeter`**
+- *"I need to prevent users from blindly rubber-stamping approvals"* → Use **`AutomationBiasAlert`** wrapping an **`ApprovalGate`**
+
 ## Distribution model
 
 Components are delivered via CLI copy-paste (like shadcn/ui). The source lands in your repo — you own it, you can read it, you can modify it.
@@ -39,4 +48,4 @@ No lock-in. No black-box npm package the agent can't inspect.
 
 Start with Single Agent primitives. Add Multi-Agent when you need orchestration.
 
-Components in the sidebar are ordered by **composition flow** — the sequence you'd encounter them when building a complete agent interaction, not alphabetically.
+Components in the sidebar are ordered by **solution patterns** — the sequence you'd encounter them when building a complete agent interaction, not alphabetically.
