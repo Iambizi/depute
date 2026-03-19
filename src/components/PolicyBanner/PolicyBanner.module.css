@@ -1,0 +1,217 @@
+/* PolicyBanner — CSS Module */
+/* v2 — Strict Compliance & Forensics */
+
+.policyBanner {
+  font-family: var(--ax-font-family);
+  border: var(--ax-border-width) solid var(--ax-border-color);
+  border-radius: var(--ax-radius-lg);
+  overflow: hidden;
+  transition: border-color var(--ax-duration-fast) var(--ax-ease-default);
+}
+
+/* ------------------------------------------------------------------ */
+/* Severity variants                                                   */
+/* ------------------------------------------------------------------ */
+
+.severityInfo {
+  --_banner-accent: var(--ax-color-blue-600);
+  --_banner-bg: var(--ax-color-blue-50);
+  --_banner-border: var(--ax-color-blue-500);
+  --_banner-badge-bg: var(--ax-color-blue-100);
+}
+
+.severityWarning {
+  --_banner-accent: var(--ax-color-amber-600);
+  --_banner-bg: var(--ax-color-amber-50);
+  --_banner-border: var(--ax-color-amber-500);
+  --_banner-badge-bg: var(--ax-color-amber-100);
+}
+
+.severityCritical {
+  --_banner-accent: var(--ax-color-red-600);
+  --_banner-bg: var(--ax-color-red-50);
+  --_banner-border: var(--ax-color-red-500);
+  --_banner-badge-bg: var(--ax-color-red-100);
+}
+
+/* Apply severity colors to the banner */
+.policyBanner.severityInfo { border-color: var(--_banner-border); }
+.policyBanner.severityWarning { border-color: var(--_banner-border); }
+.policyBanner.severityCritical {
+  border-color: var(--_banner-border);
+  border-width: 2px;
+}
+
+/* ------------------------------------------------------------------ */
+/* Header                                                              */
+/* ------------------------------------------------------------------ */
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: var(--ax-space-3);
+  padding: var(--ax-space-2) var(--ax-space-4);
+  background: var(--_banner-bg);
+  min-height: 2.25rem;
+}
+
+/* ------------------------------------------------------------------ */
+/* Live indicator (pulsing dot)                                        */
+/* ------------------------------------------------------------------ */
+
+.liveIndicator {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: var(--ax-radius-full);
+  background: var(--_banner-accent);
+  animation: ax-policy-pulse var(--ax-duration-pulse) var(--ax-ease-default) infinite;
+  flex-shrink: 0;
+}
+
+@keyframes ax-policy-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+/* Respect user motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .liveIndicator {
+    animation: none;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Mode badge                                                          */
+/* ------------------------------------------------------------------ */
+
+.modeBadge {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--ax-space-1) var(--ax-space-2);
+  border-radius: var(--ax-radius-sm);
+  background: var(--_banner-badge-bg);
+  color: var(--_banner-accent);
+  font-size: var(--ax-font-size-xs);
+  font-weight: var(--ax-font-weight-semibold);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+/* ------------------------------------------------------------------ */
+/* Description                                                         */
+/* ------------------------------------------------------------------ */
+
+.description {
+  font-size: var(--ax-font-size-sm);
+  color: var(--ax-text-secondary);
+  line-height: var(--ax-line-height-tight);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ------------------------------------------------------------------ */
+/* Spacer                                                              */
+/* ------------------------------------------------------------------ */
+
+.spacer {
+  flex: 1;
+}
+
+/* ------------------------------------------------------------------ */
+/* View Policy button                                                  */
+/* ------------------------------------------------------------------ */
+
+.viewPolicyBtn {
+  font-family: var(--ax-font-family);
+  font-size: var(--ax-font-size-xs);
+  font-weight: var(--ax-font-weight-medium);
+  color: var(--_banner-accent);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: var(--ax-space-1) var(--ax-space-2);
+  border-radius: var(--ax-radius-sm);
+  transition: background var(--ax-duration-fast) var(--ax-ease-default);
+  flex-shrink: 0;
+}
+
+.viewPolicyBtn:hover {
+  background: var(--_banner-badge-bg);
+}
+
+.viewPolicyBtn:focus-visible {
+  outline: 2px solid var(--_banner-accent);
+  outline-offset: 2px;
+}
+
+/* ------------------------------------------------------------------ */
+/* Collapse button                                                     */
+/* ------------------------------------------------------------------ */
+
+.collapseBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--ax-text-secondary);
+  font-size: var(--ax-font-size-sm);
+  border-radius: var(--ax-radius-sm);
+  transition: background var(--ax-duration-fast) var(--ax-ease-default);
+  flex-shrink: 0;
+}
+
+.collapseBtn:hover {
+  background: var(--_banner-badge-bg);
+}
+
+.collapseBtn:focus-visible {
+  outline: 2px solid var(--_banner-accent);
+  outline-offset: 2px;
+}
+
+/* ------------------------------------------------------------------ */
+/* Constraints                                                         */
+/* ------------------------------------------------------------------ */
+
+.constraints {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ax-space-2);
+  padding: var(--ax-space-2) var(--ax-space-4) var(--ax-space-3);
+  background: var(--ax-surface-primary);
+  border-top: var(--ax-border-width) solid var(--ax-border-color);
+}
+
+.constraint {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ax-space-1);
+  padding: var(--ax-space-1) var(--ax-space-2);
+  border-radius: var(--ax-radius-sm);
+  border: var(--ax-border-width) solid var(--ax-border-color);
+  background: var(--ax-surface-secondary);
+  font-size: var(--ax-font-size-xs);
+  line-height: 1;
+}
+
+.constraintLabel {
+  color: var(--ax-text-secondary);
+  font-weight: var(--ax-font-weight-medium);
+}
+
+.constraintLabel::after {
+  content: ':';
+}
+
+.constraintValue {
+  color: var(--ax-text-primary);
+  font-family: var(--ax-font-family-mono);
+  font-weight: var(--ax-font-weight-semibold);
+}

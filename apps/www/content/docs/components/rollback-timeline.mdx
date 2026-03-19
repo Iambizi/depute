@@ -1,0 +1,52 @@
+---
+title: Rollback Timeline
+description: Undo-tree for agentic tool sequences.
+---
+
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { RollbackTimelineDemo } from '@/components/demos/RollbackTimelineDemo';
+import { ComponentPreview } from '@/components/component-preview';
+import { StorybookEmbed } from '@/components/storybook-embed';
+
+## Install
+
+<Tabs groupId="package-manager" items={["npm", "pnpm", "yarn", "bun"]} persist>
+  <Tab value="npm">
+```bash
+npx ax-depute@latest add rollback-timeline
+```
+  </Tab>
+  <Tab value="pnpm">
+```bash
+pnpm dlx ax-depute@latest add rollback-timeline
+```
+  </Tab>
+  <Tab value="yarn">
+```bash
+yarn dlx ax-depute@latest add rollback-timeline
+```
+  </Tab>
+  <Tab value="bun">
+```bash
+bunx ax-depute@latest add rollback-timeline
+```
+  </Tab>
+</Tabs>
+
+## Overview
+
+`Rollback Timeline` is an undo-tree designed specifically for agentic action sequences. When agents execute long chains of tool calls, humans need a safe way to regress state if an error or hallucination is caught late. This component visualizes execution history and makes irreversibility explicit.
+
+<ComponentPreview>
+  <RollbackTimelineDemo />
+</ComponentPreview>
+
+<StorybookEmbed story="v2-compliance-forensics-rollbacktimeline--default" />
+
+## Props
+
+The `points` array accepts history points with a `status` of `'available'`, `'current'`, or `'rolled-back'`. You must provide an `onRollback` callback to handle the actual state reversion logic.
+
+## Design Rationale
+
+**Explicit Irreversibility:** Agent sequences often cross immutable boundaries (e.g., dropping a database table or sending an email). The timeline allows points to be marked `reversible: false`, rendering them with a distinct aesthetic and preventing regression past that node.

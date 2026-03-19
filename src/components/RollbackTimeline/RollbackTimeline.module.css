@@ -1,0 +1,238 @@
+/* RollbackTimeline — CSS Module */
+/* v2 — Strict Compliance & Forensics */
+
+.rollbackTimeline {
+  font-family: var(--ax-font-family);
+  border: var(--ax-border-width) solid var(--ax-border-color);
+  border-radius: var(--ax-radius-lg);
+  background: var(--ax-surface-primary);
+  overflow: hidden;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--ax-space-3) var(--ax-space-4);
+  background: var(--ax-surface-secondary);
+  border-bottom: var(--ax-border-width) solid var(--ax-border-color);
+}
+
+.title {
+  font-size: var(--ax-font-size-sm);
+  font-weight: var(--ax-font-weight-semibold);
+  color: var(--ax-text-primary);
+  margin: 0;
+}
+
+.countBadge {
+  font-size: var(--ax-font-size-xs);
+  font-weight: var(--ax-font-weight-medium);
+  color: var(--ax-text-secondary);
+  padding: var(--ax-space-1) var(--ax-space-2);
+  background: var(--ax-surface-primary);
+  border-radius: var(--ax-radius-sm);
+  border: var(--ax-border-width) solid var(--ax-border-color);
+}
+
+/* ------------------------------------------------------------------ */
+/* Timeline                                                            */
+/* ------------------------------------------------------------------ */
+
+.timeline {
+  padding: var(--ax-space-4);
+}
+
+.point {
+  position: relative;
+  display: flex;
+  gap: var(--ax-space-3);
+  padding-bottom: var(--ax-space-4);
+}
+
+.point:last-child {
+  padding-bottom: 0;
+}
+
+/* Connector line */
+.connector {
+  position: absolute;
+  left: 0.625rem;
+  top: 1.5rem;
+  bottom: 0;
+  width: 2px;
+}
+
+.connectorPast {
+  background: var(--ax-color-green-300);
+}
+
+.connectorFuture {
+  background: var(--ax-border-color);
+}
+
+/* Dot */
+.dot {
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: var(--ax-radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.625rem;
+  flex-shrink: 0;
+  z-index: 1;
+  background: var(--ax-surface-primary);
+  border: 2px solid var(--ax-border-color);
+}
+
+.dot.pointCurrent {
+  background: var(--ax-color-blue-500);
+  border-color: var(--ax-color-blue-500);
+  color: white;
+}
+
+.dot.pointAvailable {
+  border-color: var(--ax-color-green-500);
+}
+
+.dot.pointRolledBack {
+  border-color: var(--ax-color-gray-300);
+  background: var(--ax-color-gray-100);
+}
+
+.dot.pointIrreversible {
+  border-color: var(--ax-color-red-300);
+  font-size: 0.5rem;
+}
+
+/* Content */
+.pointContent {
+  flex: 1;
+  min-width: 0;
+}
+
+.pointHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ax-space-2);
+}
+
+.pointLabel {
+  font-size: var(--ax-font-size-sm);
+  font-weight: var(--ax-font-weight-medium);
+  color: var(--ax-text-primary);
+}
+
+.pointTimestamp {
+  font-family: var(--ax-font-family-mono);
+  font-size: var(--ax-font-size-xs);
+  color: var(--ax-text-tertiary);
+  flex-shrink: 0;
+}
+
+.pointDescription {
+  margin: var(--ax-space-1) 0 0;
+  font-size: var(--ax-font-size-xs);
+  color: var(--ax-text-secondary);
+}
+
+.irreversibleTag {
+  display: inline-flex;
+  margin-top: var(--ax-space-1);
+  font-size: var(--ax-font-size-xs);
+  font-weight: var(--ax-font-weight-medium);
+  color: var(--ax-color-red-600);
+  background: var(--ax-color-red-50);
+  padding: var(--ax-space-1) var(--ax-space-2);
+  border-radius: var(--ax-radius-sm);
+}
+
+/* Rolled-back state */
+.pointRolledBack .pointLabel,
+.pointRolledBack .pointDescription {
+  text-decoration: line-through;
+  color: var(--ax-text-tertiary);
+}
+
+/* ------------------------------------------------------------------ */
+/* Rollback controls                                                   */
+/* ------------------------------------------------------------------ */
+
+.rollbackBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ax-space-1);
+  margin-top: var(--ax-space-2);
+  padding: var(--ax-space-1) var(--ax-space-2);
+  font-family: var(--ax-font-family);
+  font-size: var(--ax-font-size-xs);
+  font-weight: var(--ax-font-weight-medium);
+  color: var(--ax-color-amber-700);
+  background: var(--ax-color-amber-50);
+  border: var(--ax-border-width) solid var(--ax-color-amber-300);
+  border-radius: var(--ax-radius-sm);
+  cursor: pointer;
+  transition: all var(--ax-duration-fast) var(--ax-ease-default);
+}
+
+.rollbackBtn:hover {
+  background: var(--ax-color-amber-100);
+}
+
+.rollbackBtn:focus-visible {
+  outline: 2px solid var(--ax-color-amber-500);
+  outline-offset: 2px;
+}
+
+.dependentCount {
+  color: var(--ax-color-amber-500);
+  font-weight: var(--ax-font-weight-normal);
+}
+
+/* Confirmation bar */
+.confirmBar {
+  display: flex;
+  align-items: center;
+  gap: var(--ax-space-2);
+  margin-top: var(--ax-space-2);
+  padding: var(--ax-space-2);
+  background: var(--ax-color-red-50);
+  border: var(--ax-border-width) solid var(--ax-color-red-300);
+  border-radius: var(--ax-radius-sm);
+}
+
+.confirmText {
+  font-size: var(--ax-font-size-xs);
+  color: var(--ax-color-red-700);
+  font-weight: var(--ax-font-weight-medium);
+}
+
+.confirmBtn {
+  font-family: var(--ax-font-family);
+  font-size: var(--ax-font-size-xs);
+  font-weight: var(--ax-font-weight-semibold);
+  padding: var(--ax-space-1) var(--ax-space-3);
+  color: white;
+  background: var(--ax-color-red-600);
+  border: none;
+  border-radius: var(--ax-radius-sm);
+  cursor: pointer;
+  transition: background var(--ax-duration-fast) var(--ax-ease-default);
+}
+
+.confirmBtn:hover {
+  background: var(--ax-color-red-700);
+}
+
+.cancelBtn {
+  font-family: var(--ax-font-family);
+  font-size: var(--ax-font-size-xs);
+  padding: var(--ax-space-1) var(--ax-space-3);
+  color: var(--ax-text-secondary);
+  background: none;
+  border: var(--ax-border-width) solid var(--ax-border-color);
+  border-radius: var(--ax-radius-sm);
+  cursor: pointer;
+}

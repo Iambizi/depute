@@ -13,7 +13,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 **Current State (March 2026):**
 - v0.1.0 released (7 core primitives) ✅
 - v0.2.0 released (11 orchestration primitives) ✅
-- CLI published to npm (`ax-depute@0.2.0`) ✅
+- v0.3.0 released (7 compliance primitives) ✅
+- CLI published to npm (`ax-depute@0.3.0`) ✅
 - Storybook deployed to GitHub Pages ✅
 - Docs site deployed to Vercel (`apps/www`, Next.js + Fumadocs) ✅
 - AI Skill layer written (Claude + skills.sh) ✅
@@ -30,7 +31,7 @@ AX is the design discipline for interfaces where AI agents act on behalf of user
 - **Asynchronous operations**: Agent tasks may take seconds or minutes to complete
 - **Safe delegation**: Scoped, bounded, revocable control over what agents can do
 
-## Shipped Components (18 total)
+## Shipped Components (25 total)
 
 ### v0 — Core Primitives (Single Agent)
 
@@ -60,12 +61,24 @@ AX is the design discipline for interfaces where AI agents act on behalf of user
 | `Shared Context Ledger` | Read-only shared memory viewer |
 | `Escalation Router` | Error escalation with 3-way resolution |
 
+### v2 — Strict Compliance & Forensics
+
+| Component | AX Problem Solved |
+|-----------|-------------------|
+| `Policy Banner` | Sandbox vs production environment signaling |
+| `Budget Meter` | Session budget and burn rate guardrails |
+| `State Diff` | Field-level mutation visibility |
+| `Capability Matrix`| Permission inspector / agent handshake |
+| `Rollback Timeline`| Undo-tree with cascade awareness |
+| `Transaction Receipt`| Cryptographic provenance & audit |
+| `Binding Approval`| High-stakes cryptographic intent gate |
+
 ## Tech Stack
 
 - React 18+ with TypeScript (strict, no `any` types)
 - CSS Modules (NOT Tailwind) — components use `--ax-*` custom properties
 - Storybook for component documentation and live examples
-- Vitest + React Testing Library (223 tests, 18 test files)
+- Vitest + React Testing Library (359 tests, 25 test files)
 - Vite for library build (ES + CJS output)
 - Next.js + Fumadocs for docs site (`apps/www`)
 
@@ -91,7 +104,7 @@ depute/
 │   │   ├── animations.css
 │   │   └── index.css
 │   └── index.ts
-├── stories/                 # Storybook stories (18 files)
+├── stories/                 # Storybook stories (25 files)
 ├── packages/cli/            # ax-depute CLI (npm package)
 ├── registry/                # registry.json (component manifest)
 ├── apps/www/                # Next.js + Fumadocs docs site
@@ -107,7 +120,7 @@ depute/
 ## Distribution Architecture
 
 - **CLI:** `npx ax-depute@latest add <component>` — fetches from GitHub raw, copies into user's `src/components/`
-- **Registry:** `registry/registry.json` — manifest of all 18 components with file lists and metadata
+- **Registry:** `registry/registry.json` — manifest of all 25 components with file lists and metadata
 - **Shared Files:** `src/types/ax-common.ts` and `src/utils/ax-a11y.tsx` auto-installed on first `add`
 - **Config:** All URLs centralized in `packages/cli/src/config.js` — single line to update if repo changes
 
@@ -145,7 +158,7 @@ Both include:
 ```bash
 npm install          # Install dependencies
 npm run storybook    # Run Storybook at localhost:6006
-npm test             # Run 223 tests
+npm test             # Run 359 tests
 npm run build        # Production build (Vite)
 npm run type-check   # tsc --noEmit (uses tsconfig.build.json)
 ```

@@ -1,0 +1,62 @@
+---
+title: Capability Matrix
+description: Permission inspector showing allowed and denied capabilities.
+---
+
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { CapabilityMatrixDemo } from '@/components/demos/CapabilityMatrixDemo';
+import { ComponentPreview } from '@/components/component-preview';
+import { StorybookEmbed } from '@/components/storybook-embed';
+
+## Install
+
+<Tabs groupId="package-manager" items={["npm", "pnpm", "yarn", "bun"]} persist>
+  <Tab value="npm">
+```bash
+npx ax-depute@latest add capability-matrix
+```
+  </Tab>
+  <Tab value="pnpm">
+```bash
+pnpm dlx ax-depute@latest add capability-matrix
+```
+  </Tab>
+  <Tab value="yarn">
+```bash
+yarn dlx ax-depute@latest add capability-matrix
+```
+  </Tab>
+  <Tab value="bun">
+```bash
+bunx ax-depute@latest add capability-matrix
+```
+  </Tab>
+</Tabs>
+
+## Overview
+
+`Capability Matrix` is the "Agent Handshake." As products explicitly declare their tools to agents via frameworks like WebMCP, humans need to see that exact programmatic contract. This component visualizes what an agent is capable of doing in the current specific operating context.
+
+<ComponentPreview>
+  <CapabilityMatrixDemo />
+</ComponentPreview>
+
+<StorybookEmbed story="v2-compliance-forensics-capabilitymatrix--default" />
+
+## Basic Usage
+
+```tsx
+<CapabilityMatrix
+  title="Agent Permissions"
+  agentId="sysadmin-bot-01"
+  capabilities={[
+    { name: 'logs.read', description: 'Read system logs', permission: 'full', category: 'Observability' },
+    { name: 'services.restart', permission: 'conditional', condition: 'requires 2FA', category: 'Operations' },
+    { name: 'db.drop', description: 'Drop database tables', permission: 'none', category: 'Storage' },
+  ]}
+/>
+```
+
+## Solution Patterns
+
+Render `CapabilityMatrix` inside a `DelegationGate` when an agent is spawned, ensuring the user understands the absolute bounds of the agent's authority before letting it execute.

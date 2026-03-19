@@ -1,0 +1,64 @@
+---
+title: Binding Approval
+description: Cryptographic intent gate with an isSigning state.
+---
+
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { BindingApprovalDemo } from '@/components/demos/BindingApprovalDemo';
+import { ComponentPreview } from '@/components/component-preview';
+import { StorybookEmbed } from '@/components/storybook-embed';
+
+## Install
+
+<Tabs groupId="package-manager" items={["npm", "pnpm", "yarn", "bun"]} persist>
+  <Tab value="npm">
+```bash
+npx ax-depute@latest add binding-approval
+```
+  </Tab>
+  <Tab value="pnpm">
+```bash
+pnpm dlx ax-depute@latest add binding-approval
+```
+  </Tab>
+  <Tab value="yarn">
+```bash
+yarn dlx ax-depute@latest add binding-approval
+```
+  </Tab>
+  <Tab value="bun">
+```bash
+bunx ax-depute@latest add binding-approval
+```
+  </Tab>
+</Tabs>
+
+## Overview
+
+Unlike a standard `ApprovalGate` used for day-to-day coordination, `BindingApproval` provides a heavy-duty friction boundary for irreversible, legally binding, or financial actions. It forces explicit acknowledgment of terms and implements a multi-phase `isSigning` visual state.
+
+<ComponentPreview>
+  <BindingApprovalDemo />
+</ComponentPreview>
+
+<StorybookEmbed story="v2-compliance-forensics-bindingapproval--default" />
+
+## Basic Usage
+
+```tsx
+<BindingApproval
+  title="Wire Transfer Authorization"
+  description="Execute a $5,000 wire transfer."
+  impactStatement="$5,000.00 will be transferred immediately."
+  signerIdentity="alice@company.com"
+  terms={[
+    { id: 't1', text: 'I authorize the transfer of $5,000.00', acknowledged: false },
+    { id: 't2', text: 'I understand this action is irreversible', acknowledged: false },
+  ]}
+  onSign={() => initiateSignature()}
+/>
+```
+
+## Solution Patterns
+
+This primitive replaces `ApprovalGate` in high-stakes nodes. The internal state expects a clear distinction between `reviewing` and `signing`, where `isSigning: true` disables interaction and renders a deterministic loading state while waiting for the protocol layer to secure the ledger / signature.

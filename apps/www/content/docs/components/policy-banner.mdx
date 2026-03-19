@@ -1,0 +1,62 @@
+---
+title: Policy Banner
+description: Sandbox / production / staging environment policy indicator.
+---
+
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { PolicyBannerDemo } from '@/components/demos/PolicyBannerDemo';
+import { ComponentPreview } from '@/components/component-preview';
+import { StorybookEmbed } from '@/components/storybook-embed';
+
+## Install
+
+<Tabs groupId="package-manager" items={["npm", "pnpm", "yarn", "bun"]} persist>
+  <Tab value="npm">
+```bash
+npx ax-depute@latest add policy-banner
+```
+  </Tab>
+  <Tab value="pnpm">
+```bash
+pnpm dlx ax-depute@latest add policy-banner
+```
+  </Tab>
+  <Tab value="yarn">
+```bash
+yarn dlx ax-depute@latest add policy-banner
+```
+  </Tab>
+  <Tab value="bun">
+```bash
+bunx ax-depute@latest add policy-banner
+```
+  </Tab>
+</Tabs>
+
+## Overview
+
+`Policy Banner` is a persistent boundary indicator. It visually anchors the agent's current operating policy, ensuring the human operator strictly understands whether they are supervising a simulation, navigating staging environments, or engaging in a live fire production exercise.
+
+<ComponentPreview>
+  <PolicyBannerDemo />
+</ComponentPreview>
+
+<StorybookEmbed story="v2-compliance-forensics-policybanner--default" />
+
+## Basic Usage
+
+```tsx
+<PolicyBanner
+  mode="simulation"
+  policyName="Dry Run Mode"
+  description="Agent actions will be simulated and logged, but no external APIs will be mutated."
+  constraints={[
+    { label: 'Network', value: 'Mocked Responses' },
+    { label: 'Database', value: 'Read-only connection', isViolated: false },
+  ]}
+/>
+```
+
+## Solution Patterns
+
+Render `PolicyBanner` at the top of the supervision viewport. Using `mode="production"` automatically activates a heavy-duty, pulsing visual treatment designed to cut through "banner blindness" when navigating live, high-risk systems.

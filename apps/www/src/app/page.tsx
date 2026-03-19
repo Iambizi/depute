@@ -4,14 +4,14 @@ import Link from 'next/link';
 import { GeistPixelGrid } from 'geist/font/pixel';
 import { motion } from 'framer-motion';
 import { AgentRosterDemo } from '@/components/demos/AgentRosterDemo';
-import { Terminal, Shield, Workflow, ArrowRight } from 'lucide-react';
+import { Terminal, Shield, Workflow, ArrowRight, Lock } from 'lucide-react';
 
 const features = [
   {
     icon: <Shield className="w-5 h-5" />,
     label: 'Single Agent',
     count: '7',
-    items: ['PlanCard', 'ApprovalGate', 'ConfidenceMeter', 'RunControls', 'ToolTrace', 'ArtifactCard', 'AutomationBiasAlert'],
+    items: ['PlanCard', 'ApprovalGate', 'ConfidenceMeter', 'RunControls', 'ToolTrace', 'ArtifactCard'],
   },
   {
     icon: <Workflow className="w-5 h-5" />,
@@ -20,8 +20,14 @@ const features = [
     items: ['OrchestratorView', 'AgentRoster', 'SwarmMonitor', 'DelegationGate', 'TaskQueue', '+6 more'],
   },
   {
+    icon: <Lock className="w-5 h-5" />,
+    label: 'Compliance',
+    count: '7',
+    items: ['BindingApproval', 'StateDiff', 'TransactionReceipt', 'RollbackTimeline', 'CapabilityMatrix', '+2 more'],
+  },
+  {
     icon: <Terminal className="w-5 h-5" />,
-    label: 'CLI',
+    label: 'CLI Format',
     count: 'npx',
     items: ['ax-depute@latest add <component>', 'Copy source into your project', 'You own the code'],
   },
@@ -54,7 +60,7 @@ export default function HomePage() {
         >
           <span className="inline-flex items-center gap-2 px-3 py-1 text-xs font-mono font-medium rounded-full border border-fd-border bg-fd-muted text-fd-foreground shadow-sm">
             <span className="flex h-2 w-2 rounded-full bg-fd-primary animate-pulse" />
-            v0.2.0: Multi-Agent Orchestration
+            v0.3.0: Compliance & Forensics
           </span>
         </motion.div>
 
@@ -173,7 +179,7 @@ export default function HomePage() {
 
       {/* Features Grid */}
       <section className="relative px-6 pb-32">
-        <div className="mx-auto grid max-w-5xl grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="mx-auto grid max-w-6xl grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {features.map((feat, i) => (
             <motion.div
               key={feat.label}

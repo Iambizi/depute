@@ -29,6 +29,8 @@ Or start here:
 - *"I need to stop an agent from making an unrecoverable mistake"* → Use **`ApprovalGate`** + **`ToolTrace`**
 - *"I need to show the user what the agent is thinking"* → Use **`PlanCard`** + **`ConfidenceMeter`**
 - *"I need to prevent users from blindly rubber-stamping approvals"* → Use **`AutomationBiasAlert`** wrapping an **`ApprovalGate`**
+- *"I need a binding cryptographic signature for a ledger mutation"* → Use **`BindingApproval`** + **`TransactionReceipt`**
+- *"I need to roll back a sequence of 40 API calls"* → Use **`RollbackTimeline`** + **`StateDiff`**
 
 ## Distribution model
 
@@ -58,6 +60,7 @@ This command drops a `skills/depute/SKILL.md` file into your project, automatica
 |------|-----------|----------|
 | **Single Agent** | 7 primitives | One agent acting on behalf of a user |
 | **Multi-Agent** | 11 primitives | Multiple agents coordinating, delegating, or running in parallel |
+| **Compliance** | 7 primitives | Cryptographic intent, mutation visibility, and forensics |
 
 Start with Single Agent primitives. Add Multi-Agent when you need orchestration.
 

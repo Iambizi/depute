@@ -1,3 +1,31 @@
+# depute v0.3.0 Release Notes
+
+**March 19, 2026**
+
+The third release of **depute**, introducing 7 new "Strict Compliance & Forensics" primitives. As agents execute headless, reliable tool calls, UI requirements shift from visibility to provability. 
+
+## ✨ 7 New Compliance Primitives
+
+### Intent & Boundaries
+- **`PolicyBanner`** — Persistent indicator distinguishing between sandbox, staging, and live production policies.
+- **`CapabilityMatrix`** — Visual permission inspector (the "Agent Handshake") showing exact capability grants and denials.
+- **`BudgetMeter`** — Visual gauge enforcing token, dollar, or API-call limits on autonomous sessions.
+
+### Immutability & Forensics
+- **`StateDiff`** — Human-readable, structured before/after translation of payload mutations.
+- **`RollbackTimeline`** — Agentic undo-tree for reverting multi-step sequences with cascade awareness.
+- **`BindingApproval`** — Heavy-duty cryptographic intent gate with explicit `isSigning` state and term acknowledgment.
+- **`TransactionReceipt`** — Immutable audit log component securely linking human approval to an executed action.
+
+## 📦 What's Included
+
+- **359 tests passing** across 25 test files (zero regressions in v0/v1).
+- **Full Storybook coverage** — 7 new interactive stories bridging Fintech, DevOps, and HR verticals.
+- **Mock data generators** to be extended in future patches.
+- **CLI Registry** updated to `ax-depute@0.3.0`.
+
+---
+
 # depute v0.2.0 Release Notes
 
 **February 22, 2026**

@@ -1,0 +1,198 @@
+/* TransactionReceipt — CSS Module */
+/* v2 — Strict Compliance & Forensics */
+
+.receipt {
+  font-family: var(--ax-font-family);
+  border: var(--ax-border-width) solid var(--ax-border-color);
+  border-radius: var(--ax-radius-lg);
+  background: var(--ax-surface-primary);
+  overflow: hidden;
+}
+
+/* Status-specific border */
+.receipt.statusSuccess { border-color: var(--ax-color-green-300); }
+.receipt.statusFailed { border-color: var(--ax-color-red-300); }
+.receipt.statusReverted { border-color: var(--ax-color-amber-300); }
+
+/* ------------------------------------------------------------------ */
+/* Header                                                              */
+/* ------------------------------------------------------------------ */
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--ax-space-3) var(--ax-space-4);
+  background: var(--ax-surface-secondary);
+  border-bottom: var(--ax-border-width) solid var(--ax-border-color);
+}
+
+.headerLeft {
+  display: flex;
+  align-items: center;
+  gap: var(--ax-space-3);
+}
+
+.statusIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: var(--ax-radius-full);
+  font-size: var(--ax-font-size-sm);
+  font-weight: var(--ax-font-weight-bold);
+  flex-shrink: 0;
+}
+
+.statusIcon.statusSuccess { background: var(--ax-color-green-100); color: var(--ax-color-green-700); }
+.statusIcon.statusFailed { background: var(--ax-color-red-100); color: var(--ax-color-red-700); }
+.statusIcon.statusPending { background: var(--ax-color-gray-100); color: var(--ax-color-gray-600); }
+.statusIcon.statusReverted { background: var(--ax-color-amber-100); color: var(--ax-color-amber-700); }
+
+.title {
+  font-size: var(--ax-font-size-sm);
+  font-weight: var(--ax-font-weight-semibold);
+  color: var(--ax-text-primary);
+  margin: 0;
+}
+
+.txId {
+  font-family: var(--ax-font-family-mono);
+  font-size: var(--ax-font-size-xs);
+  color: var(--ax-text-tertiary);
+}
+
+.statusBadge {
+  font-size: var(--ax-font-size-xs);
+  font-weight: var(--ax-font-weight-semibold);
+  padding: var(--ax-space-1) var(--ax-space-2);
+  border-radius: var(--ax-radius-sm);
+  line-height: 1;
+}
+
+.statusBadge.statusSuccess { background: var(--ax-color-green-100); color: var(--ax-color-green-700); }
+.statusBadge.statusFailed { background: var(--ax-color-red-100); color: var(--ax-color-red-700); }
+.statusBadge.statusPending { background: var(--ax-color-gray-100); color: var(--ax-color-gray-600); }
+.statusBadge.statusReverted { background: var(--ax-color-amber-100); color: var(--ax-color-amber-700); }
+
+/* ------------------------------------------------------------------ */
+/* Line items                                                          */
+/* ------------------------------------------------------------------ */
+
+.lineItems {
+  padding: var(--ax-space-2) 0;
+}
+
+.lineItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: var(--ax-space-2) var(--ax-space-4);
+  font-size: var(--ax-font-size-sm);
+}
+
+.lineItem + .lineItem {
+  border-top: var(--ax-border-width) solid var(--ax-border-color);
+}
+
+.lineItemHighlight {
+  background: var(--ax-color-blue-50);
+}
+
+.lineLabel {
+  color: var(--ax-text-secondary);
+  font-weight: var(--ax-font-weight-medium);
+}
+
+.lineValue {
+  color: var(--ax-text-primary);
+  font-weight: var(--ax-font-weight-semibold);
+  text-align: right;
+}
+
+.mono {
+  font-family: var(--ax-font-family-mono);
+}
+
+/* ------------------------------------------------------------------ */
+/* Footer                                                              */
+/* ------------------------------------------------------------------ */
+
+.footer {
+  padding: var(--ax-space-3) var(--ax-space-4);
+  background: var(--ax-surface-secondary);
+  border-top: var(--ax-border-width) solid var(--ax-border-color);
+  display: flex;
+  flex-direction: column;
+  gap: var(--ax-space-2);
+}
+
+.hashRow {
+  display: flex;
+  align-items: center;
+  gap: var(--ax-space-2);
+}
+
+.hashLabel {
+  font-size: var(--ax-font-size-xs);
+  color: var(--ax-text-tertiary);
+}
+
+.hashValue {
+  font-family: var(--ax-font-family-mono);
+  font-size: var(--ax-font-size-xs);
+  color: var(--ax-text-secondary);
+  background: var(--ax-surface-primary);
+  padding: var(--ax-space-1) var(--ax-space-2);
+  border-radius: var(--ax-radius-sm);
+  border: var(--ax-border-width) solid var(--ax-border-color);
+}
+
+.copyBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  background: none;
+  border: var(--ax-border-width) solid var(--ax-border-color);
+  border-radius: var(--ax-radius-sm);
+  cursor: pointer;
+  font-size: var(--ax-font-size-xs);
+  color: var(--ax-text-secondary);
+  transition: all var(--ax-duration-fast) var(--ax-ease-default);
+}
+
+.copyBtn:hover {
+  background: var(--ax-surface-primary);
+  border-color: var(--ax-color-blue-500);
+  color: var(--ax-color-blue-600);
+}
+
+.copyBtn:focus-visible {
+  outline: 2px solid var(--ax-color-blue-500);
+  outline-offset: 2px;
+}
+
+.auditBtn {
+  font-family: var(--ax-font-family);
+  font-size: var(--ax-font-size-xs);
+  font-weight: var(--ax-font-weight-medium);
+  color: var(--ax-color-blue-600);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  text-align: left;
+  transition: color var(--ax-duration-fast) var(--ax-ease-default);
+}
+
+.auditBtn:hover {
+  color: var(--ax-color-blue-700);
+}
+
+.auditBtn:focus-visible {
+  outline: 2px solid var(--ax-color-blue-500);
+  outline-offset: 2px;
+}

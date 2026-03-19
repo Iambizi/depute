@@ -22,6 +22,14 @@
     "components/escalation-router",
     "components/swarm-inbox",
     "components/branch-controls",
-    "components/shared-context-ledger"
+    "components/shared-context-ledger",
+    "---Compliance & Forensics---",
+    "components/policy-banner",
+    "components/budget-meter",
+    "components/state-diff",
+    "components/capability-matrix",
+    "components/rollback-timeline",
+    "components/transaction-receipt",
+    "components/binding-approval"
   ]
 }

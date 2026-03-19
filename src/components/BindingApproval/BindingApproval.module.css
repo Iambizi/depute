@@ -1,0 +1,273 @@
+/* BindingApproval — CSS Module */
+/* v2 — Strict Compliance & Forensics */
+
+.bindingApproval {
+  font-family: var(--ax-font-family);
+  border: 2px solid var(--ax-border-color);
+  border-radius: var(--ax-radius-lg);
+  background: var(--ax-surface-primary);
+  overflow: hidden;
+}
+
+/* Status borders */
+.bindingApproval.statusReviewing { border-color: var(--ax-color-amber-500); }
+.bindingApproval.statusSigning {
+  border-color: var(--ax-color-blue-500);
+  animation: ax-binding-pulse var(--ax-duration-pulse) var(--ax-ease-default) infinite;
+}
+.bindingApproval.statusSigned { border-color: var(--ax-color-green-500); }
+.bindingApproval.statusRejected { border-color: var(--ax-color-red-500); }
+.bindingApproval.statusExpired { border-color: var(--ax-color-gray-400); }
+
+@keyframes ax-binding-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.3); }
+  50% { box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bindingApproval.statusSigning { animation: none; }
+}
+
+/* ------------------------------------------------------------------ */
+/* Header                                                              */
+/* ------------------------------------------------------------------ */
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--ax-space-3) var(--ax-space-4);
+  background: var(--ax-surface-secondary);
+  border-bottom: var(--ax-border-width) solid var(--ax-border-color);
+}
+
+.headerLeft {
+  display: flex;
+  align-items: center;
+  gap: var(--ax-space-3);
+}
+
+.statusIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: var(--ax-radius-lg);
+  font-size: var(--ax-font-size-lg);
+  flex-shrink: 0;
+}
+
+.statusIcon.statusReviewing { background: var(--ax-color-amber-100); }
+.statusIcon.statusSigning { background: var(--ax-color-blue-100); }
+.statusIcon.statusSigned { background: var(--ax-color-green-100); color: var(--ax-color-green-700); }
+.statusIcon.statusRejected { background: var(--ax-color-red-100); color: var(--ax-color-red-700); }
+.statusIcon.statusExpired { background: var(--ax-color-gray-100); }
+
+.title {
+  font-size: var(--ax-font-size-base);
+  font-weight: var(--ax-font-weight-bold);
+  color: var(--ax-text-primary);
+  margin: 0;
+}
+
+.statusBadge {
+  display: inline-block;
+  font-size: var(--ax-font-size-xs);
+  font-weight: var(--ax-font-weight-semibold);
+  padding: var(--ax-space-1) var(--ax-space-2);
+  border-radius: var(--ax-radius-sm);
+  line-height: 1;
+  margin-top: var(--ax-space-1);
+}
+
+.statusBadge.statusReviewing { background: var(--ax-color-amber-100); color: var(--ax-color-amber-700); }
+.statusBadge.statusSigning { background: var(--ax-color-blue-100); color: var(--ax-color-blue-700); }
+.statusBadge.statusSigned { background: var(--ax-color-green-100); color: var(--ax-color-green-700); }
+.statusBadge.statusRejected { background: var(--ax-color-red-100); color: var(--ax-color-red-700); }
+.statusBadge.statusExpired { background: var(--ax-color-gray-100); color: var(--ax-color-gray-600); }
+
+.timer {
+  font-family: var(--ax-font-family-mono);
+  font-size: var(--ax-font-size-lg);
+  font-weight: var(--ax-font-weight-bold);
+  color: var(--ax-color-amber-600);
+}
+
+/* ------------------------------------------------------------------ */
+/* Description                                                         */
+/* ------------------------------------------------------------------ */
+
+.description {
+  padding: var(--ax-space-3) var(--ax-space-4);
+  margin: 0;
+  font-size: var(--ax-font-size-sm);
+  color: var(--ax-text-secondary);
+  line-height: var(--ax-line-height-normal);
+}
+
+/* ------------------------------------------------------------------ */
+/* Impact statement                                                    */
+/* ------------------------------------------------------------------ */
+
+.impactBox {
+  margin: 0 var(--ax-space-4) var(--ax-space-3);
+  padding: var(--ax-space-3);
+  background: var(--ax-color-red-50);
+  border: var(--ax-border-width) solid var(--ax-color-red-300);
+  border-radius: var(--ax-radius-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--ax-space-1);
+}
+
+.impactLabel {
+  font-size: var(--ax-font-size-xs);
+  font-weight: var(--ax-font-weight-semibold);
+  color: var(--ax-color-red-700);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.impactText {
+  font-size: var(--ax-font-size-sm);
+  font-weight: var(--ax-font-weight-semibold);
+  color: var(--ax-color-red-700);
+}
+
+/* ------------------------------------------------------------------ */
+/* Terms                                                               */
+/* ------------------------------------------------------------------ */
+
+.termsSection {
+  padding: 0 var(--ax-space-4) var(--ax-space-3);
+}
+
+.termsLabel {
+  display: block;
+  font-size: var(--ax-font-size-xs);
+  font-weight: var(--ax-font-weight-semibold);
+  color: var(--ax-text-secondary);
+  margin-bottom: var(--ax-space-2);
+}
+
+.termsList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ax-space-2);
+}
+
+.termRow {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--ax-space-2);
+  padding: var(--ax-space-2);
+  border: var(--ax-border-width) solid var(--ax-border-color);
+  border-radius: var(--ax-radius-sm);
+  cursor: pointer;
+  transition: background var(--ax-duration-fast) var(--ax-ease-default);
+  font-size: var(--ax-font-size-sm);
+}
+
+.termRow:hover {
+  background: var(--ax-surface-secondary);
+}
+
+.termCheckbox {
+  margin-top: 2px;
+  accent-color: var(--ax-color-green-600);
+}
+
+.termText {
+  color: var(--ax-text-primary);
+  line-height: var(--ax-line-height-tight);
+}
+
+/* ------------------------------------------------------------------ */
+/* Signer                                                              */
+/* ------------------------------------------------------------------ */
+
+.signerRow {
+  display: flex;
+  align-items: center;
+  gap: var(--ax-space-2);
+  padding: var(--ax-space-2) var(--ax-space-4) var(--ax-space-3);
+  font-size: var(--ax-font-size-xs);
+}
+
+.signerLabel {
+  color: var(--ax-text-tertiary);
+}
+
+.signerValue {
+  font-family: var(--ax-font-family-mono);
+  font-weight: var(--ax-font-weight-medium);
+  color: var(--ax-text-secondary);
+}
+
+/* ------------------------------------------------------------------ */
+/* Actions                                                             */
+/* ------------------------------------------------------------------ */
+
+.actions {
+  display: flex;
+  gap: var(--ax-space-3);
+  padding: var(--ax-space-3) var(--ax-space-4);
+  border-top: var(--ax-border-width) solid var(--ax-border-color);
+  background: var(--ax-surface-secondary);
+}
+
+.signBtn {
+  flex: 1;
+  padding: var(--ax-space-3);
+  font-family: var(--ax-font-family);
+  font-size: var(--ax-font-size-sm);
+  font-weight: var(--ax-font-weight-bold);
+  color: white;
+  background: var(--ax-color-green-600);
+  border: none;
+  border-radius: var(--ax-radius-md);
+  cursor: pointer;
+  transition: all var(--ax-duration-fast) var(--ax-ease-default);
+}
+
+.signBtn:hover:not(:disabled) {
+  background: var(--ax-color-green-700);
+}
+
+.signBtn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.signBtn:focus-visible {
+  outline: 2px solid var(--ax-color-green-500);
+  outline-offset: 2px;
+}
+
+.rejectBtn {
+  padding: var(--ax-space-3) var(--ax-space-4);
+  font-family: var(--ax-font-family);
+  font-size: var(--ax-font-size-sm);
+  font-weight: var(--ax-font-weight-medium);
+  color: var(--ax-color-red-600);
+  background: none;
+  border: var(--ax-border-width) solid var(--ax-color-red-300);
+  border-radius: var(--ax-radius-md);
+  cursor: pointer;
+  transition: all var(--ax-duration-fast) var(--ax-ease-default);
+}
+
+.rejectBtn:hover:not(:disabled) {
+  background: var(--ax-color-red-50);
+}
+
+.rejectBtn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.rejectBtn:focus-visible {
+  outline: 2px solid var(--ax-color-red-500);
+  outline-offset: 2px;
+}

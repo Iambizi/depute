@@ -1,6 +1,6 @@
 {
   "name": "ax-depute",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "ax-depute — add AX Components primitives to your project (npx ax-depute add <component>)",
   "license": "MIT",
   "type": "module",

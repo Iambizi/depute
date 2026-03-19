@@ -1,14 +1,11 @@
 {
   "name": "depute",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "depute — UI primitives for agentic experiences",
   "distribution": "depute",
   "repo": "Iambizi/depute",
   "branch": "main",
-  "sharedFiles": [
-    "src/types/common.ts",
-    "src/utils/a11y.tsx"
-  ],
+  "sharedFiles": ["src/types/common.ts", "src/utils/a11y.tsx"],
   "items": [
     {
       "name": "plan-card",
@@ -297,7 +294,123 @@
         "src/components/AutomationBiasAlert/index.ts"
       ],
       "registryDependencies": [],
-      "axPrinciples": ["Human-in-the-Loop", "Calibrated Trust", "Safety-Critical"]
+      "axPrinciples": [
+        "Human-in-the-Loop",
+        "Calibrated Trust",
+        "Safety-Critical"
+      ]
+    },
+    {
+      "name": "state-diff",
+      "label": "StateDiff",
+      "category": "Compliance & Forensics",
+      "description": "Structured before/after view of state mutations",
+      "buildOrder": 19,
+      "type": "primitive",
+      "files": [
+        "src/components/StateDiff/StateDiff.tsx",
+        "src/components/StateDiff/StateDiff.module.css",
+        "src/components/StateDiff/StateDiff.types.ts",
+        "src/components/StateDiff/index.ts"
+      ],
+      "registryDependencies": [],
+      "axPrinciples": ["Transparency", "Auditability"]
+    },
+    {
+      "name": "rollback-timeline",
+      "label": "RollbackTimeline",
+      "category": "Compliance & Forensics",
+      "description": "Undo-tree for agentic tool sequences",
+      "buildOrder": 20,
+      "type": "primitive",
+      "files": [
+        "src/components/RollbackTimeline/RollbackTimeline.tsx",
+        "src/components/RollbackTimeline/RollbackTimeline.module.css",
+        "src/components/RollbackTimeline/RollbackTimeline.types.ts",
+        "src/components/RollbackTimeline/index.ts"
+      ],
+      "registryDependencies": [],
+      "axPrinciples": ["Human-in-the-Loop", "Safe Delegation", "Error Recovery"]
+    },
+    {
+      "name": "capability-matrix",
+      "label": "CapabilityMatrix",
+      "category": "Compliance & Forensics",
+      "description": "Permission inspector showing allowed/denied capabilities",
+      "buildOrder": 21,
+      "type": "primitive",
+      "files": [
+        "src/components/CapabilityMatrix/CapabilityMatrix.tsx",
+        "src/components/CapabilityMatrix/CapabilityMatrix.module.css",
+        "src/components/CapabilityMatrix/CapabilityMatrix.types.ts",
+        "src/components/CapabilityMatrix/index.ts"
+      ],
+      "registryDependencies": [],
+      "axPrinciples": ["Transparency", "Trust", "Security"]
+    },
+    {
+      "name": "binding-approval",
+      "label": "BindingApproval",
+      "category": "Compliance & Forensics",
+      "description": "Cryptographic intent gate with isSigning state for irreversible actions",
+      "buildOrder": 22,
+      "type": "primitive",
+      "files": [
+        "src/components/BindingApproval/BindingApproval.tsx",
+        "src/components/BindingApproval/BindingApproval.module.css",
+        "src/components/BindingApproval/BindingApproval.types.ts",
+        "src/components/BindingApproval/index.ts"
+      ],
+      "registryDependencies": [],
+      "axPrinciples": ["Human-in-the-Loop", "Consent", "Safety-Critical"]
+    },
+    {
+      "name": "transaction-receipt",
+      "label": "TransactionReceipt",
+      "category": "Compliance & Forensics",
+      "description": "Provenance receipt with verification hash for completed actions",
+      "buildOrder": 23,
+      "type": "primitive",
+      "files": [
+        "src/components/TransactionReceipt/TransactionReceipt.tsx",
+        "src/components/TransactionReceipt/TransactionReceipt.module.css",
+        "src/components/TransactionReceipt/TransactionReceipt.types.ts",
+        "src/components/TransactionReceipt/index.ts"
+      ],
+      "registryDependencies": [],
+      "axPrinciples": ["Transparency", "Provenance", "Auditability"]
+    },
+    {
+      "name": "budget-meter",
+      "label": "BudgetMeter",
+      "category": "Compliance & Forensics",
+      "description": "Visual gauge showing session budget vs. burn rate",
+      "buildOrder": 24,
+      "type": "primitive",
+      "files": [
+        "src/components/BudgetMeter/BudgetMeter.tsx",
+        "src/components/BudgetMeter/BudgetMeter.module.css",
+        "src/components/BudgetMeter/BudgetMeter.types.ts",
+        "src/components/BudgetMeter/index.ts"
+      ],
+      "registryDependencies": [],
+      "axPrinciples": ["Transparency", "Resource Limits", "Safe Delegation"]
+    },
+    {
+      "name": "policy-banner",
+      "label": "PolicyBanner",
+      "category": "Compliance & Forensics",
+      "description": "Sandbox / production / staging environment policy indicator",
+      "buildOrder": 25,
+      "type": "primitive",
+      "files": [
+        "src/components/PolicyBanner/PolicyBanner.tsx",
+        "src/components/PolicyBanner/PolicyBanner.module.css",
+        "src/components/PolicyBanner/PolicyBanner.types.ts",
+        "src/components/PolicyBanner/index.ts"
+      ],
+      "registryDependencies": [],
+      "axPrinciples": ["Transparency", "Context Visibility", "Safety-Critical"]
     }
   ]
 }

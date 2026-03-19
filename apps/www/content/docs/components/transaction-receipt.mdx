@@ -1,0 +1,66 @@
+---
+title: Transaction Receipt
+description: Provenance receipt with verification hash for completed actions.
+---
+
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { TransactionReceiptDemo } from '@/components/demos/TransactionReceiptDemo';
+import { ComponentPreview } from '@/components/component-preview';
+import { StorybookEmbed } from '@/components/storybook-embed';
+
+## Install
+
+<Tabs groupId="package-manager" items={["npm", "pnpm", "yarn", "bun"]} persist>
+  <Tab value="npm">
+```bash
+npx ax-depute@latest add transaction-receipt
+```
+  </Tab>
+  <Tab value="pnpm">
+```bash
+pnpm dlx ax-depute@latest add transaction-receipt
+```
+  </Tab>
+  <Tab value="yarn">
+```bash
+yarn dlx ax-depute@latest add transaction-receipt
+```
+  </Tab>
+  <Tab value="bun">
+```bash
+bunx ax-depute@latest add transaction-receipt
+```
+  </Tab>
+</Tabs>
+
+## Overview
+
+`Transaction Receipt` is the immutable audit log component. After an irreversible action successfully bypasses a gate, the human supervisor requires a permanent, verifiable record securely linking their approval to the system outcome.
+
+<ComponentPreview>
+  <TransactionReceiptDemo />
+</ComponentPreview>
+
+<StorybookEmbed story="v2-compliance-forensics-transactionreceipt--default" />
+
+## Basic Usage
+
+```tsx
+<TransactionReceipt
+  transactionId="TX-98765"
+  title="Wire Transfer Complete"
+  status="success"
+  timestamp="2026-03-19T14:30:00Z"
+  agentId="payment-agent-01"
+  hash="0xabcdef1234567890abcdef1234567890fedcba09"
+  lineItems={[
+    { label: 'Amount', value: '$5,000.00', highlight: true },
+    { label: 'From', value: 'Account ****4521' },
+    { label: 'To', value: 'Account ****8903' },
+  ]}
+/>
+```
+
+## Solution Patterns
+
+This component acts as the final terminal output of an `OrchestratorView` node, replacing a generic `ArtifactCard` when the event is financial or structurally immutable.

@@ -1,11 +1,11 @@
 ---
 name: depute
-description: React component library for Agentic Experience (AX) design — purpose-built UI primitives for AI agent supervision and human oversight. Use when building interfaces for AI agents, autonomous workflows, or multi-agent systems. Triggers on: "agent UI", "approval gate", "confidence score", "tool trace", "agent plan", "pause agent", "human oversight", "AX component", "delegation interface", "agent audit", "orchestrator view", "swarm monitor", "handoff", "agent inbox", "escalation", "run controls", "npx ax-depute", "ax audit", "oversight review", "audit agent code", "what AX components am I missing". Do NOT use for general React UI, standard CRUD interfaces, or non-agent applications.
+description: React component library for Agentic Experience (AX) design — purpose-built UI primitives for AI agent supervision and human oversight. Use when building interfaces for AI agents, autonomous workflows, or multi-agent systems. Triggers on: "agent UI", "approval gate", "confidence score", "tool trace", "agent plan", "pause agent", "human oversight", "AX component", "delegation interface", "agent audit", "orchestrator view", "swarm monitor", "handoff", "agent inbox", "escalation", "run controls", "agent permission", "rollback timeline", "state diff", "budget meter", "policy banner", "binding approval", "transaction receipt", "npx ax-depute", "ax audit", "oversight review", "audit agent code", "what AX components am I missing". Do NOT use for general React UI, standard CRUD interfaces, or non-agent applications.
 license: MIT
 compatibility: React 18+, TypeScript, CSS Modules. Agent-agnostic — works with any AI backend (OpenAI, Anthropic, LangChain, AutoGen, or custom).
 metadata:
   author: Iambizi
-  version: 0.2.0
+  version: 0.3.0
   documentation: https://github.com/Iambizi/depute
   category: ui-components
   tags: [agentic-ui, react, human-in-the-loop, agent-oversight, multi-agent]
@@ -21,8 +21,9 @@ React primitives for the human side of agentic AI. When an AI agent runs in your
 
 **Single agent acting on behalf of a user?** → Use v0 Core Primitives
 **Multiple agents coordinating, delegating, or running in parallel?** → Use v1 Multi-Agent Orchestration
+**High-stakes, irreversible actions requiring strict compliance and forensics?** → Use v2 Strict Compliance & Forensics
 
-When in doubt, start with v0. v1 wraps v0 — drilling into any v1 node should reveal the familiar v0 toolkit (Plan Card, Tool Trace, Approval Gate) scoped to that sub-agent.
+When in doubt, start with v0. v1 wraps v0 — drilling into any v1 node should reveal the familiar v0 toolkit (Plan Card, Tool Trace, Approval Gate) scoped to that sub-agent. v2 provides heavy-duty friction and auditing for specific high-risk actions.
 
 ### Step 2: Select the right component
 
@@ -54,9 +55,22 @@ When in doubt, start with v0. v1 wraps v0 — drilling into any v1 node should r
 | Read-only log of shared memory/context passed between agents | `Shared Context Ledger` | `npx ax-depute@latest add shared-context-ledger` |
 | Display escalation events from sub-agents with routing overrides | `Escalation Router` | `npx ax-depute@latest add escalation-router` |
 
+**v2 — Strict Compliance & Forensics**
+
+| Need | Component | Install |
+|------|-----------|---------|
+| Visual gauge enforcing token, dollar, or API-call limits | `Budget Meter` | `npx ax-depute@latest add budget-meter` |
+| Persistent indicator distinguishing sandbox/production policies | `Policy Banner` | `npx ax-depute@latest add policy-banner` |
+| Structured before/after translation of payload mutations | `State Diff` | `npx ax-depute@latest add state-diff` |
+| Permission inspector showing tool capability grants/denials | `Capability Matrix`| `npx ax-depute@latest add capability-matrix` |
+| Agentic undo-tree for reverting multi-step sequences | `Rollback Timeline`| `npx ax-depute@latest add rollback-timeline` |
+| Cryptographic intent gate with explicit `isSigning` state | `Binding Approval`| `npx ax-depute@latest add binding-approval` |
+| Immutable audit log linking human approval to an executed action | `Transaction Receipt`| `npx ax-depute@latest add transaction-receipt` |
+
 For deep component details, prop shapes, composition flows, and triage decisions, see:
 - `references/v0-components.md`
 - `references/v1-components.md`
+- `references/v2-components.md`
 
 ### Step 3: Install the component
 
@@ -122,6 +136,25 @@ The most common AX flow — show the plan, gate high-risk actions, then display 
 <SwarmInbox messages={orchestrator.interAgentMessages} />
 ```
 
+### Pattern: Compliance & Forensics
+
+For high-stakes execution, show intent, capture a binding signature, and emit a receipt:
+
+```tsx
+// 1. Show the mutation intent
+<StateDiff entries={proposedChanges} />
+
+// 2. Cryptographic gate
+<BindingApproval
+  title="Execute Database Drop"
+  status={signingStatus} // 'reviewing' | 'signing' | 'signed'
+  onSign={captureSignature}
+/>
+
+// 3. Emitted after execution
+<TransactionReceipt hash={txHash} lineItems={receiptDetails} />
+```
+
 ### Pattern: Swarm Monitoring
 
 ```tsx
@@ -165,6 +198,8 @@ The most common AX flow — show the plan, gate high-risk actions, then display 
 | H6 | **Output without provenance** | The agent produces a final artifact (report, code, summary) but there's no trace of which steps/tools produced it | `Artifact Card` | 🟢 Info |
 | H7 | **Multi-agent coordination opaque** | Multiple agents coordinate, delegate, or run in parallel but there's no hierarchy view or status dashboard | `Orchestrator View` + `Agent Roster` | 🔴 Critical |
 | H8 | **Agent spawning ungated** | The system spawns new agents or delegates tasks to sub-agents without human approval of the delegation | `Delegation Gate` | 🟡 Warning |
+| H9 | **Cryptographic action untracked** | The agent performs a high-stakes/financial/destructive action without structured payload deltas or an immutable receipt | `State Diff` or `Transaction Receipt` | 🔴 Critical |
+| H10 | **Budget ungoverned** | The agent can consume unbounded resources or tokens | `Budget Meter` | 🟡 Warning |
 
 3. **Produce the audit report.** Use this format:
 

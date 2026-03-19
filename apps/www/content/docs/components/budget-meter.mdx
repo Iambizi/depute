@@ -1,0 +1,60 @@
+---
+title: Budget Meter
+description: Visual gauge showing session budget vs. burn rate.
+---
+
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { BudgetMeterDemo } from '@/components/demos/BudgetMeterDemo';
+import { ComponentPreview } from '@/components/component-preview';
+import { StorybookEmbed } from '@/components/storybook-embed';
+
+## Install
+
+<Tabs groupId="package-manager" items={["npm", "pnpm", "yarn", "bun"]} persist>
+  <Tab value="npm">
+```bash
+npx ax-depute@latest add budget-meter
+```
+  </Tab>
+  <Tab value="pnpm">
+```bash
+pnpm dlx ax-depute@latest add budget-meter
+```
+  </Tab>
+  <Tab value="yarn">
+```bash
+yarn dlx ax-depute@latest add budget-meter
+```
+  </Tab>
+  <Tab value="bun">
+```bash
+bunx ax-depute@latest add budget-meter
+```
+  </Tab>
+</Tabs>
+
+## Overview
+
+Delegation requires guardrails. Instead of blocking every action, `Budget Meter` allows users to grant agents an explicit budget (API tokens, currency, or API call limits) and tracks the real-time burn rate. It automatically calculates severity thresholds to warn users before the budget is exhausted.
+
+<ComponentPreview>
+  <BudgetMeterDemo />
+</ComponentPreview>
+
+<StorybookEmbed story="v2-compliance-forensics-budgetmeter--default" />
+
+## Basic Usage
+
+```tsx
+<BudgetMeter
+  label="Session Tokens"
+  used={45000}
+  total={50000}
+  unit="tokens"
+  burnRate={1200}
+/>
+```
+
+## Solution Patterns
+
+Integrate `BudgetMeter` directly into a `DelegationGate` prior to spawning a new agent to enforce explicit limits, or embed it persistently within `RunControls` alongside pause/stop actions to maintain situational awareness of a running swarm.
