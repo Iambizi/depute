@@ -59,3 +59,22 @@ bunx ax-depute@latest add state-diff
 ## Solution Patterns
 
 Place `StateDiff` inside a `ToolTrace` or a `PlanCard` to show exact intended or completed mutations. It is typically paired with `BindingApproval` to prove what the user is cryptographically signing off on prior to execution.
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `title` | `string` | — | Title of the diff (e.g. "Database Mutation") |
+| `description` | `string` | — | Optional context |
+| `entries` | `DiffEntry[]` | — | Flat list of diff entries |
+| `groups` | `DiffGroup[]` | — | Grouped entries (takes precedence over entries) |
+| `hideUnchanged` | `boolean` | `false` | Hide unchanged fields |
+| `defaultCollapsed` | `boolean` | `false` | Start collapsed |
+| `timestamp` | `string` | — | Mutation timestamp |
+| `sourceId` | `string` | — | Tool call/step ID |
+
+## Design rationale
+
+**Why `hideUnchanged`?** Massive JSON payloads distract from the actual mutation. Highlighting only the delta reduces cognitive load and focuses human attention exactly where the risk is.
+
+**Why structure over syntax highlighting?** A human cannot easily parse a raw git-style diff of a minified JSON object. Transforming the delta into a structured, dot-notated table makes the blast radius legible to non-engineers.

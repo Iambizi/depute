@@ -60,3 +60,19 @@ bunx ax-depute@latest add policy-banner
 ## Solution Patterns
 
 Render `PolicyBanner` at the top of the supervision viewport. Using `mode="production"` automatically activates a heavy-duty, pulsing visual treatment designed to cut through "banner blindness" when navigating live, high-risk systems.
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `mode` | `PolicyMode` | — | E.g., `'sandbox'`, `'production'`, `'simulation'` |
+| `label` | `string` | — | Optional override for mode name |
+| `description` | `string` | — | Short policy description |
+| `severity` | `'info' \| 'warning' \| 'critical'` | auto | Visual treatment level |
+| `constraints` | `PolicyConstraint[]` | — | Active policy constraints |
+| `showLiveIndicator` | `boolean` | `false` | Show pulsing dot for live modes |
+| `collapsible` | `boolean` | `false` | Allow banner to collapse |
+
+## Design rationale
+
+**Why a persistent banner?** Agent oversight interfaces look identical whether running on test data or production servers. A persistent banner prevents operator error by anchoring the environment context at the top of the supervision viewport.

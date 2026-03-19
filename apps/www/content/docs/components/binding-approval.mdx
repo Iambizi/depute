@@ -62,3 +62,25 @@ Unlike a standard `ApprovalGate` used for day-to-day coordination, `BindingAppro
 ## Solution Patterns
 
 This primitive replaces `ApprovalGate` in high-stakes nodes. The internal state expects a clear distinction between `reviewing` and `signing`, where `isSigning: true` disables interaction and renders a deterministic loading state while waiting for the protocol layer to secure the ledger / signature.
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `title` | `string` | — | Title of the binding action |
+| `description` | `string` | — | Detailed explanation of the action |
+| `impactStatement` | `string` | — | Estimated impact (e.g., "$5,000 will be transferred") |
+| `status` | `'reviewing' \| 'signing' \| 'signed' \| 'rejected' \| 'expired'` | `'reviewing'` | Current status |
+| `terms` | `BindingTerm[]` | — | Terms that must be acknowledged |
+| `requireAllTerms` | `boolean` | `true` | Require all terms acknowledged to sign |
+| `isSigning` | `boolean` | `false` | Toggles the active signing visual state |
+| `signerIdentity` | `string` | — | Identity of the approver |
+| `timeoutSeconds` | `number` | — | Signing window timeout |
+| `onSign` | `() => void` | — | Called when approved/signed |
+| `onReject` | `(reason?: string) => void` | — | Called when rejected |
+
+## Design rationale
+
+**Why `isSigning`?** Normal approvals execute instantly. Cryptographic/financial approvals often require a ledger transaction, hardware wallet interaction, or passkey challenge that takes time. `isSigning` freezes the component deterministically to prevent duplicate submissions.
+
+**Why explicit terms?** Click-fatigue trains users to blindly click "Approve." Forcing the user to manually acknowledge explicit terms (e.g. "This action cannot be undone") breaks automatic behavior and captures verifiable intent.

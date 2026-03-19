@@ -60,3 +60,17 @@ bunx ax-depute@latest add capability-matrix
 ## Solution Patterns
 
 Render `CapabilityMatrix` inside a `DelegationGate` when an agent is spawned, ensuring the user understands the absolute bounds of the agent's authority before letting it execute.
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `title` | `string` | — | Title of the matrix |
+| `agentId` | `string` | — | Agent identity label |
+| `capabilities` | `Capability[]` | — | List of defined permissions |
+| `groupByCategory` | `boolean` | `true` | Group capabilities by category |
+| `highlightDenied` | `boolean` | `true` | Emphasize denied/none permissions |
+
+## Design rationale
+
+**Why `highlightDenied`?** In security, knowing what an agent *cannot* do is often more important than what it can. Visually elevating explicit denials (e.g., "Write to Production: Denied") builds trust that guardrails are actively in place.

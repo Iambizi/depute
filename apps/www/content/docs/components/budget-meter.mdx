@@ -58,3 +58,21 @@ Delegation requires guardrails. Instead of blocking every action, `Budget Meter`
 ## Solution Patterns
 
 Integrate `BudgetMeter` directly into a `DelegationGate` prior to spawning a new agent to enforce explicit limits, or embed it persistently within `RunControls` alongside pause/stop actions to maintain situational awareness of a running swarm.
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `label` | `string` | — | Human-readable label |
+| `spent` | `number` | — | Current amount consumed |
+| `limit` | `number` | — | Maximum budget allowance |
+| `unit` | `'currency' \| 'tokens' \| 'api-calls' \| 'compute' \| 'custom'` | `'tokens'` | Unit type |
+| `burnRate` | `number` | — | Current burn rate per minute |
+| `estimatedTimeRemaining` | `string` | — | Human-readable time remaining |
+| `elevatedThreshold` | `number` | `60` | Percentage to trigger elevated state |
+| `criticalThreshold` | `number` | `85` | Percentage to trigger critical state |
+| `compact` | `boolean` | `false` | Render inline variant |
+
+## Design rationale
+
+**Why proportional thresholds?** Raw numbers (e.g., "45,000 tokens") are meaningless without context. Auto-calculating elevated (>60%) and critical (>85%) severity colors translates abstract numbers into actionable visual urgency.

@@ -43,10 +43,32 @@ bunx ax-depute@latest add rollback-timeline
 
 <StorybookEmbed story="v2-compliance-forensics-rollbacktimeline--default" />
 
+## Basic Usage
+
+```tsx
+<RollbackTimeline
+  title="Action Timeline"
+  points={[
+    { id: 'p1', label: 'Updated email', status: 'rolled-back', timestamp: '2026-03-19T10:00:00Z', reversible: true },
+    { id: 'p2', label: 'Dropped legacy table', status: 'current', timestamp: '2026-03-19T10:05:00Z', reversible: false },
+  ]}
+  onRollback={(id) => handleRevert(id)}
+/>
+```
+
+## Solution Patterns
+
+Typically paired with `ToolTrace` for deep orchestration. When an agent executes a sequence of 10 tools and fails on the 11th, the timeline provides a structured path to rewind system state safely without guessing.
+
 ## Props
 
-The `points` array accepts history points with a `status` of `'available'`, `'current'`, or `'rolled-back'`. You must provide an `onRollback` callback to handle the actual state reversion logic.
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `title` | `string` | — | Title of the timeline |
+| `points` | `RollbackPoint[]` | — | Ordered list of rollback points |
+| `onRollback` | `(pointId: string) => void` | — | Rollback callback handler |
+| `requireConfirmation` | `boolean` | `true` | Ask for confirmation before reverting |
 
-## Design Rationale
+## Design rationale
 
-**Explicit Irreversibility:** Agent sequences often cross immutable boundaries (e.g., dropping a database table or sending an email). The timeline allows points to be marked `reversible: false`, rendering them with a distinct aesthetic and preventing regression past that node.
+**Why explicit irreversibility?** Agent sequences frequently cross immutable boundaries (e.g., dropping a database table). Marking specific nodes `reversible: false` prevents the user from attempting a regression past a terminal action, saving engineering headaches.
