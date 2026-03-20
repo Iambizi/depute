@@ -113,6 +113,7 @@ The `useAutomationBias` hook monitors three specific behavioral signals:
 
 ## Solution Patterns
 
+### The Interceptor Layer
 `AutomationBiasAlert` is an **interceptor layer**. It should wrap components that have `onApprove` or `onProceed` callbacks:
 
 ```text
@@ -120,6 +121,21 @@ Plan Card → [Automation Bias Alert → Approval Gate] → Run Controls
 ```
 
 It monitors the final interaction point before an irreversible action is executed.
+
+### Progressive Friction against Approval Fatigue
+In high-throughput environments (like a `SwarmInbox` queue), users experience "velocity bias" — they approve faster as the queue grows, actively degrading their scrutiny. You can dynamically scale the friction thresholds to combat this cognitive failure.
+
+```tsx
+// Instead of static thresholds, progressively harden them based on state
+const consecutiveThreshold = approvalStreak >= 5 ? 2 : 5;
+const requiredPauseMs = approvalStreak >= 5 ? 5000 : 1500;
+
+const { isAlertTriggered, recordAction, dismissAlert } = useAutomationBias({
+  consecutiveApprovals: consecutiveThreshold,
+  minApprovalTimeMs: requiredPauseMs,
+});
+```
+*If a user approves 5 items in a row without rejection, the enforced pause climbs from 1.5 seconds to 5 seconds. This explicitly breaks their automatic rhythm.*
 
 ## Design rationale
 
