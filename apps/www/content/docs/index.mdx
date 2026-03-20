@@ -24,21 +24,21 @@ Most UI libraries build for CRUD apps. Depute builds for the moment *after* you 
 
 Human-automation research shows that humans are terrible at passively monitoring highly autonomous systems. When working with AI agents, users fall into predictable cognitive traps. Depute maps its primitives directly against these known failures:
 
-- **Automation Bias:** Users blindly rubber-stamp agent actions without scrutiny → *Fixed by `AutomationBiasAlert` and `ConfidenceMeter`*
-- **Execution Amnesia:** Users lose track of the total "blast radius" of a massive agent session → *Fixed by `SessionOverview` and `StateDiff`*
-- **Responsibility Diffusion:** Users approve actions assuming the machine is accountable → *Fixed by `DecisionRecord` and `BindingApproval`*
+- **Automation Bias:** Users blindly rubber-stamp agent actions without scrutiny → *Fixed by an **Automation Bias Alert** and **Confidence Meter***
+- **Execution Amnesia:** Users lose track of the total "blast radius" of a massive agent session → *Fixed by a **Session Overview** and **State Diff***
+- **Responsibility Diffusion:** Users approve actions assuming the machine is accountable → *Fixed by a **Decision Record** and **Binding Approval***
 
 ## Use-Case Index (Problem-First)
 
 Not sure which component to use? **Press `⌘K` to search by problem.** The docs are mapped to UX challenges (e.g., search for "cognitive load" or "context switch").
 
 Or start here:
-- *"I need to safely switch agent focus across a swarm"* → Use **`OrchestratorView`** + **`SharedContextLedger`**
-- *"I need to stop an agent from making an unrecoverable mistake"* → Use **`ApprovalGate`** + **`ToolTrace`**
-- *"I need to show the user what the agent is thinking"* → Use **`PlanCard`** + **`ConfidenceMeter`**
-- *"I need to prevent users from blindly rubber-stamping approvals"* → Use **`AutomationBiasAlert`** wrapping an **`ApprovalGate`**
-- *"I need a binding cryptographic signature for a ledger mutation"* → Use **`BindingApproval`** + **`TransactionReceipt`**
-- *"I need to roll back a sequence of 40 API calls"* → Use **`RollbackTimeline`** + **`StateDiff`**
+- *"I need to safely switch agent focus across a swarm"* → Use an **Orchestrator View** + **Shared Context Ledger**
+- *"I need to stop an agent from making an unrecoverable mistake"* → Use an **Approval Gate** + **Tool Trace**
+- *"I need to show the user what the agent is thinking"* → Use a **Plan Card** + **Confidence Meter**
+- *"I need to prevent users from blindly rubber-stamping approvals"* → Use an **Automation Bias Alert** wrapping an **Approval Gate**
+- *"I need a binding cryptographic signature for a ledger mutation"* → Use a **Binding Approval** + **Transaction Receipt**
+- *"I need to roll back a sequence of 40 API calls"* → Use a **Rollback Timeline** + **State Diff**
 
 ## Distribution model
 
