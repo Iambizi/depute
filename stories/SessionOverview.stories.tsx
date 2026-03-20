@@ -1,6 +1,6 @@
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
-import { SessionOverview } from './SessionOverview';
+import { SessionOverview } from '../src/components/SessionOverview';
 
 const meta = {
   title: 'ax-components-v2/SessionOverview',

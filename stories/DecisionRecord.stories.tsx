@@ -1,6 +1,6 @@
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
-import { DecisionRecord } from './DecisionRecord';
+import { DecisionRecord } from '../src/components/DecisionRecord';
 
 const meta = {
   title: 'ax-components-v2/DecisionRecord',
