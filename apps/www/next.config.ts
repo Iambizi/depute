@@ -2,6 +2,8 @@ import { createMDX } from 'fumadocs-mdx/next';
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
+  // force Vercel build cache invalidation
+  generateBuildId: async () => 'cache-bust-v2.5.1',
   turbopack: {
     root: __dirname,
   },
