@@ -87,6 +87,8 @@ Components are **copied into your project** — not imported from `node_modules`
 | **Rollback Timeline** | Undo-tree for agentic tool sequences |
 | **Transaction Receipt** | Provenance receipt with verification hash for completed actions |
 | **Binding Approval** | Cryptographic intent gate with `isSigning` state for irreversible actions |
+| **Decision Record** | Immutable visual receipt of a human approval decision |
+| **Session Overview** | Semantic rollup of a high-velocity agent session to prevent execution amnesia |
 
 ---
 

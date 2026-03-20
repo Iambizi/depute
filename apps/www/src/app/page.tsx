@@ -22,8 +22,8 @@ const features = [
   {
     icon: <Lock className="w-5 h-5" />,
     label: 'Compliance',
-    count: '7',
-    items: ['BindingApproval', 'StateDiff', 'TransactionReceipt', 'RollbackTimeline', 'CapabilityMatrix', '+2 more'],
+    count: '9',
+    items: ['BindingApproval', 'StateDiff', 'TransactionReceipt', 'RollbackTimeline', 'CapabilityMatrix', '+4 more'],
   },
   {
     icon: <Terminal className="w-5 h-5" />,

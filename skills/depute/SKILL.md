@@ -1,6 +1,6 @@
 ---
 name: depute
-description: React component library for Agentic Experience (AX) design — purpose-built UI primitives for AI agent supervision and human oversight. Use when building interfaces for AI agents, autonomous workflows, or multi-agent systems. Triggers on: "agent UI", "approval gate", "confidence score", "tool trace", "agent plan", "pause agent", "human oversight", "AX component", "delegation interface", "agent audit", "orchestrator view", "swarm monitor", "handoff", "agent inbox", "escalation", "run controls", "agent permission", "rollback timeline", "state diff", "budget meter", "policy banner", "binding approval", "transaction receipt", "npx ax-depute", "ax audit", "oversight review", "audit agent code", "what AX components am I missing". Do NOT use for general React UI, standard CRUD interfaces, or non-agent applications.
+description: React component library for Agentic Experience (AX) design — purpose-built UI primitives for AI agent supervision and human oversight. Use when building interfaces for AI agents, autonomous workflows, or multi-agent systems. Triggers on: "agent UI", "approval gate", "confidence score", "tool trace", "agent plan", "pause agent", "human oversight", "AX component", "delegation interface", "agent audit", "orchestrator view", "swarm monitor", "handoff", "agent inbox", "escalation", "run controls", "agent permission", "rollback timeline", "state diff", "budget meter", "policy banner", "binding approval", "transaction receipt", "decision record", "session overview", "execution amnesia", "responsibility diffusion", "npx ax-depute", "ax audit", "oversight review", "audit agent code", "what AX components am I missing". Do NOT use for general React UI, standard CRUD interfaces, or non-agent applications.
 license: MIT
 compatibility: React 18+, TypeScript, CSS Modules. Agent-agnostic — works with any AI backend (OpenAI, Anthropic, LangChain, AutoGen, or custom).
 metadata:
@@ -66,6 +66,8 @@ When in doubt, start with v0. v1 wraps v0 — drilling into any v1 node should r
 | Agentic undo-tree for reverting multi-step sequences | `Rollback Timeline`| `npx ax-depute@latest add rollback-timeline` |
 | Cryptographic intent gate with explicit `isSigning` state | `Binding Approval`| `npx ax-depute@latest add binding-approval` |
 | Immutable audit log linking human approval to an executed action | `Transaction Receipt`| `npx ax-depute@latest add transaction-receipt` |
+| Immutable visual receipt of a human approval decision | `Decision Record`| `npx ax-depute@latest add decision-record` |
+| Semantic rollup of a high-velocity agent session | `Session Overview`| `npx ax-depute@latest add session-overview` |
 
 For deep component details, prop shapes, composition flows, and triage decisions, see:
 - `references/v0-components.md`
@@ -186,7 +188,7 @@ For high-stakes execution, show intent, capture a binding signature, and emit a 
 
 1. **Identify the agent boundary.** Find where the codebase makes LLM calls, executes tools, spawns agents, or runs autonomous workflows. Scan for: API calls to OpenAI/Anthropic/LangChain/AutoGen, tool-calling patterns, agent loop constructs, queue/task delegation logic.
 
-2. **Apply the 8 AX heuristics.** For each agent boundary found, check whether the following oversight surfaces exist:
+2. **Apply the 12 AX heuristics.** For each agent boundary found, check whether the following oversight surfaces exist:
 
 | # | Heuristic | What to look for | Missing component | Severity |
 |---|-----------|-------------------|-------------------|----------|
@@ -200,6 +202,8 @@ For high-stakes execution, show intent, capture a binding signature, and emit a 
 | H8 | **Agent spawning ungated** | The system spawns new agents or delegates tasks to sub-agents without human approval of the delegation | `Delegation Gate` | 🟡 Warning |
 | H9 | **Cryptographic action untracked** | The agent performs a high-stakes/financial/destructive action without structured payload deltas or an immutable receipt | `State Diff` or `Transaction Receipt` | 🔴 Critical |
 | H10 | **Budget ungoverned** | The agent can consume unbounded resources or tokens | `Budget Meter` | 🟡 Warning |
+| H11 | **Approval without receipt** | The agent executes an irreversible action after human approval, but the human is not presented with a persistent, immutable record of their decision | `Decision Record` | 🟡 Warning |
+| H12 | **Execution Amnesia** | The agent performs a high-velocity or high-volume series of mutations across many files/systems without a semantic rollup of the total impact | `Session Overview` | 🟡 Warning |
 
 3. **Produce the audit report.** Use this format:
 

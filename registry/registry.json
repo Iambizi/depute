@@ -411,6 +411,36 @@
       ],
       "registryDependencies": [],
       "axPrinciples": ["Transparency", "Context Visibility", "Safety-Critical"]
+    },
+    {
+      "name": "decision-record",
+      "label": "DecisionRecord",
+      "category": "Compliance & Forensics",
+      "description": "Immutable visual receipt of a human approval decision",
+      "buildOrder": 26,
+      "type": "primitive",
+      "files": [
+        "src/components/DecisionRecord/DecisionRecord.tsx",
+        "src/components/DecisionRecord/DecisionRecord.module.css",
+        "src/components/DecisionRecord/index.ts"
+      ],
+      "registryDependencies": [],
+      "axPrinciples": ["Human-in-the-Loop", "Accountability", "Auditability"]
+    },
+    {
+      "name": "session-overview",
+      "label": "SessionOverview",
+      "category": "Compliance & Forensics",
+      "description": "Semantic rollup of a high-velocity agent session to prevent execution amnesia",
+      "buildOrder": 27,
+      "type": "primitive",
+      "files": [
+        "src/components/SessionOverview/SessionOverview.tsx",
+        "src/components/SessionOverview/SessionOverview.module.css",
+        "src/components/SessionOverview/index.ts"
+      ],
+      "registryDependencies": [],
+      "axPrinciples": ["Transparency", "Comprehension"]
     }
   ]
 }

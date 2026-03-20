@@ -80,6 +80,13 @@ export type { BranchControlsProps } from './components/BranchControls';
 export { SharedContextLedger } from './components/SharedContextLedger';
 export type { SharedContextLedgerProps, ContextLedgerEntry } from './components/SharedContextLedger';
 
+// --- v2 Compliance & Forensics Primitives ---
+export { DecisionRecord } from './components/DecisionRecord';
+export type { DecisionRecordProps } from './components/DecisionRecord';
+
+export { SessionOverview } from './components/SessionOverview';
+export type { SessionOverviewProps, SurfaceTouched, KeyDecision } from './components/SessionOverview';
+
 // Hooks
 export { useAutomationBias } from './hooks';
 

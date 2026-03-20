@@ -30,6 +30,8 @@
     "components/capability-matrix",
     "components/rollback-timeline",
     "components/transaction-receipt",
-    "components/binding-approval"
+    "components/binding-approval",
+    "components/decision-record",
+    "components/session-overview"
   ]
 }

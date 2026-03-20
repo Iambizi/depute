@@ -1,0 +1,66 @@
+---
+title: Decision Record
+description: Immutable visual receipt of a human approval decision to counteract Responsibility Diffusion.
+---
+
+import { DecisionRecord } from "../../../../src/components/DecisionRecord";
+import { AutoTypeTable } from "fumadocs-typescript/ui";
+
+<AutoTypeTable path="../../src/components/DecisionRecord/DecisionRecord.tsx" name="DecisionRecordProps" />
+
+## Basic usage
+
+Use `<DecisionRecord />` to log a human's active oversight of an agentic workflow. While the agent executes actions, you need an immutable record of *who* authorized it and *why*.
+
+import { DecisionRecordDemo } from "../../../src/components/demos/DecisionRecordDemo";
+
+<DecisionRecordDemo />
+
+```tsx
+import { DecisionRecord } from "@/components/DecisionRecord";
+
+export function AuditLog() {
+  return (
+    <DecisionRecord
+      decision="approved"
+      approver={{
+        name: "Alice Engineering",
+        role: "DevOps",
+        timestamp: new Date()
+      }}
+      agentContext={{
+        intent: "Restart production API gateway",
+        policyInvoked: "INFRA-001"
+      }}
+      humanReasoning="Verified metrics on Datadog. Latency spike requires restart."
+    />
+  );
+}
+```
+
+## Props
+
+The component requires strict `decision`, `approver`, and `agentContext` objects to ensure the audit log is semantically complete.
+
+*   `decision`: Must be `"approved"`, `"rejected"`, or `"modified"`.
+*   `approver`: Requires a `name` and `timestamp`. The `role` is optional but highly recommended for role-based access control (RBAC) logs.
+*   `agentContext`: The `intent` of the agent that requested authorization.
+*   `humanReasoning`: A string capturing *why* the human made their choice.
+
+## Solution Patterns
+
+### The Responsibility Terminal
+Embed the `DecisionRecord` at the end of every `ApprovalGate` flow. If the user clicks "Approve", the final screen rendered should be the immutable receipt.
+
+```text
+Action Propsed → [Approval Gate] → (Approves) → [Action Executes] → [Decision Record]
+```
+
+This closes the "Execution Amnesia" loop by confirming to the user that their identity is now bound to the output.
+
+## Design rationale
+
+**Why not just use `TransactionReceipt`?**
+A `TransactionReceipt` logs what the *machine* did (e.g., "Deployed smart contract `0x123` at block `8841`"). A `DecisionRecord` logs what the *human* did (e.g., "Alice approved the contract deployment because the Q/A tests passed"). 
+
+In enterprise and high-compliance environments, "Responsibility Diffusion" happens when humans blindly click approve because they aren't explicitly reminded that their identity is being audited. By forcing an explicit, formal, visual receipt of *their* decision, we heighten their scrutiny on the next request.
