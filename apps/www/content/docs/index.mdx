@@ -20,6 +20,14 @@ Most UI libraries build for CRUD apps. Depute builds for the moment *after* you 
 - The agent is running → **Run Controls** let the user pause or stop at any time
 - Multiple agents are coordinating → **Orchestrator View** shows who's managing whom
 
+## Defeating Cognitive Failures
+
+Human-automation research shows that humans are terrible at passively monitoring highly autonomous systems. When working with AI agents, users fall into predictable cognitive traps. Depute maps its primitives directly against these known failures:
+
+- **Automation Bias:** Users blindly rubber-stamp agent actions without scrutiny → *Fixed by `AutomationBiasAlert` and `ConfidenceMeter`*
+- **Execution Amnesia:** Users lose track of the total "blast radius" of a massive agent session → *Fixed by `SessionOverview` and `StateDiff`*
+- **Responsibility Diffusion:** Users approve actions assuming the machine is accountable → *Fixed by `DecisionRecord` and `BindingApproval`*
+
 ## Use-Case Index (Problem-First)
 
 Not sure which component to use? **Press `⌘K` to search by problem.** The docs are mapped to UX challenges (e.g., search for "cognitive load" or "context switch").
