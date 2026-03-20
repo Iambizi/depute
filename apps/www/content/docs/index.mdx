@@ -15,30 +15,30 @@ When an AI agent runs in your product, users need to see what's happening — no
 
 Most UI libraries build for CRUD apps. Depute builds for the moment *after* you hand off work to an agent:
 
-- The agent proposes a plan → **Plan Card** shows it before execution
-- The agent wants to send email → **Approval Gate** blocks until the user approves
-- The agent is running → **Run Controls** let the user pause or stop at any time
-- Multiple agents are coordinating → **Orchestrator View** shows who's managing whom
+- The agent proposes a plan → [**Plan Card**](/docs/components/plan-card) shows it before execution
+- The agent wants to send email → [**Approval Gate**](/docs/components/approval-gate) blocks until the user approves
+- The agent is running → [**Run Controls**](/docs/components/run-controls) let the user pause or stop at any time
+- Multiple agents are coordinating → [**Orchestrator View**](/docs/components/orchestrator-view) shows who's managing whom
 
 ## Defeating Cognitive Failures
 
 Human-automation research shows that humans are terrible at passively monitoring highly autonomous systems. When working with AI agents, users fall into predictable cognitive traps. Depute maps its primitives directly against these known failures:
 
-- **Automation Bias:** Users blindly rubber-stamp agent actions without scrutiny → *Fixed by an **Automation Bias Alert** and **Confidence Meter***
-- **Execution Amnesia:** Users lose track of the total "blast radius" of a massive agent session → *Fixed by a **Session Overview** and **State Diff***
-- **Responsibility Diffusion:** Users approve actions assuming the machine is accountable → *Fixed by a **Decision Record** and **Binding Approval***
+- **Automation Bias:** Users blindly rubber-stamp agent actions without scrutiny → *Fixed by an [**Automation Bias Alert**](/docs/components/automation-bias-alert) and [**Confidence Meter**](/docs/components/confidence-meter)*
+- **Execution Amnesia:** Users lose track of the total "blast radius" of a massive agent session → *Fixed by a [**Session Overview**](/docs/components/session-overview) and [**State Diff**](/docs/components/state-diff)*
+- **Responsibility Diffusion:** Users approve actions assuming the machine is accountable → *Fixed by a [**Decision Record**](/docs/components/decision-record) and [**Binding Approval**](/docs/components/binding-approval)*
 
 ## Use-Case Index (Problem-First)
 
 Not sure which component to use? **Press `⌘K` to search by problem.** The docs are mapped to UX challenges (e.g., search for "cognitive load" or "context switch").
 
 Or start here:
-- *"I need to safely switch agent focus across a swarm"* → Use an **Orchestrator View** + **Shared Context Ledger**
-- *"I need to stop an agent from making an unrecoverable mistake"* → Use an **Approval Gate** + **Tool Trace**
-- *"I need to show the user what the agent is thinking"* → Use a **Plan Card** + **Confidence Meter**
-- *"I need to prevent users from blindly rubber-stamping approvals"* → Use an **Automation Bias Alert** wrapping an **Approval Gate**
-- *"I need a binding cryptographic signature for a ledger mutation"* → Use a **Binding Approval** + **Transaction Receipt**
-- *"I need to roll back a sequence of 40 API calls"* → Use a **Rollback Timeline** + **State Diff**
+- *"I need to safely switch agent focus across a swarm"* → Use an [**Orchestrator View**](/docs/components/orchestrator-view) + [**Shared Context Ledger**](/docs/components/shared-context-ledger)
+- *"I need to stop an agent from making an unrecoverable mistake"* → Use an [**Approval Gate**](/docs/components/approval-gate) + [**Tool Trace**](/docs/components/tool-trace)
+- *"I need to show the user what the agent is thinking"* → Use a [**Plan Card**](/docs/components/plan-card) + [**Confidence Meter**](/docs/components/confidence-meter)
+- *"I need to prevent users from blindly rubber-stamping approvals"* → Use an [**Automation Bias Alert**](/docs/components/automation-bias-alert) wrapping an [**Approval Gate**](/docs/components/approval-gate)
+- *"I need a binding cryptographic signature for a ledger mutation"* → Use a [**Binding Approval**](/docs/components/binding-approval) + [**Transaction Receipt**](/docs/components/transaction-receipt)
+- *"I need to roll back a sequence of 40 API calls"* → Use a [**Rollback Timeline**](/docs/components/rollback-timeline) + [**State Diff**](/docs/components/state-diff)
 
 ## Distribution model
 
