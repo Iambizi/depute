@@ -3,11 +3,6 @@ title: Decision Record
 description: Immutable visual receipt of a human approval decision to counteract Responsibility Diffusion.
 ---
 
-import { DecisionRecord } from "../../../../src/components/DecisionRecord";
-import { AutoTypeTable } from "fumadocs-typescript/ui";
-
-<AutoTypeTable path="../../src/components/DecisionRecord/DecisionRecord.tsx" name="DecisionRecordProps" />
-
 ## Basic usage
 
 Use `<DecisionRecord />` to log a human's active oversight of an agentic workflow. While the agent executes actions, you need an immutable record of *who* authorized it and *why*.
@@ -40,12 +35,14 @@ export function AuditLog() {
 
 ## Props
 
-The component requires strict `decision`, `approver`, and `agentContext` objects to ensure the audit log is semantically complete.
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `decision` | `'approved' \| 'rejected' \| 'modified'` | — | The final human decision |
+| `approver` | `{ name: string, role?: string, timestamp: Date \| string }` | — | The human who made the decision |
+| `agentContext` | `{ intent: string, policyInvoked?: string }` | — | The agent intent and policy at the time |
+| `humanReasoning` | `string` | — | Optional human reasoning for the decision |
 
-*   `decision`: Must be `"approved"`, `"rejected"`, or `"modified"`.
-*   `approver`: Requires a `name` and `timestamp`. The `role` is optional but highly recommended for role-based access control (RBAC) logs.
-*   `agentContext`: The `intent` of the agent that requested authorization.
-*   `humanReasoning`: A string capturing *why* the human made their choice.
+The component intentionally requires strict object shapes to ensure the audit log is semantically complete for role-based access control (RBAC) environments.
 
 ## Solution Patterns
 

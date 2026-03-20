@@ -3,11 +3,6 @@ title: Session Overview
 description: Semantic rollup of a high-velocity agent session to prevent execution amnesia.
 ---
 
-import { SessionOverview } from "../../../../src/components/SessionOverview";
-import { AutoTypeTable } from "fumadocs-typescript/ui";
-
-<AutoTypeTable path="../../src/components/SessionOverview/SessionOverview.tsx" name="SessionOverviewProps" />
-
 ## Basic usage
 
 Use `<SessionOverview />` at the conclusion of a complex, multi-step agent run where the agent touches across dozens of files, APIs, or databases.
@@ -38,12 +33,12 @@ export function PostRunReport() {
 
 ## Props
 
-The object models enforce a structured breakdown of the agent's total impact area.
-
-*   `sessionSummary`: The NLP human-readable summary of the intent completion.
-*   `duration`: Elapsed time string.
-*   `surfacesTouched`: Array mapping the `type` (`file`, `api`, `database`, `system`), the `label`, and the `action` (`read`, `write`, `execute`).
-*   `keyDecisions`: Specific deviations or autonomous judgment calls the agent made without human intervention.
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `sessionSummary` | `string` | — | High-level semantic summary of what the agent achieved |
+| `duration` | `string` | — | Total elapsed time of the agent session |
+| `surfacesTouched` | `Array<{ type, label, action }>` | `[]` | Which digital surfaces the agent interacted with |
+| `keyDecisions` | `Array<{ description: string }>` | `[]` | Significant decisions or deviations made autonomously |
 
 ## Solution Patterns
 
