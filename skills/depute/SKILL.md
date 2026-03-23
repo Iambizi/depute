@@ -1,6 +1,6 @@
 ---
 name: depute
-description: React component library for Agentic Experience (AX) design — purpose-built UI primitives for AI agent supervision and human oversight. Use when building interfaces for AI agents, autonomous workflows, or multi-agent systems. Triggers on: "agent UI", "approval gate", "confidence score", "tool trace", "agent plan", "pause agent", "human oversight", "AX component", "delegation interface", "agent audit", "orchestrator view", "swarm monitor", "handoff", "agent inbox", "escalation", "run controls", "agent permission", "rollback timeline", "state diff", "budget meter", "policy banner", "binding approval", "transaction receipt", "decision record", "session overview", "execution amnesia", "responsibility diffusion", "npx ax-depute", "ax audit", "oversight review", "audit agent code", "what AX components am I missing". Do NOT use for general React UI, standard CRUD interfaces, or non-agent applications.
+description: React component library for Agentic Experience (AX) design — purpose-built UI primitives for AI agent supervision and human oversight. Use when building interfaces for AI agents, autonomous workflows, or multi-agent systems. Triggers on: "agent UI", "approval gate", "confidence score", "tool trace", "agent plan", "pause agent", "human oversight", "AX component", "delegation interface", "agent audit", "orchestrator view", "swarm monitor", "handoff", "agent inbox", "escalation", "run controls", "agent permission", "rollback timeline", "state diff", "budget meter", "policy banner", "binding approval", "transaction receipt", "decision record", "session overview", "execution amnesia", "responsibility diffusion", "npx ax-depute", "ax audit", "oversight review", "audit agent code", "what AX components am I missing", "IMDA governance", "L1-L4 taxonomy", "L3 supervised", "L4 autonomous", "compliance". Do NOT use for general React UI, standard CRUD interfaces, or non-agent applications.
 license: MIT
 compatibility: React 18+, TypeScript, CSS Modules. Agent-agnostic — works with any AI backend (OpenAI, Anthropic, LangChain, AutoGen, or custom).
 metadata:
@@ -17,13 +17,16 @@ React primitives for the human side of agentic AI. When an AI agent runs in your
 
 ## Instructions
 
-### Step 1: Determine agent complexity
+### Step 1: Determine Agent Autonomy Target (L1-L4)
 
-**Single agent acting on behalf of a user?** → Use v0 Core Primitives
-**Multiple agents coordinating, delegating, or running in parallel?** → Use v1 Multi-Agent Orchestration
-**High-stakes, irreversible actions requiring strict compliance and forensics?** → Use v2 Strict Compliance & Forensics
+To select the right components, first classify the agent's target autonomy level (based on the IMDA Agentic AI Governance Framework):
 
-When in doubt, start with v0. v1 wraps v0 — drilling into any v1 node should reveal the familiar v0 toolkit (Plan Card, Tool Trace, Approval Gate) scoped to that sub-agent. v2 provides heavy-duty friction and auditing for specific high-risk actions.
+- **L1 Human-Led (Agent advises)** → No execution privileges. Use `v0` logging components (`Artifact Card`, `Tool Trace`).
+- **L2 Collaborative (Agent drafts, human guides)** → Wrap interactions in `v1` (`Delegation Gate`) and `v2` (`State Diff`).
+- **L3 Supervised (Agent runs, human approves)** → Strictly enforce boundaries with `v0` (`Approval Gate`, `Run Controls`) and capture intent with `v2` (`Decision Record`, `Binding Approval`).
+- **L4 Autonomous (Agent operates, human observes)** → Monitor massive blast radii with `v1` (`Orchestrator View`, `Swarm Monitor`) and cure execution amnesia using `v2` (`Session Overview`).
+
+When in doubt, start with v0 boundaries and scale up to v1 orchestration and v2 forensics as the system's runtime autonomy increases.
 
 ### Step 2: Select the right component
 
