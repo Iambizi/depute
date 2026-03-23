@@ -1,0 +1,34 @@
+---
+title: Governance Levels
+description: Mapping the Singapore IMDA Agentic AI Governance Framework directly to Depute's primitive components.
+---
+
+When deploying Agentic AI into production, "human-in-the-loop" is no longer a sufficient definition. Under strict new regulatory schemas like the **Singapore IMDA Model AI Governance Framework for Agentic AI** (January 2026), organizations must formally classify the autonomy of their agents to determine what level of human oversight is legally required.
+
+Depute provides the exact UI primitives needed to securely enforce each of these four legally-recognized governance dimensions.
+
+---
+
+## The L1–L4 Autonomy Taxonomy
+
+### L1 — Human-Led
+**Agent proposes, human operates.** The agent acts exclusively as an advisor. It generates data, intelligence, or suggestions, but the human must manually execute the final action in their own tooling.
+- **Depute Implementation:** Use an [**Artifact Card**](/docs/components/artifact-card) or [**Tool Trace**](/docs/components/tool-trace) to display the agent's work cleanly. No complex execution barriers are needed because the agent lacks execution privileges in the host environment.
+
+### L2 — Collaborative
+**Agent and human work together.** The agent can draft actions and stage tools, but requires active back-and-forth guidance and synchronous alignment.
+- **Depute Implementation:** Use a [**Delegation Gate**](/docs/components/delegation-gate) to smoothly manage the handoff when the human decides the agent is ready to take the reins. Wrap interactions in [**State Diff**](/docs/components/state-diff) to show the human exactly what the agent drafted before it applies to the global state.
+
+### L3 — Supervised
+**Agent operates, human approves.** The most critical boundary for high-stakes deployments. The agent is capable of running end-to-end but is cryptographically tethered to a human's explicit authorization before executing irreversible actions.
+- **Depute Implementation:** 
+  - Wrap dangerous tools in an [**Approval Gate**](/docs/components/approval-gate) to halt execution immediately.
+  - Surround the gate with an [**Automation Bias Alert**](/docs/components/automation-bias-alert) to ensure the human doesn't blindly rubber-stamp the request out of fatigue.
+  - Bind the final decision to a [**Decision Record**](/docs/components/decision-record) to log an immutable audit trail of the *human's* approval logic for forensic review.
+
+### L4 — Autonomous
+**Agent operates, human observes.** The agent runs asynchronously in the background across prolonged periods. The risk shifts from "preventing a single bad action" to "detecting cascading failures" across a massive, opaque blast radius.
+- **Depute Implementation:** 
+  - Ensure users have persistent [**Run Controls**](/docs/components/run-controls) to hard-kill the agent workflow at any moment from anywhere in the application.
+  - Provide a [**Session Overview**](/docs/components/session-overview) upon completion to cure "Execution Amnesia" and summarize the entire blast radius of the agent's autonomous run.
+  - Use an [**Orchestrator View**](/docs/components/orchestrator-view) and [**Swarm Monitor**](/docs/components/swarm-monitor) to map the topology of multiple agents spinning up sub-agents autonomously.

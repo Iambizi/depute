@@ -2,6 +2,7 @@
   "title": "depute",
   "pages": [
     "index",
+    "governance-levels",
     "installation",
     "---Single Agent---",
     "components/plan-card",
