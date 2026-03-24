@@ -271,3 +271,47 @@
   outline: 2px solid var(--ax-color-red-500);
   outline-offset: 2px;
 }
+
+/* ------------------------------------------------------------------ */
+/* Handoff Extensions                                                  */
+/* ------------------------------------------------------------------ */
+
+.handoffPending {
+  border-style: dashed;
+  box-shadow: none;
+  background: var(--ax-surface-secondary);
+  transition: all var(--ax-duration-normal) var(--ax-ease-default);
+}
+
+.handoffSection {
+  padding: 0 var(--ax-space-4) var(--ax-space-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--ax-space-1);
+}
+
+.handoffMessage {
+  font-size: var(--ax-font-size-sm);
+  color: var(--ax-text-secondary);
+  font-weight: var(--ax-font-weight-medium);
+  display: flex;
+  align-items: center;
+  gap: var(--ax-space-2);
+}
+
+.handoffMessage::before {
+  content: '';
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--ax-status-waiting-bg);
+  border: 2px solid var(--ax-status-waiting-color);
+  animation: ax-pulse var(--ax-duration-slow) infinite;
+}
+
+.handoffSubtext {
+  font-size: var(--ax-font-size-xs);
+  color: var(--ax-text-tertiary);
+  margin-left: calc(8px + var(--ax-space-2));
+}

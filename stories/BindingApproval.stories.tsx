@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import { BindingApproval } from '../src/components/BindingApproval';
 import type { BindingApprovalProps } from '../src/components/BindingApproval';
@@ -75,4 +76,50 @@ export const CryptoTransaction: Story = {
     onSign: () => alert('Deploying...'),
     onReject: () => alert('Deployment cancelled'),
   },
+};
+
+export const AsyncHandoffFlow: Story = {
+  name: 'Async Handoff (Remote Cryptographic Signature)',
+  render: function AsyncHandoffRender() {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const [status, setStatus] = useState<any>('reviewing');
+
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+        <p style={{ fontSize: '12px', color: '#666', fontFamily: 'sans-serif' }}>
+          <strong>Scenario:</strong> The user steps away before authorizing a high-stakes transaction. After 3 seconds, the gate safely bypasses the local Terms & Conditions trap and hands the payload to their mobile wallet.
+        </p>
+        <BindingApproval
+          title="Wire Transfer Authorization"
+          description="Agent requests authorization to execute a $5,000 wire transfer from Account ****4521 to Account ****8903."
+          impactStatement="$5,000.00 will be transferred immediately. This action is irreversible."
+          signerIdentity="alice@company.com"
+          terms={[
+            { id: 't1', text: 'I authorize the transfer of $5,000.00 to Account ****8903', acknowledged: false },
+            { id: 't2', text: 'I understand this action is irreversible once confirmed', acknowledged: false }
+          ]}
+          status={status}
+          approvalHandoff={{
+            timeoutMs: 3000,
+            fallbackBehavior: 'block',
+          }}
+          onSign={() => setStatus('signed')}
+          onReject={() => setStatus('rejected')}
+          onHandoff={async (ctx) => {
+             console.log('Handed off to mobile wallet:', ctx);
+             setStatus('handoff_pending');
+          }}
+        />
+        {status === 'handoff_pending' && (
+           <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem', fontFamily: 'sans-serif', fontSize: '12px' }}>
+             <button onClick={() => setStatus('signed')} style={{ padding: '0.4rem', background: '#e0e7ff', border: '1px solid #4f46e5', borderRadius: '4px', cursor: 'pointer' }}>📱 Simulate Mobile 'SIGN'</button>
+             <button onClick={() => setStatus('handoff_denied')} style={{ padding: '0.4rem', background: '#fee2e2', border: '1px solid #ef4444', borderRadius: '4px', cursor: 'pointer' }}>📱 Simulate Mobile 'DENY'</button>
+           </div>
+        )}
+        {status !== 'reviewing' && status !== 'handoff_pending' && (
+           <button onClick={() => setStatus('reviewing')} style={{ marginTop: '1rem', padding: '0.4rem', border: '1px solid #ccc', borderRadius: '4px', cursor: 'pointer', alignSelf: 'flex-start' }}>↻ Reset Gateway</button>
+        )}
+      </div>
+    );
+  }
 };

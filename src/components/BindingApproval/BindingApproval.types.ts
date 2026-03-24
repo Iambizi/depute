@@ -10,7 +10,15 @@
  */
 
 /** Binding approval status */
-export type BindingStatus = 'reviewing' | 'signing' | 'signed' | 'rejected' | 'expired';
+export type BindingStatus =
+  | 'reviewing'
+  | 'signing'
+  | 'signed'
+  | 'rejected'
+  | 'expired'
+  | 'handoff_pending'
+  | 'handoff_expired'
+  | 'handoff_denied';
 
 /** A term/clause in the binding agreement */
 export interface BindingTerm {
@@ -60,6 +68,24 @@ export interface BindingApprovalProps {
 
   /** Called when timeout expires */
   onTimeout?: () => void;
+
+  /** Async delegation configuration */
+  approvalHandoff?: import('../ApprovalGate/ApprovalGate.types').ApprovalHandoff;
+
+  /** Fired when gate cannot find a present human */
+  onHandoff?: (ctx: import('../ApprovalGate/ApprovalGate.types').HandoffContext) => Promise<void>;
+
+  /** Fired when an async approval response arrives */
+  onHandoffResolved?: (decision: 'approved' | 'denied', ctx: import('../ApprovalGate/ApprovalGate.types').HandoffContext) => void;
+
+  /** Fired when the handoff deadline passes before a response */
+  onHandoffExpired?: (ctx: import('../ApprovalGate/ApprovalGate.types').HandoffContext) => void;
+
+  /** Rehydrate a gate waiting for a response */
+  pendingApprovalId?: string;
+
+  /** Absolute unix timestamp for handoff TTL expiration */
+  handoffDeadlineMs?: number;
 
   /** Additional CSS class */
   className?: string;

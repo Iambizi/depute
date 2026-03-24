@@ -19,6 +19,7 @@ import type {
   BindingStatus,
   BindingTerm,
 } from './BindingApproval.types';
+import type { ApprovalHandoff, HandoffContext } from '../ApprovalGate/ApprovalGate.types';
 import styles from './BindingApproval.module.css';
 
 /* ------------------------------------------------------------------ */
@@ -31,6 +32,9 @@ const STATUS_LABELS: Record<BindingStatus, string> = {
   signed: 'Signed',
   rejected: 'Rejected',
   expired: 'Expired',
+  handoff_pending: 'Awaiting Remote Signature...',
+  handoff_expired: 'Handoff Expired',
+  handoff_denied: 'Remote Signature Denied',
 };
 
 const STATUS_CLASSES: Record<BindingStatus, string> = {
@@ -39,6 +43,9 @@ const STATUS_CLASSES: Record<BindingStatus, string> = {
   signed: styles.statusSigned,
   rejected: styles.statusRejected,
   expired: styles.statusExpired,
+  handoff_pending: `${styles.statusReviewing} ${styles.handoffPending}`,
+  handoff_expired: styles.statusExpired,
+  handoff_denied: styles.statusRejected,
 };
 
 /* ------------------------------------------------------------------ */
@@ -58,6 +65,12 @@ export function BindingApproval({
   onSign,
   onReject,
   onTimeout,
+  approvalHandoff,
+  onHandoff,
+  onHandoffResolved,
+  onHandoffExpired,
+  pendingApprovalId,
+  handoffDeadlineMs,
   className,
 }: BindingApprovalProps) {
   const [checkedTerms, setCheckedTerms] = useState<Set<string>>(
@@ -68,6 +81,32 @@ export function BindingApproval({
 
   // Determine effective status — isSigning overrides to 'signing'
   const effectiveStatus = isSigning ? 'signing' : status;
+  const isHandoffPending = effectiveStatus === 'handoff_pending';
+
+  // Handoff dispatcher logic
+  const [handoffInitiated, setHandoffInitiated] = useState(false);
+  useEffect(() => {
+    if (effectiveStatus === 'reviewing' && approvalHandoff && !handoffInitiated) {
+      const timer = setTimeout(() => {
+        setHandoffInitiated(true);
+        const deadline = Date.now() + 24 * 60 * 60 * 1000;
+        onHandoff?.({
+          approvalId: pendingApprovalId || crypto.randomUUID(),
+          action: title,
+          deadline,
+          timestamp: Date.now(),
+        });
+      }, approvalHandoff.timeoutMs);
+      return () => clearTimeout(timer);
+    }
+  }, [effectiveStatus, approvalHandoff, handoffInitiated, title, pendingApprovalId, onHandoff]);
+
+  // Async Handoff Rehydration clock sync
+  useEffect(() => {
+    if (isHandoffPending && handoffDeadlineMs != null) {
+      setTimeRemaining(Math.max(0, Math.floor((handoffDeadlineMs - Date.now()) / 1000)));
+    }
+  }, [isHandoffPending, handoffDeadlineMs]);
 
   // All terms acknowledged check
   const allTermsAcknowledged = useMemo(() => {
@@ -81,14 +120,20 @@ export function BindingApproval({
 
   // Timeout timer
   useEffect(() => {
-    if (!timeoutSeconds || effectiveStatus !== 'reviewing') return;
+    if ((effectiveStatus !== 'reviewing' && !isHandoffPending) || timeRemaining <= 0) return;
 
-    setTimeRemaining(timeoutSeconds);
     timerRef.current = setInterval(() => {
       setTimeRemaining((prev) => {
         if (prev <= 1) {
           if (timerRef.current) clearInterval(timerRef.current);
-          onTimeout?.();
+          if (isHandoffPending) {
+             onHandoffExpired?.({ action: title } as any);
+             if (approvalHandoff?.fallbackBehavior === 'deny') {
+                onReject?.('Handoff expired (fallback: deny)');
+             }
+          } else {
+             onTimeout?.();
+          }
           return 0;
         }
         return prev - 1;
@@ -98,7 +143,7 @@ export function BindingApproval({
     return () => {
       if (timerRef.current) clearInterval(timerRef.current);
     };
-  }, [timeoutSeconds, effectiveStatus, onTimeout]);
+  }, [effectiveStatus, isHandoffPending, timeRemaining, onTimeout, onHandoffExpired, title, approvalHandoff, onReject]);
 
   const handleTermToggle = useCallback((termId: string) => {
     setCheckedTerms((prev) => {
@@ -139,7 +184,7 @@ export function BindingApproval({
             </span>
           </div>
         </div>
-        {timeoutSeconds != null && effectiveStatus === 'reviewing' && (
+        {(timeoutSeconds != null || isHandoffPending) && (effectiveStatus === 'reviewing' || isHandoffPending) && timeRemaining > 0 && (
           <span className={styles.timer}>
             {Math.floor(timeRemaining / 60)}:{String(timeRemaining % 60).padStart(2, '0')}
           </span>
@@ -158,7 +203,7 @@ export function BindingApproval({
       )}
 
       {/* Terms */}
-      {terms.length > 0 && !isTerminal && (
+      {terms.length > 0 && !isTerminal && !isHandoffPending && (
         <div className={styles.termsSection}>
           <span className={styles.termsLabel}>
             Terms ({checkedTerms.size}/{terms.length} acknowledged)
@@ -180,6 +225,18 @@ export function BindingApproval({
         </div>
       )}
 
+      {/* Handoff Message */}
+      {isHandoffPending && (
+        <div className={styles.handoffSection}>
+          <div className={styles.handoffMessage}>
+             Remote Signature Request Dispatched
+          </div>
+          <span className={styles.handoffSubtext}>
+             A cryptographic signing request has been routed to the primary authorized device.
+          </span>
+        </div>
+      )}
+
       {/* Signer identity */}
       {signerIdentity && (
         <div className={styles.signerRow}>
@@ -189,7 +246,7 @@ export function BindingApproval({
       )}
 
       {/* Actions */}
-      {!isTerminal && (
+      {!isTerminal && !isHandoffPending && (
         <div className={styles.actions}>
           <button
             type="button"
@@ -208,6 +265,19 @@ export function BindingApproval({
             aria-label="Reject"
           >
             Reject
+          </button>
+        </div>
+      )}
+      {isHandoffPending && (
+        <div className={styles.actions}>
+          <button
+            type="button"
+            className={styles.rejectBtn}
+            onClick={() => onReject?.()}
+            aria-label="Cancel signature request"
+            style={{ marginLeft: 'auto' }}
+          >
+            Cancel Request
           </button>
         </div>
       )}
