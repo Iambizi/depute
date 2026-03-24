@@ -94,6 +94,30 @@ For high-risk multi-step actions, use `mode="staged"` to walk the user through t
 />
 ```
 
+## Async Approval Handoff (Dispatch Pattern)
+
+If an agent executes a long-running background workflow, the human may step away from their machine. A blocking modal that nobody is watching acts indistinguishably from a hung process. 
+
+To solve this, configure the `approvalHandoff` prop to automatically hand the approval off to a mobile device or Slack channel after a set timeout:
+
+```tsx
+<ApprovalGate
+  title="Execute Production Failover"
+  status={status}
+  approvalHandoff={{
+    timeoutMs: 30000,           // 30 seconds of inactivity triggers handoff
+    fallbackBehavior: 'block',  // What happens if the async deadline passes
+  }}
+  onHandoff={async (ctx) => {
+     await sendSmsWebhook(user.phone, ctx);
+     setStatus('handoff_pending');
+  }}
+  handoffDeadlineMs={Date.now() + 86400000} // Backend TTL for UI rehydration sync
+/>
+```
+
+When `status` shifts to `handoff_pending`, the component drops the blocking modal trap and gracefully collapses into a non-blocking ambient status card that counts down to the deadline.
+
 ## Props
 
 | Prop | Type | Default | Description |
@@ -102,10 +126,13 @@ For high-risk multi-step actions, use `mode="staged"` to walk the user through t
 | `description` | `string` | — | Human-readable explanation of what the agent will do |
 | `agentReasoning` | `string` | — | Why the agent thinks this action is necessary |
 | `mode` | `'simple' \| 'staged'` | `'simple'` | Staged adds Preview → Confirm → Execute steps |
-| `status` | `'pending' \| 'approved' \| 'rejected'` | `'pending'` | Controls gate state |
+| `status` | `'pending' \| 'approved' \| 'rejected' \| 'handoff_pending' \| 'handoff_denied' \| 'handoff_expired'` | `'pending'` | Controls gate state |
 | `scope` | `ApprovalScope` | — | Optional scoped grant (target, resourceLimit, durationSeconds) |
 | `onApprove` | `() => void` | — | Called when user approves |
 | `onReject` | `() => void` | — | Called when user rejects |
+| `approvalHandoff` | `ApprovalHandoff` | — | Configures timeout and fallback to automatically trigger async handoff. |
+| `onHandoff` | `(ctx) => Promise<void>` | — | Fires when the synchronous timeout is breached. |
+| `handoffDeadlineMs` | `number` | — | Absolute unix timestamp for TTL enforcement (useful for UI sync on session restore). |
 
 ## Solution Patterns
 

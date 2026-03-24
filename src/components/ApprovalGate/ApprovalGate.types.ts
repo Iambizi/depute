@@ -88,6 +88,9 @@ export interface ApprovalGateProps {
   /** Rehydrate a gate waiting for a response */
   pendingApprovalId?: string;
 
+  /** Absolute unix timestamp for handoff TTL expiration (useful for resuming state) */
+  handoffDeadlineMs?: number;
+
   /** Additional CSS class */
   className?: string;
 }

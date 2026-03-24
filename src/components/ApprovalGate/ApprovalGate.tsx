@@ -120,6 +120,7 @@ export function ApprovalGate({
   onHandoffResolved,
   onHandoffExpired,
   pendingApprovalId,
+  handoffDeadlineMs,
   className,
 }: ApprovalGateProps) {
   const isPending = status === 'pending';
@@ -173,6 +174,13 @@ export function ApprovalGate({
       return () => clearTimeout(timer);
     }
   }, [isPending, approvalHandoff, handoffInitiated, title, confidence, pendingApprovalId, onHandoff]);
+
+  // Async Handoff Rehydration clock sync
+  useEffect(() => {
+    if (isHandoffPending && handoffDeadlineMs != null) {
+      setTimeRemaining(Math.max(0, Math.floor((handoffDeadlineMs - Date.now()) / 1000)));
+    }
+  }, [isHandoffPending, handoffDeadlineMs]);
 
   // Countdown logic
   useEffect(() => {
