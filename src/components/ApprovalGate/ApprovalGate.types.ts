@@ -6,6 +6,23 @@
 
 import type { ApprovalStatus } from '../../types/common';
 
+export type ExtendedApprovalStatus = ApprovalStatus | 'handoff_pending' | 'handoff_expired' | 'handoff_denied';
+
+export interface ApprovalHandoff {
+  timeoutMs: number;
+  fallbackBehavior: 'block' | 'abort' | 'deny';
+  requireSigning?: boolean;
+}
+
+export interface HandoffContext {
+  approvalId: string;
+  action: string;
+  riskScore?: number;
+  confidence?: number;
+  deadline: number;
+  timestamp: number;
+}
+
 /** Staged mode sub-states */
 export type StagedStep = 'previewing' | 'confirming';
 
@@ -23,7 +40,7 @@ export interface ApprovalGateProps {
   agentReasoning?: string;
 
   /** Current approval status */
-  status?: ApprovalStatus;
+  status?: ExtendedApprovalStatus;
 
   /** Approval mode — simple (approve/reject) or staged (preview → confirm → execute) */
   mode?: 'simple' | 'staged';
@@ -55,6 +72,21 @@ export interface ApprovalGateProps {
 
   /** Called on timeout */
   onTimeout?: () => void;
+
+  /** Async delegation configuration */
+  approvalHandoff?: ApprovalHandoff;
+
+  /** Fired when gate cannot find a present human */
+  onHandoff?: (ctx: HandoffContext) => Promise<void>;
+
+  /** Fired when an async approval response arrives */
+  onHandoffResolved?: (decision: 'approved' | 'denied', ctx: HandoffContext) => void;
+
+  /** Fired when the handoff deadline passes before a response */
+  onHandoffExpired?: (ctx: HandoffContext) => void;
+
+  /** Rehydrate a gate waiting for a response */
+  pendingApprovalId?: string;
 
   /** Additional CSS class */
   className?: string;

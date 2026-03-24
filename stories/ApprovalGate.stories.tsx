@@ -152,6 +152,48 @@ export const SimulateRealTimeUpdates: Story = {
   },
 };
 
+export const AsyncHandoffFlow: Story = {
+  name: 'Async Handoff Flow (Anthropic Dispatch Pattern)',
+  render: function AsyncHandoffRender() {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const [status, setStatus] = useState<any>('pending');
+
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+        <p style={{ fontSize: '12px', color: '#666', fontFamily: 'sans-serif' }}>
+          <strong>Scenario:</strong> The human steps away from the terminal. After 3 seconds, the gate automatically bypasses the blocking UI and hands the approval off to their mobile device via SMS.
+        </p>
+        <ApprovalGate
+          title="Execute Kubernetes Failover"
+          description="Traffic will be routed from us-east-1 to us-west-2 immediately."
+          agentReasoning="Health checks indicate degrading performance on the primary cluster."
+          confidence={85}
+          status={status}
+          approvalHandoff={{
+            timeoutMs: 3000,
+            fallbackBehavior: 'block',
+          }}
+          onApprove={() => setStatus('approved')}
+          onReject={() => setStatus('rejected')}
+          onHandoff={async (ctx) => {
+            console.log('Handed off to mobile:', ctx);
+            setStatus('handoff_pending');
+          }}
+        />
+        {status === 'handoff_pending' && (
+           <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem', fontFamily: 'sans-serif', fontSize: '12px' }}>
+             <button onClick={() => setStatus('approved')} style={{ padding: '0.4rem', background: '#e0e7ff', border: '1px solid #4f46e5', borderRadius: '4px', cursor: 'pointer' }}>📱 Simulate Mobile SMS 'APPROVE'</button>
+             <button onClick={() => setStatus('handoff_denied')} style={{ padding: '0.4rem', background: '#fee2e2', border: '1px solid #ef4444', borderRadius: '4px', cursor: 'pointer' }}>📱 Simulate Mobile SMS 'DENY'</button>
+           </div>
+        )}
+        {status !== 'pending' && status !== 'handoff_pending' && (
+           <button onClick={() => setStatus('pending')} style={{ marginTop: '1rem', padding: '0.4rem', border: '1px solid #ccc', borderRadius: '4px', cursor: 'pointer', alignSelf: 'flex-start' }}>↻ Reset Gateway</button>
+        )}
+      </div>
+    );
+  }
+};
+
 // ============================================================
 // PRODUCTION STORIES
 // ============================================================

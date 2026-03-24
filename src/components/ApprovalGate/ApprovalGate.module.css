@@ -389,3 +389,34 @@
   background: var(--ax-color-gray-100);
   color: var(--ax-color-gray-600);
 }
+
+/* ------------------------------------------------------------------ */
+/* Handoff Extensions                                                  */
+/* ------------------------------------------------------------------ */
+
+.handoffPending {
+  border-style: dashed;
+  box-shadow: none;
+  background: var(--ax-surface-secondary);
+  transition: all var(--ax-duration-normal) var(--ax-ease-default);
+}
+
+.handoffMessage {
+  font-size: var(--ax-font-size-sm);
+  color: var(--ax-text-secondary);
+  font-weight: var(--ax-font-weight-medium);
+  display: flex;
+  align-items: center;
+  gap: var(--ax-space-2);
+}
+
+.handoffMessage::before {
+  content: '';
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--ax-status-waiting-bg);
+  border: 2px solid var(--ax-status-waiting-color);
+  animation: ax-pulse var(--ax-duration-slow) infinite;
+}

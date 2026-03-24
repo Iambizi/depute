@@ -50,6 +50,9 @@ const STATUS_ICONS: Record<string, React.ReactNode | null> = {
   approved: <IconCheck />,
   rejected: <IconX />,
   expired: <IconHourglass />,
+  handoff_pending: <IconHourglass />,
+  handoff_expired: <IconHourglass />,
+  handoff_denied: <IconX />,
 };
 
 const STATUS_LABELS: Record<string, string> = {
@@ -57,6 +60,9 @@ const STATUS_LABELS: Record<string, string> = {
   approved: 'Approved',
   rejected: 'Rejected',
   expired: 'Expired',
+  handoff_pending: 'Awaiting Async Approval',
+  handoff_expired: 'Handoff Expired',
+  handoff_denied: 'Remote Denied',
 };
 
 function getContainerClass(status: string): string {
@@ -65,6 +71,9 @@ function getContainerClass(status: string): string {
     case 'approved': return styles.approvalGateApproved;
     case 'rejected': return styles.approvalGateRejected;
     case 'expired': return styles.approvalGateExpired;
+    case 'handoff_pending': return `${styles.approvalGatePending} ${styles.handoffPending}`;
+    case 'handoff_expired': return styles.approvalGateExpired;
+    case 'handoff_denied': return styles.approvalGateRejected;
     default: return '';
   }
 }
@@ -75,6 +84,9 @@ function getIconClass(status: string): string {
     case 'approved': return styles.statusIconApproved;
     case 'rejected': return styles.statusIconRejected;
     case 'expired': return styles.statusIconExpired;
+    case 'handoff_pending': return styles.statusIconPending;
+    case 'handoff_expired': return styles.statusIconExpired;
+    case 'handoff_denied': return styles.statusIconRejected;
     default: return '';
   }
 }
@@ -103,12 +115,18 @@ export function ApprovalGate({
   onApprove,
   onReject,
   onTimeout,
+  approvalHandoff,
+  onHandoff,
+  onHandoffResolved,
+  onHandoffExpired,
+  pendingApprovalId,
   className,
 }: ApprovalGateProps) {
   const isPending = status === 'pending';
-  const isResolved = status === 'approved' || status === 'rejected' || status === 'expired';
+  const isHandoffPending = status === 'handoff_pending';
+  const isResolved = status === 'approved' || status === 'rejected' || status === 'expired' || status === 'handoff_expired' || status === 'handoff_denied';
 
-  // Focus trap — active only when pending
+  // Focus trap — active only when pending synchronously
   const trapRef = useFocusTrap<HTMLDivElement>(isPending);
 
   // Announcer — for async state changes
@@ -126,24 +144,52 @@ export function ApprovalGate({
   useEffect(() => {
     if (isPending) {
       announce(`Approval required: ${title}`);
+    } else if (isHandoffPending) {
+      announce(`Handoff pending for: ${title}`);
     } else if (status === 'approved') {
       announce(`Approved: ${title}`);
-    } else if (status === 'rejected') {
+    } else if (status === 'rejected' || status === 'handoff_denied') {
       announce(`Rejected: ${title}`);
-    } else if (status === 'expired') {
+    } else if (status === 'expired' || status === 'handoff_expired') {
       announce(`Approval expired: ${title}`);
     }
-  }, [status, title, announce, isPending]);
+  }, [status, title, announce, isPending, isHandoffPending]);
+
+  // Handoff dispatcher logic
+  const [handoffInitiated, setHandoffInitiated] = useState(false);
+  useEffect(() => {
+    if (isPending && approvalHandoff && !handoffInitiated) {
+      const timer = setTimeout(() => {
+        setHandoffInitiated(true);
+        const deadline = Date.now() + 24 * 60 * 60 * 1000; // default 24h fallback if not specified elsewhere
+        onHandoff?.({
+          approvalId: pendingApprovalId || crypto.randomUUID(),
+          action: title,
+          confidence,
+          deadline,
+          timestamp: Date.now(),
+        });
+      }, approvalHandoff.timeoutMs);
+      return () => clearTimeout(timer);
+    }
+  }, [isPending, approvalHandoff, handoffInitiated, title, confidence, pendingApprovalId, onHandoff]);
 
   // Countdown logic
   useEffect(() => {
-    if (!isPending || timeRemaining == null || timeRemaining <= 0) return;
+    if ((!isPending && !isHandoffPending) || timeRemaining == null || timeRemaining <= 0) return;
 
     const interval = setInterval(() => {
       setTimeRemaining((prev) => {
         if (prev == null || prev <= 1) {
           clearInterval(interval);
-          onTimeout?.();
+          if (isHandoffPending) {
+            onHandoffExpired?.({ action: title } as any);
+            if (approvalHandoff?.fallbackBehavior === 'deny') {
+              onReject?.('Handoff expired (fallback: deny)');
+            }
+          } else {
+            onTimeout?.();
+          }
           return 0;
         }
         return prev - 1;
@@ -151,7 +197,7 @@ export function ApprovalGate({
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [isPending, timeRemaining, onTimeout]);
+  }, [isPending, isHandoffPending, timeRemaining, onTimeout, onHandoffExpired, title]);
 
   // Countdown urgency level
   const countdownClass = useMemo(() => {
@@ -198,6 +244,7 @@ export function ApprovalGate({
       role={isPending ? 'alertdialog' : 'region'}
       aria-label={ariaLabel}
       aria-modal={isPending ? true : undefined}
+      data-floating={isHandoffPending ? 'true' : 'false'}
     >
       {/* Header */}
       <div className={styles.header}>
@@ -215,7 +262,7 @@ export function ApprovalGate({
         </div>
 
         {/* Countdown badge */}
-        {isPending && timeRemaining != null && timeRemaining > 0 && (
+        {(isPending || isHandoffPending) && timeRemaining != null && timeRemaining > 0 && (
           <span
             className={`${styles.countdown} ${countdownClass}`}
             aria-live="polite"
@@ -226,7 +273,7 @@ export function ApprovalGate({
       </div>
 
       {/* Staged mode indicator */}
-      {mode === 'staged' && isPending && (
+      {mode === 'staged' && isPending && !isHandoffPending && (
         <div className={styles.stageIndicator} aria-label="Approval stages">
           <span className={`${styles.stage} ${stagedStep === 'previewing' ? styles.stageActive : styles.stageCompleted}`}>
             {stagedStep === 'confirming' ? '✓' : '1.'} Preview
@@ -344,13 +391,31 @@ export function ApprovalGate({
         </div>
       )}
 
+      {/* Handoff Non-Blocking UI */}
+      {isHandoffPending && (
+        <div className={styles.actions}>
+          <div className={styles.handoffMessage}>
+            Request sent to mobile device
+          </div>
+          <span className={styles.actionsSpacerRight} />
+          <button
+            className={`${styles.btn} ${styles.btnSecondary}`}
+            onClick={handleReject}
+            type="button"
+            title="Cancel request"
+          >
+            Cancel
+          </button>
+        </div>
+      )}
+
       {/* Resolved state banner */}
       {isResolved && (
         <div
           className={`${styles.resolvedBanner} ${
             status === 'approved'
               ? styles.resolvedApproved
-              : status === 'rejected'
+              : (status === 'rejected' || status === 'handoff_denied')
                 ? styles.resolvedRejected
                 : styles.resolvedExpired
           }`}
