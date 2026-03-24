@@ -1,3 +1,5 @@
+export type DelegationStatus = 'pending' | 'approved' | 'denied' | 'expired';
+
 export interface DelegationGateProps {
   /** The root layout class name */
   className?: string;
@@ -12,8 +14,14 @@ export interface DelegationGateProps {
     estimatedTokens: number;
     estimatedCost: string;
   };
+  /** Current status of the gate (defaults to pending) */
+  status?: DelegationStatus;
+  /** Timeout in seconds */
+  timeoutSeconds?: number;
   /** Called when user approves the spawn */
-  onApprove: () => void;
+  onApprove?: () => void;
   /** Called when user denies the spawn */
-  onDeny: () => void;
+  onDeny?: () => void;
+  /** Called when the request times out */
+  onTimeout?: () => void;
 }

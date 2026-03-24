@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './DelegationGate.module.css';
 import type { DelegationGateProps } from './DelegationGate.types';
 
@@ -10,9 +10,29 @@ export const DelegationGate: React.FC<DelegationGateProps> = ({
   className,
   requestingAgent,
   proposedSubagent,
+  status = 'pending',
+  timeoutSeconds,
   onApprove,
   onDeny,
+  onTimeout,
 }) => {
+  const [timeRemaining, setTimeRemaining] = useState(timeoutSeconds ?? 0);
+
+  useEffect(() => {
+    if (status !== 'pending' || timeRemaining <= 0) return;
+    const interval = setInterval(() => {
+      setTimeRemaining((prev) => {
+        if (prev <= 1) {
+          clearInterval(interval);
+          onTimeout?.();
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [status, timeRemaining, onTimeout]);
+
   return (
     <div
       className={`${styles.base} ${className || ''}`}
@@ -29,6 +49,11 @@ export const DelegationGate: React.FC<DelegationGateProps> = ({
             <strong>{requestingAgent}</strong> wants to delegate a task
           </span>
         </div>
+        {timeoutSeconds != null && status === 'pending' && timeRemaining > 0 && (
+          <span className={styles.timer}>
+            {Math.floor(timeRemaining / 60)}:{String(timeRemaining % 60).padStart(2, '0')}
+          </span>
+        )}
         <span className={styles.badge}>Delegation Gate</span>
       </div>
 
@@ -71,14 +96,22 @@ export const DelegationGate: React.FC<DelegationGateProps> = ({
       </div>
 
       {/* Actions */}
-      <div className={styles.actions}>
-        <button className={styles.btnApprove} onClick={onApprove}>
-          Approve Spawn
-        </button>
-        <button className={styles.btnDeny} onClick={onDeny}>
-          Deny
-        </button>
-      </div>
+      {status === 'pending' ? (
+        <div className={styles.actions}>
+          <button className={styles.btnApprove} onClick={() => onApprove?.()}>
+            Approve Spawn
+          </button>
+          <button className={styles.btnDeny} onClick={() => onDeny?.()}>
+            Deny
+          </button>
+        </div>
+      ) : (
+        <div className={`${styles.resolvedBanner} ${styles[`resolved${status.charAt(0).toUpperCase() + status.slice(1)}`]}`}>
+          {status === 'approved' && 'Spawn Approved'}
+          {status === 'denied' && 'Spawn Denied'}
+          {status === 'expired' && 'Request Expired'}
+        </div>
+      )}
     </div>
   );
 };
