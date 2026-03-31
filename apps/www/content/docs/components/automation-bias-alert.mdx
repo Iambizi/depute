@@ -36,7 +36,10 @@ bunx ax-depute@latest add automation-bias-alert
 
 ## Overview
 
-Automation bias occurs when humans over-trust automated systems, leading to passive oversight or "rubber-stamping" of errors. The `AutomationBiasAlert` component counteracts this by monitoring approval patterns and introducing a mandatory review pause when bypass behavior is detected.
+> [!NOTE]
+> `AutomationBiasAlert` is not a standalone UI module. It is a **policy wrapper pattern** designed to sit exclusively over existing approval boundaries.
+
+Automation bias occurs when humans over-trust automated systems, leading to passive oversight or "rubber-stamping" of errors. This wrapper counteracts this by monitoring approval patterns and introducing a mandatory review pause when bypass behavior is detected.
 
 <ComponentPreview>
   <AutomationBiasAlertDemo />

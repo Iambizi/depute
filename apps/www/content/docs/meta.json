@@ -13,6 +13,7 @@
     "components/artifact-card",
     "components/automation-bias-alert",
     "---Multi-Agent---",
+    "multi-agent-intro",
     "components/orchestrator-view",
     "components/agent-roster",
     "components/subagent-card",

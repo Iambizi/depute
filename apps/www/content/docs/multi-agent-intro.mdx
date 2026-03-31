@@ -1,0 +1,30 @@
+---
+title: Introduction to Multi-Agent 
+description: Understanding the two macro-views for swarm orchestration and supervision.
+---
+
+## The Supervision Problem
+
+When you scale from one agent to a swarm of intelligent workers, the oversight problem changes entirely. You no longer need to see every single thought or tool call. If you try to supervise a 20-agent swarm using single-agent components (like [Plan Card](/docs/components/plan-card) or [Tool Trace](/docs/components/tool-trace)), your operators will be paralyzed by noise.
+
+Instead, multi-agent supervision requires **triage**, **hierarchy**, and **aggregated context**.
+
+## Where to start
+
+If you are building a multi-agent product, do not start by dropping 10 different components on a page. Start by identifying your swarm's structure. There are two "macro-views" that serve as the anchors for all other components in this section:
+
+### 1. Tree-structured swarms → [Orchestrator View](/docs/components/orchestrator-view)
+If your swarm follows a recursive, "manager / worker" delegation tree (where Agent A spawns Agent B to complete a subtask), start with the `OrchestratorView`. It visualizes the hierarchy and highlights which branches are blocked.
+
+### 2. Flat-pool swarms → [Agent Roster](/docs/components/agent-roster)
+If your swarm operates as a flat pool of autonomous workers pulling equally from a backlog, start with the `AgentRoster`. It optimizes for density, letting supervisors scan 20+ concurrent workers at a glance.
+
+## The surrounding ecosystem
+
+Once you have your macro-view anchor, you can compose the rest of the multi-agent console around it:
+
+- Need triage for escalations? Add a [Swarm Inbox](/docs/components/swarm-inbox).
+- Need global metrics and a kill switch? Pin a [Swarm Monitor](/docs/components/swarm-monitor) to the top.
+- Need to expose hidden agent-to-agent memory? Render the [Shared Context Ledger](/docs/components/shared-context-ledger).
+
+Begin at your architectural root, and only add the Control and Pattern components when specific operational friction demands them.
