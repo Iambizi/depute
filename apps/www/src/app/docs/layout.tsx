@@ -2,6 +2,14 @@ import { DocsLayout } from 'fumadocs-ui/layouts/docs';
 import type { ReactNode } from 'react';
 import { source } from '@/lib/source';
 
+const urlToBadge = new Map<string, string>();
+for (const page of source.getPages()) {
+  const badgeStr = (page.data as any)?.badge as string | undefined;
+  if (badgeStr) {
+    urlToBadge.set(page.url, badgeStr);
+  }
+}
+
 function mapTree(node: any): any {
   if (Array.isArray(node)) return node.map(mapTree);
   if (!node) return node;
@@ -9,8 +17,7 @@ function mapTree(node: any): any {
   const result = { ...node };
 
   if (result.type === 'page' && result.url) {
-    const page = source.getPage(result.url);
-    const badgeStr = (page?.data as any)?.badge as string | undefined;
+    const badgeStr = urlToBadge.get(result.url);
     
     if (badgeStr) {
       const typeStr = badgeStr;
