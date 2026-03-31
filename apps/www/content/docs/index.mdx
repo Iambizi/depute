@@ -87,10 +87,10 @@ This command drops a `skills/depute/SKILL.md` file into your project, automatica
 
 To help you quickly understand how to compose the library, every component in the sidebar is explicitly tagged with its architectural classification. You will see these taxonomy badges next to every component name:
 
-- **Primitive** (Blue): A foundational, single-responsibility building block (e.g., `PlanCard`, `ApprovalGate`).
-- **View** (Indigo): A compositional surface that aggregates multiple primitives into a larger macro-interface (e.g., `OrchestratorView`, `SwarmInbox`).
-- **Control** (Zinc): An operational or forensic surface used to halt, direct, or audit execution (e.g., `EscalationRouter`, `DecisionRecord`).
-- **Pattern** (Amber): A highly specialized workflow wrapper designed to enforce a specific behavioral policy (e.g., `AutomationBiasAlert`, `HandoffProtocol`).
+- <span className="text-[10px] uppercase font-mono px-1.5 py-0.5 rounded-sm border align-middle bg-blue-500/10 text-blue-500 dark:text-blue-400 border-blue-500/20 mr-1">Primitive</span> A foundational, single-responsibility building block (e.g., `PlanCard`, `ApprovalGate`).
+- <span className="text-[10px] uppercase font-mono px-1.5 py-0.5 rounded-sm border align-middle bg-indigo-500/10 text-indigo-500 dark:text-indigo-400 border-indigo-500/20 mr-1">View</span> A compositional surface that aggregates multiple primitives into a larger macro-interface (e.g., `OrchestratorView`, `SwarmInbox`).
+- <span className="text-[10px] uppercase font-mono px-1.5 py-0.5 rounded-sm border align-middle bg-zinc-500/10 text-zinc-600 dark:text-zinc-400 border-zinc-500/20 mr-1">Control</span> An operational or forensic surface used to halt, direct, or audit execution (e.g., `EscalationRouter`, `DecisionRecord`).
+- <span className="text-[10px] uppercase font-mono px-1.5 py-0.5 rounded-sm border align-middle bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20 mr-1">Pattern</span> A highly specialized workflow wrapper designed to enforce a specific behavioral policy (e.g., `AutomationBiasAlert`, `HandoffProtocol`).
 
 Start with Single Agent primitives. Add Multi-Agent when you need orchestration.
 
