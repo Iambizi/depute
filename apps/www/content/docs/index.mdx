@@ -83,6 +83,15 @@ This command drops a `skills/depute/SKILL.md` file into your project, automatica
 | **Multi-Agent** | 11 primitives | Multiple agents coordinating, delegating, or running in parallel |
 | **Compliance & Forensics** | 9 primitives | Cryptographic intent, mutation visibility, and forensic audit trails |
 
+## Component Architecture
+
+To help you quickly understand how to compose the library, every component in the sidebar is explicitly tagged with its architectural classification. You will see these taxonomy badges next to every component name:
+
+- **Primitive** (Blue): A foundational, single-responsibility building block (e.g., `PlanCard`, `ApprovalGate`).
+- **View** (Indigo): A compositional surface that aggregates multiple primitives into a larger macro-interface (e.g., `OrchestratorView`, `SwarmInbox`).
+- **Control** (Zinc): An operational or forensic surface used to halt, direct, or audit execution (e.g., `EscalationRouter`, `DecisionRecord`).
+- **Pattern** (Amber): A highly specialized workflow wrapper designed to enforce a specific behavioral policy (e.g., `AutomationBiasAlert`, `HandoffProtocol`).
+
 Start with Single Agent primitives. Add Multi-Agent when you need orchestration.
 
 Components in the sidebar are ordered by **solution patterns** — the sequence you'd encounter them when building a complete agent interaction, not alphabetically.
