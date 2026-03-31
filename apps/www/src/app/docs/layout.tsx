@@ -28,9 +28,9 @@ function mapTree(node: any): any {
         'bg-zinc-500/10 text-zinc-600 dark:text-zinc-400 border-zinc-500/20'; // Control
 
       result.name = (
-        <div className="flex items-center justify-between w-full pr-1">
-          <span>{node.name}</span>
-          <span className={`ml-2 text-[10px] uppercase font-mono px-1.5 py-0.5 rounded-sm border ${typeColor}`}>
+        <div key={`badge-wrap-${result.url}`} className="flex items-center justify-between w-full pr-1">
+          <span key={`title-${result.url}`}>{node.name}</span>
+          <span key={`tag-${result.url}`} className={`ml-2 text-[10px] uppercase font-mono px-1.5 py-0.5 rounded-sm border ${typeColor}`}>
             {typeStr}
           </span>
         </div>
