@@ -13,11 +13,11 @@ Instead, multi-agent supervision requires **triage**, **hierarchy**, and **aggre
 
 If you are building a multi-agent product, do not start by dropping 10 different components on a page. Start by identifying your swarm's structure. There are two "macro-views" that serve as the anchors for all other components in this section:
 
-### 1. Tree-structured swarms → [Orchestrator View](/docs/components/orchestrator-view)
-If your swarm follows a recursive, "manager / worker" delegation tree (where Agent A spawns Agent B to complete a subtask), start with the `OrchestratorView`. It visualizes the hierarchy and highlights which branches are blocked.
+### 1. Tree-structured swarms
+If your swarm follows a recursive, "manager / worker" delegation tree (where Agent A spawns Agent B to complete a subtask), start with the [OrchestratorView](/docs/components/orchestrator-view). It visualizes the hierarchy and highlights which branches are blocked.
 
-### 2. Flat-pool swarms → [Agent Roster](/docs/components/agent-roster)
-If your swarm operates as a flat pool of autonomous workers pulling equally from a backlog, start with the `AgentRoster`. It optimizes for density, letting supervisors scan 20+ concurrent workers at a glance.
+### 2. Flat-pool swarms
+If your swarm operates as a flat pool of autonomous workers pulling equally from a backlog, start with the [AgentRoster](/docs/components/agent-roster). It optimizes for density, letting supervisors scan 20+ concurrent workers at a glance.
 
 ## The surrounding ecosystem
 
