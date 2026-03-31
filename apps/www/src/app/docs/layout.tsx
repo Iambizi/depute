@@ -2,10 +2,52 @@ import { DocsLayout } from 'fumadocs-ui/layouts/docs';
 import type { ReactNode } from 'react';
 import { source } from '@/lib/source';
 
+function mapTree(node: any): any {
+  if (Array.isArray(node)) return node.map(mapTree);
+  if (!node) return node;
+
+  const result = { ...node };
+
+  if (result.type === 'page' && result.url) {
+    const page = source.getPage(result.url);
+    const badgeStr = (page?.data as any)?.badge as string | undefined;
+    
+    if (badgeStr) {
+      const typeStr = badgeStr;
+      const typeColor = 
+        typeStr === 'Primitive' ? 'bg-blue-500/10 text-blue-500 dark:text-blue-400 border-blue-500/20' :
+        typeStr === 'View' ? 'bg-indigo-500/10 text-indigo-500 dark:text-indigo-400 border-indigo-500/20' :
+        typeStr === 'Pattern' ? 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20' :
+        'bg-zinc-500/10 text-zinc-600 dark:text-zinc-400 border-zinc-500/20'; // Control
+
+      result.name = (
+        <div className="flex items-center justify-between w-full pr-1">
+          <span>{node.name}</span>
+          <span className={`ml-2 text-[10px] uppercase font-mono px-1.5 py-0.5 rounded-sm border ${typeColor}`}>
+            {typeStr}
+          </span>
+        </div>
+      );
+    }
+  }
+
+  if (result.children) {
+    result.children = mapTree(result.children);
+  }
+  
+  if (result.index) {
+    result.index = mapTree(result.index);
+  }
+
+  return result;
+}
+
 export default function Layout({ children }: { children: ReactNode }) {
+  const treeWithBadges = mapTree(source.pageTree);
+
   return (
     <DocsLayout
-      tree={source.pageTree}
+      tree={treeWithBadges}
       nav={{ 
         title: (
           <div className="flex items-center">
