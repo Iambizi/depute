@@ -148,3 +148,5 @@ It pauses execution and requires a human cryptographic signature (or explicit cl
 **Why `scope`?** Binary approve/reject is the wrong mental model for agents. Stripe never approves an action with a simple yes/no — they issue capability grants scoped to a specific target, resource limit, and time window.
 
 **Why `mode="staged"`?** Agent flows are state machines, not request-response cycles. `staged` mode maps to Stripe's Authorization Chain pattern: Intent → Plan → Permission Check → Execution → Audit. Each phase can fail or pause for human input.
+
+**For irreversible or legally binding actions**, consider using [**Binding Approval**](/docs/components/binding-approval) instead. It extends the approval pattern with mandatory term acknowledgment, an `isSigning` freeze state, and signer identity capture. See the [decision rule](/docs/components/binding-approval#design-rationale) for when to escalate.

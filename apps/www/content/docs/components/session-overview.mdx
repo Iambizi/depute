@@ -3,6 +3,33 @@ title: Session Overview
 description: Semantic rollup of a high-velocity agent session to prevent execution amnesia and cognitive load.
 ---
 
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+
+## Install
+
+<Tabs groupId="package-manager" items={["npm", "pnpm", "yarn", "bun"]} persist>
+  <Tab value="npm">
+```bash
+npx ax-depute@latest add session-overview
+```
+  </Tab>
+  <Tab value="pnpm">
+```bash
+pnpm dlx ax-depute@latest add session-overview
+```
+  </Tab>
+  <Tab value="yarn">
+```bash
+yarn dlx ax-depute@latest add session-overview
+```
+  </Tab>
+  <Tab value="bun">
+```bash
+bunx ax-depute@latest add session-overview
+```
+  </Tab>
+</Tabs>
+
 ## Basic usage
 
 Use `<SessionOverview />` at the conclusion of a complex, multi-step agent run where the agent touches across dozens of files, APIs, or databases.

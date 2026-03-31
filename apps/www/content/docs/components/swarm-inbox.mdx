@@ -113,12 +113,39 @@ export interface SwarmInboxItem {
 
 ## Solution Patterns
 
+### The Exception-Only Console
+
 `Swarm Inbox` aggregates cross-agent communication. It is typically a top-level navigational element alongside the `Swarm Monitor` or `Agent Roster`:
 
 ```text
-[Swarm Inbox] ← Inter-agent messages & escalations
+[Swarm Monitor] ← Global KPIs + kill switch
+[Swarm Inbox]   ← Prioritized interrupts requiring human action
+[Agent Roster]  ← At-a-glance agent status
 ```
-It serves as the central notification center for human operators.
+
+### Composition: SwarmInbox → EscalationRouter
+
+The `onOpenItem` callback is designed to transition the user from the macro view (inbox) to the micro view (resolution). For `escalation`-type items, the standard pattern is to open an [**Escalation Router**](/docs/components/escalation-router) in a modal:
+
+```tsx
+<SwarmInbox
+  items={notifications}
+  onOpenItem={(item) => {
+    if (item.type === 'escalation') {
+      openModal(<EscalationRouter
+        failedAgent={item.agentId}
+        branchId={item.branchPath}
+        errorSummary={item.detail}
+        onRetry={() => retryAgent(item.agentId)}
+        onReassign={() => reassignTask(item.id)}
+        onCancelBranch={() => cancelBranch(item.branchPath)}
+      />);
+    }
+  }}
+/>
+```
+
+For `approval`-type items, open an `ApprovalGate` instead. The inbox is the funnel — the specific component you open depends on the event type.
 
 ## Design rationale
 **1. The "Exception-Only" Workflow**  
@@ -128,4 +155,4 @@ Supervising a multi-agent swarm requires shifting from "babysitting" to an "exce
 Not all interruptions are equal. A `policy_violation` (an agent trying to access a restricted tool) gets a distinct visual treatment from a standard `approval` loop. The `critical` severity visually dominates the list, pulsing if necessary, ensuring triage happens in the correct order.
 
 **3. Actionable Drill-Downs**  
-An inbox without actions is just a log. The `onOpenItem` callback is designed to transition the user smoothly from the macro view (the inbox) to the micro view (opening an `Escalation Router` or an `Approval Gate` inside a modal) to resolve the exact issue.
+An inbox without actions is just a log. The `onOpenItem` callback transitions the user from the inbox to resolution — typically opening an [Escalation Router](/docs/components/escalation-router) or [Approval Gate](/docs/components/approval-gate) inside a modal.

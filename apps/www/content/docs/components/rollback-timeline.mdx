@@ -71,4 +71,6 @@ Typically paired with `ToolTrace` for deep orchestration. When an agent executes
 
 ## Design rationale
 
+**Prerequisites:** This component assumes your product has reversible operations. If your agent's tool calls are all-or-nothing (e.g., sending emails, executing payments), `RollbackTimeline` will show the history but rollback actions won't be available past irreversible nodes. Evaluate your system's undo capabilities before adopting this component — it is most effective in environments where tool calls can be programmatically reversed (e.g., database migrations, file system changes, API calls with corresponding undo endpoints).
+
 **Why explicit irreversibility?** Agent sequences frequently cross immutable boundaries (e.g., dropping a database table). Marking specific nodes `reversible: false` prevents the user from attempting a regression past a terminal action, saving engineering headaches.

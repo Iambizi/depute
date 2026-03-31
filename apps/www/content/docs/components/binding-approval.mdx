@@ -81,6 +81,17 @@ This primitive replaces `ApprovalGate` in high-stakes nodes. The internal state 
 
 ## Design rationale
 
+**When to use `ApprovalGate` vs `BindingApproval`:**
+
+| | `ApprovalGate` | `BindingApproval` |
+|---|---|---|
+| **Use when** | The action is reversible, operational, or low-to-moderate stakes | The action creates a legal, financial, or cryptographic record |
+| **Friction level** | Quick scoped grant — review and approve | Mandatory term acknowledgment + signing flow |
+| **State model** | `pending → approved / rejected` | `reviewing → signing → signed / rejected` |
+| **Examples** | "Send this email", "Deploy to staging", "Run this query" | "Wire $50k", "Sign this contract", "Commit to ledger" |
+
+Use `ApprovalGate` by default. Escalate to `BindingApproval` only when the action is irreversible **and** the user's identity must be cryptographically bound to the decision.
+
 **Why `isSigning`?** Normal approvals execute instantly. Cryptographic/financial approvals often require a ledger transaction, hardware wallet interaction, or passkey challenge that takes time. `isSigning` freezes the component deterministically to prevent duplicate submissions.
 
 **Why explicit terms?** Click-fatigue trains users to blindly click "Approve." Forcing the user to manually acknowledge explicit terms (e.g. "This action cannot be undone") breaks automatic behavior and captures verifiable intent.

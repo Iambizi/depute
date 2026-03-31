@@ -3,6 +3,45 @@ title: Decision Record
 description: Immutable visual receipt of a human approval decision to counteract Responsibility Diffusion.
 ---
 
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+
+## Install
+
+<Tabs groupId="package-manager" items={["npm", "pnpm", "yarn", "bun"]} persist>
+  <Tab value="npm">
+```bash
+npx ax-depute@latest add decision-record
+```
+  </Tab>
+  <Tab value="pnpm">
+```bash
+pnpm dlx ax-depute@latest add decision-record
+```
+  </Tab>
+  <Tab value="yarn">
+```bash
+yarn dlx ax-depute@latest add decision-record
+```
+  </Tab>
+  <Tab value="bun">
+```bash
+bunx ax-depute@latest add decision-record
+```
+  </Tab>
+</Tabs>
+
+## The Audit Triad
+
+`DecisionRecord` is one of three audit-layer components. Each captures a different moment in the accountability chain:
+
+| Component | Scope | Records | Question it answers |
+|-----------|-------|---------|---------------------|
+| **Decision Record** | Per-approval | Who approved, why, and under what policy | *"Who authorized this?"* |
+| [**Transaction Receipt**](/docs/components/transaction-receipt) | Per-action | What the machine did, with verification hash | *"What actually happened?"* |
+| [**Session Overview**](/docs/components/session-overview) | Per-session | Semantic rollup of everything the agent touched | *"What was the total blast radius?"* |
+
+Use all three together for full audit coverage: `DecisionRecord` captures the human side, `TransactionReceipt` captures the machine side, and `SessionOverview` captures the session-level summary.
+
 ## Basic usage
 
 Use `<DecisionRecord />` to log a human's active oversight of an agentic workflow. While the agent executes actions, you need an immutable record of *who* authorized it and *why*.
