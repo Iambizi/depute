@@ -5,7 +5,7 @@ license: MIT
 compatibility: React 18+, TypeScript, CSS Modules. Agent-agnostic — works with any AI backend (OpenAI, Anthropic, LangChain, AutoGen, or custom).
 metadata:
   author: Iambizi
-  version: 0.3.0
+  version: 0.4.0
   documentation: https://github.com/Iambizi/depute
   category: ui-components
   tags: [agentic-ui, react, human-in-the-loop, agent-oversight, multi-agent]
@@ -14,6 +14,13 @@ metadata:
 # depute
 
 React primitives for the human side of agentic AI. When an AI agent runs in your product, users need to see what's happening — not raw logs, but purpose-built UI for human oversight of autonomous systems.
+
+**Component Architecture Taxonomy:**
+Every component belongs to one of 4 architectural classes. When composing UI, combine them intentionally:
+- **Primitive:** A foundational, single-responsibility building block (e.g., `PlanCard`, `ApprovalGate`).
+- **View:** A compositional surface aggregating primitives into a macro-interface (e.g., `OrchestratorView`).
+- **Control:** An operational/forensic surface used to halt, direct, or audit (e.g., `RunControls`, `EscalationRouter`).
+- **Pattern:** A highly specialized wrapper enforcing a specific behavioral policy (e.g., `AutomationBiasAlert`).
 
 ## Instructions
 
@@ -125,6 +132,23 @@ The most common AX flow — show the plan, gate high-risk actions, then display 
 // 3. After the run
 <ToolTrace calls={agent.toolHistory} />
 <ArtifactCard output={agent.result} format="markdown" />
+```
+
+### Pattern: Async Approval Handoff (Dispatch)
+
+Use this when an agent executes a long-running workflow and the human might step away. `ApprovalGate` will drop its blocking modal trap and degrade into a non-blocking ambient status card, triggering an out-of-band mobile/Slack notification.
+
+```tsx
+<ApprovalGate
+  title="Execute Production Failover"
+  status={status} // transitions to 'handoff_pending'
+  approvalHandoff={{ timeoutMs: 30000, fallbackBehavior: 'block' }}
+  onHandoff={async (ctx) => {
+     await sendSmsWebhook(admin.phone, ctx);
+     setStatus('handoff_pending');
+  }}
+  handoffDeadlineMs={Date.now() + 86400000} // Backend TTL for UI rehydration sync
+/>
 ```
 
 ### Pattern: Multi-Agent Supervision Dashboard

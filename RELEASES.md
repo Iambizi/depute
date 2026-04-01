@@ -1,6 +1,32 @@
-# depute v0.3.0 Release Notes
+# depute v0.4.0 Release Notes
 
-**March 19, 2026**
+**April 1, 2026**
+
+The fourth release of **depute** brings significant stability to the `FumaDocs` native integration, officially documents the architectural taxonomy of the library, and introduces powerful asynchronous dispatch patterns for high-stakes agents.
+
+## ✨ Taxonomy & Async Handoff
+
+### Architecture Taxonomy
+Every component is now strictly typed into one of four architectural classes to help developers understand where they fit in the application lifecycle:
+- **Primitive (Blue):** Foundational, single-responsibility building blocks (e.g., `PlanCard`, `ApprovalGate`).
+- **View (Indigo):** Compositional surfaces aggregating primitives (e.g., `OrchestratorView`).
+- **Control (Zinc):** Interventions and steerage controls (e.g., `RunControls`, `EscalationRouter`).
+- **Pattern (Amber):** Highly specialized wrappers enforcing a behavioral policy (e.g., `AutomationBiasAlert`).
+
+### Async Approval Handoff (Dispatch Pattern)
+- **`ApprovalGate`** now natively supports an `approvalHandoff` configuration.
+- If an agent task requests approval and the local user is inactive for a set timeout, the `ApprovalGate` seamlessly drops its blocking modal trap and collapses into an ambient, dashboard-safe status card (`handoff_pending`).
+- Developers can hook `onHandoff` to trigger mobile push, SMS, or Slack notifications to capture the approval out-of-band, synchronized with a backend TTL via `handoffDeadlineMs`.
+
+## 📦 What's Included
+
+- **Taxonomy Badges:** Injected colored taxonomy pills straight into the sidebar rendering layer (Requires Next.js Fast Refresh/Hard Reload).
+- **FumaDocs Stability:** Addressed edge-case hydration mismatches and extended the `zod` frontmatter schemas to natively accept the `badge` property.
+- **AI Skill Sync:** The internal `SKILL.md` (and `.claude` copies) have been deeply updated to teach agentic IDEs about the 4 architectural dimensions and the new dispatch APIs, ensuring auto-generated code aligns with v0.4.0 syntax.
+
+---
+
+# depute v0.3.0 Release Notes
 
 The third release of **depute**, introducing 7 new "Strict Compliance & Forensics" primitives. As agents execute headless, reliable tool calls, UI requirements shift from visibility to provability. 
 

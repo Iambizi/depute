@@ -55,7 +55,7 @@ Agent proposes ──► PlanCard
 />
 ```
 
-**Important:** `ApprovalGate` supports scoped, time-bounded, and resource-capped grants — not just binary approve/reject. Use the `scope` prop for Stripe-style SPT patterns.
+**Important:** `ApprovalGate` supports scoped, time-bounded, and resource-capped grants — not just binary approve/reject. Use the `scope` prop for Stripe-style SPT patterns. For long-running background workflows where the human may step away, use the `approvalHandoff={{ timeoutMs: 30000, fallbackBehavior: 'block' }}` and `onHandoff` props to delegate to asynchronous channels (like SMS or Slack) while updating the `status` prop to `'handoff_pending'`, removing the blocking modal UI constraint.
 
 ### ConfidenceMeter
 
@@ -100,6 +100,9 @@ Agent proposes ──► PlanCard
 ```
 
 ### AutomationBiasAlert
+
+**Architecture Class:** Pattern
+A highly specialized wrapper designed to enforce a specific behavioral policy.
 
 ```tsx
 // Wrap any approval surface to add deliberate friction

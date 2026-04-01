@@ -10,11 +10,12 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **Brand:** `depute` (lowercase in prose). CLI package: `ax-depute`. GitHub: `Iambizi/depute`.
 
-**Current State (March 2026):**
+**Current State:**
 - v0.1.0 released (7 core primitives) ✅
 - v0.2.0 released (11 orchestration primitives) ✅
 - v0.3.0 released (7 compliance primitives) ✅
-- CLI published to npm (`ax-depute@0.3.0`) ✅
+- v0.4.0 released (Taxonomy + Async Handoff) ✅
+- CLI published to npm (`ax-depute@0.4.0`) ✅
 - Storybook deployed to GitHub Pages ✅
 - Docs site deployed to Vercel (`apps/www`, Next.js + Fumadocs) ✅
 - AI Skill layer written (Claude + skills.sh) ✅
