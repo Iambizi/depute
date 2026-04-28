@@ -60,7 +60,7 @@ export default function HomePage() {
         >
           <span className="inline-flex items-center gap-2 px-3 py-1 text-xs font-mono font-medium rounded-full border border-fd-border bg-fd-muted text-fd-foreground shadow-sm">
             <span className="flex h-2 w-2 rounded-full bg-fd-primary animate-pulse" />
-            v0.3.0: Compliance & Forensics
+            v0.4.0: Async Approval Handoff
           </span>
         </motion.div>
 

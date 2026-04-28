@@ -80,6 +80,26 @@ For tight UI spaces like tables or agent rosters, use the `badge` variant.
 | `reasoning` | `string` | `undefined` | An optional explanation from the agent justifying its confidence score. |
 | `animate` | `boolean` | `true` | Whether to animate the bar filling and color transitions when the value changes. |
 
+## When to use
+
+- The agent's confidence in its next action is meaningful signal — e.g., before an `Approval Gate` where confidence should influence the human's decision
+- The agent is operating in a domain with variable accuracy (medical, legal, financial) where uncertainty carries real stakes
+- You want to preemptively surface a human review trigger: if confidence drops below a threshold, escalate automatically
+
+## When not to use
+
+- Your agent backend doesn't produce calibrated confidence scores — displaying a fabricated or uncalibrated number is actively misleading and erodes trust
+- The operation is routine and fully reversible — injecting a confidence signal for low-stakes actions adds noise without value
+- The agent has already completed the action — `Confidence Meter` communicates intent before execution, not retrospective certainty
+
+## Accessibility
+
+- The meter renders as `<meter>` (native HTML) with `min`, `max`, and `value` attributes set, giving screen readers built-in percentage readout
+- The confidence label (High / Medium / Low) is always present as visible text, not conveyed through color alone
+- Color differentiation (green / amber / red) meets WCAG 3:1 minimum contrast ratio against the background
+- Reasoning text is rendered as a visible `<p>` and not hidden behind a tooltip — no hover-only content
+- Badge variant includes `aria-label="Confidence: 42%"` for screen reader clarity in dense layouts
+
 ## Solution Patterns
 
 `Confidence Meter` is typically evaluated continuously during an agent's runtime, often surfaced right before an `Approval Gate`:

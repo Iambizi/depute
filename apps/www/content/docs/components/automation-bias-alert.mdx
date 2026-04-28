@@ -115,6 +115,27 @@ The `useAutomationBias` hook monitors three specific behavioral signals:
 | `minApprovalTimeMs` | `number` | `1500` | Minimum ms required for a "valid" review. |
 | `approvalRateCeiling` | `number` | `0.9` | Trigger alert if overall approval rate exceeds this % (0-1). |
 
+## When to use
+
+- Users are approving high-stakes agent actions in rapid succession — financial transactions, code deployments, medical recommendations
+- You have evidence or suspicion of rubber-stamping behavior in your product (high approval rates, very short review times)
+- The consequence of a false positive (approving a bad action) significantly outweighs the friction cost of a pause
+- You are operating a swarm inbox or batch approval queue where velocity bias is structurally likely
+
+## When not to use
+
+- The approval flow is for low-stakes reversible actions — introducing friction here erodes trust in the friction itself, making it ineffective when it matters
+- Users have no ability to meaningfully review the content before approving (e.g., the action details aren't surfaced) — fix the information architecture first
+- You are using it as a substitute for actually improving the clarity of the approval interface
+
+## Accessibility
+
+- The friction overlay renders as a `role="alertdialog"` with `aria-modal="true"` to capture focus during the mandatory pause
+- The countdown timer is announced as a live region (`aria-live="polite"`) so screen reader users are aware of the pause duration
+- The acknowledge button is focussed automatically when the overlay appears
+- The alert message includes explicit text explaining why the pause was triggered — not just a visual warning icon
+- Color (amber/red) is never the sole indicator of the alert state; an icon and text label always accompany it
+
 ## Solution Patterns
 
 ### The Interceptor Layer

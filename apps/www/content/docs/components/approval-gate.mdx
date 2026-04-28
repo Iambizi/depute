@@ -135,6 +135,28 @@ When `status` shifts to `handoff_pending`, the component drops the blocking moda
 | `onHandoff` | `(ctx) => Promise<void>` | — | Fires when the synchronous timeout is breached. |
 | `handoffDeadlineMs` | `number` | — | Absolute unix timestamp for TTL enforcement (useful for UI sync on session restore). |
 
+## When to use
+
+- The agent is about to cross a trust boundary — sending an email, modifying a database record, calling an external API, executing a financial transaction
+- The action is irreversible or hard to undo and a human should explicitly sign off before it runs
+- You need a scoped, time-limited capability grant rather than a blanket yes/no decision
+- The agent has low confidence or is operating in an unfamiliar context
+
+## When not to use
+
+- The agent is performing read-only operations — no approval gate is needed for purely observational tool calls
+- Every single agent step requires approval — this creates approval fatigue; gate only the high-stakes boundaries
+- The action is trivially reversible (e.g., drafting a note that hasn't been sent) — use `Plan Card` to show intent without requiring an explicit approval
+- For legally binding or cryptographically signed actions, escalate to `Binding Approval` instead
+
+## Accessibility
+
+- The gate renders as a `role="dialog"` region with `aria-modal="true"` when in blocking mode to trap focus appropriately
+- Approve and Reject buttons have explicit `aria-label` values that include the action name (e.g., "Approve: Send email to customer")
+- Status changes (approved, rejected, handoff_pending) are announced via `aria-live="assertive"` on the status region
+- All scoped grant details are exposed as readable text, not just visual badges
+- Keyboard navigation: `Tab` moves between Approve/Reject, `Enter`/`Space` triggers; `Escape` does not dismiss (intentional — prevents accidental closure)
+
 ## Solution Patterns
 
 `Approval Gate` usually sits immediately after a `Plan Card` and before `Run Controls`:

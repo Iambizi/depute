@@ -94,6 +94,26 @@ export function App() {
 | `onEntryClick` | `(call: ToolCall) => void` | `undefined` | Callback fired when a user clicks on a tool call entry. |
 | `expandable` | `boolean` | `false` | If true, entries can be clicked to expand and reveal their raw JSON input and output. |
 
+## When to use
+
+- An agent is actively executing and the user should be able to observe its tool call activity in real time
+- Auditability is required — after the run, the user or a reviewer should be able to inspect exactly which tools ran, with what inputs, and what they returned
+- The agent can call external, state-mutating, or policy-flagged tools and you want to surface those calls distinctly from routine ones
+
+## When not to use
+
+- The agent's operations are already fully visible through another mechanism (e.g., a database log) — don't duplicate audit trails in the UI
+- The agent only performs a single tool call — a full scrollable trace timeline adds visual weight without value; a simpler status indicator suffices
+- You are building a developer debugging view — `Tool Trace` is a user-facing oversight tool, not a raw log viewer; for raw logs, link to your platform's log explorer
+
+## Accessibility
+
+- Each tool call entry is a `<li>` within a `role="log"` list, which communicates the live-updating nature to assistive technologies
+- New entries appended during streaming are announced via `aria-live="polite"` on the log container
+- Expandable entries use `<button aria-expanded>` with descriptive labels (e.g., "Expand tool call: fetch_user_data")
+- Policy flag badges (e.g., `externalAction`, `writesState`) are exposed as `aria-label` text — not color alone
+- Duration and timestamp metadata are part of the accessible text, not hidden in tooltips
+
 ## Solution Patterns
 
 `Tool Trace` is the primary visual feedback mechanism while an agent is actively running. It generally renders below `Run Controls`:

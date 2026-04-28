@@ -106,6 +106,26 @@ When content is still arriving from a live backend, pass `isStreaming`. Adds `da
 | `maxPreviewHeight` | `string` | `'24rem'` | Maximum height of the content preview area before an internal scrollbar appears. |
 | `isStreaming` | `boolean` | `false` | Signals that content is still arriving. Adds `data-streaming="true"` to the root element — no built-in animation; style via CSS. |
 
+## When to use
+
+- The agent has completed a workflow and produced a discrete, shareable output (document, code, report, data) that the user needs to review, export, or act on
+- Provenance matters — the user should be able to trace the output back to the specific plan step and tool calls that produced it
+- The output type varies across runs (markdown, JSON, code, SQL) and you need a single component that handles all of them
+
+## When not to use
+
+- The agent's output is a direct action that has already been executed (e.g., an email sent, a file deployed) — use `Transaction Receipt` or `Decision Record` instead
+- The output is a streaming partial — wait for completion or use `isStreaming` only as a transitional state, not a permanent one
+- You only need to display a success/failure confirmation with no shareable content — a simple status notification is less heavyweight
+
+## Accessibility
+
+- The artifact content area is a `<section>` with `aria-label` derived from the artifact title (e.g., "Artifact: Database Schema Migration")
+- Export buttons have explicit `aria-label` values that include the format (e.g., "Export as Markdown")
+- Streaming content is announced via `aria-live="polite"` so screen readers track new content arriving without interruption
+- Code content is rendered inside `<pre><code>` with appropriate `role="region"` and `aria-label="Code output"` for keyboard traversal
+- Provenance metadata (step ID, tool calls) is rendered as readable text, not hidden behind hover states
+
 ## Solution Patterns
 
 `Artifact Card` is the grand finale of a single-agent execution sequence:

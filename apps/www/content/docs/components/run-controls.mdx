@@ -89,6 +89,26 @@ export function ExecutionWrapper() {
 | `showLabel` | `boolean` | `false` | Whether to display a text label showing the current state next to the pulsing indicator. |
 | `actions` | `ReactNode` | `undefined` | Slot for additional custom action buttons (e.g., an Undo button). |
 
+## When to use
+
+- An agent is actively running and the user needs the ability to intervene at any time — pause, steer, or hard-stop
+- The execution is long-running (multi-step, multi-tool) and the user may need to inspect progress before the agent continues
+- Your product has compliance or safety requirements that mandate a human escape hatch during autonomous operation
+
+## When not to use
+
+- The agent run is fully instantaneous (< 1 second) — there is no execution window in which a control is meaningful
+- The agent is running fully headless/background with no synchronous user session; surfacing controls the user cannot act on is confusing
+- You're only displaying results after an agent has already completed — use `Artifact Card` to present the output, not `Run Controls`
+
+## Accessibility
+
+- Buttons use native `<button>` elements — no `div onClick` wrappers
+- Each button has an explicit `aria-label` (e.g., "Pause agent run", "Stop agent run") independent of any icon or visual state
+- Active state is communicated via `aria-pressed` where applicable (e.g., paused state on the pause button)
+- The pulsing status indicator is marked `aria-hidden="true"` — status is conveyed via `aria-live` text, not animation
+- All state transitions (running → paused, paused → running) are announced via `aria-live="polite"`
+
 ## Solution Patterns
 
 `Run Controls` is the central execution steering wheel, usually placed immmediately before or right next to an agent's `Tool Trace`:

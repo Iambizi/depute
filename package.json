@@ -1,6 +1,22 @@
 {
   "name": "ax-components-react",
   "version": "0.4.0",
+  "description": "React component library for human-in-the-loop oversight in agentic applications. Approval gates, plan cards, tool traces, confidence meters, run controls, and more.",
+  "homepage": "https://depute.dev",
+  "keywords": [
+    "react",
+    "typescript",
+    "ai-agents",
+    "agentic-ui",
+    "human-in-the-loop",
+    "ai-ui",
+    "approval-workflows",
+    "llm",
+    "agent-ux",
+    "delegation-ui",
+    "agent-oversight",
+    "developer-tools"
+  ],
   "license": "MIT",
   "type": "module",
   "main": "./dist/ax-components.cjs.js",

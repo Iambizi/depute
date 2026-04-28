@@ -1,7 +1,7 @@
 {
   "name": "ax-depute",
   "version": "0.4.0",
-  "description": "ax-depute — add AX Components primitives to your project (npx ax-depute add <component>)",
+  "description": "React components for human-in-the-loop oversight in agentic applications. Add approval gates, plan cards, tool traces, confidence cues, and run controls to your AI agent workflows.",
   "license": "MIT",
   "type": "module",
   "bin": {
@@ -15,12 +15,26 @@
     "node": ">=18.0.0"
   },
   "keywords": [
-    "ax-components",
-    "agentic",
     "react",
-    "ui",
+    "typescript",
+    "ai-agents",
+    "agentic-ui",
+    "human-in-the-loop",
+    "ai-ui",
+    "approval-workflows",
+    "llm",
+    "agent-ux",
+    "delegation-ui",
+    "agent-oversight",
+    "tool-trace",
+    "plan-card",
+    "approval-gate",
+    "developer-tools",
+    "agentic-experience",
+    "shadcn",
     "cli"
   ],
+  "homepage": "https://depute.dev",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Iambizi/depute.git"

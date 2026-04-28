@@ -139,6 +139,27 @@ interface PlanStep {
 }
 ```
 
+## When to use
+
+- The agent is about to take a multi-step or multi-tool action and the user should be aware of the trajectory before it begins
+- Trust is low or the action surface is new — surfacing the plan early builds informed consent
+- The agent's intent is ambiguous without a plan (e.g., "refactor this codebase" covers too many possibilities)
+- You want to give the user a natural moment to abort before any irreversible step starts
+
+## When not to use
+
+- The agent is performing a single, trivially understood action (e.g., "look up the weather") — a full plan card adds friction without value
+- The agent's actions are happening fully in the background with no synchronous human checkpoint; use `Tool Trace` for passive monitoring instead
+- You are already showing a `Decision Record` that captures the full approved plan — avoid duplicating plan state in both components
+
+## Accessibility
+
+- Uses semantic `<ol>` for step lists; each step renders as `<li>` with `role="listitem"`
+- Active step is annotated with `aria-current="step"` to assist screen reader navigation
+- Completed and failed steps carry `aria-label` values that include their status (e.g., "Step 2: Complete. Write schema migration.")
+- Streaming state is announced via `aria-live="polite"` on the container when `isStreaming` is true
+- All collapsible reasoning toggles use `<button aria-expanded>` with accessible toggle labels
+
 ## Solution Patterns
 
 `Plan Card` is always the first primitive in a single-agent flow:
