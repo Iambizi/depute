@@ -184,6 +184,48 @@ describe('ApprovalGate', () => {
         deadline,
       });
     });
+
+    it('expires a handoff at the 24h payload deadline when handoffDeadlineMs is omitted', () => {
+      const onHandoff = vi.fn();
+      const onHandoffExpired = vi.fn();
+      const { rerender } = render(
+        <ApprovalGate
+          title="Send"
+          timeoutSeconds={30}
+          approvalHandoff={{ timeoutMs: 1000, fallbackBehavior: 'block' }}
+          onHandoff={onHandoff}
+          onHandoffExpired={onHandoffExpired}
+        />,
+      );
+
+      act(() => {
+        vi.advanceTimersByTime(1000);
+      });
+      expect(onHandoff).toHaveBeenCalledTimes(1);
+      const deadline = onHandoff.mock.calls[0][0].deadline as number;
+      expect(deadline - Date.now()).toBeGreaterThan(23 * 60 * 60 * 1000);
+
+      rerender(
+        <ApprovalGate
+          title="Send"
+          status="handoff_pending"
+          timeoutSeconds={30}
+          approvalHandoff={{ timeoutMs: 1000, fallbackBehavior: 'block' }}
+          onHandoff={onHandoff}
+          onHandoffExpired={onHandoffExpired}
+        />,
+      );
+
+      act(() => {
+        vi.advanceTimersByTime(30_000);
+      });
+      expect(onHandoffExpired).not.toHaveBeenCalled();
+
+      act(() => {
+        vi.advanceTimersByTime(deadline - Date.now());
+      });
+      expect(onHandoffExpired).toHaveBeenCalledTimes(1);
+    });
   });
 
   describe('handoff resolution', () => {

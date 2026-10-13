@@ -40,14 +40,12 @@ export async function runInit(args) {
       process.exit(1);
     }
     writeFileToDisk(repoPath, content);
-    console.log(`  ${c.green('✓')} ${repoPath}`);
   }
 
   writeFileToDisk(
     'skills/depute/depute.skill.json',
     `${JSON.stringify({ name: 'depute', version: VERSION, docs: DOCS_URL }, null, 2)}\n`,
   );
-  console.log(`  ${c.green('✓')} skills/depute/depute.skill.json`);
 
   const stylesDest = await installShared('src');
   installCssImport(stylesDest, null, noCss);

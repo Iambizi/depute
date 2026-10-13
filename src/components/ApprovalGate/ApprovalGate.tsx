@@ -217,21 +217,25 @@ export function ApprovalGate({
     };
   }, [status, handoffDeadlineMs, onHandoffResolved, fallbackContext]);
 
-  // One interval keyed on the deadline. Callbacks run from the timer, not from
-  // a state updater, so StrictMode cannot invoke them twice.
+  // One interval keyed on the deadline. A handoff counts down to the deadline
+  // sent in onHandoff (handoffDeadlineMs, or 24h when that prop is omitted),
+  // not to timeoutSeconds. Callbacks run from the timer, not from a state updater.
   useEffect(() => {
     const active = isPending || isHandoffPending;
-    const seconds = isHandoffPending && handoffDeadlineMs != null
-      ? Math.max(0, Math.floor((handoffDeadlineMs - Date.now()) / 1000))
-      : timeoutSeconds;
-    if (!active || seconds == null) return;
+    if (!active) return;
+    const knownHandoffDeadline = isHandoffPending
+      ? (handoffDeadlineMs ?? handoffContextRef.current?.deadline ?? null)
+      : null;
+    if (!isHandoffPending && timeoutSeconds == null) return;
 
-    const key = `${isHandoffPending ? 'handoff' : 'sync'}:${handoffDeadlineMs ?? ''}:${timeoutSeconds ?? ''}`;
+    const key = isHandoffPending
+      ? `handoff:${knownHandoffDeadline ?? '24h'}`
+      : `sync:${timeoutSeconds}`;
     if (countdownKeyRef.current !== key) {
       countdownKeyRef.current = key;
-      deadlineAtRef.current = isHandoffPending && handoffDeadlineMs != null
-        ? handoffDeadlineMs
-        : Date.now() + seconds * 1000;
+      deadlineAtRef.current = isHandoffPending
+        ? (knownHandoffDeadline ?? Date.now() + 24 * 60 * 60 * 1000)
+        : Date.now() + (timeoutSeconds ?? 0) * 1000;
       expiryFiredRef.current = false;
     }
     const deadlineAt = deadlineAtRef.current;
@@ -268,6 +272,7 @@ export function ApprovalGate({
     isHandoffPending,
     timeoutSeconds,
     handoffDeadlineMs,
+    handoffInitiated,
     onTimeout,
     onHandoffExpired,
     onReject,

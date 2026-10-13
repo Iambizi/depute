@@ -79,9 +79,8 @@ export const CryptoTransaction: Story = {
 };
 
 export const AsyncHandoffFlow: Story = {
-  name: 'Async Handoff (Remote Cryptographic Signature)',
+  name: 'Async Handoff (Remote Signature)',
   render: function AsyncHandoffRender() {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
     const [status, setStatus] = useState<any>('reviewing');
 
     return (

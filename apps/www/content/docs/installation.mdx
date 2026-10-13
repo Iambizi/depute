@@ -85,7 +85,7 @@ bunx ax-depute@latest init
   </Tab>
 </Tabs>
 
-This command writes `skills/depute/SKILL.md` (and its reference files) into your repository, plus `skills/depute/depute.skill.json` with the CLI version. It also installs the design tokens when `src/styles/depute.css` is not already there. The skill tells an agent how to compose the primitives. It is not a runtime dependency.
+This command writes `skills/depute/SKILL.md` (and its reference files) into your repository, plus `skills/depute/depute.skill.json` with the CLI version. It also installs the design tokens when `src/styles/depute.css` is not already there, and writes `src/types/ax-common.ts` and `src/utils/ax-a11y.tsx` when those files are missing. A second run skips files that already exist and does not duplicate the CSS import. The skill tells an agent how to compose the primitives. It is not a runtime dependency.
 
 ## List all components
 

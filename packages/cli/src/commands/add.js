@@ -283,8 +283,10 @@ export async function runAdd(args) {
   const stylesDest = await installShared(sharedRoot);
   installCssImport(stylesDest, cssFile, noCss);
 
+  const importFrom = outputDir.startsWith('src/') ? outputDir.slice('src/'.length) : outputDir;
+  const importPath = `./${path.posix.join(importFrom, component.label)}`;
   console.log(`  ${c.green('✓ Done!')} Import with:\n`);
-  console.log(`    ${c.dim('import {')} ${c.bold(component.label)} ${c.dim(`} from './${path.posix.join(outputDir, component.label)}'`)}\n`);
+  console.log(`    ${c.dim('import {')} ${c.bold(component.label)} ${c.dim(`} from '${importPath}'`)}\n`);
 
   if (component.axPrinciples?.length) {
     console.log(`  ${c.dim('AX Principles:')} ${component.axPrinciples.join(', ')}\n`);

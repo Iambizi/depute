@@ -1,3 +1,24 @@
+# depute v0.4.2 Release Notes
+
+**October 13, 2026**
+
+Patch for the React 18 TypeScript claim and the remaining review notes. No new components.
+
+- `useFocusTrap` no longer annotates its ref as `RefObject<T | null>`, so copied components typecheck with `@types/react` 18 and 19. The React 18 CI job installs those type packages and runs `npm run type-check`.
+- Root `peerDependencies` are `react` and `react-dom` `>=18.0.0`.
+- A handoff countdown uses the deadline sent to `onHandoff` (the `handoffDeadlineMs` value, or 24 hours when that prop is omitted). A shorter `timeoutSeconds` no longer expires the handoff early.
+- README, the docs index, and the skill no longer call Binding Approval or Transaction Receipt cryptographic. Those components still only display a signature or hash the app supplies.
+- `ax-depute init` is in the README. The install docs say init also writes shared types and the focus-trap helper when they are missing, and a second run no longer prints a checkmark on a file it skipped.
+- The CLI "Import with" hint is relative to `src/` when the output directory is under `src/`.
+- `packages/cli` includes the MIT `LICENSE`.
+- The docs sidebar badge walker is typed against the fumadocs page tree.
+
+`apps/www` still reports five high `npm audit` findings, all dev-only, through `eslint-config-next` → `braces`. The advisory covers every published `braces` release (`<=3.0.3`). npm's suggested fix downgrades `eslint-config-next` to 14. The root package audit is clean.
+
+Publish `ax-depute@0.4.2` from `packages/cli` after the `v0.4.2` tag is on GitHub. The CLI installs sources from that tag.
+
+---
+
 # depute v0.4.1 Release Notes
 
 **October 13, 2026**
@@ -15,7 +36,7 @@ Foundation fix for the install path and the build. No new components.
 - `ax-depute init` copies `skills/depute/` into the project and installs design tokens when they are missing.
 - The docs site includes a paper-trading oversight demo at `/demo`. It runs on a scripted local agent, with no exchange and no API key.
 
-`npm publish` of `ax-depute@0.4.1` still needs an npm token. Until that publish, the registry copy of this package is the older `0.2.0`.
+Published to npm as `ax-depute@0.4.1` on October 13, 2026.
 
 ---
 

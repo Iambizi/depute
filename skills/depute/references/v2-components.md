@@ -1,6 +1,6 @@
 # v2 — Strict Compliance & Forensics Components
 
-Reference guide for the 7 Compliance and Forensics primitives designed for high-stakes, irreversible, or cryptographically bound agent interactions.
+Reference guide for the 7 Compliance and Forensics primitives designed for high-stakes or irreversible agent interactions. Signatures and hashes are supplied by the caller's backend.
 
 ## 1. State Diff (`<StateDiff />`)
 **Problem:** A human cannot blindly approve a raw JSON payload mutation in an `ApprovalGate`. They need to see a human-readable "before and after".

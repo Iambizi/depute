@@ -5,7 +5,7 @@ license: MIT
 compatibility: React 18+, TypeScript, CSS Modules. Agent-agnostic — works with any AI backend (OpenAI, Anthropic, LangChain, AutoGen, or custom).
 metadata:
   author: Iambizi
-  version: 0.4.1
+  version: 0.4.2
   documentation: https://github.com/Iambizi/depute
   category: ui-components
   tags: [agentic-ui, react, human-in-the-loop, agent-oversight, multi-agent]
@@ -74,7 +74,7 @@ When in doubt, start with v0 boundaries and scale up to v1 orchestration and v2 
 | Structured before/after translation of payload mutations | `State Diff` | `npx ax-depute@latest add state-diff` |
 | Permission inspector showing tool capability grants/denials | `Capability Matrix`| `npx ax-depute@latest add capability-matrix` |
 | Agentic undo-tree for reverting multi-step sequences | `Rollback Timeline`| `npx ax-depute@latest add rollback-timeline` |
-| Cryptographic intent gate with explicit `isSigning` state | `Binding Approval`| `npx ax-depute@latest add binding-approval` |
+| High-stakes intent gate with an `isSigning` state. The signature comes from your backend | `Binding Approval`| `npx ax-depute@latest add binding-approval` |
 | Immutable audit log linking human approval to an executed action | `Transaction Receipt`| `npx ax-depute@latest add transaction-receipt` |
 | Immutable visual receipt of a human approval decision | `Decision Record`| `npx ax-depute@latest add decision-record` |
 | Semantic rollup of a high-velocity agent session | `Session Overview`| `npx ax-depute@latest add session-overview` |
@@ -230,7 +230,7 @@ For high-stakes execution, show intent, ask the person to confirm, and display t
 | H6 | **Output without provenance** | The agent produces a final artifact (report, code, summary) but there's no trace of which steps/tools produced it | `Artifact Card` | 🟢 Info |
 | H7 | **Multi-agent coordination opaque** | Multiple agents coordinate, delegate, or run in parallel but there's no hierarchy view or status dashboard | `Orchestrator View` + `Agent Roster` | 🔴 Critical |
 | H8 | **Agent spawning ungated** | The system spawns new agents or delegates tasks to sub-agents without human approval of the delegation | `Delegation Gate` | 🟡 Warning |
-| H9 | **Cryptographic action untracked** | The agent performs a high-stakes/financial/destructive action without structured payload deltas or an immutable receipt | `State Diff` or `Transaction Receipt` | 🔴 Critical |
+| H9 | **High-stakes action untracked** | The agent performs a high-stakes, financial, or destructive action without structured payload deltas or a receipt | `State Diff` or `Transaction Receipt` | 🔴 Critical |
 | H10 | **Budget ungoverned** | The agent can consume unbounded resources or tokens | `Budget Meter` | 🟡 Warning |
 | H11 | **Approval without receipt** | The agent executes an irreversible action after human approval, but the human is not presented with a persistent, immutable record of their decision | `Decision Record` | 🟡 Warning |
 | H12 | **Execution Amnesia** | The agent performs a high-velocity or high-volume series of mutations across many files/systems without a semantic rollup of the total impact | `Session Overview` | 🟡 Warning |
@@ -307,7 +307,7 @@ Use this format if the user wants a human-readable artifact to attach to a Jira 
 
 **Agent-agnostic.** Works with any AI backend. Components accept typed props; you wire them to your event streams.
 
-**Accessible by default.** WCAG 2.1 AA, keyboard navigation, ARIA roles throughout.
+**Accessible by default.** Built with WCAG 2.1 AA in mind: keyboard navigation and ARIA roles. Automated axe checks are not in CI yet.
 
 ---
 

@@ -1,60 +1,70 @@
 import { DocsLayout } from 'fumadocs-ui/layouts/docs';
+import type { Folder, Item, Node, Root } from 'fumadocs-core/page-tree';
 import type { ReactNode } from 'react';
 import { source } from '@/lib/source';
 
+function readBadge(data: object): string | undefined {
+  const record = data as Record<string, unknown>;
+  return typeof record.badge === 'string' ? record.badge : undefined;
+}
+
 const urlToBadge = new Map<string, string>();
 for (const page of source.getPages()) {
-  const badgeStr = (page.data as any)?.badge as string | undefined;
+  const badgeStr = readBadge(page.data);
   if (badgeStr) {
     urlToBadge.set(page.url, badgeStr);
   }
 }
 
-function mapTree(node: any): any {
-  if (Array.isArray(node)) return node.map(mapTree);
-  if (!node) return node;
+function badgeName(url: string, title: ReactNode, badge: string): ReactNode {
+  const typeColor =
+    badge === 'Primitive' ? 'bg-blue-500/10 text-blue-500 dark:text-blue-400 border-blue-500/20' :
+    badge === 'View' ? 'bg-indigo-500/10 text-indigo-500 dark:text-indigo-400 border-indigo-500/20' :
+    badge === 'Pattern' ? 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20' :
+    'bg-zinc-500/10 text-zinc-600 dark:text-zinc-400 border-zinc-500/20';
 
-  const result = { ...node };
+  return (
+    <div key={`badge-wrap-${url}`} className="flex items-center justify-between w-full pr-1">
+      <span key={`title-${url}`}>{title}</span>
+      <span key={`tag-${url}`} className={`ml-2 text-[10px] uppercase font-mono px-1.5 py-0.5 rounded-sm border ${typeColor}`}>
+        {badge}
+      </span>
+    </div>
+  );
+}
 
-  if (result.type === 'page' && result.url) {
-    const badgeStr = urlToBadge.get(result.url);
-    
-    if (badgeStr) {
-      const typeStr = badgeStr;
-      const typeColor = 
-        typeStr === 'Primitive' ? 'bg-blue-500/10 text-blue-500 dark:text-blue-400 border-blue-500/20' :
-        typeStr === 'View' ? 'bg-indigo-500/10 text-indigo-500 dark:text-indigo-400 border-indigo-500/20' :
-        typeStr === 'Pattern' ? 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20' :
-        'bg-zinc-500/10 text-zinc-600 dark:text-zinc-400 border-zinc-500/20'; // Control
+function mapItem(node: Item): Item {
+  const badge = urlToBadge.get(node.url);
+  if (!badge) return node;
+  return { ...node, name: badgeName(node.url, node.name, badge) };
+}
 
-      result.name = (
-        <div key={`badge-wrap-${result.url}`} className="flex items-center justify-between w-full pr-1">
-          <span key={`title-${result.url}`}>{node.name}</span>
-          <span key={`tag-${result.url}`} className={`ml-2 text-[10px] uppercase font-mono px-1.5 py-0.5 rounded-sm border ${typeColor}`}>
-            {typeStr}
-          </span>
-        </div>
-      );
-    }
-  }
+function mapNode(node: Node): Node {
+  if (node.type === 'page') return mapItem(node);
+  if (node.type === 'folder') return mapFolder(node);
+  return node;
+}
 
-  if (result.children) {
-    result.children = mapTree(result.children);
-  }
-  
-  if (result.index) {
-    result.index = mapTree(result.index);
-  }
+function mapFolder(node: Folder): Folder {
+  return {
+    ...node,
+    children: node.children.map(mapNode),
+    index: node.index ? mapItem(node.index) : node.index,
+  };
+}
 
-  return result;
+function mapTree(root: Root): Root {
+  return {
+    ...root,
+    children: root.children.map(mapNode),
+    fallback: root.fallback ? mapTree(root.fallback) : root.fallback,
+  };
 }
 
 export default function Layout({ children }: { children: ReactNode }) {
-  const treeWithBadges = mapTree(source.pageTree);
-
   return (
     <DocsLayout
-      tree={treeWithBadges}
+      tree={mapTree(source.pageTree)}
       nav={{ 
         title: (
           <div className="flex items-center">

@@ -86,8 +86,8 @@ Components are **copied into your project** — not imported from `node_modules`
 | **State Diff** | Structured before/after view of state mutations |
 | **Capability Matrix** | Permission inspector showing allowed/denied capabilities |
 | **Rollback Timeline** | Undo-tree for agentic tool sequences |
-| **Transaction Receipt** | Provenance receipt with verification hash for completed actions |
-| **Binding Approval** | Cryptographic intent gate with `isSigning` state for irreversible actions |
+| **Transaction Receipt** | Provenance receipt and audit. Displays a hash your backend supplies. |
+| **Binding Approval** | High-stakes intent gate with an `isSigning` state. Displays a signature your backend supplies. |
 | **Decision Record** | Immutable visual receipt of a human approval decision |
 | **Session Overview** | Semantic rollup of a high-velocity agent session to prevent execution amnesia |
 
@@ -102,6 +102,9 @@ npx ax-depute@latest add approval-gate
 # Files are written to src/components/ApprovalGate/
 # Shared types land in src/types/ax-common.ts
 # Design tokens land in src/styles/depute.css and are imported once
+
+# Copy the agent skill, plus shared types and tokens when they are missing
+npx ax-depute@latest init
 ```
 
 Import the tokens once. The CLI adds this to `src/index.css` when that file exists:
@@ -153,7 +156,7 @@ const trace = generateMockToolCalls(3);
 
 **Agent-agnostic.** Works with any AI backend — LangChain, OpenAI, Claude, AutoGen, or your own. Components accept typed props; you wire them to your event streams.
 
-**Accessible by default.** WCAG 2.1 AA, keyboard navigation, ARIA roles throughout.
+**Accessible by default.** Built with WCAG 2.1 AA in mind: keyboard navigation, ARIA roles, and visible labels. Automated axe checks are not in CI yet.
 
 ---
 

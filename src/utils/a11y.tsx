@@ -129,10 +129,10 @@ export function useAnnouncer(
  * );
  * ```
  */
-export function useFocusTrap<T extends HTMLElement = HTMLDivElement>(
-  active: boolean
-): React.RefObject<T | null> {
-  const containerRef = useRef<T | null>(null);
+export function useFocusTrap<T extends HTMLElement = HTMLDivElement>(active: boolean) {
+  // useRef<T>(null) is RefObject<T> on React 18 types and RefObject<T | null>
+  // on React 19 types. Leaving the return type inferred lets both assign to a div ref.
+  const containerRef = useRef<T>(null);
   const previousFocusRef = useRef<Element | null>(null);
 
   useEffect(() => {

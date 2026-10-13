@@ -20,8 +20,8 @@ function runAdd(cwd, args) {
 }
 
 test('CLI ref is the package version, not main', () => {
-  assert.equal(VERSION, '0.4.1');
-  assert.equal(REF, 'v0.4.1');
+  assert.equal(VERSION, '0.4.2');
+  assert.equal(REF, 'v0.4.2');
   assert.equal(REF.includes('main'), false);
 });
 

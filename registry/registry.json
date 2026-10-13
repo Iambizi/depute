@@ -1,11 +1,11 @@
 {
   "name": "depute",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "depute — UI primitives for agentic experiences",
   "distribution": "depute",
   "repo": "Iambizi/depute",
   "branch": "main",
-  "ref": "v0.4.1",
+  "ref": "v0.4.2",
   "sharedFiles": ["src/types/common.ts", "src/utils/a11y.tsx"],
   "items": [
     {
