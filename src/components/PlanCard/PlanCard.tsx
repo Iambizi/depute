@@ -10,6 +10,7 @@
  */
 
 import { useState, useMemo } from 'react';
+import type React from 'react';
 import type { PlanStep, PlanStepStatus } from '../../types/common';
 import { getConfidenceLevel } from '../../types/common';
 import { VisuallyHidden, useAnnouncer } from '../../utils/a11y';

@@ -1,3 +1,5 @@
+import type React from 'react';
+
 export type SwarmInboxSeverity = 'critical' | 'warning' | 'info';
 
 export interface SwarmInboxItem {

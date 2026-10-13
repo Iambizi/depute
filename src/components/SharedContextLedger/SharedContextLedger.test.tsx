@@ -85,7 +85,7 @@ describe('SharedContextLedger', () => {
     });
 
     it('active scope tab has the active CSS class', () => {
-      const { container } = render(<SharedContextLedger entries={MOCK_ENTRIES} currentScope="branch" />);
+      render(<SharedContextLedger entries={MOCK_ENTRIES} currentScope="branch" />);
       // The Branch tab should have the active class; select by button text
       const branchBtn = screen.getByRole('button', { name: /Branch/i });
       // The active CSS module class will be applied

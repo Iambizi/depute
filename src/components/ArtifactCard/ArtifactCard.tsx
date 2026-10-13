@@ -8,6 +8,7 @@
  */
 
 import { useState } from 'react';
+import type React from 'react';
 import type { ArtifactCardProps, ExportFormat } from './ArtifactCard.types';
 import styles from './ArtifactCard.module.css';
 

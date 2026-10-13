@@ -1,4 +1,4 @@
-import React from 'react';
+import type React from 'react';
 import styles from './SharedContextLedger.module.css';
 import type { SharedContextLedgerProps } from './SharedContextLedger.types';
 

@@ -14,6 +14,7 @@
  */
 
 import { useState, useEffect, useCallback, useMemo } from 'react';
+import type React from 'react';
 import { getConfidenceLevel } from '../../types/common';
 import { useAnnouncer, useFocusTrap, VisuallyHidden } from '../../utils/a11y';
 import type { ApprovalGateProps, StagedStep } from './ApprovalGate.types';
@@ -117,7 +118,6 @@ export function ApprovalGate({
   onTimeout,
   approvalHandoff,
   onHandoff,
-  onHandoffResolved,
   onHandoffExpired,
   pendingApprovalId,
   handoffDeadlineMs,

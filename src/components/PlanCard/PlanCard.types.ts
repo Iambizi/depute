@@ -4,7 +4,7 @@
  * @see docs/orchestration/06-technical-specifications.md (Component 1)
  */
 
-import { PlanStep } from '../../types/common';
+import type { PlanStep } from '../../types/common';
 
 export interface PlanCardProps {
   /** Title of the plan */

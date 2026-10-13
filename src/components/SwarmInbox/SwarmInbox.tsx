@@ -1,4 +1,4 @@
-import React from 'react';
+import type React from 'react';
 import styles from './SwarmInbox.module.css';
 import type { SwarmInboxItem, SwarmInboxProps } from './SwarmInbox.types';
 

@@ -14,7 +14,6 @@ import {
   simulatePlanExecution,
   simulateToolStream,
   generateMockApproval,
-  MOCK_TOOL_NAMES
 } from '../../src/utils/mockData';
 import type { PlanStep, ToolCall, RunState } from '../../src/types/common';
 import type { ApprovalGateProps } from '../../src/components/ApprovalGate/ApprovalGate.types';

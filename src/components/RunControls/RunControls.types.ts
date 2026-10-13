@@ -4,6 +4,7 @@
  * @see docs/orchestration/06-technical-specifications.md (Component 4)
  */
 
+import type React from 'react';
 import type { RunState } from '../../types/common';
 
 export interface RunControlsProps {

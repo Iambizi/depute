@@ -40,10 +40,23 @@ bunx ax-depute@latest add approval-gate
 
 This copies the component source files directly into `src/components/ApprovalGate/`. You own the code.
 
-On first install, shared files are also added once:
+On first install, shared files are also added once, next to the component directory:
 
 - `src/types/ax-common.ts` — shared TypeScript types (`PlanStep`, `ToolCall`, `Artifact`)
 - `src/utils/ax-a11y.tsx` — accessibility utilities used across components
+- `src/styles/depute.css` — design tokens and motion. This is the one stylesheet import.
+
+## Styles
+
+Component CSS reads `--ax-*` tokens. Without the stylesheet, an installed component renders unstyled. The CLI copies `depute.css`, `tokens.css`, and `animations.css` into `src/styles/` and, when it finds a global stylesheet such as `src/index.css`, inserts:
+
+```css
+@import "./styles/depute.css";
+```
+
+Pass `--css src/index.css` to choose the file, or `--no-css` to skip the edit and add the import yourself. That single import is the only manual step when the CLI cannot find a stylesheet.
+
+`--dir` moves the shared files with the components. `add run-controls --dir components/ax` writes the component to `components/ax/RunControls/` and the shared files to `components/types`, `components/utils`, and `components/styles`, then rewrites the imports so they resolve.
 
 ## Initialize the AI Skill Layer
 
@@ -147,10 +160,15 @@ interface PlanStep {
 interface ToolCall {
   id: string;
   name: string;
-  input: unknown;
-  output?: unknown;
-  status: 'running' | 'completed' | 'failed';
-  policyFlags?: ('requiresApproval' | 'writesState' | 'externalAction')[];
+  input?: Record<string, unknown>;
+  output?: Record<string, unknown>;
+  status: 'pending' | 'running' | 'completed' | 'failed';
+  timestamp: string;
+  policyFlags?: {
+    requiresApproval?: boolean;
+    writesState?: boolean;
+    externalAction?: boolean;
+  };
 }
 
 interface Artifact {
@@ -164,13 +182,17 @@ interface Artifact {
 
 ## No backend required
 
-Use the built-in mock data generators for prototyping:
+Optional prototyping generators are a separate install. They are not copied with a component:
+
+```bash
+npx ax-depute add mock-data
+```
 
 ```tsx
-import { generateMockPlan, generateMockToolCalls } from '@/utils/mockData';
+import { generateMockPlan, generateMockToolCalls } from '../utils/mockData';
 
 const plan = generateMockPlan(4);       // 4-step agent plan
 const trace = generateMockToolCalls(3); // 3 tool call entries
 ```
 
-The mock generators show the exact shape each component expects.
+`mock-data` type-imports the components it describes. Add those components before typechecking. With `--dir`, the file is written under that directory's parent `utils/` folder and its imports point at the components you installed there.

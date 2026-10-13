@@ -11,7 +11,7 @@
 
 import { useMemo, useEffect, useRef } from 'react';
 import { VisuallyHidden } from '../../utils/a11y';
-import type { BudgetMeterProps, BudgetSeverity } from './BudgetMeter.types';
+import type { BudgetMeterProps, BudgetSeverity, BudgetUnit } from './BudgetMeter.types';
 import styles from './BudgetMeter.module.css';
 
 /* ------------------------------------------------------------------ */
@@ -49,6 +49,14 @@ const SEVERITY_LABELS: Record<BudgetSeverity, string> = {
 /* ------------------------------------------------------------------ */
 /* Default formatters                                                  */
 /* ------------------------------------------------------------------ */
+
+const UNIT_LABELS: Record<BudgetUnit, string> = {
+  currency: 'currency',
+  tokens: 'tokens',
+  'api-calls': 'API calls',
+  compute: 'compute',
+  custom: 'units',
+};
 
 const defaultFormatValue = (value: number): string => {
   if (value >= 1_000_000) return `${(value / 1_000_000).toFixed(1)}M`;
@@ -105,10 +113,11 @@ export function BudgetMeter({
     ? (formatBurnRate ? formatBurnRate(burnRate) : `${formatValue(burnRate)}/min`)
     : null;
 
+  const unitLabel = UNIT_LABELS[unit];
   const ariaLabel = useMemo(
     () =>
-      `${label}: ${formattedSpent} of ${formattedLimit} used (${Math.round(percentage)}%). ${SEVERITY_LABELS[resolvedSeverity]}.`,
-    [label, formattedSpent, formattedLimit, percentage, resolvedSeverity],
+      `${label}: ${formattedSpent} of ${formattedLimit} ${unitLabel} used (${Math.round(percentage)}%). ${SEVERITY_LABELS[resolvedSeverity]}.`,
+    [label, formattedSpent, formattedLimit, unitLabel, percentage, resolvedSeverity],
   );
 
   if (compact) {
@@ -117,6 +126,7 @@ export function BudgetMeter({
         className={`${styles.budgetMeterCompact} ${SEVERITY_CLASSES[resolvedSeverity]} ${className ?? ''}`}
         role="meter"
         aria-label={ariaLabel}
+        aria-valuetext={`${formattedSpent} of ${formattedLimit} ${unitLabel}`}
         aria-valuenow={spent}
         aria-valuemin={0}
         aria-valuemax={limit}
@@ -142,6 +152,7 @@ export function BudgetMeter({
       className={`${styles.budgetMeter} ${SEVERITY_CLASSES[resolvedSeverity]} ${className ?? ''}`}
       role="meter"
       aria-label={ariaLabel}
+      aria-valuetext={`${formattedSpent} of ${formattedLimit} ${unitLabel}`}
       aria-valuenow={spent}
       aria-valuemin={0}
       aria-valuemax={limit}

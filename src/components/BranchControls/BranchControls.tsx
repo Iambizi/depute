@@ -1,4 +1,4 @@
-import React from 'react';
+import type React from 'react';
 import styles from './BranchControls.module.css';
 import type { BranchControlsProps } from './BranchControls.types';
 

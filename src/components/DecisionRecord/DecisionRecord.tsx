@@ -1,4 +1,3 @@
-import React from 'react';
 import styles from './DecisionRecord.module.css';
 
 export interface DecisionRecordProps {

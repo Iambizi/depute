@@ -17,9 +17,7 @@ import { VisuallyHidden } from '../../utils/a11y';
 import type {
   BindingApprovalProps,
   BindingStatus,
-  BindingTerm,
 } from './BindingApproval.types';
-import type { ApprovalHandoff, HandoffContext } from '../ApprovalGate/ApprovalGate.types';
 import styles from './BindingApproval.module.css';
 
 /* ------------------------------------------------------------------ */
@@ -67,7 +65,6 @@ export function BindingApproval({
   onTimeout,
   approvalHandoff,
   onHandoff,
-  onHandoffResolved,
   onHandoffExpired,
   pendingApprovalId,
   handoffDeadlineMs,

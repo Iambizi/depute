@@ -8,6 +8,7 @@
  */
 
 import { useState, useEffect, useRef, useCallback } from 'react';
+import type React from 'react';
 import { VisuallyHidden, useAnnouncer } from '../../utils/a11y';
 import type { ToolTraceProps } from './ToolTrace.types';
 import styles from './ToolTrace.module.css';

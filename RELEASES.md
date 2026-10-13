@@ -1,3 +1,19 @@
+# depute v0.4.1 Release Notes
+
+**October 13, 2026**
+
+Foundation fix for the install path and the build. No new components.
+
+- The library typechecks, lints, and builds again. Type-only imports use `import type`, so a stock Vite React TypeScript app can compile copied components.
+- `ax-depute add` installs design tokens (`src/styles/depute.css`) and can insert that import into the project's global CSS. `--dir` places shared types, a11y helpers, and tokens beside the chosen directory and rewrites imports to match.
+- `add mock-data` copies the prototyping generators. They are no longer documented as if the CLI had already installed them.
+- The CLI installs the git tag that matches its own version (`v0.4.1`, not `main`) and rejects a file whose sha256 does not match `packages/cli/src/checksums.json`.
+- GitHub Actions runs tests, types, lint, build, the checksum check, and a fresh-app CLI smoke test.
+
+`npm publish` of `ax-depute@0.4.1` still needs an npm token. Until that publish, the registry copy of this package is the older `0.2.0`.
+
+---
+
 # depute v0.4.0 Release Notes
 
 **April 1, 2026**
