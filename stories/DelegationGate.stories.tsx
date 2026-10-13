@@ -114,11 +114,9 @@ export const BasicUsage: Story = {
 export const WithAutomationBiasAlert: Story = {
   name: 'Composition: With AutomationBiasAlert',
   render: () => {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
     const { isAlertTriggered, recordAction, dismissAlert } = require('../src/hooks').useAutomationBias({
       consecutiveApprovals: 2, // Trigger fast for demo
     });
-    // eslint-disable-next-line react-hooks/rules-of-hooks
     const [outcome, setOutcome] = useState<string | null>(null);
     const data = generateMockDelegationGate();
 

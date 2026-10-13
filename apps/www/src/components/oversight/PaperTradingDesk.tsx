@@ -118,7 +118,7 @@ export function PaperTradingDesk() {
         <h1 className="text-3xl font-semibold tracking-tight text-fd-foreground">Oversight desk</h1>
         <p className="max-w-2xl text-fd-muted-foreground">
           A scripted agent proposes one stock order. Nothing here talks to an exchange or holds an API key.
-          The receipt hash is a label from this demo, not a signature.
+          The receipt hash is a label from this demo, not a signature. This is not investment advice.
         </p>
       </header>
 

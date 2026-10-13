@@ -1,6 +1,6 @@
 {
   "name": "ax-components-react",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "React component library for human-in-the-loop oversight in agentic applications. Approval gates, plan cards, tool traces, confidence meters, run controls, and more.",
   "homepage": "https://depute.dev",
   "keywords": [
@@ -38,8 +38,8 @@
     "dist"
   ],
   "peerDependencies": {
-    "react": "^19.2.4",
-    "react-dom": "^19.2.4"
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0"
   },
   "scripts": {
     "dev": "vite",

@@ -67,9 +67,9 @@ export const SimulateLiveStatuses: Story = {
   name: 'Prototype: Simulated Live Status Updates',
   render: () => {
     const [agents, setAgents] = useState<AgentRosterItem[]>(generateMockAgentRoster(6));
-    const statuses: AgentStatus[] = ['working', 'idle', 'blocked', 'completed'];
 
     useEffect(() => {
+      const statuses: AgentStatus[] = ['working', 'idle', 'blocked', 'completed'];
       const interval = setInterval(() => {
         setAgents((prev) =>
           prev.map((a) =>

@@ -15,7 +15,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - v0.2.0 released (11 orchestration primitives) ✅
 - v0.3.0 released (7 compliance primitives) ✅
 - v0.4.0 released (Taxonomy + Async Handoff) ✅
-- Repo and CLI package are at 0.4.1. npm still serves `ax-depute@0.2.0` until `packages/cli` is published.
+- Repo and CLI package are at 0.4.2. npm serves `ax-depute@0.4.1` until 0.4.2 is tagged and published.
 - Storybook deployed to GitHub Pages ✅
 - Docs site deployed to Vercel (`apps/www`, Next.js + Fumadocs) ✅
 - AI Skill layer written (Claude + skills.sh) ✅
@@ -71,7 +71,7 @@ AX is the design discipline for interfaces where AI agents act on behalf of user
 | `State Diff` | Field-level mutation visibility |
 | `Capability Matrix`| Permission inspector / agent handshake |
 | `Rollback Timeline`| Undo-tree with cascade awareness |
-| `Transaction Receipt`| Cryptographic provenance & audit |
+| `Transaction Receipt`| Provenance receipt and audit. Displays a backend-supplied hash. |
 | `Binding Approval`| High-stakes intent gate. Displays a backend-supplied signature. |
 
 ## Tech Stack
@@ -79,7 +79,7 @@ AX is the design discipline for interfaces where AI agents act on behalf of user
 - React 18+ with TypeScript (strict, no `any` types)
 - CSS Modules (NOT Tailwind) — components use `--ax-*` custom properties
 - Storybook for component documentation and live examples
-- Vitest + React Testing Library (359 tests, 25 test files)
+- Vitest + React Testing Library (373 tests, 27 test files)
 - Vite for library build (ES + CJS output)
 - Next.js + Fumadocs for docs site (`apps/www`)
 
@@ -143,7 +143,7 @@ It includes:
 - **Human oversight, not human bottleneck**: Surface the right info at the right moment
 - **You own the code**: CLI copy-paste; source lives in user's repo
 - **Agent-agnostic**: Works with any AI backend (OpenAI, Anthropic, LangChain, etc.)
-- **Accessible by default**: WCAG 2.1 AA, keyboard nav, ARIA roles throughout
+- **Accessible by default**: built with WCAG 2.1 AA in mind (keyboard nav, ARIA roles). Automated axe checks are not in CI yet.
 
 ## Code Quality Requirements
 
@@ -158,7 +158,7 @@ It includes:
 ```bash
 npm install          # Install dependencies
 npm run storybook    # Run Storybook at localhost:6006
-npm test             # Run 367 tests
+npm test             # Run 373 tests
 npm run build        # Production build (Vite)
 npm run type-check   # tsc --noEmit (uses tsconfig.build.json)
 ```

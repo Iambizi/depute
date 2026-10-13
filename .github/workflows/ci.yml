@@ -32,9 +32,10 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
-      - run: npm install --legacy-peer-deps react@18.3.1 react-dom@18.3.1
-      - run: node -e "const v=require('react/package.json').version; if(!v.startsWith('18.')) { console.error('expected React 18, found '+v); process.exit(1) }"
+      - run: npm install --legacy-peer-deps react@18.3.1 react-dom@18.3.1 @types/react@18.3.31 @types/react-dom@18.3.7
+      - run: node -e "const v=require('react/package.json').version; const t=require('@types/react/package.json').version; if(!v.startsWith('18.')||!t.startsWith('18.')) { console.error('expected React 18 types, found react '+v+' @types/react '+t); process.exit(1) }"
       - run: npm test
+      - run: npm run type-check
 
   cli-smoke:
     name: CLI install in a fresh Vite app

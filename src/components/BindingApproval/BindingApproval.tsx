@@ -152,17 +152,20 @@ export function BindingApproval({
 
   const clockActive = effectiveStatus === 'reviewing' || isHandoffPending;
   useEffect(() => {
-    const seconds = isHandoffPending && handoffDeadlineMs != null
-      ? Math.max(0, Math.floor((handoffDeadlineMs - Date.now()) / 1000))
-      : timeoutSeconds;
-    if (!clockActive || seconds == null) return;
+    if (!clockActive) return;
+    const knownHandoffDeadline = isHandoffPending
+      ? (handoffDeadlineMs ?? handoffContextRef.current?.deadline ?? null)
+      : null;
+    if (!isHandoffPending && timeoutSeconds == null) return;
 
-    const key = `${isHandoffPending ? 'handoff' : 'sync'}:${handoffDeadlineMs ?? ''}:${timeoutSeconds ?? ''}`;
+    const key = isHandoffPending
+      ? `handoff:${knownHandoffDeadline ?? '24h'}`
+      : `sync:${timeoutSeconds}`;
     if (countdownKeyRef.current !== key) {
       countdownKeyRef.current = key;
-      deadlineAtRef.current = isHandoffPending && handoffDeadlineMs != null
-        ? handoffDeadlineMs
-        : Date.now() + seconds * 1000;
+      deadlineAtRef.current = isHandoffPending
+        ? (knownHandoffDeadline ?? Date.now() + 24 * 60 * 60 * 1000)
+        : Date.now() + (timeoutSeconds ?? 0) * 1000;
       expiryFiredRef.current = false;
     }
     const deadlineAt = deadlineAtRef.current;
@@ -199,6 +202,7 @@ export function BindingApproval({
     isHandoffPending,
     timeoutSeconds,
     handoffDeadlineMs,
+    handoffInitiated,
     onTimeout,
     onHandoffExpired,
     onReject,

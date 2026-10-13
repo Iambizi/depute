@@ -155,7 +155,6 @@ export const SimulateRealTimeUpdates: Story = {
 export const AsyncHandoffFlow: Story = {
   name: 'Async Handoff Flow (Anthropic Dispatch Pattern)',
   render: function AsyncHandoffRender() {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
     const [status, setStatus] = useState<any>('pending');
 
     return (
@@ -251,13 +250,10 @@ export const ErrorHandling: Story = {
 export const WithAutomationBiasAlert: Story = {
   name: 'Composition: With AutomationBiasAlert',
   render: () => {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
     const { isAlertTriggered, recordAction, dismissAlert } = require('../src/hooks').useAutomationBias({
        consecutiveApprovals: 2, // Trigger fast for demo
     });
-    // eslint-disable-next-line react-hooks/rules-of-hooks
     const [status, setStatus] = useState<'pending' | 'approved' | 'rejected' | 'expired'>('pending');
-    // eslint-disable-next-line react-hooks/rules-of-hooks
     const [count, setCount] = useState(0);
 
     const handleApprove = () => {
