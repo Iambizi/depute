@@ -33,10 +33,16 @@ const cliPkg = readJson('packages/cli/package.json');
 cliPkg.version = version;
 writeJson('packages/cli/package.json', cliPkg);
 
-const registry = readJson('registry/registry.json');
-registry.version = version;
-registry.ref = `v${version}`;
-writeJson('registry/registry.json', registry);
+const registryPath = path.join(root, 'registry/registry.json');
+const registryText = fs.readFileSync(registryPath, 'utf8');
+const registryNext = registryText
+  .replace(/"version": "\d+\.\d+\.\d+"/, `"version": "${version}"`)
+  .replace(/"ref": "v\d+\.\d+\.\d+"/, `"ref": "v${version}"`);
+if (registryNext === registryText || !registryNext.includes(`"version": "${version}"`) || !registryNext.includes(`"ref": "v${version}"`)) {
+  console.error('Could not update version and ref in registry/registry.json without rewriting the file.');
+  process.exit(1);
+}
+fs.writeFileSync(registryPath, registryNext);
 
 const skillPath = path.join(root, 'skills/depute/SKILL.md');
 const skill = fs.readFileSync(skillPath, 'utf8').replace(
