@@ -1,4 +1,3 @@
-import React from 'react';
 import styles from './SessionOverview.module.css';
 
 export interface SurfaceTouched {

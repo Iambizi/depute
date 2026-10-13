@@ -40,17 +40,35 @@ src/
     ax-common.ts     ← shared types (added once)
   utils/
     ax-a11y.tsx      ← accessibility utilities (added once)
+  styles/
+    depute.css       ← tokens + motion (import once)
+    tokens.css
+    animations.css
+```
+
+Import the tokens once. When `src/index.css` exists, the CLI adds this line:
+
+```css
+@import "./styles/depute.css";
 ```
 
 ### Custom output directory
 
 ```bash
-npx ax-depute@latest add plan-card --dir components/ax
+npx ax-depute@latest add run-controls --dir components/ax
+```
+
+Shared files move with the directory: `components/types`, `components/utils`, and `components/styles`. Component imports are rewritten to those paths.
+
+### Prototyping generators
+
+```bash
+npx ax-depute add mock-data
 ```
 
 ## Available Components
 
-### v0 — Single Agent (6 primitives)
+### v0 — Single Agent (7 primitives)
 
 | Component | Description |
 |---|---|
@@ -60,6 +78,7 @@ npx ax-depute@latest add plan-card --dir components/ax
 | `run-controls` | Pause, resume, stop, retry toolbar |
 | `tool-trace` | Streaming timeline of agent tool calls |
 | `artifact-card` | Final output card with export options |
+| `automation-bias-alert` | Friction when approvals start to look automatic |
 
 ### v1 — Multi-Agent Orchestration (11 primitives)
 
@@ -79,10 +98,10 @@ npx ax-depute@latest add plan-card --dir components/ax
 
 ## How it works
 
-1. `npx ax-depute@latest add <component>` fetches `registry.json` from this repo
-2. Each file in the component's `files[]` list is fetched from GitHub raw
-3. Files are written to your project — no installation, no lock-in
-4. Shared types (`ax-common.ts`) and utilities are added once
+1. `npx ax-depute@latest add <component>` reads the registry for that CLI version
+2. Each file is checked against the sha256 manifest shipped with the package
+3. Files are written into your project — no runtime dependency, no lock-in
+4. Shared types, a11y helpers, and design tokens are added once
 
 ## Requirements
 

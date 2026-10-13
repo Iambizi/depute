@@ -1,6 +1,6 @@
 {
   "name": "ax-components-react",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "React component library for human-in-the-loop oversight in agentic applications. Approval gates, plan cards, tool traces, confidence meters, run controls, and more.",
   "homepage": "https://depute.dev",
   "keywords": [
@@ -50,21 +50,29 @@
     "test": "vitest run --dir src",
     "test:watch": "vitest --dir src",
     "test:coverage": "vitest run --dir src --coverage",
-    "lint": "eslint . --ext ts,tsx",
+    "lint": "eslint .",
+    "checksums": "node scripts/generate-checksums.mjs",
+    "checksums:check": "node scripts/verify-checksums.mjs",
     "type-check": "tsc -p tsconfig.build.json --noEmit"
   },
   "devDependencies": {
-    "@storybook/react-vite": "^10.2.8",
+    "@eslint/js": "^10.0.1",
+    "@storybook/react-vite": "^10.6.2",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
     "@testing-library/user-event": "^14.6.1",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
-    "@vitejs/plugin-react": "^5.1.4",
+    "@vitejs/plugin-react": "^6.1.2",
+    "eslint": "^10.12.0",
+    "eslint-plugin-react-hooks": "^7.1.1",
     "jsdom": "^28.1.0",
-    "storybook": "^10.2.8",
+    "storybook": "^10.6.2",
     "typescript": "^5.9.3",
-    "vite": "^7.3.1",
-    "vitest": "^4.0.18"
+    "typescript-eslint": "^8.71.2",
+    "vite": "^8.3.4",
+    "vitest": "^5.0.4",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4"
   }
 }

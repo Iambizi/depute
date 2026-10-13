@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
+import type React from 'react';
 import styles from './DelegationGate.module.css';
 import type { DelegationGateProps } from './DelegationGate.types';
 

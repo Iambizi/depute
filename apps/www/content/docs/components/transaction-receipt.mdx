@@ -75,10 +75,12 @@ This component acts as the final terminal output of an `OrchestratorView` node, 
 | `status` | `'success' \| 'failed' \| 'pending' \| 'reverted'` | `'success'` | Current status |
 | `timestamp` | `string` | — | Completion timestamp |
 | `lineItems` | `ReceiptLineItem[]` | — | Key-value pairs of the transaction |
-| `hash` | `string` | — | Verification hash / signature |
+| `hash` | `string` | — | Hash supplied by your backend. Display only. |
+| `signature` | `string` | — | Signature supplied by your backend. Display only. |
+| `onVerify` | `(proof) => void` | — | Your app's check for the displayed hash and signature. |
 | `agentId` | `string` | — | ID of the acting agent |
 | `copyableHash` | `boolean` | `true` | Allow copying the hash |
 
 ## Design rationale
 
-**Why cryptographic hashes?** A receipt is useless if it can be spoofed. Exposing the literal cryptographic proof (hash) of the transaction grounds the UI in verifiable reality, satisfying compliance requirements for non-repudiation.
+**Why show a hash?** A receipt is easier to trust when the backend's own proof is visible. `TransactionReceipt` displays the `hash` and `signature` you pass in. It does not compute them. Verification belongs in `onVerify`, which your app implements.

@@ -1,12 +1,12 @@
 // depute CLI — utils/registry.js
 // Fetches registry.json from GitHub.
 
-import { fetchURL } from './github.js';
-import { REGISTRY_URL } from '../config.js';
+import { readRepoFile } from './source.js';
+import { REGISTRY_PATH } from '../config.js';
 
 /** @returns {Promise<import('./types.js').Registry>} */
 export async function fetchRegistry() {
-  const raw = await fetchURL(REGISTRY_URL);
+  const raw = await readRepoFile(REGISTRY_PATH);
   return JSON.parse(raw);
 }
 

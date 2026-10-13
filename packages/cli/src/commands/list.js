@@ -9,6 +9,7 @@ const c = {
   green: (s) => `\x1b[32m${s}\x1b[0m`,
   dim:   (s) => `\x1b[2m${s}\x1b[0m`,
   yellow:(s) => `\x1b[33m${s}\x1b[0m`,
+  red:   (s) => `\x1b[31m${s}\x1b[0m`,
 };
 
 export async function runList() {
@@ -43,6 +44,8 @@ export async function runList() {
     console.log('');
   }
 
-  console.log(`  ${c.dim('Usage:')} npx ax-depute ${c.bold('<component-name>')}`);
+  console.log(`  ${c.green('mock-data'.padEnd(26))}  ${c.dim('Optional generators for prototyping')}`);
+  console.log('');
+  console.log(`  ${c.dim('Usage:')} npx ax-depute ${c.bold('add <component-name>')}`);
   console.log(`  ${c.dim('Example:')} npx ax-depute@latest add approval-gate\n`);
 }

@@ -1,4 +1,4 @@
-import React from 'react';
+import type React from 'react';
 import styles from './AgentRoster.module.css';
 import type { AgentRosterItem, AgentRosterProps } from './AgentRoster.types';
 

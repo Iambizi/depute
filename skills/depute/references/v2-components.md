@@ -46,6 +46,6 @@ Reference guide for the 7 Compliance and Forensics primitives designed for high-
 ## 7. Transaction Receipt (`<TransactionReceipt />`)
 **Problem:** After an agent completes an irreversible action, the system offers no immutable proof logging that the human explicitly authorized *that specific* outcome.
 **Usage:** Read-only immutable audit block.
-- `hash`: Proof of verification (cryptographic trace hash).
+- `hash`: Display value supplied by the caller's backend. The component does not compute it.
 - `lineItems`: What actually executed.
 - **When to use:** Output of an `OrchestratorView` or terminal step replacing `ArtifactCard` for financial events.

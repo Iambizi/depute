@@ -1,10 +1,11 @@
 {
   "name": "depute",
-  "version": "0.3.0",
+  "version": "0.4.1",
   "description": "depute — UI primitives for agentic experiences",
   "distribution": "depute",
   "repo": "Iambizi/depute",
   "branch": "main",
+  "ref": "v0.4.1",
   "sharedFiles": ["src/types/common.ts", "src/utils/a11y.tsx"],
   "items": [
     {
@@ -352,7 +353,7 @@
       "name": "binding-approval",
       "label": "BindingApproval",
       "category": "Compliance & Forensics",
-      "description": "Cryptographic intent gate with isSigning state for irreversible actions",
+      "description": "High-stakes intent gate. Displays a signature and hash supplied by the caller.",
       "buildOrder": 22,
       "type": "primitive",
       "files": [

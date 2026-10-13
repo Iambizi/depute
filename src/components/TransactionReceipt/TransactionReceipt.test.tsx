@@ -132,4 +132,24 @@ describe('TransactionReceipt', () => {
       expect(screen.getByRole('list', { name: 'Transaction details' })).toBeInTheDocument();
     });
   });
+
+  describe('backend proof', () => {
+    it('calls onVerify with the supplied hash and signature', async () => {
+      const user = userEvent.setup();
+      const onVerify = vi.fn();
+      render(
+        <TransactionReceipt
+          {...defaultProps}
+          hash="abc123hashvalue"
+          signature="sig-from-backend"
+          onVerify={onVerify}
+        />,
+      );
+      await user.click(screen.getByRole('button', { name: 'Verify proof' }));
+      expect(onVerify).toHaveBeenCalledWith({
+        hash: 'abc123hashvalue',
+        signature: 'sig-from-backend',
+      });
+    });
+  });
 });

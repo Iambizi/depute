@@ -2,6 +2,7 @@
 // Routes CLI commands to their handlers.
 
 import { runAdd } from './commands/add.js';
+import { runInit } from './commands/init.js';
 import { runList } from './commands/list.js';
 import { printHelp } from './commands/help.js';
 
@@ -11,6 +12,9 @@ const command = args[0];
 switch (command) {
   case 'add':
     await runAdd(args.slice(1));
+    break;
+  case 'init':
+    await runInit(args.slice(1));
     break;
   case 'list':
     await runList();

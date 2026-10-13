@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
+import type React from 'react';
 import styles from './EscalationRouter.module.css';
 import type { EscalationRouterProps } from './EscalationRouter.types';
 

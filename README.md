@@ -1,10 +1,10 @@
 <p align="center">
-  <img src="apps/www/public/logo.svg" width="400" alt="Depute Logo" />
+  <img src="apps/www/public/logo.webp" width="400" alt="Depute Logo" />
 </p>
 
 # Depute
 
-[![npm](https://img.shields.io/npm/v/ax-depute?style=flat-square&color=black)](https://www.npmjs.com/package/ax-depute) [![docs](https://img.shields.io/badge/docs-depute.dev-blue?style=flat-square)](https://www-one-rho-67.vercel.app)
+[![npm](https://img.shields.io/npm/v/ax-depute?style=flat-square&color=black)](https://www.npmjs.com/package/ax-depute) [![CI](https://github.com/Iambizi/depute/actions/workflows/ci.yml/badge.svg)](https://github.com/Iambizi/depute/actions/workflows/ci.yml) [![docs](https://img.shields.io/badge/docs-depute.dev-blue?style=flat-square)](https://depute.dev)
 
 > The React component library for Delegation UI
 
@@ -74,6 +74,7 @@ Components are **copied into your project** — not imported from `node_modules`
 | **Task Queue** | Ordered list of pending tasks assigned to an agent, with priority and status |
 | **Delegation Gate** | Approval surface for cross-agent delegation events — accepts, modifies, or blocks handoffs |
 | **Handoff Protocol** | Visual card for structured agent handoffs, including context bundle and acceptance state |
+| **Shared Context Ledger** | Read-only view of the memory agents share during a run |
 | **Escalation Router** | Displays escalation events from sub-agents, with routing recommendation and override controls |
 
 ### v2 — Strict Compliance & Forensics
@@ -99,7 +100,14 @@ Components are **copied into your project** — not imported from `node_modules`
 npx ax-depute@latest add approval-gate
 
 # Files are written to src/components/ApprovalGate/
-# Shared types are added once to src/types/ax-common.ts
+# Shared types land in src/types/ax-common.ts
+# Design tokens land in src/styles/depute.css and are imported once
+```
+
+Import the tokens once. The CLI adds this to `src/index.css` when that file exists:
+
+```css
+@import "./styles/depute.css";
 ```
 
 Then use it directly:
@@ -122,10 +130,14 @@ export function AgentUI() {
 }
 ```
 
-**Prototyping?** Every component ships with built-in mock data generators:
+**Prototyping?** Install the optional generators, then import them from the file the CLI wrote:
+
+```bash
+npx ax-depute add mock-data
+```
 
 ```tsx
-import { generateMockPlan, generateMockToolCalls } from '@/utils/mockData';
+import { generateMockPlan, generateMockToolCalls } from '../utils/mockData';
 
 const plan = generateMockPlan(4);
 const trace = generateMockToolCalls(3);

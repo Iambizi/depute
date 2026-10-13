@@ -5,7 +5,7 @@ license: MIT
 compatibility: React 18+, TypeScript, CSS Modules. Agent-agnostic — works with any AI backend (OpenAI, Anthropic, LangChain, AutoGen, or custom).
 metadata:
   author: Iambizi
-  version: 0.4.0
+  version: 0.4.1
   documentation: https://github.com/Iambizi/depute
   category: ui-components
   tags: [agentic-ui, react, human-in-the-loop, agent-oversight, multi-agent]
@@ -167,17 +167,20 @@ Use this when an agent executes a long-running workflow and the human might step
 
 ### Pattern: Compliance & Forensics
 
-For high-stakes execution, show intent, capture a binding signature, and emit a receipt:
+For high-stakes execution, show intent, ask the person to confirm, and display the receipt your backend returns:
 
 ```tsx
 // 1. Show the mutation intent
 <StateDiff entries={proposedChanges} />
 
-// 2. Cryptographic gate
+// 2. High-stakes confirmation. signature and hash come from your backend.
 <BindingApproval
   title="Execute Database Drop"
   status={signingStatus} // 'reviewing' | 'signing' | 'signed'
-  onSign={captureSignature}
+  signature={backendSignature}
+  hash={backendHash}
+  onSign={recordIntent}
+  onVerify={verifyProof}
 />
 
 // 3. Emitted after execution

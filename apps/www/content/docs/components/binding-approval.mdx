@@ -1,6 +1,6 @@
 ---
 title: Binding Approval
-description: Cryptographic intent gate with an isSigning state.
+description: High-stakes intent gate. Displays a signature your backend supplies.
 badge: Primitive
 ---
 
@@ -36,7 +36,9 @@ bunx ax-depute@latest add binding-approval
 
 ## Overview
 
-Unlike a standard `ApprovalGate` used for day-to-day coordination, `BindingApproval` provides a heavy-duty friction boundary for irreversible, legally binding, or financial actions. It forces explicit acknowledgment of terms and implements a multi-phase `isSigning` visual state.
+Unlike a standard `ApprovalGate` used for day-to-day coordination, `BindingApproval` provides a heavy-duty friction boundary for irreversible or financial actions. It forces explicit acknowledgment of terms and implements a multi-phase `isSigning` visual state.
+
+`BindingApproval` does not sign, hash, or talk to a ledger. Pass `signature` and `hash` when your backend has already produced them, and pass `onVerify` if the app should check that proof. The component only displays those values.
 
 <ComponentPreview>
   <BindingApprovalDemo />
@@ -56,13 +58,16 @@ Unlike a standard `ApprovalGate` used for day-to-day coordination, `BindingAppro
     { id: 't1', text: 'I authorize the transfer of $5,000.00', acknowledged: false },
     { id: 't2', text: 'I understand this action is irreversible', acknowledged: false },
   ]}
-  onSign={() => initiateSignature()}
+  signature={backendSignature}
+  hash={backendHash}
+  onSign={() => backend.recordIntent()}
+  onVerify={(proof) => backend.verify(proof)}
 />
 ```
 
 ## Solution Patterns
 
-This primitive replaces `ApprovalGate` in high-stakes nodes. The internal state expects a clear distinction between `reviewing` and `signing`, where `isSigning: true` disables interaction and renders a deterministic loading state while waiting for the protocol layer to secure the ledger / signature.
+This primitive replaces `ApprovalGate` in high-stakes nodes. The internal state expects a clear distinction between `reviewing` and `signing`, where `isSigning: true` disables interaction and renders a deterministic loading state while your backend records the intent.
 
 ## Props
 
@@ -77,8 +82,11 @@ This primitive replaces `ApprovalGate` in high-stakes nodes. The internal state 
 | `isSigning` | `boolean` | `false` | Toggles the active signing visual state |
 | `signerIdentity` | `string` | — | Identity of the approver |
 | `timeoutSeconds` | `number` | — | Signing window timeout |
-| `onSign` | `() => void` | — | Called when approved/signed |
+| `onSign` | `() => void` | — | Called when the user confirms. Your backend records the intent. |
 | `onReject` | `(reason?: string) => void` | — | Called when rejected |
+| `signature` | `string` | — | Signature string from your backend. Display only. |
+| `hash` | `string` | — | Hash string from your backend. Display only. |
+| `onVerify` | `(proof) => void` | — | Your app's check for the displayed signature and hash. |
 
 ## Design rationale
 
@@ -86,13 +94,13 @@ This primitive replaces `ApprovalGate` in high-stakes nodes. The internal state 
 
 | | `ApprovalGate` | `BindingApproval` |
 |---|---|---|
-| **Use when** | The action is reversible, operational, or low-to-moderate stakes | The action creates a legal, financial, or cryptographic record |
+| **Use when** | The action is reversible, operational, or low-to-moderate stakes | The action is irreversible or financial, and your backend will record the intent |
 | **Friction level** | Quick scoped grant — review and approve | Mandatory term acknowledgment + signing flow |
 | **State model** | `pending → approved / rejected` | `reviewing → signing → signed / rejected` |
 | **Examples** | "Send this email", "Deploy to staging", "Run this query" | "Wire $50k", "Sign this contract", "Commit to ledger" |
 
-Use `ApprovalGate` by default. Escalate to `BindingApproval` only when the action is irreversible **and** the user's identity must be cryptographically bound to the decision.
+Use `ApprovalGate` by default. Escalate to `BindingApproval` only when the action is irreversible and your backend must record who confirmed it.
 
-**Why `isSigning`?** Normal approvals execute instantly. Cryptographic/financial approvals often require a ledger transaction, hardware wallet interaction, or passkey challenge that takes time. `isSigning` freezes the component deterministically to prevent duplicate submissions.
+**Why `isSigning`?** Normal approvals execute instantly. High-stakes approvals often wait on a backend round trip. `isSigning` freezes the component so the user cannot submit twice. The component still does not produce a signature.
 
 **Why explicit terms?** Click-fatigue trains users to blindly click "Approve." Forcing the user to manually acknowledge explicit terms (e.g. "This action cannot be undone") breaks automatic behavior and captures verifiable intent.

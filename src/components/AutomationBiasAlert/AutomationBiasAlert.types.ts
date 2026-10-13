@@ -2,6 +2,8 @@
  * AutomationBiasAlert — Type Definitions
  */
 
+import type React from 'react';
+
 export interface AutomationBiasThresholds {
   /** Trigger after N consecutive approvals without rejection */
   consecutiveApprovals?: number;

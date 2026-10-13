@@ -9,6 +9,7 @@
  */
 
 import { useEffect, useRef, useCallback, useState } from 'react';
+import type React from 'react';
 
 // ---------------------------------------------------------------------------
 // VisuallyHidden
@@ -50,9 +51,7 @@ export function VisuallyHidden({
   children,
   as: Component = 'span',
 }: VisuallyHiddenProps): React.ReactElement {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const Element = Component as any;
-  return <Element style={visuallyHiddenStyle}>{children}</Element>;
+  return <Component style={visuallyHiddenStyle}>{children}</Component>;
 }
 
 // ---------------------------------------------------------------------------

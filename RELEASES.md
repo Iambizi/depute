@@ -1,3 +1,24 @@
+# depute v0.4.1 Release Notes
+
+**October 13, 2026**
+
+Foundation fix for the install path and the build. No new components.
+
+- The library typechecks, lints, and builds again. Type-only imports use `import type`, so a stock Vite React TypeScript app can compile copied components.
+- `ax-depute add` installs design tokens (`src/styles/depute.css`) and can insert that import into the project's global CSS. `--dir` places shared types, a11y helpers, and tokens beside the chosen directory and rewrites imports to match.
+- `add mock-data` copies the prototyping generators. They are no longer documented as if the CLI had already installed them.
+- The CLI installs the git tag that matches its own version (`v0.4.1`, not `main`) and rejects a file whose sha256 does not match `packages/cli/src/checksums.json`.
+- GitHub Actions runs tests, types, lint, build, the checksum check, a fresh-app CLI smoke test, and the same tests on React 18.
+- Peer dependencies accept React 18 and React 19.
+- `ApprovalGate` calls `onHandoffResolved` once when a handoff reaches approved, rejected, or denied. Timeout and expiry callbacks run from the deadline timer, and `handoffDeadlineMs` is the deadline sent to `onHandoff`.
+- `BindingApproval` and `TransactionReceipt` display `signature` and `hash` values the app supplies, with an `onVerify` callback. They do not sign or hash.
+- `ax-depute init` copies `skills/depute/` into the project and installs design tokens when they are missing.
+- The docs site includes a paper-trading oversight demo at `/demo`. It runs on a scripted local agent, with no exchange and no API key.
+
+`npm publish` of `ax-depute@0.4.1` still needs an npm token. Until that publish, the registry copy of this package is the older `0.2.0`.
+
+---
+
 # depute v0.4.0 Release Notes
 
 **April 1, 2026**

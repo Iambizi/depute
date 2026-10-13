@@ -4,6 +4,7 @@
  * @see docs/orchestration/06-technical-specifications.md (Component 2)
  */
 
+import type React from 'react';
 import type { ApprovalStatus } from '../../types/common';
 
 export type ExtendedApprovalStatus = ApprovalStatus | 'handoff_pending' | 'handoff_expired' | 'handoff_denied';

@@ -15,7 +15,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - v0.2.0 released (11 orchestration primitives) ✅
 - v0.3.0 released (7 compliance primitives) ✅
 - v0.4.0 released (Taxonomy + Async Handoff) ✅
-- CLI published to npm (`ax-depute@0.4.0`) ✅
+- Repo and CLI package are at 0.4.1. npm still serves `ax-depute@0.2.0` until `packages/cli` is published.
 - Storybook deployed to GitHub Pages ✅
 - Docs site deployed to Vercel (`apps/www`, Next.js + Fumadocs) ✅
 - AI Skill layer written (Claude + skills.sh) ✅
@@ -32,7 +32,7 @@ AX is the design discipline for interfaces where AI agents act on behalf of user
 - **Asynchronous operations**: Agent tasks may take seconds or minutes to complete
 - **Safe delegation**: Scoped, bounded, revocable control over what agents can do
 
-## Shipped Components (25 total)
+## Shipped Components (27 total)
 
 ### v0 — Core Primitives (Single Agent)
 
@@ -72,7 +72,7 @@ AX is the design discipline for interfaces where AI agents act on behalf of user
 | `Capability Matrix`| Permission inspector / agent handshake |
 | `Rollback Timeline`| Undo-tree with cascade awareness |
 | `Transaction Receipt`| Cryptographic provenance & audit |
-| `Binding Approval`| High-stakes cryptographic intent gate |
+| `Binding Approval`| High-stakes intent gate. Displays a backend-supplied signature. |
 
 ## Tech Stack
 
@@ -88,7 +88,7 @@ AX is the design discipline for interfaces where AI agents act on behalf of user
 ```
 depute/
 ├── src/
-│   ├── components/          # All 18 React components
+│   ├── components/          # All 27 React components
 │   │   └── [ComponentName]/
 │   │       ├── [ComponentName].tsx
 │   │       ├── [ComponentName].types.ts
@@ -105,7 +105,7 @@ depute/
 │   │   ├── animations.css
 │   │   └── index.css
 │   └── index.ts
-├── stories/                 # Storybook stories (25 files)
+├── stories/                 # Storybook stories (27 files)
 ├── packages/cli/            # ax-depute CLI (npm package)
 ├── registry/                # registry.json (component manifest)
 ├── apps/www/                # Next.js + Fumadocs docs site
@@ -120,20 +120,19 @@ depute/
 
 ## Distribution Architecture
 
-- **CLI:** `npx ax-depute@latest add <component>` — fetches from GitHub raw, copies into user's `src/components/`
-- **Registry:** `registry/registry.json` — manifest of all 25 components with file lists and metadata
-- **Shared Files:** `src/types/ax-common.ts` and `src/utils/ax-a11y.tsx` auto-installed on first `add`
-- **Config:** All URLs centralized in `packages/cli/src/config.js` — single line to update if repo changes
+- **CLI:** `npx ax-depute@latest add <component>` — installs the sources for the CLI's own version tag (not `main`), checks them against `packages/cli/src/checksums.json`, and copies them into the user's project
+- **Registry:** `registry/registry.json` — manifest of all 27 components with file lists and metadata
+- **Shared Files:** `src/types/ax-common.ts`, `src/utils/ax-a11y.tsx`, and `src/styles/depute.css` are installed once beside the component directory. `add mock-data` copies the generators separately.
+- **Config:** Repo and version pin live in `packages/cli/src/config.js`
 
 ## AI Skill Layer
 
 Two identical skill files teach AI agents how to use depute:
-- `skills/depute/SKILL.md` — cross-agent (skills.sh / Vercel standard)
-- `.claude/skills/depute/SKILL.md` — Claude Code specific
+- `skills/depute/SKILL.md` — cross-agent skill (skills.sh / Vercel standard)
 
-Both include:
+It includes:
 - Component selection decision tree (v0 vs v1)
-- Install commands for all 18 components
+- Install commands for the component set
 - Common composition patterns
 - **Audit Mode** — 8 heuristics for scanning codebases for missing oversight
 
@@ -159,7 +158,7 @@ Both include:
 ```bash
 npm install          # Install dependencies
 npm run storybook    # Run Storybook at localhost:6006
-npm test             # Run 359 tests
+npm test             # Run 367 tests
 npm run build        # Production build (Vite)
 npm run type-check   # tsc --noEmit (uses tsconfig.build.json)
 ```
@@ -174,14 +173,11 @@ cd apps/www && npm run build  # Production build (23 static pages)
 
 | File | Purpose |
 |------|---------|
-| `SESSION-NOTES.md` | Development session history (20 sessions) |
-| `DEFERRED-LOG.md` | Deferred research items with milestone triggers |
-| `RELEASES.md` | v0.1.0 and v0.2.0 release notes |
-| `distribution-vision.md` | Why CLI copy-paste over npm |
-| `VC-ORCHESTRATION.md` | Vibe Coding orchestration plan (completed) |
-| `BUILDER-SPEC.md` | Original technical specification |
-| `MONETIZATION-MODEL.md` | Open-source-first business strategy |
-| `research/` | AX research: A2UI, Stripe, Coinbase, AX Book, strategy |
+| `RELEASES.md` | Release notes, starting at v0.4.0 |
+| `packages/cli/src/config.js` | Repo location and the version tag the CLI installs |
+| `packages/cli/src/checksums.json` | sha256 manifest checked before a file is written |
+| `registry/registry.json` | Component manifest the CLI installs from |
+| `skills/depute/SKILL.md` | Agent skill for composing depute |
 
 ## TypeScript Configuration
 

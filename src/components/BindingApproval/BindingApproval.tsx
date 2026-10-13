@@ -1,11 +1,10 @@
 /**
- * BindingApproval — Cryptographic Intent Gate.
+ * BindingApproval — High-stakes intent gate.
  *
  * A high-stakes approval gate that implements the `isSigning`
- * state for legally binding or irreversible actions. Unlike the
- * v0 ApprovalGate which handles day-to-day approvals, BindingApproval
- * requires explicit term acknowledgment and provides visual gravity
- * proportional to the action's severity.
+ * state for irreversible actions. Unlike ApprovalGate, BindingApproval
+ * requires explicit term acknowledgment. A signature or hash shown here
+ * is supplied by the caller's backend. This component does not sign.
  *
  * v2 — Strict Compliance & Forensics
  * @see docs/internal/research/catalog-versions/CATALOG-v2.md (Primitive 4)
@@ -14,12 +13,11 @@
 
 import { useState, useEffect, useMemo, useRef, useCallback } from 'react';
 import { VisuallyHidden } from '../../utils/a11y';
+import type { HandoffContext } from '../ApprovalGate/ApprovalGate.types';
 import type {
   BindingApprovalProps,
   BindingStatus,
-  BindingTerm,
 } from './BindingApproval.types';
-import type { ApprovalHandoff, HandoffContext } from '../ApprovalGate/ApprovalGate.types';
 import styles from './BindingApproval.module.css';
 
 /* ------------------------------------------------------------------ */
@@ -71,42 +69,76 @@ export function BindingApproval({
   onHandoffExpired,
   pendingApprovalId,
   handoffDeadlineMs,
+  signature,
+  hash,
+  onVerify,
   className,
 }: BindingApprovalProps) {
   const [checkedTerms, setCheckedTerms] = useState<Set<string>>(
     () => new Set(terms.filter((t) => t.acknowledged).map((t) => t.id)),
   );
-  const [timeRemaining, setTimeRemaining] = useState(timeoutSeconds ?? 0);
-  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const [timeRemaining, setTimeRemaining] = useState<number | null>(timeoutSeconds ?? null);
 
   // Determine effective status — isSigning overrides to 'signing'
   const effectiveStatus = isSigning ? 'signing' : status;
   const isHandoffPending = effectiveStatus === 'handoff_pending';
 
-  // Handoff dispatcher logic
   const [handoffInitiated, setHandoffInitiated] = useState(false);
-  useEffect(() => {
-    if (effectiveStatus === 'reviewing' && approvalHandoff && !handoffInitiated) {
-      const timer = setTimeout(() => {
-        setHandoffInitiated(true);
-        const deadline = Date.now() + 24 * 60 * 60 * 1000;
-        onHandoff?.({
-          approvalId: pendingApprovalId || crypto.randomUUID(),
-          action: title,
-          deadline,
-          timestamp: Date.now(),
-        });
-      }, approvalHandoff.timeoutMs);
-      return () => clearTimeout(timer);
-    }
-  }, [effectiveStatus, approvalHandoff, handoffInitiated, title, pendingApprovalId, onHandoff]);
+  const handoffContextRef = useRef<HandoffContext | null>(null);
+  const prevStatusRef = useRef(effectiveStatus);
+  const countdownKeyRef = useRef('');
+  const deadlineAtRef = useRef<number | null>(null);
+  const expiryFiredRef = useRef(false);
 
-  // Async Handoff Rehydration clock sync
+  const fallbackContext = useCallback((deadline: number): HandoffContext => {
+    return handoffContextRef.current ?? {
+      approvalId: pendingApprovalId || 'unknown',
+      action: title,
+      deadline,
+      timestamp: Date.now(),
+    };
+  }, [pendingApprovalId, title]);
+
   useEffect(() => {
-    if (isHandoffPending && handoffDeadlineMs != null) {
-      setTimeRemaining(Math.max(0, Math.floor((handoffDeadlineMs - Date.now()) / 1000)));
-    }
-  }, [isHandoffPending, handoffDeadlineMs]);
+    if (effectiveStatus !== 'reviewing' || !approvalHandoff || handoffInitiated) return;
+    let cancelled = false;
+    const timer = setTimeout(() => {
+      if (cancelled) return;
+      const deadline = handoffDeadlineMs ?? Date.now() + 24 * 60 * 60 * 1000;
+      const ctx: HandoffContext = {
+        approvalId: pendingApprovalId || crypto.randomUUID(),
+        action: title,
+        deadline,
+        timestamp: Date.now(),
+      };
+      handoffContextRef.current = ctx;
+      setHandoffInitiated(true);
+      onHandoff?.(ctx);
+    }, approvalHandoff.timeoutMs);
+    return () => {
+      cancelled = true;
+      clearTimeout(timer);
+    };
+  }, [effectiveStatus, approvalHandoff, handoffInitiated, handoffDeadlineMs, pendingApprovalId, title, onHandoff]);
+
+  useEffect(() => {
+    const previous = prevStatusRef.current;
+    let cancelled = false;
+    const timer = setTimeout(() => {
+      if (cancelled) return;
+      prevStatusRef.current = effectiveStatus;
+      if (previous !== 'handoff_pending') return;
+      const ctx = fallbackContext(handoffDeadlineMs ?? Date.now());
+      if (effectiveStatus === 'signed') onHandoffResolved?.('approved', ctx);
+      if (effectiveStatus === 'rejected' || effectiveStatus === 'handoff_denied') {
+        onHandoffResolved?.('denied', ctx);
+      }
+    }, 0);
+    return () => {
+      cancelled = true;
+      clearTimeout(timer);
+    };
+  }, [effectiveStatus, handoffDeadlineMs, onHandoffResolved, fallbackContext]);
 
   // All terms acknowledged check
   const allTermsAcknowledged = useMemo(() => {
@@ -118,32 +150,61 @@ export function BindingApproval({
     effectiveStatus === 'reviewing' &&
     (!requireAllTerms || allTermsAcknowledged);
 
-  // Timeout timer
+  const clockActive = effectiveStatus === 'reviewing' || isHandoffPending;
   useEffect(() => {
-    if ((effectiveStatus !== 'reviewing' && !isHandoffPending) || timeRemaining <= 0) return;
+    const seconds = isHandoffPending && handoffDeadlineMs != null
+      ? Math.max(0, Math.floor((handoffDeadlineMs - Date.now()) / 1000))
+      : timeoutSeconds;
+    if (!clockActive || seconds == null) return;
 
-    timerRef.current = setInterval(() => {
-      setTimeRemaining((prev) => {
-        if (prev <= 1) {
-          if (timerRef.current) clearInterval(timerRef.current);
-          if (isHandoffPending) {
-             onHandoffExpired?.({ action: title } as any);
-             if (approvalHandoff?.fallbackBehavior === 'deny') {
-                onReject?.('Handoff expired (fallback: deny)');
-             }
-          } else {
-             onTimeout?.();
-          }
-          return 0;
+    const key = `${isHandoffPending ? 'handoff' : 'sync'}:${handoffDeadlineMs ?? ''}:${timeoutSeconds ?? ''}`;
+    if (countdownKeyRef.current !== key) {
+      countdownKeyRef.current = key;
+      deadlineAtRef.current = isHandoffPending && handoffDeadlineMs != null
+        ? handoffDeadlineMs
+        : Date.now() + seconds * 1000;
+      expiryFiredRef.current = false;
+    }
+    const deadlineAt = deadlineAtRef.current;
+    if (deadlineAt == null) return;
+
+    let cancelled = false;
+    const expire = () => {
+      if (cancelled || expiryFiredRef.current) return;
+      expiryFiredRef.current = true;
+      if (isHandoffPending) {
+        onHandoffExpired?.(fallbackContext(deadlineAt));
+        if (approvalHandoff?.fallbackBehavior === 'deny') {
+          onReject?.('Handoff expired (fallback: deny)');
         }
-        return prev - 1;
-      });
-    }, 1000);
-
-    return () => {
-      if (timerRef.current) clearInterval(timerRef.current);
+      } else {
+        onTimeout?.();
+      }
     };
-  }, [effectiveStatus, isHandoffPending, timeRemaining, onTimeout, onHandoffExpired, title, approvalHandoff, onReject]);
+
+    const tick = () => {
+      const left = Math.max(0, Math.ceil((deadlineAt - Date.now()) / 1000));
+      setTimeRemaining(left);
+      if (left <= 0) expire();
+    };
+
+    tick();
+    const interval = setInterval(tick, 1000);
+    return () => {
+      cancelled = true;
+      clearInterval(interval);
+    };
+  }, [
+    clockActive,
+    isHandoffPending,
+    timeoutSeconds,
+    handoffDeadlineMs,
+    onTimeout,
+    onHandoffExpired,
+    onReject,
+    approvalHandoff,
+    fallbackContext,
+  ]);
 
   const handleTermToggle = useCallback((termId: string) => {
     setCheckedTerms((prev) => {
@@ -184,7 +245,7 @@ export function BindingApproval({
             </span>
           </div>
         </div>
-        {(timeoutSeconds != null || isHandoffPending) && (effectiveStatus === 'reviewing' || isHandoffPending) && timeRemaining > 0 && (
+        {(timeoutSeconds != null || isHandoffPending) && (effectiveStatus === 'reviewing' || isHandoffPending) && timeRemaining != null && timeRemaining > 0 && (
           <span className={styles.timer}>
             {Math.floor(timeRemaining / 60)}:{String(timeRemaining % 60).padStart(2, '0')}
           </span>
@@ -232,8 +293,34 @@ export function BindingApproval({
              Remote Signature Request Dispatched
           </div>
           <span className={styles.handoffSubtext}>
-             A cryptographic signing request has been routed to the primary authorized device.
+             The signature request was sent to the authorized device. This screen displays that request. It does not create the signature.
           </span>
+        </div>
+      )}
+
+      {(signature || hash) && (
+        <div className={styles.proofRow}>
+          {signature && (
+            <div className={styles.signerRow}>
+              <span className={styles.signerLabel}>Signature</span>
+              <span className={styles.signerValue}>{signature}</span>
+            </div>
+          )}
+          {hash && (
+            <div className={styles.signerRow}>
+              <span className={styles.signerLabel}>Hash</span>
+              <span className={styles.signerValue}>{hash}</span>
+            </div>
+          )}
+          {onVerify && (
+            <button
+              type="button"
+              className={styles.verifyBtn}
+              onClick={() => onVerify({ signature, hash })}
+            >
+              Verify proof
+            </button>
+          )}
         </div>
       )}
 

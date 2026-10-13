@@ -1,6 +1,6 @@
 {
   "name": "ax-depute",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "React components for human-in-the-loop oversight in agentic applications. Add approval gates, plan cards, tool traces, confidence cues, and run controls to your AI agent workflows.",
   "license": "MIT",
   "type": "module",

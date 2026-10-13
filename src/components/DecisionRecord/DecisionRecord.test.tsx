@@ -63,15 +63,11 @@ describe('DecisionRecord', () => {
   });
 
   it('applies decision-specific styling classes', () => {
-    const { container: rejectedContainer } = render(
-      <DecisionRecord {...defaultProps} decision="rejected" />
-    );
+    render(<DecisionRecord {...defaultProps} decision="rejected" />);
     const rejectedBadge = screen.getByText('rejected');
     expect(rejectedBadge.className).toMatch(/rejected/);
 
-    const { container: modifiedContainer } = render(
-      <DecisionRecord {...defaultProps} decision="modified" />
-    );
+    render(<DecisionRecord {...defaultProps} decision="modified" />);
     const modifiedBadge = screen.getByText('modified');
     expect(modifiedBadge.className).toMatch(/modified/);
   });

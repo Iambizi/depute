@@ -482,16 +482,22 @@ import type { SharedContextLedgerProps, ContextLedgerEntry } from '../components
 // v1 Label Banks
 // ---------------------------------------------------------------------------
 
-const AGENT_NAMES = [
-  'Orchestrator-Prime', 'Researcher-A', 'Code-Writer-1', 'Code-Writer-2',
-  'QA-Inspector', 'Data-Analyst', 'Planner-Beta', 'Summarizer-X',
-  'Validator-3', 'Retrieval-Bot', 'Synthesizer-Z',
+const AGENT_DIRECTORY = [
+  { name: 'Orchestrator-Prime', role: 'Orchestrator' },
+  { name: 'Researcher-A', role: 'Researcher' },
+  { name: 'Code-Writer-1', role: 'Code Writer' },
+  { name: 'Code-Writer-2', role: 'Code Writer' },
+  { name: 'QA-Inspector', role: 'QA Inspector' },
+  { name: 'Data-Analyst', role: 'Data Analyst' },
+  { name: 'Planner-Beta', role: 'Planner' },
+  { name: 'Summarizer-X', role: 'Summarizer' },
+  { name: 'Validator-3', role: 'Validator' },
+  { name: 'Retrieval-Bot', role: 'Retrieval' },
+  { name: 'Synthesizer-Z', role: 'Synthesizer' },
 ];
 
-const AGENT_ROLES = [
-  'Orchestrator', 'Researcher', 'Code Writer', 'QA Inspector',
-  'Data Analyst', 'Planner', 'Summarizer', 'Validator', 'Retrieval', 'Synthesizer',
-];
+const AGENT_NAMES = AGENT_DIRECTORY.map((agent) => agent.name);
+const AGENT_ROLES = AGENT_DIRECTORY.map((agent) => agent.role);
 
 const TASK_DESCRIPTIONS = [
   'Analyzing repository structure for refactor opportunities',
@@ -603,8 +609,8 @@ export function generateMockAgentRoster(count = 6): AgentRosterItem[] {
     const status = pick(AGENT_STATUSES);
     return {
       id: `agent-${uid()}`,
-      name: AGENT_NAMES[i % AGENT_NAMES.length],
-      role: AGENT_ROLES[i % AGENT_ROLES.length],
+      name: AGENT_DIRECTORY[i % AGENT_DIRECTORY.length].name,
+      role: AGENT_DIRECTORY[i % AGENT_DIRECTORY.length].role,
       status,
       currentTask: status !== 'idle' && status !== 'completed' ? pick(TASK_DESCRIPTIONS) : undefined,
       tokensUsed: Math.floor(Math.random() * 40000) + 2000,
@@ -626,11 +632,12 @@ export function generateMockAgentRoster(count = 6): AgentRosterItem[] {
  */
 export function generateMockSubagentCard(overrides?: Partial<SubagentCardProps>): SubagentCardProps {
   const status = pick(AGENT_STATUSES);
+  const agent = pick(AGENT_DIRECTORY);
   const totalSteps = Math.floor(Math.random() * 8) + 3;
   const completedSteps = Math.floor(Math.random() * totalSteps);
   return {
-    agentName: pick(AGENT_NAMES),
-    role: pick(AGENT_ROLES),
+    agentName: agent.name,
+    role: agent.role,
     status,
     currentTask: status !== 'idle' ? pick(TASK_DESCRIPTIONS) : undefined,
     planStepCount: totalSteps,

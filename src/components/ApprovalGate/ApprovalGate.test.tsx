@@ -1,3 +1,4 @@
+import { StrictMode } from 'react';
 import { render, screen, waitFor, act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
@@ -140,6 +141,87 @@ describe('ApprovalGate', () => {
       });
       
       expect(handleTimeout).toHaveBeenCalledTimes(1);
+    });
+
+    it('fires onTimeout once inside StrictMode', () => {
+      const handleTimeout = vi.fn();
+      render(
+        <StrictMode>
+          <ApprovalGate title="Test" timeoutSeconds={1} onTimeout={handleTimeout} />
+        </StrictMode>,
+      );
+
+      act(() => {
+        vi.advanceTimersByTime(1000);
+      });
+
+      expect(handleTimeout).toHaveBeenCalledTimes(1);
+    });
+
+    it('puts handoffDeadlineMs on the onHandoff payload', () => {
+      const onHandoff = vi.fn();
+      const deadline = Date.now() + 60_000;
+      render(
+        <StrictMode>
+          <ApprovalGate
+            title="Send"
+            approvalHandoff={{ timeoutMs: 1000, fallbackBehavior: 'block' }}
+            handoffDeadlineMs={deadline}
+            pendingApprovalId="appr-1"
+            onHandoff={onHandoff}
+          />
+        </StrictMode>,
+      );
+
+      act(() => {
+        vi.advanceTimersByTime(1000);
+      });
+
+      expect(onHandoff).toHaveBeenCalledTimes(1);
+      expect(onHandoff.mock.calls[0][0]).toMatchObject({
+        approvalId: 'appr-1',
+        action: 'Send',
+        deadline,
+      });
+    });
+  });
+
+  describe('handoff resolution', () => {
+    it('fires onHandoffResolved once when a handoff is approved', async () => {
+      const onHandoffResolved = vi.fn();
+      const deadline = Date.now() + 60_000;
+      const { rerender } = render(
+        <StrictMode>
+          <ApprovalGate
+            title="Send"
+            status="handoff_pending"
+            pendingApprovalId="appr-1"
+            handoffDeadlineMs={deadline}
+            onHandoffResolved={onHandoffResolved}
+          />
+        </StrictMode>,
+      );
+
+      rerender(
+        <StrictMode>
+          <ApprovalGate
+            title="Send"
+            status="approved"
+            pendingApprovalId="appr-1"
+            handoffDeadlineMs={deadline}
+            onHandoffResolved={onHandoffResolved}
+          />
+        </StrictMode>,
+      );
+
+      await waitFor(() => {
+        expect(onHandoffResolved).toHaveBeenCalledTimes(1);
+      });
+      expect(onHandoffResolved.mock.calls[0][0]).toBe('approved');
+      expect(onHandoffResolved.mock.calls[0][1]).toMatchObject({
+        approvalId: 'appr-1',
+        deadline,
+      });
     });
   });
 

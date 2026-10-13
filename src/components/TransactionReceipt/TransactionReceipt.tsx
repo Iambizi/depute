@@ -1,9 +1,9 @@
 /**
  * TransactionReceipt — Provenance + audit log.
  *
- * A receipt-style display for completed agent actions with
- * verification data. Provides proof of what happened, when,
- * and by which agent — suitable for compliance logs.
+ * A receipt-style display for completed agent actions.
+ * Hash and signature values are supplied by the caller's backend.
+ * This component does not hash or sign the transaction.
  *
  * v2 — Strict Compliance & Forensics
  * @see docs/internal/research/catalog-versions/CATALOG-v2.md (Primitive 5)
@@ -54,6 +54,8 @@ export function TransactionReceipt({
   lineItems,
   agentId,
   hash,
+  signature,
+  onVerify,
   copyableHash = true,
   onCopyHash,
   onViewAuditTrail,
@@ -132,8 +134,16 @@ export function TransactionReceipt({
       </div>
 
       {/* Footer: hash + actions */}
-      {(hash || onViewAuditTrail) && (
+      {(hash || signature || onViewAuditTrail || onVerify) && (
         <div className={styles.footer}>
+          {signature && (
+            <div className={styles.hashRow}>
+              <span className={styles.hashLabel}>Signature</span>
+              <code className={styles.hashValue}>
+                {signature.length > 16 ? `${signature.slice(0, 8)}…${signature.slice(-8)}` : signature}
+              </code>
+            </div>
+          )}
           {hash && (
             <div className={styles.hashRow}>
               <span className={styles.hashLabel}>Verification</span>
@@ -151,6 +161,15 @@ export function TransactionReceipt({
                 </button>
               )}
             </div>
+          )}
+          {onVerify && (
+            <button
+              type="button"
+              className={styles.auditBtn}
+              onClick={() => onVerify({ hash, signature })}
+            >
+              Verify proof
+            </button>
           )}
           {onViewAuditTrail && (
             <button
