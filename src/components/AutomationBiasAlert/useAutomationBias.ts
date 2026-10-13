@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useCallback, useMemo, useRef } from 'react';
 import type { ApprovalEvent, AutomationBiasThresholds } from './AutomationBiasAlert.types';
 
 const DEFAULT_THRESHOLDS: Required<AutomationBiasThresholds> = {
@@ -11,6 +11,7 @@ export function useAutomationBias(
   thresholds: Partial<AutomationBiasThresholds> = {}
 ) {
   const [history, setHistory] = useState<ApprovalEvent[]>([]);
+  const historyRef = useRef<ApprovalEvent[]>([]);
   const [isAlertTriggered, setIsAlertTriggered] = useState(false);
   const [startTime, setStartTime] = useState(() => Date.now());
 
@@ -29,40 +30,34 @@ export function useAutomationBias(
     const durationMs = now - startTime;
     const event: ApprovalEvent = { timestamp: now, action, durationMs };
 
-    setHistory((prev) => {
-      const newHistory = [...prev, event].slice(-20); // Keep last 20 for session analysis
-      
-      // Check thresholds
-      let triggered = false;
+    const newHistory = [...historyRef.current, event].slice(-20);
+    historyRef.current = newHistory;
+    setHistory(newHistory);
 
-      // 1. Consecutive Approvals
-      const lastN = newHistory.slice(-mergedThresholds.consecutiveApprovals);
-      if (
-        lastN.length >= mergedThresholds.consecutiveApprovals &&
-        lastN.every((e) => e.action === 'approved')
-      ) {
+    let triggered = false;
+
+    const lastN = newHistory.slice(-mergedThresholds.consecutiveApprovals);
+    if (
+      lastN.length >= mergedThresholds.consecutiveApprovals &&
+      lastN.every((e) => e.action === 'approved')
+    ) {
+      triggered = true;
+    }
+
+    if (action === 'approved' && durationMs < mergedThresholds.minApprovalTimeMs) {
+      triggered = true;
+    }
+
+    if (newHistory.length >= 10) {
+      const approvals = newHistory.filter((e) => e.action === 'approved').length;
+      if (approvals / newHistory.length > mergedThresholds.approvalRateCeiling) {
         triggered = true;
       }
+    }
 
-      // 2. Velocity (only on approvals)
-      if (action === 'approved' && durationMs < mergedThresholds.minApprovalTimeMs) {
-        triggered = true;
-      }
-
-      // 3. Rate ceiling (if enough data)
-      if (newHistory.length >= 10) {
-        const approvals = newHistory.filter((e) => e.action === 'approved').length;
-        if (approvals / newHistory.length > mergedThresholds.approvalRateCeiling) {
-          triggered = true;
-        }
-      }
-
-      if (triggered) {
-        setIsAlertTriggered(true);
-      }
-
-      return newHistory;
-    });
+    if (triggered) {
+      setIsAlertTriggered(true);
+    }
 
     const endNow = Date.now();
     return endNow - startTime;

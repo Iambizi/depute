@@ -22,6 +22,20 @@ jobs:
       - run: npm run checksums:check
       - run: node --test packages/cli/test/install.test.mjs
 
+  react-18:
+    name: Tests on React 18
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm install --legacy-peer-deps react@18.3.1 react-dom@18.3.1
+      - run: node -e "const v=require('react/package.json').version; if(!v.startsWith('18.')) { console.error('expected React 18, found '+v); process.exit(1) }"
+      - run: npm test
+
   cli-smoke:
     name: CLI install in a fresh Vite app
     runs-on: ubuntu-latest

@@ -97,6 +97,7 @@ export default function HomePage() {
           depute
         </Link>
         <nav aria-label="Primary" className="flex flex-wrap items-center justify-end gap-x-5 gap-y-2 text-sm text-fd-muted-foreground">
+          <Link href="/demo" className="hover:text-fd-foreground">Demo</Link>
           <Link href="/docs" className="hover:text-fd-foreground">Docs</Link>
           <Link href="/docs/components/plan-card" className="hover:text-fd-foreground">Components</Link>
           <a href="https://github.com/Iambizi/depute" className="hover:text-fd-foreground">GitHub</a>
@@ -168,14 +169,20 @@ export default function HomePage() {
           className="flex gap-4 flex-wrap justify-center mb-12"
         >
           <Link
-            href="/docs"
+            href="/demo"
             className="group relative inline-flex items-center gap-2 rounded-full bg-fd-foreground px-6 py-3 text-sm font-medium text-fd-background transition-all hover:scale-105 overflow-hidden"
           >
             <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
             <span className="relative flex items-center gap-2">
-              Browse components
+              Open the paper desk
               <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
             </span>
+          </Link>
+          <Link
+            href="/docs"
+            className="inline-flex items-center gap-2 rounded-full border border-fd-border bg-fd-background px-6 py-3 text-sm font-medium transition-all hover:bg-fd-accent hover:scale-105"
+          >
+            Browse components
           </Link>
           <a
             href="https://github.com/Iambizi/depute"

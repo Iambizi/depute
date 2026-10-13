@@ -147,4 +147,26 @@ describe('BindingApproval', () => {
       expect(screen.getByRole('checkbox', { name: /authorize the transfer/i })).toBeInTheDocument();
     });
   });
+
+  describe('backend proof', () => {
+    it('displays a supplied signature and calls onVerify', async () => {
+      const user = userEvent.setup();
+      const onVerify = vi.fn();
+      render(
+        <BindingApproval
+          {...defaultProps}
+          signature="sig-from-backend"
+          hash="hash-from-backend"
+          onVerify={onVerify}
+        />,
+      );
+      expect(screen.getByText('sig-from-backend')).toBeInTheDocument();
+      expect(screen.getByText('hash-from-backend')).toBeInTheDocument();
+      await user.click(screen.getByRole('button', { name: 'Verify proof' }));
+      expect(onVerify).toHaveBeenCalledWith({
+        signature: 'sig-from-backend',
+        hash: 'hash-from-backend',
+      });
+    });
+  });
 });

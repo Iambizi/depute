@@ -41,8 +41,17 @@ export interface TransactionReceiptProps {
   /** Agent that performed the action */
   agentId?: string;
 
-  /** Hash or signature for verification */
+  /**
+   * Hash produced by the caller's backend. Display only.
+   * This component does not hash the transaction.
+   */
   hash?: string;
+
+  /** Signature produced by the caller's backend. Display only. */
+  signature?: string;
+
+  /** App-supplied check for the displayed hash and signature. */
+  onVerify?: (proof: { hash?: string; signature?: string }) => void;
 
   /** Whether to show a copy button for the hash */
   copyableHash?: boolean;

@@ -8,7 +8,7 @@ export function BindingApprovalDemo() {
 
   const handleSign = () => {
     setStatus('signing');
-    setTimeout(() => setStatus('signed'), 2000); // Simulate cryptographic signature delay
+    setTimeout(() => setStatus('signed'), 2000);
   };
 
   return (

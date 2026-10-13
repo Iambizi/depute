@@ -72,7 +72,7 @@ AX is the design discipline for interfaces where AI agents act on behalf of user
 | `Capability Matrix`| Permission inspector / agent handshake |
 | `Rollback Timeline`| Undo-tree with cascade awareness |
 | `Transaction Receipt`| Cryptographic provenance & audit |
-| `Binding Approval`| High-stakes cryptographic intent gate |
+| `Binding Approval`| High-stakes intent gate. Displays a backend-supplied signature. |
 
 ## Tech Stack
 

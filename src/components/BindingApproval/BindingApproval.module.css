@@ -203,6 +203,22 @@
   font-family: var(--ax-font-family-mono);
   font-weight: var(--ax-font-weight-medium);
   color: var(--ax-text-secondary);
+  overflow-wrap: anywhere;
+}
+
+.proofRow {
+  padding: 0 var(--ax-space-4) var(--ax-space-2);
+}
+
+.verifyBtn {
+  margin: 0 var(--ax-space-4) var(--ax-space-3);
+  border: 1px solid var(--ax-border-color);
+  background: transparent;
+  color: var(--ax-text-secondary);
+  border-radius: var(--ax-radius-md);
+  padding: var(--ax-space-1) var(--ax-space-3);
+  font-size: var(--ax-font-size-xs);
+  cursor: pointer;
 }
 
 /* ------------------------------------------------------------------ */

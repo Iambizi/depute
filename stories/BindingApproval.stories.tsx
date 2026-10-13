@@ -33,7 +33,7 @@ export const Signing: Story = {
   name: 'isSigning State',
   args: {
     title: 'Contract Execution',
-    description: 'Cryptographic signature in progress...',
+    description: 'Waiting for the backend to record this confirmation...',
     isSigning: true,
     signerIdentity: '0x1a2b...9c0d',
   },

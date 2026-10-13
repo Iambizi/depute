@@ -85,7 +85,7 @@ bunx ax-depute@latest init
   </Tab>
 </Tabs>
 
-This command creates a `skills/depute/SKILL.md` entry in your repository. It instructs your agent on the exact composition flows and design rationale of all Depute primitives, ensuring your agent builds reliable oversight UI on the first try.
+This command writes `skills/depute/SKILL.md` (and its reference files) into your repository, plus `skills/depute/depute.skill.json` with the CLI version. It also installs the design tokens when `src/styles/depute.css` is not already there. The skill tells an agent how to compose the primitives. It is not a runtime dependency.
 
 ## List all components
 

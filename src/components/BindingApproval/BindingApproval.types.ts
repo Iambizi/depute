@@ -2,8 +2,8 @@
  * BindingApproval — Type Definitions
  *
  * v2 Compliance & Forensics primitive.
- * Cryptographic intent — a high-stakes approval gate with
- * isSigning state for legally binding or irreversible actions.
+ * High-stakes intent gate. The component displays a signature and hash
+ * supplied by the caller's backend. It does not sign or hash anything.
  *
  * @see docs/internal/research/catalog-versions/CATALOG-v2.md (Primitive 4)
  * @see https://github.com/Iambizi/depute/issues/3 (RFC: isSigning)
@@ -68,6 +68,18 @@ export interface BindingApprovalProps {
 
   /** Called when timeout expires */
   onTimeout?: () => void;
+
+  /**
+   * Signature produced by the caller's backend. Display only.
+   * This component does not create signatures.
+   */
+  signature?: string;
+
+  /** Hash produced by the caller's backend. Display only. */
+  hash?: string;
+
+  /** App-supplied check for the displayed signature and hash. */
+  onVerify?: (proof: { signature?: string; hash?: string }) => void;
 
   /** Async delegation configuration */
   approvalHandoff?: import('../ApprovalGate/ApprovalGate.types').ApprovalHandoff;

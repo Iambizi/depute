@@ -20,7 +20,7 @@ Depute provides UI primitives that support implementation of each of these four 
 - **Depute Implementation:** Use a [**Delegation Gate**](/docs/components/delegation-gate) to smoothly manage the handoff when the human decides the agent is ready to take the reins. Wrap interactions in [**State Diff**](/docs/components/state-diff) to show the human exactly what the agent drafted before it applies to the global state.
 
 ### L3 — Supervised
-**Agent operates, human approves.** The most critical boundary for high-stakes deployments. The agent is capable of running end-to-end but is cryptographically tethered to a human's explicit authorization before executing irreversible actions.
+**Agent operates, human approves.** The most critical boundary for high-stakes deployments. The agent can run end-to-end, and an irreversible action waits for an explicit human confirmation. The UI displays that confirmation. Your backend records it.
 - **Depute Implementation:** 
   - Wrap dangerous tools in an [**Approval Gate**](/docs/components/approval-gate) to halt execution immediately.
   - Surround the gate with an [**Automation Bias Alert**](/docs/components/automation-bias-alert) to ensure the human doesn't blindly rubber-stamp the request out of fatigue.

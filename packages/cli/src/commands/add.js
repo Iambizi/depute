@@ -156,7 +156,7 @@ async function loadFile(repoPath) {
 /**
  * @param {string} sharedRoot
  */
-async function installShared(sharedRoot) {
+export async function installShared(sharedRoot) {
   const typesDest = path.posix.join(sharedRoot, 'types/ax-common.ts');
   if (!fileExists(typesDest)) {
     const typesContent = await loadFile('src/types/common.ts');
@@ -193,7 +193,7 @@ async function installShared(sharedRoot) {
  * @param {string | null} cssFile
  * @param {boolean} noCss
  */
-function installCssImport(stylesDest, cssFile, noCss) {
+export function installCssImport(stylesDest, cssFile, noCss) {
   if (!stylesDest || noCss) return;
 
   const targets = cssFile ? [cssFile] : CSS_CANDIDATES.filter((candidate) => fileExists(candidate));

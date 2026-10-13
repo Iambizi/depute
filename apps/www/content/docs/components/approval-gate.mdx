@@ -147,7 +147,7 @@ When `status` shifts to `handoff_pending`, the component drops the blocking moda
 - The agent is performing read-only operations — no approval gate is needed for purely observational tool calls
 - Every single agent step requires approval — this creates approval fatigue; gate only the high-stakes boundaries
 - The action is trivially reversible (e.g., drafting a note that hasn't been sent) — use `Plan Card` to show intent without requiring an explicit approval
-- For legally binding or cryptographically signed actions, escalate to `Binding Approval` instead
+- For irreversible actions where your backend must record the confirmation, escalate to `Binding Approval` instead
 
 ## Accessibility
 
@@ -164,7 +164,7 @@ When `status` shifts to `handoff_pending`, the component drops the blocking moda
 ```text
 Plan Card → [Approval Gate] → Run Controls → Tool Trace
 ```
-It pauses execution and requires a human cryptographic signature (or explicit click) to proceed.
+It pauses execution until a person approves, rejects, or the handoff deadline passes.
 
 ## Design rationale
 

@@ -21,6 +21,7 @@ export function printHelp() {
 
     ${c.green('add')} ${c.dim('<component>')}     Copy a component into your project
     ${c.green('add mock-data')}          Copy optional prototyping generators
+    ${c.green('init')}                   Copy the AI skill and install design tokens
     ${c.green('list')}                   List all available components
     ${c.green('help')}                   Show this help message
 
@@ -30,6 +31,7 @@ export function printHelp() {
     npx ax-depute@latest add approval-gate
     npx ax-depute@latest add orchestrator-view
     npx ax-depute@latest add plan-card --dir components/ax
+    npx ax-depute@latest init
 
   ${c.cyan(c.bold('Options for add'))}
 

@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "sync-components": "rm -rf src/depute && cp -r ../../src/ src/depute/",
+    "sync-components": "rm -rf src/depute && mkdir -p src/depute && tar -C ../.. --exclude='*.test.ts' --exclude='*.test.tsx' --exclude='*.test.js' -cf - src | tar -C src/depute --strip-components=1 -xf -",
     "predev": "npm run sync-components",
     "dev": "next dev",
     "prebuild": "npm run sync-components",

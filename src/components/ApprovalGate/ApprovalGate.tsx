@@ -13,11 +13,11 @@
  * @see docs/orchestration/05-interface-states.md (ApprovalGate state matrix)
  */
 
-import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import type React from 'react';
 import { getConfidenceLevel } from '../../types/common';
 import { useAnnouncer, useFocusTrap, VisuallyHidden } from '../../utils/a11y';
-import type { ApprovalGateProps, StagedStep } from './ApprovalGate.types';
+import type { ApprovalGateProps, HandoffContext, StagedStep } from './ApprovalGate.types';
 import styles from './ApprovalGate.module.css';
 
 // ---------------------------------------------------------------------------
@@ -118,6 +118,7 @@ export function ApprovalGate({
   onTimeout,
   approvalHandoff,
   onHandoff,
+  onHandoffResolved,
   onHandoffExpired,
   pendingApprovalId,
   handoffDeadlineMs,
@@ -156,56 +157,123 @@ export function ApprovalGate({
     }
   }, [status, title, announce, isPending, isHandoffPending]);
 
-  // Handoff dispatcher logic
   const [handoffInitiated, setHandoffInitiated] = useState(false);
+  const handoffContextRef = useRef<HandoffContext | null>(null);
+  const prevStatusRef = useRef(status);
+  const countdownKeyRef = useRef('');
+  const deadlineAtRef = useRef<number | null>(null);
+  const expiryFiredRef = useRef(false);
+
+  const fallbackContext = useCallback((deadline: number): HandoffContext => {
+    return handoffContextRef.current ?? {
+      approvalId: pendingApprovalId || 'unknown',
+      action: title,
+      confidence,
+      deadline,
+      timestamp: Date.now(),
+    };
+  }, [pendingApprovalId, title, confidence]);
+
+  // Start an async handoff once. The timer is cleared on cleanup so StrictMode
+  // does not dispatch twice, and the payload uses handoffDeadlineMs when set.
   useEffect(() => {
-    if (isPending && approvalHandoff && !handoffInitiated) {
-      const timer = setTimeout(() => {
-        setHandoffInitiated(true);
-        const deadline = Date.now() + 24 * 60 * 60 * 1000; // default 24h fallback if not specified elsewhere
-        onHandoff?.({
-          approvalId: pendingApprovalId || crypto.randomUUID(),
-          action: title,
-          confidence,
-          deadline,
-          timestamp: Date.now(),
-        });
-      }, approvalHandoff.timeoutMs);
-      return () => clearTimeout(timer);
+    if (!isPending || !approvalHandoff || handoffInitiated) return;
+    let cancelled = false;
+    const timer = setTimeout(() => {
+      if (cancelled) return;
+      const deadline = handoffDeadlineMs ?? Date.now() + 24 * 60 * 60 * 1000;
+      const ctx: HandoffContext = {
+        approvalId: pendingApprovalId || crypto.randomUUID(),
+        action: title,
+        confidence,
+        deadline,
+        timestamp: Date.now(),
+      };
+      handoffContextRef.current = ctx;
+      setHandoffInitiated(true);
+      onHandoff?.(ctx);
+    }, approvalHandoff.timeoutMs);
+    return () => {
+      cancelled = true;
+      clearTimeout(timer);
+    };
+  }, [isPending, approvalHandoff, handoffInitiated, handoffDeadlineMs, pendingApprovalId, title, confidence, onHandoff]);
+
+  // Fire onHandoffResolved once when a waiting handoff reaches a terminal status.
+  useEffect(() => {
+    const previous = prevStatusRef.current;
+    let cancelled = false;
+    const timer = setTimeout(() => {
+      if (cancelled) return;
+      prevStatusRef.current = status;
+      if (previous !== 'handoff_pending') return;
+      const ctx = fallbackContext(handoffDeadlineMs ?? Date.now());
+      if (status === 'approved') onHandoffResolved?.('approved', ctx);
+      if (status === 'rejected' || status === 'handoff_denied') onHandoffResolved?.('denied', ctx);
+    }, 0);
+    return () => {
+      cancelled = true;
+      clearTimeout(timer);
+    };
+  }, [status, handoffDeadlineMs, onHandoffResolved, fallbackContext]);
+
+  // One interval keyed on the deadline. Callbacks run from the timer, not from
+  // a state updater, so StrictMode cannot invoke them twice.
+  useEffect(() => {
+    const active = isPending || isHandoffPending;
+    const seconds = isHandoffPending && handoffDeadlineMs != null
+      ? Math.max(0, Math.floor((handoffDeadlineMs - Date.now()) / 1000))
+      : timeoutSeconds;
+    if (!active || seconds == null) return;
+
+    const key = `${isHandoffPending ? 'handoff' : 'sync'}:${handoffDeadlineMs ?? ''}:${timeoutSeconds ?? ''}`;
+    if (countdownKeyRef.current !== key) {
+      countdownKeyRef.current = key;
+      deadlineAtRef.current = isHandoffPending && handoffDeadlineMs != null
+        ? handoffDeadlineMs
+        : Date.now() + seconds * 1000;
+      expiryFiredRef.current = false;
     }
-  }, [isPending, approvalHandoff, handoffInitiated, title, confidence, pendingApprovalId, onHandoff]);
+    const deadlineAt = deadlineAtRef.current;
+    if (deadlineAt == null) return;
 
-  // Async Handoff Rehydration clock sync
-  useEffect(() => {
-    if (isHandoffPending && handoffDeadlineMs != null) {
-      setTimeRemaining(Math.max(0, Math.floor((handoffDeadlineMs - Date.now()) / 1000)));
-    }
-  }, [isHandoffPending, handoffDeadlineMs]);
-
-  // Countdown logic
-  useEffect(() => {
-    if ((!isPending && !isHandoffPending) || timeRemaining == null || timeRemaining <= 0) return;
-
-    const interval = setInterval(() => {
-      setTimeRemaining((prev) => {
-        if (prev == null || prev <= 1) {
-          clearInterval(interval);
-          if (isHandoffPending) {
-            onHandoffExpired?.({ action: title } as any);
-            if (approvalHandoff?.fallbackBehavior === 'deny') {
-              onReject?.('Handoff expired (fallback: deny)');
-            }
-          } else {
-            onTimeout?.();
-          }
-          return 0;
+    let cancelled = false;
+    const expire = () => {
+      if (cancelled || expiryFiredRef.current) return;
+      expiryFiredRef.current = true;
+      if (isHandoffPending) {
+        onHandoffExpired?.(fallbackContext(deadlineAt));
+        if (approvalHandoff?.fallbackBehavior === 'deny') {
+          onReject?.('Handoff expired (fallback: deny)');
         }
-        return prev - 1;
-      });
-    }, 1000);
+      } else {
+        onTimeout?.();
+      }
+    };
 
-    return () => clearInterval(interval);
-  }, [isPending, isHandoffPending, timeRemaining, onTimeout, onHandoffExpired, title]);
+    const tick = () => {
+      const left = Math.max(0, Math.ceil((deadlineAt - Date.now()) / 1000));
+      setTimeRemaining(left);
+      if (left <= 0) expire();
+    };
+
+    tick();
+    const interval = setInterval(tick, 1000);
+    return () => {
+      cancelled = true;
+      clearInterval(interval);
+    };
+  }, [
+    isPending,
+    isHandoffPending,
+    timeoutSeconds,
+    handoffDeadlineMs,
+    onTimeout,
+    onHandoffExpired,
+    onReject,
+    approvalHandoff,
+    fallbackContext,
+  ]);
 
   // Countdown urgency level
   const countdownClass = useMemo(() => {

@@ -353,7 +353,7 @@
       "name": "binding-approval",
       "label": "BindingApproval",
       "category": "Compliance & Forensics",
-      "description": "Cryptographic intent gate with isSigning state for irreversible actions",
+      "description": "High-stakes intent gate. Displays a signature and hash supplied by the caller.",
       "buildOrder": 22,
       "type": "primitive",
       "files": [
