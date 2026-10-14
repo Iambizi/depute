@@ -38,7 +38,7 @@ export async function runInit(args) {
         content = await readRepoFile(repoPath);
       } catch (err) {
         const message = err instanceof Error ? err.message : String(err);
-        throw new Error(`Failed to read ${repoPath}\n  ${message}`);
+        throw new Error(`Failed to read ${repoPath}\n  ${message}`, { cause: err });
       }
       writeFileToDisk(repoPath, content, { transaction });
     }
