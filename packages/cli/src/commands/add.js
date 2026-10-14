@@ -7,7 +7,7 @@ import fs from 'fs';
 import path from 'path';
 import { fetchRegistry, findComponent } from '../utils/registry.js';
 import { readRepoFile } from '../utils/source.js';
-import { writeFileToDisk, fileExists } from '../utils/fs.js';
+import { writeFileToDisk, fileExists, createInstallTransaction } from '../utils/fs.js';
 
 const c = {
   bold:  (s) => `\x1b[1m${s}\x1b[0m`,
@@ -148,26 +148,27 @@ async function loadFile(repoPath) {
   try {
     return await readRepoFile(repoPath);
   } catch (err) {
-    console.error(`\n  ${c.red('Error:')} Failed to read ${repoPath}\n  ${c.dim(err.message)}\n`);
-    process.exit(1);
+    const message = err instanceof Error ? err.message : String(err);
+    throw new Error(`Failed to read ${repoPath}\n  ${message}`);
   }
 }
 
 /**
  * @param {string} sharedRoot
+ * @param {ReturnType<typeof createInstallTransaction> | null} [transaction]
  */
-export async function installShared(sharedRoot) {
+export async function installShared(sharedRoot, transaction = null) {
   const typesDest = path.posix.join(sharedRoot, 'types/ax-common.ts');
   if (!fileExists(typesDest)) {
     const typesContent = await loadFile('src/types/common.ts');
-    writeFileToDisk(typesDest, typesContent);
+    writeFileToDisk(typesDest, typesContent, { transaction });
     console.log(`  ${c.dim('(shared types — added once)')}`);
   }
 
   const a11yDest = path.posix.join(sharedRoot, 'utils/ax-a11y.tsx');
   if (!fileExists(a11yDest)) {
     const a11yContent = await loadFile('src/utils/a11y.tsx');
-    writeFileToDisk(a11yDest, a11yContent);
+    writeFileToDisk(a11yDest, a11yContent, { transaction });
     console.log(`  ${c.dim('(a11y utilities — added once)')}`);
   }
 
@@ -178,7 +179,7 @@ export async function installShared(sharedRoot) {
     if (file.name === 'depute.css') stylesDest = dest;
     if (!fileExists(dest)) {
       const content = await loadFile(file.repoPath);
-      writeFileToDisk(dest, content);
+      writeFileToDisk(dest, content, { transaction });
       wroteStyles = true;
     }
   }
@@ -192,8 +193,9 @@ export async function installShared(sharedRoot) {
  * @param {string | null} stylesDest
  * @param {string | null} cssFile
  * @param {boolean} noCss
+ * @param {ReturnType<typeof createInstallTransaction> | null} [transaction]
  */
-export function installCssImport(stylesDest, cssFile, noCss) {
+export function installCssImport(stylesDest, cssFile, noCss, transaction = null) {
   if (!stylesDest || noCss) return;
 
   const targets = cssFile ? [cssFile] : CSS_CANDIDATES.filter((candidate) => fileExists(candidate));
@@ -214,6 +216,7 @@ export function installCssImport(stylesDest, cssFile, noCss) {
 
   const spec = `${importSpecifier(path.posix.dirname(normalizeDir(target)), stylesDest.replace(/\.css$/, ''))}.css`;
   const line = `@import "${spec}";\n`;
+  transaction?.trackMutation(abs, original);
   fs.writeFileSync(abs, line + original, 'utf8');
   console.log(`\n  ${c.green('✓')} Added ${c.bold(`@import "${spec}"`)} to ${target}`);
   if (targets.length > 1) {
@@ -235,6 +238,23 @@ export async function runAdd(args) {
     process.exit(1);
   }
 
+  const transaction = createInstallTransaction();
+  try {
+    await addFiles({ name, outputDir, cssFile, noCss }, transaction);
+  } catch (err) {
+    transaction.rollback();
+    const message = err instanceof Error ? err.message : String(err);
+    console.error(`\n  ${c.red('Error:')} ${message}\n`);
+    console.error(`  ${c.dim('Install rolled back. No files from this attempt were left behind.')}\n`);
+    process.exit(1);
+  }
+}
+
+/**
+ * @param {{ name: string, outputDir: string, cssFile: string | null, noCss: boolean }} opts
+ * @param {ReturnType<typeof createInstallTransaction>} transaction
+ */
+async function addFiles({ name, outputDir, cssFile, noCss }, transaction) {
   console.log(`\n  ${c.bold('✦ ax-depute')} ${c.dim('— AX Components for React')}\n`);
 
   const sharedRoot = sharedRootFor(outputDir);
@@ -242,8 +262,8 @@ export async function runAdd(args) {
   if (name === 'mock-data') {
     const mockDest = path.posix.join(sharedRoot, 'utils/mockData.ts');
     const raw = await loadFile('src/utils/mockData.ts');
-    writeFileToDisk(mockDest, rewriteMockData(raw, sharedRoot, outputDir));
-    await installShared(sharedRoot);
+    writeFileToDisk(mockDest, rewriteMockData(raw, sharedRoot, outputDir), { transaction });
+    await installShared(sharedRoot, transaction);
     console.log(`\n  ${c.green('✓ Done!')} Import generators from ${c.bold(mockDest)}`);
     console.log(`  ${c.dim('mock-data type-imports every component. Add the components you use so the file typechecks.')}\n`);
     return;
@@ -277,11 +297,11 @@ export async function runAdd(args) {
     const destPath = path.posix.join(componentDir, filename);
     const raw = await loadFile(srcPath);
     const content = rewriteComponentImports(raw, componentDir, sharedRoot);
-    writeFileToDisk(destPath, content);
+    writeFileToDisk(destPath, content, { transaction });
   }
 
-  const stylesDest = await installShared(sharedRoot);
-  installCssImport(stylesDest, cssFile, noCss);
+  const stylesDest = await installShared(sharedRoot, transaction);
+  installCssImport(stylesDest, cssFile, noCss, transaction);
 
   const importFrom = outputDir.startsWith('src/') ? outputDir.slice('src/'.length) : outputDir;
   const importPath = `./${path.posix.join(importFrom, component.label)}`;

@@ -3,6 +3,9 @@
 
 import fs from 'fs';
 import path from 'path';
+import { createInstallTransaction } from './install-transaction.js';
+
+export { createInstallTransaction };
 
 const c = {
   green: (s) => `\x1b[32m${s}\x1b[0m`,
@@ -22,21 +25,31 @@ export function ensureDir(dirPath) {
 /**
  * Write a file to disk. Creates parent directories as needed.
  * Prints a status line to stdout.
+ * When a transaction is passed, a later rollback deletes files this call
+ * created and restores files it overwrote.
  * @param {string} filePath  Absolute or CWD-relative path
  * @param {string} content
- * @param {{ overwrite?: boolean }} [opts]
+ * @param {{ overwrite?: boolean, transaction?: ReturnType<typeof createInstallTransaction> | null }} [opts]
+ * @returns {boolean} true when the file was written
  */
-export function writeFileToDisk(filePath, content, { overwrite = false } = {}) {
+export function writeFileToDisk(filePath, content, { overwrite = false, transaction = null } = {}) {
   const abs = path.resolve(process.cwd(), filePath);
   ensureDir(path.dirname(abs));
 
   if (!overwrite && fs.existsSync(abs)) {
     console.log(`  ${c.yellow('~')} ${c.dim(filePath)} ${c.dim('(skipped — already exists)')}`);
-    return;
+    return false;
+  }
+
+  if (fs.existsSync(abs)) {
+    transaction?.trackMutation(abs, fs.readFileSync(abs, 'utf8'));
+  } else {
+    transaction?.trackNew(abs);
   }
 
   fs.writeFileSync(abs, content, 'utf8');
   console.log(`  ${c.green('→')} ${filePath}`);
+  return true;
 }
 
 /**

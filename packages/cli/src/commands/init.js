@@ -4,7 +4,7 @@
 
 import { VERSION, DOCS_URL } from '../config.js';
 import { readRepoFile } from '../utils/source.js';
-import { writeFileToDisk } from '../utils/fs.js';
+import { writeFileToDisk, createInstallTransaction } from '../utils/fs.js';
 import { installCssImport, installShared } from './add.js';
 
 const c = {
@@ -27,29 +27,38 @@ const SKILL_FILES = [
  */
 export async function runInit(args) {
   const noCss = args.includes('--no-css');
+  const transaction = createInstallTransaction();
 
-  console.log(`\n  ${c.bold('✦ ax-depute init')} ${c.dim('— AI skill layer')}\n`);
+  try {
+    console.log(`\n  ${c.bold('✦ ax-depute init')} ${c.dim('— AI skill layer')}\n`);
 
-  for (const repoPath of SKILL_FILES) {
-    let content;
-    try {
-      content = await readRepoFile(repoPath);
-    } catch (err) {
-      const message = err instanceof Error ? err.message : String(err);
-      console.error(`\n  ${c.red('Error:')} Failed to read ${repoPath}\n  ${c.dim(message)}\n`);
-      process.exit(1);
+    for (const repoPath of SKILL_FILES) {
+      let content;
+      try {
+        content = await readRepoFile(repoPath);
+      } catch (err) {
+        const message = err instanceof Error ? err.message : String(err);
+        throw new Error(`Failed to read ${repoPath}\n  ${message}`);
+      }
+      writeFileToDisk(repoPath, content, { transaction });
     }
-    writeFileToDisk(repoPath, content);
+
+    writeFileToDisk(
+      'skills/depute/depute.skill.json',
+      `${JSON.stringify({ name: 'depute', version: VERSION, docs: DOCS_URL }, null, 2)}\n`,
+      { transaction },
+    );
+
+    const stylesDest = await installShared('src', transaction);
+    installCssImport(stylesDest, null, noCss, transaction);
+
+    console.log(`  ${c.green('✓ Done!')} The skill is at ${c.bold('skills/depute/SKILL.md')}`);
+    console.log(`  ${c.dim('Point your agent at that file. It describes composition, not a runtime dependency.')}\n`);
+  } catch (err) {
+    transaction.rollback();
+    const message = err instanceof Error ? err.message : String(err);
+    console.error(`\n  ${c.red('Error:')} ${message}\n`);
+    console.error(`  ${c.dim('Install rolled back. No files from this attempt were left behind.')}\n`);
+    process.exit(1);
   }
-
-  writeFileToDisk(
-    'skills/depute/depute.skill.json',
-    `${JSON.stringify({ name: 'depute', version: VERSION, docs: DOCS_URL }, null, 2)}\n`,
-  );
-
-  const stylesDest = await installShared('src');
-  installCssImport(stylesDest, null, noCss);
-
-  console.log(`  ${c.green('✓ Done!')} The skill is at ${c.bold('skills/depute/SKILL.md')}`);
-  console.log(`  ${c.dim('Point your agent at that file. It describes composition, not a runtime dependency.')}\n`);
 }

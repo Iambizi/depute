@@ -15,7 +15,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - v0.2.0 released (11 orchestration primitives) ✅
 - v0.3.0 released (7 compliance primitives) ✅
 - v0.4.0 released (Taxonomy + Async Handoff) ✅
-- Repo and CLI package are at 0.4.2. npm serves `ax-depute@0.4.1` until 0.4.2 is tagged and published.
+- Repo and CLI package are at 0.4.3. npm serves `ax-depute@0.4.2` until 0.4.3 is tagged and published.
 - Storybook deployed to GitHub Pages ✅
 - Docs site deployed to Vercel (`apps/www`, Next.js + Fumadocs) ✅
 - AI Skill layer written (Claude + skills.sh) ✅

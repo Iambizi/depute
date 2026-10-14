@@ -1,3 +1,16 @@
+# depute v0.4.3 Release Notes
+
+**October 13, 2026**
+
+CLI patch. No new components.
+
+- `add` and `init` roll back when a checksum fails. Files created by that attempt are deleted, including empty directories that attempt created, and a stylesheet the command edited is restored. Files already in the project are left alone.
+- The paper-trading demo meter is labeled Max order, the same $10,000 cap as the policy banner. After a fill it shows the order notional, not a loss.
+
+Publish `ax-depute@0.4.3` from `packages/cli` after the `v0.4.3` tag is on GitHub. `npx ax-depute@0.4.2` does not include this rollback.
+
+---
+
 # depute v0.4.2 Release Notes
 
 **October 13, 2026**
@@ -15,7 +28,7 @@ Patch for the React 18 TypeScript claim and the remaining review notes. No new c
 
 `apps/www` still reports five high `npm audit` findings, all dev-only, through `eslint-config-next` → `braces`. The advisory covers every published `braces` release (`<=3.0.3`). npm's suggested fix downgrades `eslint-config-next` to 14. The root package audit is clean.
 
-Publish `ax-depute@0.4.2` from `packages/cli` after the `v0.4.2` tag is on GitHub. The CLI installs sources from that tag.
+Published to npm as `ax-depute@0.4.2` on October 13, 2026.
 
 ---
 
