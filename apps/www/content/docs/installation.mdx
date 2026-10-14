@@ -40,6 +40,8 @@ bunx ax-depute@latest add approval-gate
 
 This copies the component source files directly into `src/components/ApprovalGate/`. You own the code.
 
+Each fetched file is checked against the release checksum. If one does not match, the command removes the files that attempt created and restores any stylesheet it edited. Files that were already in the project are left as they were.
+
 On first install, shared files are also added once, next to the component directory:
 
 - `src/types/ax-common.ts` — shared TypeScript types (`PlanStep`, `ToolCall`, `Artifact`)

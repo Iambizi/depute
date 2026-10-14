@@ -134,7 +134,7 @@ export function PaperTradingDesk() {
 
       <div className="grid gap-6 md:grid-cols-2">
         <BudgetMeter
-          label="Session loss limit"
+          label="Max order"
           spent={spent}
           limit={10000}
           unit="currency"
