@@ -154,39 +154,64 @@ async function loadFile(repoPath) {
 }
 
 /**
+ * Read shared files that are not already on disk. Nothing is written here, so
+ * a checksum failure or an interrupt during the read leaves the project untouched.
  * @param {string} sharedRoot
- * @param {ReturnType<typeof createInstallTransaction> | null} [transaction]
  */
-export async function installShared(sharedRoot, transaction = null) {
+export async function loadShared(sharedRoot) {
+  /** @type {{ dest: string, content: string, note: 'types' | 'a11y' | 'styles' }[]} */
+  const files = [];
+
   const typesDest = path.posix.join(sharedRoot, 'types/ax-common.ts');
   if (!fileExists(typesDest)) {
-    const typesContent = await loadFile('src/types/common.ts');
-    writeFileToDisk(typesDest, typesContent, { transaction });
-    console.log(`  ${c.dim('(shared types — added once)')}`);
+    files.push({ dest: typesDest, content: await loadFile('src/types/common.ts'), note: 'types' });
   }
 
   const a11yDest = path.posix.join(sharedRoot, 'utils/ax-a11y.tsx');
   if (!fileExists(a11yDest)) {
-    const a11yContent = await loadFile('src/utils/a11y.tsx');
-    writeFileToDisk(a11yDest, a11yContent, { transaction });
-    console.log(`  ${c.dim('(a11y utilities — added once)')}`);
+    files.push({ dest: a11yDest, content: await loadFile('src/utils/a11y.tsx'), note: 'a11y' });
   }
 
+  /** @type {string | null} */
   let stylesDest = null;
-  let wroteStyles = false;
   for (const file of STYLE_FILES) {
     const dest = path.posix.join(sharedRoot, 'styles', file.name);
     if (file.name === 'depute.css') stylesDest = dest;
     if (!fileExists(dest)) {
-      const content = await loadFile(file.repoPath);
-      writeFileToDisk(dest, content, { transaction });
-      wroteStyles = true;
+      files.push({ dest, content: await loadFile(file.repoPath), note: 'styles' });
     }
   }
-  if (wroteStyles) {
-    console.log(`  ${c.dim('(design tokens — added once)')}`);
+
+  return { files, stylesDest };
+}
+
+/**
+ * @param {{ files: { dest: string, content: string, note: 'types' | 'a11y' | 'styles' }[], stylesDest: string | null }} plan
+ * @param {ReturnType<typeof createInstallTransaction> | null} [transaction]
+ */
+export function writeShared(plan, transaction = null) {
+  let wroteTypes = false;
+  let wroteA11y = false;
+  let wroteStyles = false;
+  for (const file of plan.files) {
+    writeFileToDisk(file.dest, file.content, { transaction });
+    if (file.note === 'types') wroteTypes = true;
+    if (file.note === 'a11y') wroteA11y = true;
+    if (file.note === 'styles') wroteStyles = true;
   }
-  return stylesDest;
+  if (wroteTypes) console.log(`  ${c.dim('(shared types — added once)')}`);
+  if (wroteA11y) console.log(`  ${c.dim('(a11y utilities — added once)')}`);
+  if (wroteStyles) console.log(`  ${c.dim('(design tokens — added once)')}`);
+  return plan.stylesDest;
+}
+
+/**
+ * @param {string} sharedRoot
+ * @param {ReturnType<typeof createInstallTransaction> | null} [transaction]
+ */
+export async function installShared(sharedRoot, transaction = null) {
+  const plan = await loadShared(sharedRoot);
+  return writeShared(plan, transaction);
 }
 
 /**
@@ -241,6 +266,7 @@ export async function runAdd(args) {
   const transaction = createInstallTransaction();
   try {
     await addFiles({ name, outputDir, cssFile, noCss }, transaction);
+    transaction.finish();
   } catch (err) {
     transaction.rollback();
     const message = err instanceof Error ? err.message : String(err);
@@ -262,8 +288,9 @@ async function addFiles({ name, outputDir, cssFile, noCss }, transaction) {
   if (name === 'mock-data') {
     const mockDest = path.posix.join(sharedRoot, 'utils/mockData.ts');
     const raw = await loadFile('src/utils/mockData.ts');
+    const shared = await loadShared(sharedRoot);
     writeFileToDisk(mockDest, rewriteMockData(raw, sharedRoot, outputDir), { transaction });
-    await installShared(sharedRoot, transaction);
+    writeShared(shared, transaction);
     console.log(`\n  ${c.green('✓ Done!')} Import generators from ${c.bold(mockDest)}`);
     console.log(`  ${c.dim('mock-data type-imports every component. Add the components you use so the file typechecks.')}\n`);
     return;
@@ -289,6 +316,8 @@ async function addFiles({ name, outputDir, cssFile, noCss }, transaction) {
 
   console.log(`  Adding: ${c.bold(component.label)} ${c.dim(`(${component.category})`)}\n`);
 
+  /** @type {{ dest: string, content: string }[]} */
+  const planned = [];
   for (const srcPath of component.files) {
     const parts = srcPath.split('/');
     const filename = parts[parts.length - 1];
@@ -296,11 +325,14 @@ async function addFiles({ name, outputDir, cssFile, noCss }, transaction) {
     const componentDir = path.posix.join(outputDir, componentFolder);
     const destPath = path.posix.join(componentDir, filename);
     const raw = await loadFile(srcPath);
-    const content = rewriteComponentImports(raw, componentDir, sharedRoot);
-    writeFileToDisk(destPath, content, { transaction });
+    planned.push({ dest: destPath, content: rewriteComponentImports(raw, componentDir, sharedRoot) });
   }
 
-  const stylesDest = await installShared(sharedRoot, transaction);
+  const shared = await loadShared(sharedRoot);
+  for (const file of planned) {
+    writeFileToDisk(file.dest, file.content, { transaction });
+  }
+  const stylesDest = writeShared(shared, transaction);
   installCssImport(stylesDest, cssFile, noCss, transaction);
 
   const importFrom = outputDir.startsWith('src/') ? outputDir.slice('src/'.length) : outputDir;

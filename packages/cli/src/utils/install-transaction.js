@@ -1,34 +1,53 @@
 // depute CLI — utils/install-transaction.js
-// Journals files created or edited during one install so a failed checksum
-// removes that attempt instead of leaving a partial component behind.
+// Journals files and directories created during one install so a failed
+// checksum or an interrupt removes that attempt. Directories that already
+// existed are not removed, even if they are empty again afterwards.
 
 import fs from 'fs';
 import path from 'path';
 
-/**
- * Remove directories this install created, walking up while they stay empty.
- * Stops at the project root and at any directory that still has files.
- * @param {string} start
- */
-function pruneEmptyDirs(start) {
-  const cwd = path.resolve(process.cwd());
-  let dir = path.resolve(start);
-  while (dir !== cwd && dir.startsWith(`${cwd}${path.sep}`)) {
-    if (!fs.existsSync(dir)) {
-      dir = path.dirname(dir);
-      continue;
-    }
-    if (fs.readdirSync(dir).length > 0) break;
-    fs.rmdirSync(dir);
-    dir = path.dirname(dir);
-  }
-}
-
 export function createInstallTransaction() {
   /** @type {string[]} */
   const created = [];
+  /** @type {Set<string>} */
+  const createdDirs = new Set();
   /** @type {{ abs: string, original: string }[]} */
   const mutations = [];
+  let settled = false;
+
+  function detach() {
+    process.off('SIGINT', onSignal);
+    process.off('SIGTERM', onSignal);
+  }
+
+  function rollback() {
+    if (settled) return;
+    settled = true;
+    detach();
+    for (const abs of created.slice().reverse()) {
+      fs.rmSync(abs, { force: true });
+    }
+    const dirs = [...createdDirs].sort((a, b) => b.length - a.length);
+    for (const dir of dirs) {
+      if (!fs.existsSync(dir)) continue;
+      if (fs.readdirSync(dir).length === 0) fs.rmdirSync(dir);
+    }
+    for (const { abs, original } of mutations.slice().reverse()) {
+      fs.writeFileSync(abs, original, 'utf8');
+    }
+  }
+
+  /**
+   * @param {NodeJS.Signals} signal
+   */
+  function onSignal(signal) {
+    rollback();
+    console.error('\n  Install interrupted. Rolled back files from this attempt.\n');
+    process.exit(signal === 'SIGINT' ? 130 : 143);
+  }
+
+  process.on('SIGINT', onSignal);
+  process.on('SIGTERM', onSignal);
 
   return {
     /**
@@ -38,21 +57,25 @@ export function createInstallTransaction() {
       created.push(abs);
     },
     /**
+     * Record a directory this attempt created. Parents that already existed
+     * must not be passed here.
+     * @param {string} abs
+     */
+    trackNewDir(abs) {
+      createdDirs.add(path.resolve(abs));
+    },
+    /**
      * @param {string} abs
      * @param {string} original
      */
     trackMutation(abs, original) {
       mutations.push({ abs, original });
     },
-    rollback() {
-      for (const abs of created.slice().reverse()) {
-        fs.rmSync(abs, { force: true });
-      }
-      const dirs = new Set(created.map((abs) => path.dirname(abs)));
-      for (const dir of dirs) pruneEmptyDirs(dir);
-      for (const { abs, original } of mutations.slice().reverse()) {
-        fs.writeFileSync(abs, original, 'utf8');
-      }
+    rollback,
+    finish() {
+      if (settled) return;
+      settled = true;
+      detach();
     },
   };
 }

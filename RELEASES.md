@@ -1,3 +1,17 @@
+# depute v0.4.4 Release Notes
+
+**October 15, 2026**
+
+CLI patch. No new components.
+
+- `add` and `init` read and checksum every file before writing any of them. An interrupt during that read leaves the project unchanged.
+- SIGINT and SIGTERM roll back files and directories that attempt created.
+- Rollback no longer deletes empty directories that were already in the project.
+
+Publish `ax-depute@0.4.4` from `packages/cli` after the `v0.4.4` tag is on GitHub. `npx ax-depute@0.4.3` does not include this.
+
+---
+
 # depute v0.4.3 Release Notes
 
 **October 13, 2026**
@@ -7,7 +21,7 @@ CLI patch. No new components.
 - `add` and `init` roll back when a checksum fails. Files created by that attempt are deleted, including empty directories that attempt created, and a stylesheet the command edited is restored. Files already in the project are left alone.
 - The paper-trading demo meter is labeled Max order, the same $10,000 cap as the policy banner. After a fill it shows the order notional, not a loss.
 
-Publish `ax-depute@0.4.3` from `packages/cli` after the `v0.4.3` tag is on GitHub. `npx ax-depute@0.4.2` does not include this rollback.
+Published to npm as `ax-depute@0.4.3` on October 15, 2026.
 
 ---
 
