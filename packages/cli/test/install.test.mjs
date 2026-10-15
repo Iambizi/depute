@@ -4,6 +4,7 @@ import fs from 'fs';
 import os from 'os';
 import path from 'path';
 import test from 'node:test';
+import { setTimeout as delay } from 'node:timers/promises';
 import { fileURLToPath } from 'url';
 import { REF, VERSION } from '../src/config.js';
 import { assertIntegrity } from '../src/utils/source.js';
@@ -213,7 +214,7 @@ test('SIGINT rolls back files from the attempt and keeps pre-existing empty dire
       child.kill('SIGKILL');
       throw new Error(`timed out waiting for the install to write\n${child.stderr?.read?.() ?? ''}`);
     }
-    await new Promise((resolve) => setTimeout(resolve, 20));
+    await delay(20);
   }
   child.kill('SIGINT');
   const code = await new Promise((resolve) => child.on('exit', resolve));
