@@ -5,7 +5,7 @@
 import { VERSION, DOCS_URL } from '../config.js';
 import { readRepoFile } from '../utils/source.js';
 import { writeFileToDisk, createInstallTransaction } from '../utils/fs.js';
-import { installCssImport, installShared } from './add.js';
+import { installCssImport, loadShared, writeShared } from './add.js';
 
 const c = {
   bold: (s) => `\x1b[1m${s}\x1b[0m`,
@@ -32,6 +32,8 @@ export async function runInit(args) {
   try {
     console.log(`\n  ${c.bold('✦ ax-depute init')} ${c.dim('— AI skill layer')}\n`);
 
+    /** @type {{ repoPath: string, content: string }[]} */
+    const skills = [];
     for (const repoPath of SKILL_FILES) {
       let content;
       try {
@@ -40,7 +42,13 @@ export async function runInit(args) {
         const message = err instanceof Error ? err.message : String(err);
         throw new Error(`Failed to read ${repoPath}\n  ${message}`, { cause: err });
       }
-      writeFileToDisk(repoPath, content, { transaction });
+      skills.push({ repoPath, content });
+    }
+
+    const shared = await loadShared('src');
+
+    for (const file of skills) {
+      writeFileToDisk(file.repoPath, file.content, { transaction });
     }
 
     writeFileToDisk(
@@ -49,8 +57,9 @@ export async function runInit(args) {
       { transaction },
     );
 
-    const stylesDest = await installShared('src', transaction);
+    const stylesDest = writeShared(shared, transaction);
     installCssImport(stylesDest, null, noCss, transaction);
+    transaction.finish();
 
     console.log(`  ${c.green('✓ Done!')} The skill is at ${c.bold('skills/depute/SKILL.md')}`);
     console.log(`  ${c.dim('Point your agent at that file. It describes composition, not a runtime dependency.')}\n`);

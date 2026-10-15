@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { spawnSync } from 'node:child_process';
+import { spawn, spawnSync } from 'node:child_process';
 import fs from 'fs';
 import os from 'os';
 import path from 'path';
@@ -56,8 +56,8 @@ function mirrorRepo(tamperPath) {
 }
 
 test('CLI ref is the package version, not main', () => {
-  assert.equal(VERSION, '0.4.3');
-  assert.equal(REF, 'v0.4.3');
+  assert.equal(VERSION, '0.4.4');
+  assert.equal(REF, 'v0.4.4');
   assert.equal(REF.includes('main'), false);
 });
 
@@ -135,6 +135,7 @@ test('a checksum failure rolls back files from that install', () => {
   assert.equal(result.status, 1, result.stdout);
   assert.match(`${result.stdout}\n${result.stderr}`, /Integrity check failed for src\/styles\/tokens\.css/);
   assert.match(`${result.stdout}\n${result.stderr}`, /rolled back/);
+  assert.doesNotMatch(result.stdout, /ApprovalGate\.tsx/);
 
   assert.equal(fs.existsSync(path.join(cwd, 'src/components/ApprovalGate/ApprovalGate.tsx')), false);
   assert.equal(fs.existsSync(path.join(cwd, 'src/components/ApprovalGate/ApprovalGate.module.css')), false);
@@ -162,6 +163,64 @@ test('init rolls back when a later file fails the checksum', () => {
   assert.equal(fs.existsSync(path.join(cwd, 'src/utils/ax-a11y.tsx')), false);
   assert.equal(fs.existsSync(path.join(cwd, 'src/styles/depute.css')), false);
   assert.equal(fs.readFileSync(path.join(cwd, 'src/index.css'), 'utf8'), css);
+});
+
+test('a failed install keeps empty directories that were already there', () => {
+  const localRoot = mirrorRepo('src/styles/tokens.css');
+  const cwd = fs.mkdtempSync(path.join(os.tmpdir(), 'depute-empty-'));
+  fs.mkdirSync(path.join(cwd, 'src/components'), { recursive: true });
+  fs.mkdirSync(path.join(cwd, 'src/types'), { recursive: true });
+
+  const result = runAdd(cwd, ['approval-gate'], localRoot);
+  assert.equal(result.status, 1, result.stdout);
+  assert.equal(fs.existsSync(path.join(cwd, 'src/components')), true);
+  assert.equal(fs.readdirSync(path.join(cwd, 'src/components')).length, 0);
+  assert.equal(fs.existsSync(path.join(cwd, 'src/types')), true);
+  assert.equal(fs.readdirSync(path.join(cwd, 'src/types')).length, 0);
+});
+
+test('rollback removes directories it created and keeps empty ones it did not', () => {
+  const cwd = fs.mkdtempSync(path.join(os.tmpdir(), 'depute-dirs-'));
+  fs.mkdirSync(path.join(cwd, 'src/components'), { recursive: true });
+  const fsModule = path.join(repoRoot, 'packages/cli/src/utils/fs.js');
+  const child = spawnSync(process.execPath, ['--input-type=module', '-e', `
+    import { writeFileToDisk, createInstallTransaction } from ${JSON.stringify(fsModule)};
+    const tx = createInstallTransaction();
+    writeFileToDisk('src/components/ApprovalGate/created.txt', 'new\\n', { transaction: tx });
+    tx.rollback();
+  `], { cwd, encoding: 'utf8' });
+  assert.equal(child.status, 0, child.stderr || child.stdout);
+  assert.equal(fs.existsSync(path.join(cwd, 'src/components/ApprovalGate')), false);
+  assert.equal(fs.existsSync(path.join(cwd, 'src/components')), true);
+  assert.equal(fs.readdirSync(path.join(cwd, 'src/components')).length, 0);
+});
+
+test('SIGINT rolls back files from the attempt and keeps pre-existing empty directories', async () => {
+  const cwd = fs.mkdtempSync(path.join(os.tmpdir(), 'depute-sigint-'));
+  fs.mkdirSync(path.join(cwd, 'src/components'), { recursive: true });
+  const fsModule = path.join(repoRoot, 'packages/cli/src/utils/fs.js');
+  const child = spawn(process.execPath, ['--input-type=module', '-e', `
+    import { writeFileToDisk, createInstallTransaction } from ${JSON.stringify(fsModule)};
+    const tx = createInstallTransaction();
+    writeFileToDisk('src/components/ApprovalGate/created.txt', 'new\\n', { transaction: tx });
+    setTimeout(() => {}, 10000);
+  `], { cwd });
+
+  const created = path.join(cwd, 'src/components/ApprovalGate/created.txt');
+  const started = Date.now();
+  while (!fs.existsSync(created)) {
+    if (Date.now() - started > 3000) {
+      child.kill('SIGKILL');
+      throw new Error(`timed out waiting for the install to write\n${child.stderr?.read?.() ?? ''}`);
+    }
+    await new Promise((resolve) => setTimeout(resolve, 20));
+  }
+  child.kill('SIGINT');
+  const code = await new Promise((resolve) => child.on('exit', resolve));
+  assert.equal(code, 130);
+  assert.equal(fs.existsSync(created), false);
+  assert.equal(fs.existsSync(path.join(cwd, 'src/components/ApprovalGate')), false);
+  assert.equal(fs.existsSync(path.join(cwd, 'src/components')), true);
 });
 
 test('rollback restores an edited stylesheet and deletes files it created', () => {
