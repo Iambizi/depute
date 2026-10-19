@@ -1,12 +1,12 @@
 import type React from 'react';
-import { IconPause, IconPlay } from '../../utils/icons';
+import { IconLock, IconPause, IconPlay, IconX } from '../../utils/icons';
 import styles from './BranchControls.module.css';
 import type { BranchControlsProps } from './BranchControls.types';
 
 const STATUS_CONFIG = {
-  running: { label: 'Running', dotClass: 'dotRunning', pulsing: true },
-  paused: { label: 'Paused', dotClass: 'dotPaused', pulsing: false },
-  quarantined: { label: 'Quarantined', dotClass: 'dotQuarantined', pulsing: false },
+  running: { label: 'Running', dotClass: 'dotRunning', badge: 'ax-badge ax-badge-success ax-badge-dot', pulsing: true },
+  paused: { label: 'Paused', dotClass: 'dotPaused', badge: 'ax-badge ax-badge-warning', pulsing: false },
+  quarantined: { label: 'Quarantined', dotClass: 'dotQuarantined', badge: 'ax-badge ax-badge-danger', pulsing: false },
 };
 
 /**
@@ -44,7 +44,7 @@ export const BranchControls: React.FC<BranchControlsProps> = ({
             <span className={styles.branchName}>{branchName}</span>
           </div>
         </div>
-        <span className={`${styles.statusBadge} ${styles[`badge_${status}`] ?? ''}`}>
+        <span className={`${styles.statusBadge} ${config.badge}`}>
           {config.label}
         </span>
       </div>
@@ -52,33 +52,29 @@ export const BranchControls: React.FC<BranchControlsProps> = ({
       {/* Actions */}
       <div className={styles.actions}>
         {status === 'running' ? (
-          <button className={styles.btnSecondary} onClick={() => onPause?.()}>
+          <button className={`${styles.btnSecondary} ax-btn ax-btn-secondary`} onClick={() => onPause?.()}>
             <IconPause /> Pause
           </button>
         ) : (
-          <button className={styles.btnPrimary} onClick={() => onResume?.()}>
+          <button className={`${styles.btnPrimary} ax-btn ax-btn-primary`} onClick={() => onResume?.()}>
             <IconPlay /> Resume
           </button>
         )}
 
         {status !== 'quarantined' && (
           <button
-            className={styles.btnWarning}
+            className={`${styles.btnSecondary} ax-btn ax-btn-secondary`}
             onClick={() => onQuarantine?.()}
             title="Isolate branch: halt tool calls and spawns, allow inspection"
-            style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}
           >
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-              <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-            </svg>
+            <IconLock />
             Quarantine
           </button>
         )}
 
         {onThrottle && (
           <button
-            className={styles.btnSecondary}
+            className={`${styles.btnSecondary} ax-btn ax-btn-secondary`}
             onClick={onThrottle}
             title="Reduce token burn rate and concurrency"
           >
@@ -86,7 +82,8 @@ export const BranchControls: React.FC<BranchControlsProps> = ({
           </button>
         )}
 
-        <button className={styles.btnDanger} onClick={() => onCancel?.()}>
+        <button className={`${styles.btnDanger} ax-btn ax-btn-danger`} onClick={() => onCancel?.()}>
+          <IconX />
           Cancel Branch
         </button>
       </div>

@@ -78,9 +78,7 @@ function CapabilityRow({
   onClick?: (cap: Capability) => void;
 }) {
   const isDenied = capability.permission === 'none';
-  const rowClass = `${styles.row} ${PERMISSION_CLASSES[capability.permission]} ${
-    isDenied && highlightDenied ? styles.rowDenied : ''
-  }`;
+  const rowClass = `${styles.row} ${isDenied && highlightDenied ? styles.rowDenied : ''}`;
 
   return (
     <div
@@ -153,10 +151,10 @@ export function CapabilityMatrix({
           )}
         </div>
         <div className={styles.summaryBadges}>
-          <span className={`${styles.summaryBadge} ${styles.permFull}`}>
+          <span className={`${styles.summaryBadge} ax-badge ax-badge-success ax-numeric`}>
             {summary.allowed} allowed
           </span>
-          <span className={`${styles.summaryBadge} ${styles.permNone}`}>
+          <span className={`${styles.summaryBadge} ax-badge ax-badge-danger ax-numeric`}>
             {summary.denied} denied
           </span>
         </div>

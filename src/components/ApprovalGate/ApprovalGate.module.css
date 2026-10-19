@@ -20,9 +20,11 @@
   color: var(--ax-fg-default);
   font-variant-numeric: var(--ax-numeric);}
 
-.approvalGateApproved {border-color: var(--ax-status-success-border);}
+.approvalGatePending {box-shadow: var(--ax-shadow-2), var(--ax-rail);}
 
-.approvalGateRejected {border-color: var(--ax-status-danger-border);}
+.approvalGateApproved {box-shadow: var(--ax-shadow-1), var(--ax-rail-success);}
+
+.approvalGateRejected {box-shadow: var(--ax-shadow-1), var(--ax-rail-danger);}
 
 .approvalGateExpired {border-color: var(--ax-border-strong);
   opacity: 0.8;}
@@ -62,7 +64,15 @@
   color: var(--ax-fg-muted);}
 
 .headerContent {flex: 1;
-  min-width: 0;}
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--ax-space-0-5);}
+
+.trailing {display: flex;
+  align-items: center;
+  gap: var(--ax-space-2);
+  margin-left: auto;}
 
 .title {margin: 0;
   font-size: var(--ax-text-lg);
@@ -71,11 +81,7 @@
   color: var(--ax-fg-default);
   letter-spacing: var(--ax-tracking-tight);}
 
-.statusLabel {font-size: var(--ax-text-xs);
-  color: var(--ax-fg-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  margin-top: var(--ax-space-1);}
+.statusLabel {margin: 0;}
 
 /* ------------------------------------------------------------------ */
 /* Body                                                                */
@@ -107,12 +113,7 @@
 
 .confidenceBadge {display: inline-flex;
   align-items: center;
-  gap: var(--ax-space-1);
-  font-size: var(--ax-text-xs);
-  font-weight: var(--ax-weight-medium);
-  padding: var(--ax-space-1) var(--ax-space-2);
-  border-radius: var(--ax-radius-full);
-  margin-bottom: var(--ax-space-3);}
+  margin: 0;}
 
 .confidenceHigh {background: var(--ax-status-success-bg);
   color: var(--ax-status-success-fg);}

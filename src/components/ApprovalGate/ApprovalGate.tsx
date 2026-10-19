@@ -340,19 +340,28 @@ export function ApprovalGate({
           </span>
         )}
         <div className={styles.headerContent}>
-          <h3 className={styles.title}>{title}</h3>
-          <div className={styles.statusLabel}>{STATUS_LABELS[status]}</div>
+          <p className={`${styles.statusLabel} ax-eyebrow`}>{STATUS_LABELS[status]}</p>
+          <h3 className={`${styles.title} ax-title`}>{title}</h3>
         </div>
 
-        {/* Countdown badge */}
-        {(isPending || isHandoffPending) && timeRemaining != null && timeRemaining > 0 && (
-          <span
-            className={`${styles.countdown} ${countdownClass}`}
-            aria-live="polite"
-          >
-            {formatTime(timeRemaining)}
-          </span>
-        )}
+        <div className={styles.trailing}>
+          {confidence != null && (
+            <span
+              className={`${styles.confidenceBadge} ax-badge ${confidenceClass}`}
+              aria-label={`Confidence: ${confidence}%`}
+            >
+              {confidence}% confidence
+            </span>
+          )}
+          {(isPending || isHandoffPending) && timeRemaining != null && timeRemaining > 0 && (
+            <span
+              className={`${styles.countdown} ax-numeric ${countdownClass}`}
+              aria-live="polite"
+            >
+              {formatTime(timeRemaining)}
+            </span>
+          )}
+        </div>
       </div>
 
       {/* Staged mode indicator */}
@@ -385,33 +394,23 @@ export function ApprovalGate({
           </div>
         )}
 
-        {/* Confidence badge */}
-        {confidence != null && (
-          <span
-            className={`${styles.confidenceBadge} ${confidenceClass}`}
-            aria-label={`Confidence: ${confidence}%`}
-          >
-            {confidence}% confidence
-          </span>
-        )}
-
         {/* Scope — Grant Details */}
         {scope && (scope.resourceLimit || scope.durationSeconds || scope.target) && (
           <div className={styles.scope}>
             <div className={styles.scopeTitle}>Grant Details</div>
             <div className={styles.scopeItems}>
               {scope.resourceLimit && (
-                <span className={styles.scopeBadge}>
+                <span className={`${styles.scopeBadge} ax-badge`}>
                   Up to {scope.resourceLimit}
                 </span>
               )}
               {scope.durationSeconds && (
-                <span className={styles.scopeBadge}>
+                <span className={`${styles.scopeBadge} ax-badge ax-numeric`}>
                   Valid for {formatTime(scope.durationSeconds)}
                 </span>
               )}
               {scope.target && (
-                <span className={styles.scopeBadge}>
+                <span className={`${styles.scopeBadge} ax-badge`}>
                   {scope.target}
                 </span>
               )}

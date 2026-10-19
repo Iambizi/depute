@@ -12,10 +12,9 @@
   font-variant-numeric: var(--ax-numeric);
   box-shadow: var(--ax-card-shadow);}
 
-/* Status-based border accent */
-.base_running {border-top: var(--ax-space-0-5) solid var(--ax-status-success-solid);}
-.base_paused  {border-top: var(--ax-space-0-5) solid var(--ax-status-warning-solid);}
-.base_quarantined {border-top: var(--ax-space-0-5) solid var(--ax-status-danger-solid);}
+.base_running {box-shadow: var(--ax-card-shadow), var(--ax-rail-success);}
+.base_paused {box-shadow: var(--ax-card-shadow), var(--ax-rail-warning);}
+.base_quarantined {box-shadow: var(--ax-card-shadow), var(--ax-rail-danger);}
 
 /* Header */
 .header {display: flex;
@@ -63,19 +62,8 @@
 }
 
 /* Status badge */
-.statusBadge {font-size: var(--ax-text-2xs);
-  font-weight: var(--ax-weight-semibold);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  padding: var(--ax-space-0-5) var(--ax-space-2);
-  border-radius: var(--ax-radius-md);}
-
-.badge_running     {background: var(--ax-status-success-bg);
-  color: var(--ax-status-success-fg);}
-.badge_paused      {background: var(--ax-status-warning-bg);
-  color: var(--ax-status-warning-fg);}
-.badge_quarantined {background: var(--ax-status-danger-bg);
-  color: var(--ax-status-danger-fg);}
+.statusBadge {text-transform: uppercase;
+  letter-spacing: var(--ax-tracking-caps);}
 
 /* Actions */
 .actions {display: flex;
@@ -85,38 +73,7 @@
 
 .btnPrimary,
 .btnSecondary,
-.btnWarning,
-.btnDanger {font-size: var(--ax-text-2xs);
-  font-weight: var(--ax-weight-semibold);
-  padding: var(--ax-space-1-5) var(--ax-space-3);
-  border-radius: var(--ax-radius-xs);
-  cursor: pointer;
-  transition: background-color var(--ax-dur-fast) var(--ax-ease-standard), color var(--ax-dur-fast) var(--ax-ease-standard), border-color var(--ax-dur-fast) var(--ax-ease-standard), box-shadow var(--ax-dur-fast) var(--ax-ease-standard), transform var(--ax-dur-fast) var(--ax-ease-standard);
-  border: 1px solid transparent;}
-
-.btnPrimary {background: var(--ax-fg-default);
-  color: var(--ax-bg-surface);
-  border-color: var(--ax-fg-default);}
-
-.btnPrimary:hover {background: var(--ax-fg-default);}
-
-.btnSecondary {background: var(--ax-bg-surface);
-  color: var(--ax-fg-muted);
-  border-color: var(--ax-border-default);}
-
-.btnSecondary:hover {background: var(--ax-bg-subtle);}
-
-.btnWarning {background: var(--ax-status-warning-bg);
-  color: var(--ax-status-warning-fg);
-  border-color: var(--ax-status-warning-border);}
-
-.btnWarning:hover {background: var(--ax-status-warning-bg);}
-
-.btnDanger {background: var(--ax-status-danger-bg);
-  color: var(--ax-status-danger-fg);
-  border-color: var(--ax-status-danger-border);}
-
-.btnDanger:hover {background: var(--ax-status-danger-bg);}
+.btnDanger {font-family: inherit;}
 
 .base :focus-visible {
   outline: none;

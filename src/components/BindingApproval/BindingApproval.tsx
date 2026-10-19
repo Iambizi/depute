@@ -343,12 +343,13 @@ export function BindingApproval({
         <div className={styles.actions}>
           <button
             type="button"
-            className={styles.signBtn}
+            className={`${styles.signBtn} ax-btn ax-btn-primary ax-btn-lg`}
             onClick={onSign}
             disabled={!canSign}
             aria-label="Sign and approve"
           >
-            {effectiveStatus === 'signing' ? 'Signing…' : 'Sign & Approve'}
+            {effectiveStatus === 'signing' ? 'Signing…' : 'Sign and approve'}
+            {effectiveStatus !== 'signing' && <IconCheck />}
           </button>
           <button
             type="button"

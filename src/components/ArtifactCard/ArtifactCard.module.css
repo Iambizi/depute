@@ -69,7 +69,7 @@
   left: 0;
   right: 0;
   height: var(--ax-space-12);
-  background: var(--ax-bg-subtle);
+  background: linear-gradient(to bottom, transparent, var(--ax-bg-surface));
   pointer-events: none;}
 
 .showMore {display: block;
@@ -133,26 +133,7 @@
   color: var(--ax-fg-muted);
   margin-right: var(--ax-space-1);}
 
-.exportBtn {display: inline-flex;
-  align-items: center;
-  gap: var(--ax-space-1);
-  padding: var(--ax-space-1) var(--ax-space-2);
-  border-radius: var(--ax-radius-xs);
-  border: var(--ax-border-width) solid var(--ax-border-default);
-  background: var(--ax-bg-surface);
-  cursor: pointer;
-  font-family: var(--ax-font-sans);
-  font-size: var(--ax-text-xs);
-  font-weight: var(--ax-weight-medium);
-  color: var(--ax-fg-muted);
-  transition: background-color var(--ax-dur-fast) var(--ax-ease-standard), color var(--ax-dur-fast) var(--ax-ease-standard), border-color var(--ax-dur-fast) var(--ax-ease-standard), box-shadow var(--ax-dur-fast) var(--ax-ease-standard), transform var(--ax-dur-fast) var(--ax-ease-standard);}
-
-.exportBtn:hover {background: var(--ax-bg-subtle);
-  border-color: var(--ax-fg-muted);
-  color: var(--ax-fg-default);}
-
-.exportBtn:focus-visible {outline: var(--ax-space-0-5) solid var(--ax-status-info-border);
-  outline-offset: var(--ax-space-0-5);}
+.exportBtn {font-family: inherit;}
 
 /* ------------------------------------------------------------------ */
 /* Provenance                                                          */

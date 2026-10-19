@@ -150,7 +150,7 @@ export function ArtifactCard({
           {exportFormats.map((fmt) => (
             <button
               key={fmt}
-              className={styles.exportBtn}
+              className={`${styles.exportBtn} ax-btn ax-btn-ghost ax-btn-sm`}
               onClick={() => onExport?.(fmt)}
               aria-label={`Export as ${FORMAT_LABELS[fmt]}`}
               type="button"

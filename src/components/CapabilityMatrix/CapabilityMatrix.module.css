@@ -97,9 +97,7 @@
   outline-offset: calc(var(--ax-space-0-5) * -1);
   border-radius: var(--ax-radius-xs);}
 
-.rowDenied {background: color-mix(in srgb, var(--ax-status-danger-bg) 40%, transparent);}
-
-.rowDenied:hover {background: color-mix(in srgb, var(--ax-status-danger-bg) 60%, transparent);}
+.rowDenied {box-shadow: var(--ax-rail-danger);}
 
 /* ------------------------------------------------------------------ */
 /* Permission badge                                                    */

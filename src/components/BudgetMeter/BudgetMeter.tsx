@@ -39,6 +39,13 @@ const SEVERITY_CLASSES: Record<BudgetSeverity, string> = {
   exceeded: styles.severityExceeded,
 };
 
+const SEVERITY_BADGES: Record<BudgetSeverity, string> = {
+  normal: 'ax-badge ax-badge-success',
+  elevated: 'ax-badge ax-badge-warning',
+  critical: 'ax-badge ax-badge-warning',
+  exceeded: 'ax-badge ax-badge-danger',
+};
+
 const SEVERITY_LABELS: Record<BudgetSeverity, string> = {
   normal: 'Within budget',
   elevated: 'Approaching limit',
@@ -162,7 +169,7 @@ export function BudgetMeter({
       {/* Header */}
       <div className={styles.header}>
         <span className={styles.label}>{label}</span>
-        <span className={`${styles.severityBadge} ${SEVERITY_CLASSES[resolvedSeverity]}`}>
+        <span className={`${styles.severityBadge} ${SEVERITY_BADGES[resolvedSeverity]}`}>
           {SEVERITY_LABELS[resolvedSeverity]}
         </span>
       </div>
