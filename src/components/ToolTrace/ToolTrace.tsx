@@ -10,6 +10,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import type React from 'react';
 import { VisuallyHidden, useAnnouncer } from '../../utils/a11y';
+import { IconChevron } from '../../utils/icons';
 import type { ToolTraceProps } from './ToolTrace.types';
 import styles from './ToolTrace.module.css';
 
@@ -104,7 +105,8 @@ export function ToolTrace({
   if (calls.length === 0) {
     return (
       <div
-        className={`${styles.toolTrace} ${className ?? ''}`}
+        className={`${styles.toolTrace} ax-card ${className ?? ''}`}
+      data-ax=""
         role="log"
         aria-label="Tool trace"
       >
@@ -202,7 +204,7 @@ export function ToolTrace({
                           className={`${styles.chevron} ${isExpanded ? styles.chevronOpen : ''}`}
                           aria-hidden="true"
                         >
-                          ▶
+                          <IconChevron />
                         </span>
                         Details
                       </button>

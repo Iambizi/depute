@@ -174,7 +174,8 @@ export function PlanCard({
   if (steps.length === 0) {
     return (
       <div
-        className={`${styles.planCard} ${className ?? ''}`}
+        className={`${styles.planCard} ax-card ${className ?? ''}`}
+      data-ax=""
         role="region"
         aria-label="No plan available"
         data-streaming={isStreaming || undefined}
@@ -190,7 +191,8 @@ export function PlanCard({
 
   return (
     <div
-      className={`${styles.planCard} ${className ?? ''}`}
+      className={`${styles.planCard} ax-card ${className ?? ''}`}
+      data-ax=""
       role="region"
       aria-label={ariaLabel}
       data-streaming={isStreaming || undefined}

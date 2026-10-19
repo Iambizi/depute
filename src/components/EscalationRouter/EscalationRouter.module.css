@@ -1,184 +1,149 @@
 /* EscalationRouter — failure escalation alert */
 
-.base {
-  display: flex;
+.base {display: flex;
   flex-direction: column;
-  border-radius: 8px;
-  border: 1px solid var(--ax-color-red-300, #fca5a5);
-  background: var(--ax-bg-primary, #fff);
-  font-family: var(--ax-font-sans, system-ui, sans-serif);
+  border-radius: var(--ax-card-radius);
+  border: 0;
+  background: var(--ax-card-bg);
+  font-family: var(--ax-font-sans);
   overflow: hidden;
-  box-shadow: var(--ax-shadow-md);
-}
+  box-shadow: var(--ax-shadow-2);
+  color: var(--ax-fg-default);
+  font-variant-numeric: var(--ax-numeric);}
 
-.header {
-  display: flex;
+.header {display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 12px 16px;
-  background: linear-gradient(135deg, var(--ax-color-red-50, #fef2f2) 0%, var(--ax-surface-primary, #fff1f1) 100%);
-  border-bottom: 1px solid var(--ax-color-red-300, #fca5a5);
-}
+  gap: var(--ax-space-2);
+  padding: var(--ax-card-pad-y) var(--ax-card-pad-x);
+  background: var(--ax-card-header-bg);
+  border-bottom: 1px solid var(--ax-status-danger-border);
+  min-height: var(--ax-header-min);}
 
-.icon {
-  font-size: 20px;
-  color: var(--ax-color-red-500, #ef4444);
-}
+.icon {font-size: var(--ax-text-xl);
+  color: var(--ax-status-danger-solid);}
 
-.headerText {
-  display: flex;
+.headerText {display: flex;
   flex-direction: column;
-  flex: 1;
-}
+  flex: 1;}
 
 .title {
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--ax-color-red-800, #991b1b);
-}
+  font-size: var(--ax-text-lg);
+  font-weight: var(--ax-weight-semibold);
+  color: var(--ax-fg-default);
+  line-height: var(--ax-leading-lg);
+  letter-spacing: var(--ax-tracking-tight);}
 
-.subtitle {
-  font-size: 11px;
-  color: var(--ax-color-red-700, #b91c1c);
-}
+.subtitle {font-size: var(--ax-text-2xs);
+  color: var(--ax-status-danger-fg);}
 
-.failedBadge {
-  font-size: 9px;
-  font-weight: 700;
+.failedBadge {font-size: var(--ax-text-2xs);
+  font-weight: var(--ax-weight-semibold);
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  background: var(--ax-color-red-100, #fee2e2);
-  color: var(--ax-color-red-800, #991b1b);
-  padding: 2px 8px;
-  border-radius: 10px;
-  border: 1px solid var(--ax-color-red-300, #fca5a5);
-  flex-shrink: 0;
-}
+  background: var(--ax-status-danger-bg);
+  color: var(--ax-status-danger-fg);
+  padding: var(--ax-space-0-5) var(--ax-space-2);
+  border-radius: var(--ax-radius-md);
+  border: 1px solid var(--ax-status-danger-border);
+  flex-shrink: 0;}
 
-.errorBox {
-  padding: 12px 16px;
-  border-bottom: 1px solid var(--ax-border-color, #f3f4f6);
-}
+.errorBox {padding: var(--ax-space-3) var(--ax-space-4);
+  border-bottom: 1px solid var(--ax-border-default);}
 
-.errorSummary {
-  margin: 0;
-  font-size: 13px;
-  color: var(--ax-text-primary, #111827);
-  line-height: 1.55;
-}
+.errorSummary {margin: 0;
+  font-size: var(--ax-text-sm);
+  color: var(--ax-fg-default);
+  line-height: var(--ax-leading-sm);}
 
 /* Trace */
-.traceSection {
-  border-bottom: 1px solid var(--ax-border-color, #f3f4f6);
-}
+.traceSection {border-bottom: 1px solid var(--ax-border-default);}
 
-.traceToggle {
-  display: flex;
+.traceToggle {display: flex;
   align-items: center;
-  gap: 6px;
+  gap: var(--ax-space-1-5);
   width: 100%;
   background: none;
   border: none;
-  padding: 8px 16px;
-  font-size: 11px;
-  font-weight: 500;
-  color: var(--ax-text-secondary, #6b7280);
+  padding: var(--ax-space-2) var(--ax-space-4);
+  font-size: var(--ax-text-2xs);
+  font-weight: var(--ax-weight-medium);
+  color: var(--ax-fg-muted);
   cursor: pointer;
   text-align: left;
-  transition: background 0.1s ease;
-}
+  transition: background-color var(--ax-dur-fast) var(--ax-ease-standard), color var(--ax-dur-fast) var(--ax-ease-standard), border-color var(--ax-dur-fast) var(--ax-ease-standard), box-shadow var(--ax-dur-fast) var(--ax-ease-standard), transform var(--ax-dur-fast) var(--ax-ease-standard);}
 
-.traceToggle:hover {
-  background: var(--ax-bg-secondary, #f9fafb);
-}
+.traceToggle:hover {background: var(--ax-bg-subtle);}
 
-.chevron {
-  font-size: 9px;
-  transition: transform 0.2s ease;
-}
+.chevron {font-size: var(--ax-text-2xs);
+  transition: background-color var(--ax-dur-fast) var(--ax-ease-standard), color var(--ax-dur-fast) var(--ax-ease-standard), border-color var(--ax-dur-fast) var(--ax-ease-standard), box-shadow var(--ax-dur-fast) var(--ax-ease-standard), transform var(--ax-dur-fast) var(--ax-ease-standard);}
 
-.chevronOpen {
-  transform: rotate(90deg);
-}
+.chevronOpen {transform: rotate(90deg);}
 
-.trace {
-  margin: 0;
-  padding: 12px 16px;
-  background: var(--ax-color-gray-900, #1e1e1e);
-  color: var(--ax-surface-primary, #f1f5f9);
-  font-family: var(--ax-font-mono, monospace);
-  font-size: 11px;
-  line-height: 1.6;
+.trace {margin: 0;
+  padding: var(--ax-space-3) var(--ax-space-4);
+  background: var(--ax-fg-default);
+  color: var(--ax-bg-surface);
+  font-family: var(--ax-font-mono);
+  font-size: var(--ax-text-2xs);
+  line-height: var(--ax-leading-sm);
   overflow-x: auto;
   white-space: pre-wrap;
-  word-break: break-all;
-}
+  word-break: break-all;}
 
 /* Recommendation */
-.recommendation {
-  display: flex;
+.recommendation {display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 10px 16px;
-  background: var(--ax-bg-secondary, #f9fafb);
-  border-bottom: 1px solid var(--ax-border-color, #e5e7eb);
-}
+  gap: var(--ax-space-2);
+  padding: var(--ax-space-2) var(--ax-space-4);
+  background: var(--ax-bg-subtle);
+  border-bottom: 1px solid var(--ax-border-default);}
 
-.recLabel {
-  font-size: 10px;
-  font-weight: 600;
+.recLabel {font-size: var(--ax-text-2xs);
+  font-weight: var(--ax-weight-semibold);
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: var(--ax-text-secondary, #6b7280);
-}
+  color: var(--ax-fg-muted);}
 
-.recValue {
-  font-size: 12px;
-  font-weight: 500;
-  color: var(--ax-text-primary, #374151);
-}
+.recValue {font-size: var(--ax-text-xs);
+  font-weight: var(--ax-weight-medium);
+  color: var(--ax-fg-default);}
 
 /* Actions */
-.actions {
-  display: flex;
-  gap: 8px;
-  padding: 12px 16px;
-  flex-wrap: wrap;
-}
+.actions {display: flex;
+  gap: var(--ax-space-2);
+  padding: var(--ax-space-3) var(--ax-space-4);
+  flex-wrap: wrap;}
 
 .btnRetry,
 .btnReassign,
-.btnCancel {
-  font-size: 12px;
-  font-weight: 600;
-  padding: 7px 14px;
-  border-radius: 5px;
+.btnCancel {font-size: var(--ax-text-xs);
+  font-weight: var(--ax-weight-semibold);
+  padding: var(--ax-space-1-5) var(--ax-space-3);
+  border-radius: var(--ax-radius-xs);
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: background-color var(--ax-dur-fast) var(--ax-ease-standard), color var(--ax-dur-fast) var(--ax-ease-standard), border-color var(--ax-dur-fast) var(--ax-ease-standard), box-shadow var(--ax-dur-fast) var(--ax-ease-standard), transform var(--ax-dur-fast) var(--ax-ease-standard);
   border: 1px solid transparent;
-  flex: 1;
+  flex: 1;}
+
+.btnRetry {background: var(--ax-fg-default);
+  color: var(--ax-bg-surface);
+  border-color: var(--ax-fg-default);}
+
+.btnRetry:hover {background: var(--ax-fg-default);}
+
+.btnReassign {background: var(--ax-status-info-bg);
+  color: var(--ax-status-info-fg);
+  border-color: var(--ax-status-info-border);}
+
+.btnReassign:hover {background: var(--ax-status-info-bg);}
+
+.btnCancel {background: var(--ax-status-danger-bg);
+  color: var(--ax-status-danger-fg);
+  border-color: var(--ax-status-danger-border);}
+
+.btnCancel:hover {background: var(--ax-status-danger-bg);}
+
+.base :focus-visible {
+  outline: none;
+  box-shadow: var(--ax-ring);
 }
-
-.btnRetry {
-  background: var(--ax-color-gray-900, #111827);
-  color: var(--ax-surface-primary, #fff);
-  border-color: var(--ax-color-gray-900, #111827);
-}
-
-.btnRetry:hover { background: var(--ax-color-gray-700, #374151); }
-
-.btnReassign {
-  background: var(--ax-color-blue-50, #eff6ff);
-  color: var(--ax-color-blue-800, #1e40af);
-  border-color: var(--ax-color-blue-200, #bfdbfe);
-}
-
-.btnReassign:hover { background: var(--ax-color-blue-100, #dbeafe); }
-
-.btnCancel {
-  background: var(--ax-color-red-50, #fef2f2);
-  color: var(--ax-color-red-700, #b91c1c);
-  border-color: var(--ax-color-red-200, #fecaca);
-}
-
-.btnCancel:hover { background: var(--ax-color-red-100, #fee2e2); }

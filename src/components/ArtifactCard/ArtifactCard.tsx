@@ -87,7 +87,8 @@ export function ArtifactCard({
 
   return (
     <article
-      className={`${styles.artifactCard} ${className ?? ''}`}
+      className={`${styles.artifactCard} ax-card ${className ?? ''}`}
+      data-ax=""
       aria-label={`Artifact: ${artifact.title}`}
       data-streaming={isStreaming || undefined}
     >
@@ -149,7 +150,7 @@ export function ArtifactCard({
           {exportFormats.map((fmt) => (
             <button
               key={fmt}
-              className={styles.exportBtn}
+              className={`${styles.exportBtn} ax-btn ax-btn-ghost ax-btn-sm`}
               onClick={() => onExport?.(fmt)}
               aria-label={`Export as ${FORMAT_LABELS[fmt]}`}
               type="button"

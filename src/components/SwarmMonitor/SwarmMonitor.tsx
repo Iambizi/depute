@@ -1,4 +1,5 @@
 import type React from 'react';
+import { IconPause, IconStop } from '../../utils/icons';
 import styles from './SwarmMonitor.module.css';
 import type { SwarmMonitorProps } from './SwarmMonitor.types';
 
@@ -17,7 +18,8 @@ export const SwarmMonitor: React.FC<SwarmMonitorProps> = ({
 
   return (
     <div
-      className={`${styles.base} ${className || ''}`}
+      className={`${styles.base} ax-card ${className || ''}`}
+      data-ax=""
       role="region"
       aria-label="Swarm Monitor"
     >
@@ -27,12 +29,12 @@ export const SwarmMonitor: React.FC<SwarmMonitorProps> = ({
         <div className={styles.controls}>
           {onGlobalPause && (
             <button className={styles.btnPause} onClick={onGlobalPause} aria-label="Pause all agents">
-              ⏸ Pause All
+              <IconPause /> Pause All
             </button>
           )}
           {onGlobalKill && (
             <button className={styles.btnKill} onClick={onGlobalKill} aria-label="Kill all agents">
-              ⏹ Kill All
+              <IconStop /> Kill All
             </button>
           )}
         </div>

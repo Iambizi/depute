@@ -153,7 +153,8 @@ export function StateDiff({
 
   return (
     <div
-      className={`${styles.stateDiff} ${className ?? ''}`}
+      className={`${styles.stateDiff} ax-card ${className ?? ''}`}
+      data-ax=""
       role="region"
       aria-label={ariaLabel}
     >

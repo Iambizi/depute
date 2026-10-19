@@ -10,6 +10,7 @@
 import { useMemo } from 'react';
 import type { RunState } from '../../types/common';
 import { VisuallyHidden } from '../../utils/a11y';
+import { IconPause, IconPlay, IconStop, IconUndo } from '../../utils/icons';
 import type { RunControlsProps } from './RunControls.types';
 import styles from './RunControls.module.css';
 
@@ -51,7 +52,8 @@ export function RunControls({
 
   return (
     <div
-      className={`${styles.runControls} ${className ?? ''}`}
+      className={`${styles.runControls} ax-card ${className ?? ''}`}
+      data-ax=""
       role="toolbar"
       aria-label={ariaLabel}
     >
@@ -70,7 +72,7 @@ export function RunControls({
           aria-label={state === 'paused' ? 'Resume' : 'Start'}
           type="button"
         >
-          ▶
+          <IconPlay />
         </button>
       )}
 
@@ -82,7 +84,7 @@ export function RunControls({
           aria-label="Pause"
           type="button"
         >
-          ⏸
+          <IconPause />
         </button>
       )}
 
@@ -94,7 +96,7 @@ export function RunControls({
           aria-label="Stop"
           type="button"
         >
-          ⏹
+          <IconStop />
         </button>
       )}
 
@@ -106,7 +108,7 @@ export function RunControls({
           aria-label="Retry"
           type="button"
         >
-          ↻
+          <IconUndo />
         </button>
       )}
 

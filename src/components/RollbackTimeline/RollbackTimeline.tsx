@@ -10,6 +10,7 @@
 
 import { useState, useMemo } from 'react';
 import { VisuallyHidden } from '../../utils/a11y';
+import { IconCircle, IconDot, IconLock, IconUndo } from '../../utils/icons';
 import type {
   RollbackTimelineProps,
   RollbackPoint,
@@ -73,7 +74,8 @@ export function RollbackTimeline({
 
   return (
     <div
-      className={`${styles.rollbackTimeline} ${className ?? ''}`}
+      className={`${styles.rollbackTimeline} ax-card ${className ?? ''}`}
+      data-ax=""
       role="region"
       aria-label={`${title}: ${points.length} actions, ${rollbackableCount} reversible`}
     >
@@ -109,7 +111,7 @@ export function RollbackTimeline({
 
               {/* Dot */}
               <span className={`${styles.dot} ${STATUS_CLASSES[point.status]}`} aria-hidden="true">
-                {point.status === 'irreversible' ? '🔒' : point.status === 'current' ? '●' : '○'}
+                {point.status === 'irreversible' ? <IconLock /> : point.status === 'current' ? <IconDot /> : <IconCircle />}
               </span>
 
               {/* Content */}
@@ -135,7 +137,7 @@ export function RollbackTimeline({
                     onClick={() => handleRollbackClick(point)}
                     aria-label={`Rollback to: ${point.label}`}
                   >
-                    ↩ Rollback to here
+                    <IconUndo /> Rollback to here
                     {point.dependentCount != null && point.dependentCount > 0 && (
                       <span className={styles.dependentCount}>
                         ({point.dependentCount} dependent action{point.dependentCount !== 1 ? 's' : ''})

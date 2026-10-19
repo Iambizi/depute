@@ -10,413 +10,306 @@
 /* ------------------------------------------------------------------ */
 
 .approvalGate {
-  font-family: var(--ax-font-family);
-  background: var(--ax-surface-primary);
-  border: var(--ax-border-width) solid var(--ax-border-color);
-  border-radius: var(--ax-radius-lg);
-  box-shadow: var(--ax-shadow-md);
+  font-family: var(--ax-font-sans);
+  background: var(--ax-card-bg);
+  border: 0;
+  border-radius: var(--ax-card-radius);
+  box-shadow: var(--ax-shadow-2);
   overflow: hidden;
   position: relative;
-}
+  color: var(--ax-fg-default);
+  font-variant-numeric: var(--ax-numeric);}
 
-.approvalGateApproved {
-  border-color: var(--ax-status-completed-border);
-}
+.approvalGatePending {box-shadow: var(--ax-shadow-2), var(--ax-rail);}
 
-.approvalGateRejected {
-  border-color: var(--ax-status-failed-border);
-}
+.approvalGateApproved {box-shadow: var(--ax-shadow-1), var(--ax-rail-success);}
 
-.approvalGateExpired {
-  border-color: var(--ax-color-gray-300);
-  opacity: 0.8;
-}
+.approvalGateRejected {box-shadow: var(--ax-shadow-1), var(--ax-rail-danger);}
+
+.approvalGateExpired {border-color: var(--ax-border-strong);
+  opacity: 0.8;}
 
 /* ------------------------------------------------------------------ */
 /* Header                                                              */
 /* ------------------------------------------------------------------ */
 
-.header {
-  display: flex;
+.header {display: flex;
   align-items: center;
-  gap: var(--ax-space-3);
-  padding: var(--ax-space-4) var(--ax-space-5);
-  border-bottom: var(--ax-border-width) solid var(--ax-border-color);
-}
+  gap: var(--ax-space-2);
+  padding: var(--ax-card-pad-y) var(--ax-card-pad-x);
+  border-bottom: var(--ax-border-width) solid var(--ax-border-default);
+  background: var(--ax-card-header-bg);
+  min-height: var(--ax-header-min);}
 
-.statusIcon {
-  flex-shrink: 0;
-  width: 2rem;
-  height: 2rem;
+.statusIcon {flex-shrink: 0;
+  width: var(--ax-space-8);
+  height: var(--ax-space-8);
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: var(--ax-radius-full);
-  font-size: var(--ax-font-size-base);
-}
+  font-size: var(--ax-text-lg);}
 
-.statusIconPending {
-  background: var(--ax-status-waiting-bg);
-  color: var(--ax-status-waiting-color);
-  animation: ax-pulse var(--ax-duration-slow) var(--ax-ease-default) infinite;
-}
+.statusIconPending {background: var(--ax-status-warning-bg);
+  color: var(--ax-status-warning-fg);
+  animation: ax-pulse var(--ax-dur-slow) var(--ax-ease-standard) infinite;}
 
-.statusIconApproved {
-  background: var(--ax-status-completed-bg);
-  color: var(--ax-status-completed-color);
-}
+.statusIconApproved {background: var(--ax-status-success-bg);
+  color: var(--ax-status-success-fg);}
 
-.statusIconRejected {
-  background: var(--ax-status-failed-bg);
-  color: var(--ax-status-failed-color);
-}
+.statusIconRejected {background: var(--ax-status-danger-bg);
+  color: var(--ax-status-danger-fg);}
 
-.statusIconExpired {
-  background: var(--ax-color-gray-100);
-  color: var(--ax-color-gray-500);
-}
+.statusIconExpired {background: var(--ax-bg-muted);
+  color: var(--ax-fg-muted);}
 
-.headerContent {
-  flex: 1;
+.headerContent {flex: 1;
   min-width: 0;
-}
+  display: flex;
+  flex-direction: column;
+  gap: var(--ax-space-0-5);}
 
-.title {
-  margin: 0;
-  font-size: var(--ax-font-size-lg);
-  font-weight: var(--ax-font-weight-semibold);
-  line-height: var(--ax-line-height-tight);
-  color: var(--ax-text-primary);
-}
+.trailing {display: flex;
+  align-items: center;
+  gap: var(--ax-space-2);
+  margin-left: auto;}
 
-.statusLabel {
-  font-size: var(--ax-font-size-xs);
-  color: var(--ax-text-secondary);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  margin-top: var(--ax-space-1);
-}
+.title {margin: 0;
+  font-size: var(--ax-text-lg);
+  font-weight: var(--ax-weight-semibold);
+  line-height: var(--ax-leading-lg);
+  color: var(--ax-fg-default);
+  letter-spacing: var(--ax-tracking-tight);}
+
+.statusLabel {margin: 0;}
 
 /* ------------------------------------------------------------------ */
 /* Body                                                                */
 /* ------------------------------------------------------------------ */
 
-.body {
-  padding: var(--ax-space-4) var(--ax-space-5);
-}
+.body {padding: var(--ax-space-4) var(--ax-space-5);}
 
-.description {
-  font-size: var(--ax-font-size-sm);
-  color: var(--ax-text-secondary);
-  line-height: var(--ax-line-height-relaxed);
-  margin-bottom: var(--ax-space-3);
-}
+.description {font-size: var(--ax-text-md);
+  color: var(--ax-fg-muted);
+  line-height: var(--ax-leading-lg);
+  margin-bottom: var(--ax-space-3);}
 
-.reasoning {
-  padding: var(--ax-space-3);
-  background: var(--ax-surface-secondary);
-  border-radius: var(--ax-radius-md);
-  font-size: var(--ax-font-size-xs);
-  color: var(--ax-text-secondary);
-  line-height: var(--ax-line-height-relaxed);
-  margin-bottom: var(--ax-space-3);
-}
+.reasoning {padding: var(--ax-space-3);
+  background: var(--ax-bg-subtle);
+  border-radius: var(--ax-radius-sm);
+  font-size: var(--ax-text-xs);
+  color: var(--ax-fg-muted);
+  line-height: var(--ax-leading-lg);
+  margin-bottom: var(--ax-space-3);}
 
-.reasoningLabel {
-  font-weight: var(--ax-font-weight-semibold);
-  color: var(--ax-text-primary);
+.reasoningLabel {font-weight: var(--ax-weight-semibold);
+  color: var(--ax-fg-default);
   margin-bottom: var(--ax-space-1);
-  font-size: var(--ax-font-size-xs);
-}
+  font-size: var(--ax-text-xs);}
 
 /* ------------------------------------------------------------------ */
 /* Confidence badge                                                    */
 /* ------------------------------------------------------------------ */
 
-.confidenceBadge {
-  display: inline-flex;
+.confidenceBadge {display: inline-flex;
   align-items: center;
-  gap: var(--ax-space-1);
-  font-size: var(--ax-font-size-xs);
-  font-weight: var(--ax-font-weight-medium);
-  padding: var(--ax-space-1) var(--ax-space-2);
-  border-radius: var(--ax-radius-full);
-  margin-bottom: var(--ax-space-3);
-}
+  margin: 0;}
 
-.confidenceHigh {
-  background: var(--ax-confidence-high-bg);
-  color: var(--ax-confidence-high-color);
-}
+.confidenceHigh {background: var(--ax-status-success-bg);
+  color: var(--ax-status-success-fg);}
 
-.confidenceMedium {
-  background: var(--ax-confidence-medium-bg);
-  color: var(--ax-confidence-medium-color);
-}
+.confidenceMedium {background: var(--ax-status-warning-bg);
+  color: var(--ax-status-warning-fg);}
 
-.confidenceLow {
-  background: var(--ax-confidence-low-bg);
-  color: var(--ax-confidence-low-color);
-}
+.confidenceLow {background: var(--ax-status-danger-bg);
+  color: var(--ax-status-danger-fg);}
 
 /* ------------------------------------------------------------------ */
 /* Scope — Grant Details                                               */
 /* ------------------------------------------------------------------ */
 
-.scope {
-  padding: var(--ax-space-3);
-  background: var(--ax-surface-secondary);
-  border-radius: var(--ax-radius-md);
-  margin-bottom: var(--ax-space-3);
-}
+.scope {padding: var(--ax-space-3);
+  background: var(--ax-bg-subtle);
+  border-radius: var(--ax-radius-sm);
+  margin-bottom: var(--ax-space-3);}
 
-.scopeTitle {
-  font-size: var(--ax-font-size-xs);
-  font-weight: var(--ax-font-weight-semibold);
-  color: var(--ax-text-primary);
-  margin-bottom: var(--ax-space-2);
-}
+.scopeTitle {font-size: var(--ax-text-xs);
+  font-weight: var(--ax-weight-semibold);
+  color: var(--ax-fg-default);
+  margin-bottom: var(--ax-space-2);}
 
-.scopeItems {
-  display: flex;
+.scopeItems {display: flex;
   flex-wrap: wrap;
-  gap: var(--ax-space-2);
-}
+  gap: var(--ax-space-2);}
 
-.scopeBadge {
-  display: inline-flex;
+.scopeBadge {display: inline-flex;
   align-items: center;
   gap: var(--ax-space-1);
-  font-size: var(--ax-font-size-xs);
+  font-size: var(--ax-text-xs);
   padding: var(--ax-space-1) var(--ax-space-2);
-  border-radius: var(--ax-radius-sm);
-  background: var(--ax-color-blue-50);
-  color: var(--ax-color-blue-700);
-  border: var(--ax-border-width) solid var(--ax-color-blue-200);
-}
+  border-radius: var(--ax-radius-xs);
+  background: var(--ax-status-neutral-bg);
+  color: var(--ax-status-neutral-fg);
+  border: var(--ax-border-width) solid var(--ax-status-neutral-border);}
 
 /* ------------------------------------------------------------------ */
 /* Metadata table                                                      */
 /* ------------------------------------------------------------------ */
 
-.metadata {
-  margin-bottom: var(--ax-space-3);
-}
+.metadata {margin-bottom: var(--ax-space-3);}
 
-.metadataTable {
-  width: 100%;
+.metadataTable {width: 100%;
   border-collapse: collapse;
-  font-size: var(--ax-font-size-xs);
-}
+  font-size: var(--ax-text-xs);}
 
-.metadataTable td {
-  padding: var(--ax-space-1) var(--ax-space-2);
-  border-bottom: var(--ax-border-width) solid var(--ax-border-color);
-  background: transparent !important;
-}
+.metadataTable td {padding: var(--ax-space-1) var(--ax-space-2);
+  border-bottom: var(--ax-border-width) solid var(--ax-border-default);
+  background: transparent !important;}
 
-.metadataTable tr {
-  background: transparent !important;
-  border: none !important;
-}
+.metadataTable tr {background: transparent !important;
+  border: none !important;}
 
-.metadataTable td:first-child {
-  font-weight: var(--ax-font-weight-medium);
-  color: var(--ax-text-secondary);
+.metadataTable td:first-child {font-weight: var(--ax-weight-medium);
+  color: var(--ax-fg-muted);
   white-space: nowrap;
-  width: 1%;
-}
+  width: 1%;}
 
-.metadataTable td:last-child {
-  color: var(--ax-text-primary);
-  font-family: var(--ax-font-family-mono);
-}
+.metadataTable td:last-child {color: var(--ax-fg-default);
+  font-family: var(--ax-font-mono);}
 
 /* ------------------------------------------------------------------ */
 /* Countdown                                                           */
 /* ------------------------------------------------------------------ */
 
-.countdown {
-  display: inline-flex;
+.countdown {display: inline-flex;
   align-items: center;
   gap: var(--ax-space-1);
-  font-size: var(--ax-font-size-xs);
-  font-weight: var(--ax-font-weight-medium);
+  font-size: var(--ax-text-xs);
+  font-weight: var(--ax-weight-medium);
   padding: var(--ax-space-1) var(--ax-space-2);
-  border-radius: var(--ax-radius-full);
-}
+  border-radius: var(--ax-radius-full);}
 
-.countdownNormal {
-  background: var(--ax-color-gray-100);
-  color: var(--ax-color-gray-600);
-}
+.countdownNormal {background: var(--ax-bg-muted);
+  color: var(--ax-fg-muted);}
 
-.countdownWarning {
-  background: var(--ax-color-amber-50);
-  color: var(--ax-color-amber-700);
-}
+.countdownWarning {background: var(--ax-status-warning-bg);
+  color: var(--ax-status-warning-fg);}
 
-.countdownUrgent {
-  background: var(--ax-color-red-50);
-  color: var(--ax-color-red-700);
-  animation: ax-pulse var(--ax-duration-normal) var(--ax-ease-default) infinite;
-}
+.countdownUrgent {background: var(--ax-status-danger-bg);
+  color: var(--ax-status-danger-fg);
+  animation: ax-pulse var(--ax-dur-base) var(--ax-ease-standard) infinite;}
 
 /* ------------------------------------------------------------------ */
 /* Staged mode indicator                                               */
 /* ------------------------------------------------------------------ */
 
-.stageIndicator {
-  display: flex;
+.stageIndicator {display: flex;
   align-items: center;
   gap: var(--ax-space-2);
   padding: var(--ax-space-2) var(--ax-space-5);
-  background: var(--ax-surface-secondary);
-  font-size: var(--ax-font-size-xs);
-  color: var(--ax-text-secondary);
-}
+  background: var(--ax-bg-subtle);
+  font-size: var(--ax-text-xs);
+  color: var(--ax-fg-muted);}
 
-.stage {
-  display: flex;
+.stage {display: flex;
   align-items: center;
-  gap: var(--ax-space-1);
-}
+  gap: var(--ax-space-1);}
 
-.stageActive {
-  color: var(--ax-status-active-color);
-  font-weight: var(--ax-font-weight-semibold);
-}
+.stageActive {color: var(--ax-status-info-fg);
+  font-weight: var(--ax-weight-semibold);}
 
-.stageCompleted {
-  color: var(--ax-status-completed-color);
-}
+.stageCompleted {color: var(--ax-status-success-fg);}
 
-.stageSeparator {
-  color: var(--ax-color-gray-300);
-}
+.stageSeparator {color: var(--ax-border-strong);}
 
 /* ------------------------------------------------------------------ */
 /* Actions                                                             */
 /* ------------------------------------------------------------------ */
 
-.actions {
-  display: flex;
+.actions {display: flex;
   align-items: center;
   gap: var(--ax-space-3);
   padding: var(--ax-space-4) var(--ax-space-5);
-  border-top: var(--ax-border-width) solid var(--ax-border-color);
-}
+  border-top: var(--ax-border-width) solid var(--ax-border-default);}
 
-.btn {
-  display: inline-flex;
+.btn {display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: var(--ax-space-2);
   padding: var(--ax-space-2) var(--ax-space-4);
-  border-radius: var(--ax-radius-md);
-  font-family: var(--ax-font-family);
-  font-size: var(--ax-font-size-sm);
-  font-weight: var(--ax-font-weight-medium);
+  border-radius: var(--ax-radius-sm);
+  font-family: var(--ax-font-sans);
+  font-size: var(--ax-text-md);
+  font-weight: var(--ax-weight-medium);
   border: var(--ax-border-width) solid transparent;
   cursor: pointer;
-  transition: all var(--ax-duration-fast) var(--ax-ease-default);
-}
+  transition: background-color var(--ax-dur-fast) var(--ax-ease-standard), color var(--ax-dur-fast) var(--ax-ease-standard), border-color var(--ax-dur-fast) var(--ax-ease-standard), box-shadow var(--ax-dur-fast) var(--ax-ease-standard), transform var(--ax-dur-fast) var(--ax-ease-standard);}
 
-.btn:focus-visible {
-  outline: 2px solid var(--ax-color-blue-500);
-  outline-offset: 2px;
-}
+.btn:focus-visible {outline: var(--ax-space-0-5) solid var(--ax-status-info-border);
+  outline-offset: var(--ax-space-0-5);}
 
-.btnApprove {
-  background: var(--ax-text-primary);
-  color: var(--ax-surface-primary);
-  border-color: var(--ax-text-primary);
-}
+.btnApprove {background: var(--ax-fg-default);
+  color: var(--ax-bg-surface);
+  border-color: var(--ax-fg-default);}
 
-.btnApprove:hover {
-  background: var(--ax-color-gray-800);
-}
+.btnApprove:hover {background: var(--ax-fg-default);}
 
-.btnReject {
-  background: var(--ax-surface-primary);
-  color: var(--ax-text-primary);
-  border-color: var(--ax-border-color);
-}
+.btnReject {background: var(--ax-bg-surface);
+  color: var(--ax-fg-default);
+  border-color: var(--ax-border-default);}
 
-.btnReject:hover {
-  background: var(--ax-surface-secondary);
-}
+.btnReject:hover {background: var(--ax-bg-subtle);}
 
-.btnSecondary {
-  background: var(--ax-surface-primary);
-  color: var(--ax-text-secondary);
-  border-color: var(--ax-border-color);
-}
+.btnSecondary {background: var(--ax-bg-surface);
+  color: var(--ax-fg-muted);
+  border-color: var(--ax-border-default);}
 
-.btnSecondary:hover {
-  background: var(--ax-surface-secondary);
-  color: var(--ax-text-primary);
-}
+.btnSecondary:hover {background: var(--ax-bg-subtle);
+  color: var(--ax-fg-default);}
 
-.actionsSpacerRight {
-  margin-left: auto;
-}
+.actionsSpacerRight {margin-left: auto;}
 
 /* ------------------------------------------------------------------ */
 /* Resolved state banner                                               */
 /* ------------------------------------------------------------------ */
 
-.resolvedBanner {
-  display: flex;
+.resolvedBanner {display: flex;
   align-items: center;
   gap: var(--ax-space-2);
   padding: var(--ax-space-3) var(--ax-space-5);
-  font-size: var(--ax-font-size-sm);
-  font-weight: var(--ax-font-weight-medium);
-}
+  font-size: var(--ax-text-md);
+  font-weight: var(--ax-weight-medium);}
 
-.resolvedApproved {
-  background: var(--ax-status-completed-bg);
-  color: var(--ax-status-completed-color);
-}
+.resolvedApproved {background: var(--ax-status-success-bg);
+  color: var(--ax-status-success-fg);}
 
-.resolvedRejected {
-  background: var(--ax-status-failed-bg);
-  color: var(--ax-status-failed-color);
-}
+.resolvedRejected {background: var(--ax-status-danger-bg);
+  color: var(--ax-status-danger-fg);}
 
-.resolvedExpired {
-  background: var(--ax-color-gray-100);
-  color: var(--ax-color-gray-600);
-}
+.resolvedExpired {background: var(--ax-bg-muted);
+  color: var(--ax-fg-muted);}
 
 /* ------------------------------------------------------------------ */
 /* Handoff Extensions                                                  */
 /* ------------------------------------------------------------------ */
 
-.handoffPending {
-  border-style: dashed;
+.handoffPending {border-style: dashed;
   box-shadow: none;
-  background: var(--ax-surface-secondary);
-  transition: all var(--ax-duration-normal) var(--ax-ease-default);
-}
+  background: var(--ax-bg-subtle);
+  transition: background-color var(--ax-dur-fast) var(--ax-ease-standard), color var(--ax-dur-fast) var(--ax-ease-standard), border-color var(--ax-dur-fast) var(--ax-ease-standard), box-shadow var(--ax-dur-fast) var(--ax-ease-standard), transform var(--ax-dur-fast) var(--ax-ease-standard);}
 
-.handoffMessage {
-  font-size: var(--ax-font-size-sm);
-  color: var(--ax-text-secondary);
-  font-weight: var(--ax-font-weight-medium);
+.handoffMessage {font-size: var(--ax-text-md);
+  color: var(--ax-fg-muted);
+  font-weight: var(--ax-weight-medium);
   display: flex;
   align-items: center;
-  gap: var(--ax-space-2);
-}
+  gap: var(--ax-space-2);}
 
-.handoffMessage::before {
-  content: '';
+.handoffMessage::before {content: '';
   display: inline-block;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--ax-status-waiting-bg);
-  border: 2px solid var(--ax-status-waiting-color);
-  animation: ax-pulse var(--ax-duration-slow) infinite;
-}
+  width: var(--ax-space-2);
+  height: var(--ax-space-2);
+  border-radius: var(--ax-radius-full);
+  background: var(--ax-status-warning-bg);
+  border: var(--ax-space-0-5) solid var(--ax-status-warning-fg);
+  animation: ax-pulse var(--ax-dur-slow) infinite;}

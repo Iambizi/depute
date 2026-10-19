@@ -1,0 +1,140 @@
+/**
+ * Deprecated aliases for one minor version (0.5.x).
+ * New component CSS should use semantic and component tokens.
+ * Names that exist in the new scale (--ax-space-*, --ax-radius-sm, --ax-radius-md)
+ * are not aliased: the new values win.
+ */
+
+:root {
+  --ax-color-gray-50: var(--ax-gray-2);
+  --ax-color-gray-100: var(--ax-gray-3);
+  --ax-color-gray-200: var(--ax-gray-5);
+  --ax-color-gray-300: var(--ax-gray-6);
+  --ax-color-gray-400: var(--ax-gray-9);
+  --ax-color-gray-500: var(--ax-gray-10);
+  --ax-color-gray-600: var(--ax-gray-11);
+  --ax-color-gray-700: var(--ax-gray-11);
+  --ax-color-gray-800: var(--ax-gray-12);
+  --ax-color-gray-900: var(--ax-gray-12);
+
+  --ax-color-blue-50: var(--ax-status-info-bg);
+  --ax-color-blue-100: var(--ax-status-info-bg);
+  --ax-color-blue-200: var(--ax-status-info-border);
+  --ax-color-blue-300: var(--ax-status-info-border);
+  --ax-color-blue-500: var(--ax-status-info-border);
+  --ax-color-blue-600: var(--ax-status-info-fg);
+  --ax-color-blue-700: var(--ax-status-info-fg);
+  --ax-color-blue-800: var(--ax-status-info-fg);
+
+  --ax-color-green-50: var(--ax-status-success-bg);
+  --ax-color-green-100: var(--ax-status-success-bg);
+  --ax-color-green-200: var(--ax-status-success-border);
+  --ax-color-green-300: var(--ax-status-success-border);
+  --ax-color-green-500: var(--ax-green-9);
+  --ax-color-green-600: var(--ax-status-success-fg);
+  --ax-color-green-700: var(--ax-status-success-fg);
+  --ax-color-green-800: var(--ax-status-success-fg);
+
+  --ax-color-red-50: var(--ax-status-danger-bg);
+  --ax-color-red-100: var(--ax-status-danger-bg);
+  --ax-color-red-200: var(--ax-status-danger-border);
+  --ax-color-red-300: var(--ax-status-danger-border);
+  --ax-color-red-500: var(--ax-status-danger-solid);
+  --ax-color-red-600: var(--ax-status-danger-fg);
+  --ax-color-red-700: var(--ax-status-danger-fg);
+  --ax-color-red-800: var(--ax-status-danger-fg);
+
+  --ax-color-amber-50: var(--ax-status-warning-bg);
+  --ax-color-amber-100: var(--ax-status-warning-bg);
+  --ax-color-amber-200: var(--ax-status-warning-border);
+  --ax-color-amber-300: var(--ax-status-warning-border);
+  --ax-color-amber-500: var(--ax-amber-9);
+  --ax-color-amber-600: var(--ax-status-warning-fg);
+  --ax-color-amber-700: var(--ax-status-warning-fg);
+  --ax-color-amber-800: var(--ax-status-warning-fg);
+
+  --ax-color-indigo-50: var(--ax-accent-3);
+  --ax-color-indigo-100: var(--ax-accent-3);
+  --ax-color-indigo-200: var(--ax-accent-6);
+  --ax-color-indigo-300: var(--ax-accent-6);
+  --ax-color-indigo-500: var(--ax-accent-9);
+  --ax-color-indigo-600: var(--ax-accent-11);
+  --ax-color-indigo-700: var(--ax-accent-11);
+  --ax-color-indigo-800: var(--ax-accent-11);
+  --ax-color-indigo-900: var(--ax-accent-11);
+
+  --ax-depth-0: var(--ax-accent-9);
+  --ax-depth-1: var(--ax-gray-9);
+  --ax-depth-2: var(--ax-green-9);
+  --ax-depth-3: var(--ax-amber-9);
+
+  --ax-status-pending-bg: var(--ax-status-neutral-bg);
+  --ax-status-pending-color: var(--ax-status-neutral-fg);
+  --ax-status-pending-border: var(--ax-status-neutral-border);
+  --ax-status-active-bg: var(--ax-status-info-bg);
+  --ax-status-active-color: var(--ax-status-info-fg);
+  --ax-status-active-border: var(--ax-status-info-border);
+  --ax-status-completed-bg: var(--ax-status-success-bg);
+  --ax-status-completed-color: var(--ax-status-success-fg);
+  --ax-status-completed-border: var(--ax-status-success-border);
+  --ax-status-failed-bg: var(--ax-status-danger-bg);
+  --ax-status-failed-color: var(--ax-status-danger-fg);
+  --ax-status-failed-border: var(--ax-status-danger-border);
+  --ax-status-waiting-bg: var(--ax-status-warning-bg);
+  --ax-status-waiting-color: var(--ax-status-warning-fg);
+  --ax-status-waiting-border: var(--ax-status-warning-border);
+
+  --ax-confidence-high-color: var(--ax-status-success-fg);
+  --ax-confidence-high-bg: var(--ax-status-success-bg);
+  --ax-confidence-medium-color: var(--ax-status-warning-fg);
+  --ax-confidence-medium-bg: var(--ax-status-warning-bg);
+  --ax-confidence-low-color: var(--ax-status-danger-fg);
+  --ax-confidence-low-bg: var(--ax-status-danger-bg);
+
+  --ax-font-family: var(--ax-font-sans);
+  --ax-font-family-mono: var(--ax-font-mono);
+  --ax-font-size-xs: var(--ax-text-xs);
+  --ax-font-size-sm: var(--ax-text-md);
+  --ax-font-size-base: var(--ax-text-lg);
+  --ax-font-size-lg: var(--ax-text-lg);
+  --ax-font-size-xl: var(--ax-text-xl);
+  --ax-font-weight-normal: var(--ax-weight-regular);
+  --ax-font-weight-medium: var(--ax-weight-medium);
+  --ax-font-weight-semibold: var(--ax-weight-semibold);
+  --ax-font-weight-bold: var(--ax-weight-semibold);
+  --ax-line-height-tight: var(--ax-leading-sm);
+  --ax-line-height-normal: var(--ax-leading-md);
+  --ax-line-height-relaxed: var(--ax-leading-lg);
+
+  --ax-radius-lg: var(--ax-radius-md);
+  --ax-radius-xl: var(--ax-radius-md);
+
+  --ax-shadow-sm: var(--ax-shadow-1);
+  --ax-shadow-md: var(--ax-shadow-2);
+  --ax-shadow-lg: var(--ax-shadow-3);
+
+  --ax-duration-fast: var(--ax-dur-fast);
+  --ax-duration-normal: var(--ax-dur-base);
+  --ax-duration-slow: var(--ax-dur-slow);
+  --ax-duration-pulse: var(--ax-dur-emph);
+  --ax-ease-default: var(--ax-ease-standard);
+  --ax-ease-in: var(--ax-ease-exit);
+  --ax-ease-out: var(--ax-ease-enter);
+
+  --ax-surface-primary: var(--ax-bg-surface);
+  --ax-surface-secondary: var(--ax-bg-subtle);
+  --ax-surface-elevated: var(--ax-bg-surface);
+  --ax-border-color: var(--ax-border-default);
+  --ax-text-primary: var(--ax-fg-default);
+  --ax-text-secondary: var(--ax-fg-muted);
+  --ax-text-tertiary: var(--ax-fg-muted);
+
+  --ax-bg-primary: var(--ax-bg-surface);
+  --ax-bg-secondary: var(--ax-bg-subtle);
+  --ax-bg-tertiary: var(--ax-bg-muted);
+  --ax-bg-card: var(--ax-card-bg);
+  --ax-bg-hover: var(--ax-row-hover);
+  --ax-border-urgent: var(--ax-status-danger-border);
+  --ax-border-base: var(--ax-border-default);
+  --ax-brand-primary: var(--ax-accent-9);
+}

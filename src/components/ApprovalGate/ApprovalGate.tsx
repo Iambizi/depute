@@ -16,6 +16,7 @@
 import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import type React from 'react';
 import { getConfidenceLevel } from '../../types/common';
+import { IconArrowLeft, IconArrowRight } from '../../utils/icons';
 import { useAnnouncer, useFocusTrap, VisuallyHidden } from '../../utils/a11y';
 import type { ApprovalGateProps, HandoffContext, StagedStep } from './ApprovalGate.types';
 import styles from './ApprovalGate.module.css';
@@ -321,7 +322,8 @@ export function ApprovalGate({
   return (
     <div
       ref={trapRef}
-      className={`${styles.approvalGate} ${getContainerClass(status)} ${className ?? ''}`}
+      className={`${styles.approvalGate} ax-card ax-gate ${getContainerClass(status)} ${className ?? ''}`}
+      data-ax=""
       role={isPending ? 'alertdialog' : 'region'}
       aria-label={ariaLabel}
       aria-modal={isPending ? true : undefined}
@@ -338,32 +340,41 @@ export function ApprovalGate({
           </span>
         )}
         <div className={styles.headerContent}>
-          <h3 className={styles.title}>{title}</h3>
-          <div className={styles.statusLabel}>{STATUS_LABELS[status]}</div>
+          <p className={`${styles.statusLabel} ax-eyebrow`}>{STATUS_LABELS[status]}</p>
+          <h3 className={`${styles.title} ax-title`}>{title}</h3>
         </div>
 
-        {/* Countdown badge */}
-        {(isPending || isHandoffPending) && timeRemaining != null && timeRemaining > 0 && (
-          <span
-            className={`${styles.countdown} ${countdownClass}`}
-            aria-live="polite"
-          >
-            {formatTime(timeRemaining)}
-          </span>
-        )}
+        <div className={styles.trailing}>
+          {confidence != null && (
+            <span
+              className={`${styles.confidenceBadge} ax-badge ${confidenceClass}`}
+              aria-label={`Confidence: ${confidence}%`}
+            >
+              {confidence}% confidence
+            </span>
+          )}
+          {(isPending || isHandoffPending) && timeRemaining != null && timeRemaining > 0 && (
+            <span
+              className={`${styles.countdown} ax-numeric ${countdownClass}`}
+              aria-live="polite"
+            >
+              {formatTime(timeRemaining)}
+            </span>
+          )}
+        </div>
       </div>
 
       {/* Staged mode indicator */}
       {mode === 'staged' && isPending && !isHandoffPending && (
         <div className={styles.stageIndicator} aria-label="Approval stages">
           <span className={`${styles.stage} ${stagedStep === 'previewing' ? styles.stageActive : styles.stageCompleted}`}>
-            {stagedStep === 'confirming' ? '✓' : '1.'} Preview
+            {stagedStep === 'confirming' ? <IconCheck /> : '1.'} Preview
           </span>
-          <span className={styles.stageSeparator} aria-hidden="true">→</span>
+          <span className={styles.stageSeparator} aria-hidden="true" />
           <span className={`${styles.stage} ${stagedStep === 'confirming' ? styles.stageActive : ''}`}>
             2. Confirm
           </span>
-          <span className={styles.stageSeparator} aria-hidden="true">→</span>
+          <span className={styles.stageSeparator} aria-hidden="true" />
           <span className={styles.stage}>3. Execute</span>
         </div>
       )}
@@ -383,33 +394,23 @@ export function ApprovalGate({
           </div>
         )}
 
-        {/* Confidence badge */}
-        {confidence != null && (
-          <span
-            className={`${styles.confidenceBadge} ${confidenceClass}`}
-            aria-label={`Confidence: ${confidence}%`}
-          >
-            {confidence}% confidence
-          </span>
-        )}
-
         {/* Scope — Grant Details */}
         {scope && (scope.resourceLimit || scope.durationSeconds || scope.target) && (
           <div className={styles.scope}>
             <div className={styles.scopeTitle}>Grant Details</div>
             <div className={styles.scopeItems}>
               {scope.resourceLimit && (
-                <span className={styles.scopeBadge}>
+                <span className={`${styles.scopeBadge} ax-badge`}>
                   Up to {scope.resourceLimit}
                 </span>
               )}
               {scope.durationSeconds && (
-                <span className={styles.scopeBadge}>
+                <span className={`${styles.scopeBadge} ax-badge ax-numeric`}>
                   Valid for {formatTime(scope.durationSeconds)}
                 </span>
               )}
               {scope.target && (
-                <span className={styles.scopeBadge}>
+                <span className={`${styles.scopeBadge} ax-badge`}>
                   {scope.target}
                 </span>
               )}
@@ -444,7 +445,7 @@ export function ApprovalGate({
               onClick={handleBack}
               type="button"
             >
-              ← Back
+              <IconArrowLeft /> Back
             </button>
           )}
 
@@ -464,9 +465,9 @@ export function ApprovalGate({
             type="button"
           >
             {mode === 'staged' && stagedStep === 'previewing'
-              ? 'Preview & Continue →'
+              ? <>Preview and continue <IconArrowRight /></>
               : mode === 'staged' && stagedStep === 'confirming'
-                ? 'Confirm & Execute ✓'
+                ? <>Confirm and execute <IconCheck /></>
                 : 'Approve'}
           </button>
         </div>
@@ -493,7 +494,7 @@ export function ApprovalGate({
       {/* Resolved state banner */}
       {isResolved && (
         <div
-          className={`${styles.resolvedBanner} ${
+          className={`ax-resolution ${styles.resolvedBanner} ${
             status === 'approved'
               ? styles.resolvedApproved
               : (status === 'rejected' || status === 'handoff_denied')

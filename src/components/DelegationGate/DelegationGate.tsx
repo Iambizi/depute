@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import type React from 'react';
+import { IconDot } from '../../utils/icons';
 import styles from './DelegationGate.module.css';
 import type { DelegationGateProps } from './DelegationGate.types';
 
@@ -36,14 +37,15 @@ export const DelegationGate: React.FC<DelegationGateProps> = ({
 
   return (
     <div
-      className={`${styles.base} ${className || ''}`}
+      className={`${styles.base} ax-card ax-gate ${className || ''}`}
+      data-ax=""
       role="alertdialog"
       aria-modal="true"
       aria-label={`${requestingAgent} is requesting to spawn a new agent`}
     >
       {/* Header */}
       <div className={styles.header}>
-        <span className={styles.icon} aria-hidden="true">⊕</span>
+        <span className={styles.icon} aria-hidden="true"><IconDot /></span>
         <div className={styles.headerText}>
           <span className={styles.title}>Agent Spawn Request</span>
           <span className={styles.subtitle}>

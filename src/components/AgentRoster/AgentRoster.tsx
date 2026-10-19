@@ -122,7 +122,8 @@ export const AgentRoster: React.FC<AgentRosterProps> = ({
 
   return (
     <div
-      className={`${styles.base} ${className || ''}`}
+      className={`${styles.base} ax-card ${className || ''}`}
+      data-ax=""
       role="region"
       aria-label="Agent Roster"
     >

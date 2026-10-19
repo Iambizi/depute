@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import type React from 'react';
+import { IconChevron } from '../../utils/icons';
 import styles from './EscalationRouter.module.css';
 import type { EscalationRouterProps } from './EscalationRouter.types';
 
@@ -22,7 +23,8 @@ export const EscalationRouter: React.FC<EscalationRouterProps> = ({
 
   return (
     <div
-      className={`${styles.base} ${className || ''}`}
+      className={`${styles.base} ax-card ax-gate ${className || ''}`}
+      data-ax=""
       role="alertdialog"
       aria-modal="true"
       aria-label={`Escalation: ${failedAgent} failed`}
@@ -56,7 +58,7 @@ export const EscalationRouter: React.FC<EscalationRouterProps> = ({
             onClick={() => setTraceExpanded(!traceExpanded)}
             aria-expanded={traceExpanded}
           >
-            <span className={`${styles.chevron} ${traceExpanded ? styles.chevronOpen : ''}`}>▶</span>
+            <span className={`${styles.chevron} ${traceExpanded ? styles.chevronOpen : ''}`}><IconChevron /></span>
             {traceExpanded ? 'Hide' : 'Show'} Error Trace
           </button>
           {traceExpanded && (
@@ -70,9 +72,9 @@ export const EscalationRouter: React.FC<EscalationRouterProps> = ({
         <div className={styles.recommendation}>
           <span className={styles.recLabel}>System Recommendation</span>
           <span className={styles.recValue}>
-            {recommendation === 'retry' && '↺ Retry with same agent'}
-            {recommendation === 'reassign' && '⇄ Reassign to different agent'}
-            {recommendation === 'cancel' && '⊘ Cancel this branch'}
+            {recommendation === 'retry' && 'Retry with same agent'}
+            {recommendation === 'reassign' && 'Reassign to different agent'}
+            {recommendation === 'cancel' && 'Cancel this branch'}
           </span>
         </div>
       )}
@@ -80,13 +82,13 @@ export const EscalationRouter: React.FC<EscalationRouterProps> = ({
       {/* Actions */}
       <div className={styles.actions}>
         <button className={styles.btnRetry} onClick={onRetry}>
-          ↺ Retry
+          Retry
         </button>
         <button className={styles.btnReassign} onClick={onReassign}>
-          ⇄ Reassign
+          Reassign
         </button>
         <button className={styles.btnCancel} onClick={onCancelBranch}>
-          ⊘ Cancel Branch
+          Cancel Branch
         </button>
       </div>
     </div>

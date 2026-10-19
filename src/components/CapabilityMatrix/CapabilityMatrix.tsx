@@ -9,7 +9,8 @@
  * @see docs/internal/research/catalog-versions/CATALOG-v2.md (Primitive 3)
  */
 
-import { useMemo } from 'react';
+import { useMemo, type ReactNode } from 'react';
+import { IconCheck, IconCircle, IconDot, IconX } from '../../utils/icons';
 import { VisuallyHidden } from '../../utils/a11y';
 import type {
   CapabilityMatrixProps,
@@ -30,12 +31,12 @@ const PERMISSION_LABELS: Record<PermissionLevel, string> = {
   conditional: 'Conditional',
 };
 
-const PERMISSION_SYMBOLS: Record<PermissionLevel, string> = {
-  full: '✓',
-  read: '◐',
-  write: '◑',
-  none: '✕',
-  conditional: '◎',
+const PERMISSION_SYMBOLS: Record<PermissionLevel, ReactNode> = {
+  full: <IconCheck />,
+  read: <IconCircle />,
+  write: <IconDot />,
+  none: <IconX />,
+  conditional: <IconCircle />,
 };
 
 const PERMISSION_CLASSES: Record<PermissionLevel, string> = {
@@ -77,9 +78,7 @@ function CapabilityRow({
   onClick?: (cap: Capability) => void;
 }) {
   const isDenied = capability.permission === 'none';
-  const rowClass = `${styles.row} ${PERMISSION_CLASSES[capability.permission]} ${
-    isDenied && highlightDenied ? styles.rowDenied : ''
-  }`;
+  const rowClass = `${styles.row} ${isDenied && highlightDenied ? styles.rowDenied : ''}`;
 
   return (
     <div
@@ -138,7 +137,8 @@ export function CapabilityMatrix({
 
   return (
     <div
-      className={`${styles.capabilityMatrix} ${className ?? ''}`}
+      className={`${styles.capabilityMatrix} ax-card ${className ?? ''}`}
+      data-ax=""
       role="region"
       aria-label={ariaLabel}
     >
@@ -151,10 +151,10 @@ export function CapabilityMatrix({
           )}
         </div>
         <div className={styles.summaryBadges}>
-          <span className={`${styles.summaryBadge} ${styles.permFull}`}>
+          <span className={`${styles.summaryBadge} ax-badge ax-badge-success ax-numeric`}>
             {summary.allowed} allowed
           </span>
-          <span className={`${styles.summaryBadge} ${styles.permNone}`}>
+          <span className={`${styles.summaryBadge} ax-badge ax-badge-danger ax-numeric`}>
             {summary.denied} denied
           </span>
         </div>

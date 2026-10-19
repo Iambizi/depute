@@ -1,0 +1,121 @@
+/**
+ * Tier 1 — base ramps.
+ * Components must not read these names. Use semantic or component tokens.
+ * Light values are the default. Dark follows data-theme, .dark, or the OS scheme
+ * unless the page opts into light with data-theme="light" or .light.
+ */
+
+:root {
+  color-scheme: light;
+
+  /* Neutral ramp: 12 steps. */
+  --ax-gray-1: #fcfcfc;
+  --ax-gray-2: #f9f9f9;
+  --ax-gray-3: #f1f1f1;
+  --ax-gray-4: #ebebeb;
+  --ax-gray-5: #e3e3e3;
+  --ax-gray-6: #dadada;
+  --ax-gray-7: #cecece;
+  --ax-gray-8: #bbbbbb;
+  --ax-gray-9: #8d8d8d;
+  --ax-gray-10: #838383;
+  --ax-gray-11: #646464;
+  --ax-gray-12: #202020;
+
+  /* Accent: one ink blue. */
+  --ax-accent-3: #edf2fe;
+  --ax-accent-6: #c1d0ff;
+  --ax-accent-9: #3e63dd;
+  --ax-accent-10: #3358d4;
+  --ax-accent-11: #3a5bc7;
+
+  /* Status hues: step 3 tint, step 6 border, step 9 solid, step 11 text. */
+  --ax-green-3: #e6f6eb;
+  --ax-green-6: #adddc0;
+  --ax-green-9: #30a46c;
+  --ax-green-11: #18794e;
+  --ax-amber-3: #fff7c2;
+  --ax-amber-6: #f3d673;
+  --ax-amber-9: #ffc53d;
+  /* #ab6400 is 4.25:1 on amber-3. #9d5c00 clears 4.5:1. */
+  --ax-amber-11: #9d5c00;
+  --ax-red-3: #feebec;
+  --ax-red-6: #fdbdbe;
+  --ax-red-9: #e5484d;
+  --ax-red-11: #ce2c31;
+}
+
+:root[data-theme="dark"],
+.dark {
+  color-scheme: dark;
+
+  --ax-gray-1: #111111;
+  --ax-gray-2: #191919;
+  --ax-gray-3: #222222;
+  --ax-gray-4: #2a2a2a;
+  --ax-gray-5: #313131;
+  --ax-gray-6: #3a3a3a;
+  --ax-gray-7: #484848;
+  --ax-gray-8: #606060;
+  --ax-gray-9: #6e6e6e;
+  --ax-gray-10: #7b7b7b;
+  --ax-gray-11: #b4b4b4;
+  --ax-gray-12: #eeeeee;
+
+  --ax-accent-3: #182449;
+  --ax-accent-6: #304384;
+  --ax-accent-9: #3e63dd;
+  --ax-accent-10: #5472e4;
+  --ax-accent-11: #9eb1ff;
+
+  --ax-green-3: #132d21;
+  --ax-green-6: #20573e;
+  --ax-green-9: #30a46c;
+  --ax-green-11: #3dd68c;
+  --ax-amber-3: #302008;
+  --ax-amber-6: #5c3d05;
+  --ax-amber-9: #ffc53d;
+  --ax-amber-11: #ffca16;
+  --ax-red-3: #3b1219;
+  --ax-red-6: #72232d;
+  --ax-red-9: #e5484d;
+  --ax-red-11: #ff9592;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]):not(.light) {
+    color-scheme: dark;
+
+    --ax-gray-1: #111111;
+    --ax-gray-2: #191919;
+    --ax-gray-3: #222222;
+    --ax-gray-4: #2a2a2a;
+    --ax-gray-5: #313131;
+    --ax-gray-6: #3a3a3a;
+    --ax-gray-7: #484848;
+    --ax-gray-8: #606060;
+    --ax-gray-9: #6e6e6e;
+    --ax-gray-10: #7b7b7b;
+    --ax-gray-11: #b4b4b4;
+    --ax-gray-12: #eeeeee;
+
+    --ax-accent-3: #182449;
+    --ax-accent-6: #304384;
+    --ax-accent-9: #3e63dd;
+    --ax-accent-10: #5472e4;
+    --ax-accent-11: #9eb1ff;
+
+    --ax-green-3: #132d21;
+    --ax-green-6: #20573e;
+    --ax-green-9: #30a46c;
+    --ax-green-11: #3dd68c;
+    --ax-amber-3: #302008;
+    --ax-amber-6: #5c3d05;
+    --ax-amber-9: #ffc53d;
+    --ax-amber-11: #ffca16;
+    --ax-red-3: #3b1219;
+    --ax-red-6: #72232d;
+    --ax-red-9: #e5484d;
+    --ax-red-11: #ff9592;
+  }
+}

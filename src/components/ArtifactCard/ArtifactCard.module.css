@@ -1,209 +1,148 @@
 /* ArtifactCard — CSS Module */
 
 .artifactCard {
-  font-family: var(--ax-font-family);
-  background: var(--ax-surface-primary);
-  border: var(--ax-border-width) solid var(--ax-border-color);
-  border-radius: var(--ax-radius-lg);
-  box-shadow: var(--ax-shadow-sm);
+  font-family: var(--ax-font-sans);
+  background: var(--ax-card-bg);
+  border: 0;
+  border-radius: var(--ax-card-radius);
+  box-shadow: var(--ax-card-shadow);
   overflow: hidden;
-}
+  color: var(--ax-fg-default);
+  font-variant-numeric: var(--ax-numeric);}
 
 /* ------------------------------------------------------------------ */
 /* Header                                                              */
 /* ------------------------------------------------------------------ */
 
-.header {
-  display: flex;
+.header {display: flex;
   align-items: center;
-  gap: var(--ax-space-3);
-  padding: var(--ax-space-4) var(--ax-space-5);
-  border-bottom: var(--ax-border-width) solid var(--ax-border-color);
-}
+  gap: var(--ax-space-2);
+  padding: var(--ax-card-pad-y) var(--ax-card-pad-x);
+  border-bottom: var(--ax-border-width) solid var(--ax-border-default);
+  background: var(--ax-card-header-bg);
+  min-height: var(--ax-header-min);}
 
-.typeIcon {
-  flex-shrink: 0;
-  width: 2rem;
-  height: 2rem;
+.typeIcon {flex-shrink: 0;
+  width: var(--ax-space-8);
+  height: var(--ax-space-8);
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: var(--ax-radius-md);
-  background: var(--ax-surface-secondary);
-  font-size: var(--ax-font-size-sm);
-}
+  border-radius: var(--ax-radius-sm);
+  background: var(--ax-bg-subtle);
+  font-size: var(--ax-text-md);}
 
-.headerContent {
-  flex: 1;
-  min-width: 0;
-}
+.headerContent {flex: 1;
+  min-width: 0;}
 
-.title {
-  margin: 0;
-  font-size: var(--ax-font-size-base);
-  font-weight: var(--ax-font-weight-semibold);
-  color: var(--ax-text-primary);
-  line-height: var(--ax-line-height-tight);
-}
+.title {margin: 0;
+  font-size: var(--ax-text-md);
+  font-weight: var(--ax-weight-semibold);
+  color: var(--ax-fg-default);
+  line-height: var(--ax-leading-md);
+  letter-spacing: var(--ax-tracking-tight);}
 
-.typeBadge {
-  display: inline-flex;
+.typeBadge {display: inline-flex;
   margin-top: var(--ax-space-1);
-  font-size: var(--ax-font-size-xs);
-  color: var(--ax-text-tertiary);
+  font-size: var(--ax-text-xs);
+  color: var(--ax-fg-muted);
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
+  letter-spacing: 0.05em;}
 
 /* ------------------------------------------------------------------ */
 /* Content preview                                                     */
 /* ------------------------------------------------------------------ */
 
-.previewContainer {
-  position: relative;
-  overflow: hidden;
-}
+.previewContainer {position: relative;
+  overflow: hidden;}
 
-.preview {
-  padding: var(--ax-space-4) var(--ax-space-5);
-  font-family: var(--ax-font-family-mono);
-  font-size: var(--ax-font-size-xs);
-  line-height: var(--ax-line-height-relaxed);
-  color: var(--ax-text-secondary);
+.preview {padding: var(--ax-space-4) var(--ax-space-5);
+  font-family: var(--ax-font-mono);
+  font-size: var(--ax-text-xs);
+  line-height: var(--ax-leading-lg);
+  color: var(--ax-fg-muted);
   white-space: pre-wrap;
-  word-break: break-word;
-}
+  word-break: break-word;}
 
-.previewFade {
-  position: absolute;
+.previewFade {position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
-  height: 3rem;
-  background: linear-gradient(transparent, var(--ax-surface-primary));
-  pointer-events: none;
-}
+  height: var(--ax-space-12);
+  background: linear-gradient(to bottom, transparent, var(--ax-bg-surface));
+  pointer-events: none;}
 
-.showMore {
-  display: block;
+.showMore {display: block;
   width: 100%;
   padding: var(--ax-space-2) var(--ax-space-5);
   background: none;
   border: none;
-  border-top: var(--ax-border-width) solid var(--ax-border-color);
+  border-top: var(--ax-border-width) solid var(--ax-border-default);
   cursor: pointer;
-  font-family: var(--ax-font-family);
-  font-size: var(--ax-font-size-xs);
-  font-weight: var(--ax-font-weight-medium);
-  color: var(--ax-text-tertiary);
-  text-align: center;
-}
+  font-family: var(--ax-font-sans);
+  font-size: var(--ax-text-xs);
+  font-weight: var(--ax-weight-medium);
+  color: var(--ax-fg-muted);
+  text-align: center;}
 
-.showMore:hover {
-  color: var(--ax-text-primary);
-  background: var(--ax-surface-secondary);
-}
+.showMore:hover {color: var(--ax-fg-default);
+  background: var(--ax-bg-subtle);}
 
-.showMore:focus-visible {
-  outline: 2px solid var(--ax-color-blue-500);
-  outline-offset: -2px;
-}
+.showMore:focus-visible {outline: var(--ax-space-0-5) solid var(--ax-status-info-border);
+  outline-offset: calc(var(--ax-space-0-5) * -1);}
 
 /* ------------------------------------------------------------------ */
 /* Metadata                                                            */
 /* ------------------------------------------------------------------ */
 
-.metadata {
-  padding: var(--ax-space-3) var(--ax-space-5);
-  border-top: var(--ax-border-width) solid var(--ax-border-color);
-}
+.metadata {padding: var(--ax-space-3) var(--ax-space-5);
+  border-top: var(--ax-border-width) solid var(--ax-border-default);}
 
-.metadataTable {
-  width: 100%;
+.metadataTable {width: 100%;
   border-collapse: collapse;
-  font-size: var(--ax-font-size-xs);
+  font-size: var(--ax-text-xs);
   background: transparent;
-  border: none;
-}
+  border: none;}
 
-.metadataTable tr {
+.metadataTable tr {background: transparent !important;
+  border: none !important;}
+
+.metadataTable td {padding: var(--ax-space-0-5) 0;
   background: transparent !important;
-  border: none !important;
-}
+  border: none !important;}
 
-.metadataTable td {
-  padding: 2px 0;
-  background: transparent !important;
-  border: none !important;
-}
-
-.metadataTable td:first-child {
-  font-weight: var(--ax-font-weight-medium);
-  color: var(--ax-text-tertiary);
+.metadataTable td:first-child {font-weight: var(--ax-weight-medium);
+  color: var(--ax-fg-muted);
   white-space: nowrap;
   padding-right: var(--ax-space-3);
-  width: 1%;
-}
+  width: 1%;}
 
-.metadataTable td:last-child {
-  color: var(--ax-text-secondary);
-}
+.metadataTable td:last-child {color: var(--ax-fg-muted);}
 
 /* ------------------------------------------------------------------ */
 /* Export actions                                                       */
 /* ------------------------------------------------------------------ */
 
-.exportActions {
-  display: flex;
+.exportActions {display: flex;
   align-items: center;
   gap: var(--ax-space-2);
   padding: var(--ax-space-3) var(--ax-space-5);
-  border-top: var(--ax-border-width) solid var(--ax-border-color);
-}
+  border-top: var(--ax-border-width) solid var(--ax-border-default);}
 
-.exportLabel {
-  font-size: var(--ax-font-size-xs);
-  color: var(--ax-text-tertiary);
-  margin-right: var(--ax-space-1);
-}
+.exportLabel {font-size: var(--ax-text-xs);
+  color: var(--ax-fg-muted);
+  margin-right: var(--ax-space-1);}
 
-.exportBtn {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--ax-space-1);
-  padding: var(--ax-space-1) var(--ax-space-2);
-  border-radius: var(--ax-radius-sm);
-  border: var(--ax-border-width) solid var(--ax-border-color);
-  background: var(--ax-surface-primary);
-  cursor: pointer;
-  font-family: var(--ax-font-family);
-  font-size: var(--ax-font-size-xs);
-  font-weight: var(--ax-font-weight-medium);
-  color: var(--ax-text-secondary);
-  transition: all var(--ax-duration-fast) var(--ax-ease-default);
-}
-
-.exportBtn:hover {
-  background: var(--ax-surface-secondary);
-  border-color: var(--ax-color-gray-400);
-  color: var(--ax-text-primary);
-}
-
-.exportBtn:focus-visible {
-  outline: 2px solid var(--ax-color-blue-500);
-  outline-offset: 2px;
-}
+.exportBtn {font-family: inherit;}
 
 /* ------------------------------------------------------------------ */
 /* Provenance                                                          */
 /* ------------------------------------------------------------------ */
 
-.provenance {
-  padding: var(--ax-space-3) var(--ax-space-5);
-  border-top: var(--ax-border-width) solid var(--ax-border-color);
-  font-size: var(--ax-font-size-xs);
-  color: var(--ax-text-tertiary);
+.provenance {padding: var(--ax-space-3) var(--ax-space-5);
+  border-top: var(--ax-border-width) solid var(--ax-border-default);
+  font-size: var(--ax-text-xs);
+  color: var(--ax-fg-muted);
   display: flex;
   align-items: center;
-  gap: var(--ax-space-2);
-}
+  gap: var(--ax-space-2);}

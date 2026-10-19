@@ -21,6 +21,11 @@ const c = {
 const COMPONENTS_DIR = 'src/components';
 
 const STYLE_FILES = [
+  { repoPath: 'src/styles/base.css', name: 'base.css' },
+  { repoPath: 'src/styles/semantic.css', name: 'semantic.css' },
+  { repoPath: 'src/styles/component.css', name: 'component.css' },
+  { repoPath: 'src/styles/legacy.css', name: 'legacy.css' },
+  { repoPath: 'src/styles/primitives.css', name: 'primitives.css' },
   { repoPath: 'src/styles/tokens.css', name: 'tokens.css' },
   { repoPath: 'src/styles/animations.css', name: 'animations.css' },
   { repoPath: 'src/styles/index.css', name: 'depute.css' },
@@ -74,9 +79,11 @@ function importSpecifier(fromDir, toPath) {
 function rewriteComponentImports(content, componentDir, sharedRoot) {
   const typesImport = importSpecifier(componentDir, path.posix.join(sharedRoot, 'types/ax-common'));
   const a11yImport = importSpecifier(componentDir, path.posix.join(sharedRoot, 'utils/ax-a11y'));
+  const iconsImport = importSpecifier(componentDir, path.posix.join(sharedRoot, 'utils/ax-icons'));
   return content
     .replace(/from (['"])(?:\.\.\/)+types\/common\1/g, (_, quote) => `from ${quote}${typesImport}${quote}`)
-    .replace(/from (['"])(?:\.\.\/)+utils\/a11y\1/g, (_, quote) => `from ${quote}${a11yImport}${quote}`);
+    .replace(/from (['"])(?:\.\.\/)+utils\/a11y\1/g, (_, quote) => `from ${quote}${a11yImport}${quote}`)
+    .replace(/from (['"])(?:\.\.\/)+utils\/icons\1/g, (_, quote) => `from ${quote}${iconsImport}${quote}`);
 }
 
 /**
@@ -159,7 +166,7 @@ async function loadFile(repoPath) {
  * @param {string} sharedRoot
  */
 export async function loadShared(sharedRoot) {
-  /** @type {{ dest: string, content: string, note: 'types' | 'a11y' | 'styles' }[]} */
+  /** @type {{ dest: string, content: string, note: 'types' | 'a11y' | 'icons' | 'styles' }[]} */
   const files = [];
 
   const typesDest = path.posix.join(sharedRoot, 'types/ax-common.ts');
@@ -170,6 +177,11 @@ export async function loadShared(sharedRoot) {
   const a11yDest = path.posix.join(sharedRoot, 'utils/ax-a11y.tsx');
   if (!fileExists(a11yDest)) {
     files.push({ dest: a11yDest, content: await loadFile('src/utils/a11y.tsx'), note: 'a11y' });
+  }
+
+  const iconsDest = path.posix.join(sharedRoot, 'utils/ax-icons.tsx');
+  if (!fileExists(iconsDest)) {
+    files.push({ dest: iconsDest, content: await loadFile('src/utils/icons.tsx'), note: 'icons' });
   }
 
   /** @type {string | null} */
@@ -186,7 +198,7 @@ export async function loadShared(sharedRoot) {
 }
 
 /**
- * @param {{ files: { dest: string, content: string, note: 'types' | 'a11y' | 'styles' }[], stylesDest: string | null }} plan
+ * @param {{ files: { dest: string, content: string, note: 'types' | 'a11y' | 'icons' | 'styles' }[], stylesDest: string | null }} plan
  * @param {ReturnType<typeof createInstallTransaction> | null} [transaction]
  */
 export function writeShared(plan, transaction = null) {

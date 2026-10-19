@@ -96,21 +96,19 @@ describe('ApprovalGate', () => {
       const handleApprove = vi.fn();
       render(<ApprovalGate title="Test" mode="staged" onApprove={handleApprove} />);
       
-      const continueBtn = screen.getByRole('button', { name: 'Preview & Continue →' });
+      const continueBtn = screen.getByRole('button', { name: 'Preview and continue' });
       await user.click(continueBtn);
       
       // Now should show Confirm & Execute and Back buttons
-      const confirmBtn = screen.getByRole('button', { name: 'Confirm & Execute ✓' });
+      const confirmBtn = screen.getByRole('button', { name: 'Confirm and execute' });
       expect(confirmBtn).toBeInTheDocument();
-      expect(screen.getByRole('button', { name: '← Back' })).toBeInTheDocument();
-      
-      // Click back
-      await user.click(screen.getByRole('button', { name: '← Back' }));
-      expect(screen.getByRole('button', { name: 'Preview & Continue →' })).toBeInTheDocument();
-      
-      // Click continue then confirm
-      await user.click(screen.getByRole('button', { name: 'Preview & Continue →' }));
-      await user.click(screen.getByRole('button', { name: 'Confirm & Execute ✓' }));
+      expect(screen.getByRole('button', { name: 'Back' })).toBeInTheDocument();
+
+      await user.click(screen.getByRole('button', { name: 'Back' }));
+      expect(screen.getByRole('button', { name: 'Preview and continue' })).toBeInTheDocument();
+
+      await user.click(screen.getByRole('button', { name: 'Preview and continue' }));
+      await user.click(screen.getByRole('button', { name: 'Confirm and execute' }));
       
       expect(handleApprove).toHaveBeenCalledTimes(1);
     });

@@ -13,6 +13,7 @@
 
 import { useState, useEffect, useMemo, useRef, useCallback } from 'react';
 import { VisuallyHidden } from '../../utils/a11y';
+import { IconAlert, IconCheck, IconLock, IconX } from '../../utils/icons';
 import type { HandoffContext } from '../ApprovalGate/ApprovalGate.types';
 import type {
   BindingApprovalProps,
@@ -232,7 +233,8 @@ export function BindingApproval({
 
   return (
     <div
-      className={`${styles.bindingApproval} ${STATUS_CLASSES[effectiveStatus]} ${className ?? ''}`}
+      className={`${styles.bindingApproval} ax-card ax-gate ${STATUS_CLASSES[effectiveStatus]} ${className ?? ''}`}
+      data-ax=""
       role="alertdialog"
       aria-label={ariaLabel}
     >
@@ -240,7 +242,7 @@ export function BindingApproval({
       <div className={styles.header}>
         <div className={styles.headerLeft}>
           <span className={`${styles.statusIcon} ${STATUS_CLASSES[effectiveStatus]}`} aria-hidden="true">
-            {effectiveStatus === 'signing' ? '🔐' : effectiveStatus === 'signed' ? '✓' : effectiveStatus === 'rejected' ? '✕' : '⚠'}
+            {effectiveStatus === 'signing' ? <IconLock /> : effectiveStatus === 'signed' ? <IconCheck /> : effectiveStatus === 'rejected' ? <IconX /> : <IconAlert />}
           </span>
           <div>
             <h3 className={styles.title}>{title}</h3>
@@ -341,12 +343,13 @@ export function BindingApproval({
         <div className={styles.actions}>
           <button
             type="button"
-            className={styles.signBtn}
+            className={`${styles.signBtn} ax-btn ax-btn-primary ax-btn-lg`}
             onClick={onSign}
             disabled={!canSign}
             aria-label="Sign and approve"
           >
-            {effectiveStatus === 'signing' ? 'Signing…' : 'Sign & Approve'}
+            {effectiveStatus === 'signing' ? 'Signing…' : 'Sign and approve'}
+            {effectiveStatus !== 'signing' && <IconCheck />}
           </button>
           <button
             type="button"

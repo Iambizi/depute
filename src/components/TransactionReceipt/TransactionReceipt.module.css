@@ -2,197 +2,166 @@
 /* v2 — Strict Compliance & Forensics */
 
 .receipt {
-  font-family: var(--ax-font-family);
-  border: var(--ax-border-width) solid var(--ax-border-color);
-  border-radius: var(--ax-radius-lg);
-  background: var(--ax-surface-primary);
+  font-family: var(--ax-font-sans);
+  border: 0;
+  border-radius: var(--ax-card-radius);
+  background: var(--ax-card-bg);
   overflow: hidden;
-}
+  color: var(--ax-fg-default);
+  font-variant-numeric: var(--ax-numeric);
+  box-shadow: var(--ax-card-shadow);}
 
 /* Status-specific border */
-.receipt.statusSuccess { border-color: var(--ax-color-green-300); }
-.receipt.statusFailed { border-color: var(--ax-color-red-300); }
-.receipt.statusReverted { border-color: var(--ax-color-amber-300); }
+.receipt.statusSuccess {border-color: var(--ax-status-success-border);}
+.receipt.statusFailed {border-color: var(--ax-status-danger-border);}
+.receipt.statusReverted {border-color: var(--ax-status-warning-border);}
 
 /* ------------------------------------------------------------------ */
 /* Header                                                              */
 /* ------------------------------------------------------------------ */
 
-.header {
-  display: flex;
+.header {display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: var(--ax-space-3) var(--ax-space-4);
-  background: var(--ax-surface-secondary);
-  border-bottom: var(--ax-border-width) solid var(--ax-border-color);
-}
+  padding: var(--ax-card-pad-y) var(--ax-card-pad-x);
+  background: var(--ax-card-header-bg);
+  border-bottom: var(--ax-border-width) solid var(--ax-border-default);
+  min-height: var(--ax-header-min);
+  gap: var(--ax-space-2);}
 
-.headerLeft {
-  display: flex;
+.headerLeft {display: flex;
   align-items: center;
-  gap: var(--ax-space-3);
-}
+  gap: var(--ax-space-3);}
 
-.statusIcon {
-  display: flex;
+.statusIcon {display: flex;
   align-items: center;
   justify-content: center;
-  width: 2rem;
-  height: 2rem;
+  width: var(--ax-space-8);
+  height: var(--ax-space-8);
   border-radius: var(--ax-radius-full);
-  font-size: var(--ax-font-size-sm);
-  font-weight: var(--ax-font-weight-bold);
-  flex-shrink: 0;
-}
+  font-size: var(--ax-text-md);
+  font-weight: var(--ax-weight-semibold);
+  flex-shrink: 0;}
 
-.statusIcon.statusSuccess { background: var(--ax-color-green-100); color: var(--ax-color-green-700); }
-.statusIcon.statusFailed { background: var(--ax-color-red-100); color: var(--ax-color-red-700); }
-.statusIcon.statusPending { background: var(--ax-color-gray-100); color: var(--ax-color-gray-600); }
-.statusIcon.statusReverted { background: var(--ax-color-amber-100); color: var(--ax-color-amber-700); }
+.statusIcon.statusSuccess {background: var(--ax-status-success-bg);
+  color: var(--ax-status-success-fg);}
+.statusIcon.statusFailed {background: var(--ax-status-danger-bg);
+  color: var(--ax-status-danger-fg);}
+.statusIcon.statusPending {background: var(--ax-bg-muted);
+  color: var(--ax-fg-muted);}
+.statusIcon.statusReverted {background: var(--ax-status-warning-bg);
+  color: var(--ax-status-warning-fg);}
 
 .title {
-  font-size: var(--ax-font-size-sm);
-  font-weight: var(--ax-font-weight-semibold);
-  color: var(--ax-text-primary);
+  font-size: var(--ax-text-md);
+  font-weight: var(--ax-weight-semibold);
+  color: var(--ax-fg-default);
   margin: 0;
-}
+  line-height: var(--ax-leading-md);
+  letter-spacing: var(--ax-tracking-tight);}
 
-.txId {
-  font-family: var(--ax-font-family-mono);
-  font-size: var(--ax-font-size-xs);
-  color: var(--ax-text-tertiary);
-}
+.txId {font-family: var(--ax-font-mono);
+  font-size: var(--ax-text-xs);
+  color: var(--ax-fg-muted);}
 
-.statusBadge {
-  font-size: var(--ax-font-size-xs);
-  font-weight: var(--ax-font-weight-semibold);
+.statusBadge {font-size: var(--ax-text-xs);
+  font-weight: var(--ax-weight-semibold);
   padding: var(--ax-space-1) var(--ax-space-2);
-  border-radius: var(--ax-radius-sm);
-  line-height: 1;
-}
+  border-radius: var(--ax-radius-xs);
+  line-height: var(--ax-leading-xs);}
 
-.statusBadge.statusSuccess { background: var(--ax-color-green-100); color: var(--ax-color-green-700); }
-.statusBadge.statusFailed { background: var(--ax-color-red-100); color: var(--ax-color-red-700); }
-.statusBadge.statusPending { background: var(--ax-color-gray-100); color: var(--ax-color-gray-600); }
-.statusBadge.statusReverted { background: var(--ax-color-amber-100); color: var(--ax-color-amber-700); }
+.statusBadge.statusSuccess {background: var(--ax-status-success-bg);
+  color: var(--ax-status-success-fg);}
+.statusBadge.statusFailed {background: var(--ax-status-danger-bg);
+  color: var(--ax-status-danger-fg);}
+.statusBadge.statusPending {background: var(--ax-bg-muted);
+  color: var(--ax-fg-muted);}
+.statusBadge.statusReverted {background: var(--ax-status-warning-bg);
+  color: var(--ax-status-warning-fg);}
 
 /* ------------------------------------------------------------------ */
 /* Line items                                                          */
 /* ------------------------------------------------------------------ */
 
-.lineItems {
-  padding: var(--ax-space-2) 0;
-}
+.lineItems {padding: var(--ax-space-2) 0;}
 
-.lineItem {
-  display: flex;
+.lineItem {display: flex;
   justify-content: space-between;
   align-items: baseline;
   padding: var(--ax-space-2) var(--ax-space-4);
-  font-size: var(--ax-font-size-sm);
-}
+  font-size: var(--ax-text-md);}
 
-.lineItem + .lineItem {
-  border-top: var(--ax-border-width) solid var(--ax-border-color);
-}
+.lineItem + .lineItem {border-top: var(--ax-border-width) solid var(--ax-border-default);}
 
-.lineItemHighlight {
-  background: var(--ax-color-blue-50);
-}
+.lineItemHighlight {background: var(--ax-status-info-bg);}
 
-.lineLabel {
-  color: var(--ax-text-secondary);
-  font-weight: var(--ax-font-weight-medium);
-}
+.lineLabel {color: var(--ax-fg-muted);
+  font-weight: var(--ax-weight-medium);}
 
-.lineValue {
-  color: var(--ax-text-primary);
-  font-weight: var(--ax-font-weight-semibold);
-  text-align: right;
-}
+.lineValue {color: var(--ax-fg-default);
+  font-weight: var(--ax-weight-semibold);
+  text-align: right;}
 
-.mono {
-  font-family: var(--ax-font-family-mono);
-}
+.mono {font-family: var(--ax-font-mono);}
 
 /* ------------------------------------------------------------------ */
 /* Footer                                                              */
 /* ------------------------------------------------------------------ */
 
-.footer {
-  padding: var(--ax-space-3) var(--ax-space-4);
-  background: var(--ax-surface-secondary);
-  border-top: var(--ax-border-width) solid var(--ax-border-color);
+.footer {padding: var(--ax-space-3) var(--ax-space-4);
+  background: var(--ax-bg-subtle);
+  border-top: var(--ax-border-width) solid var(--ax-border-default);
   display: flex;
   flex-direction: column;
-  gap: var(--ax-space-2);
-}
+  gap: var(--ax-space-2);}
 
-.hashRow {
-  display: flex;
+.hashRow {display: flex;
   align-items: center;
-  gap: var(--ax-space-2);
-}
+  gap: var(--ax-space-2);}
 
-.hashLabel {
-  font-size: var(--ax-font-size-xs);
-  color: var(--ax-text-tertiary);
-}
+.hashLabel {font-size: var(--ax-text-xs);
+  color: var(--ax-fg-muted);}
 
-.hashValue {
-  font-family: var(--ax-font-family-mono);
-  font-size: var(--ax-font-size-xs);
-  color: var(--ax-text-secondary);
-  background: var(--ax-surface-primary);
+.hashValue {font-family: var(--ax-font-mono);
+  font-size: var(--ax-text-xs);
+  color: var(--ax-fg-muted);
+  background: var(--ax-bg-surface);
   padding: var(--ax-space-1) var(--ax-space-2);
-  border-radius: var(--ax-radius-sm);
-  border: var(--ax-border-width) solid var(--ax-border-color);
-}
+  border-radius: var(--ax-radius-xs);
+  border: var(--ax-border-width) solid var(--ax-border-default);}
 
-.copyBtn {
-  display: inline-flex;
+.copyBtn {display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 1.5rem;
-  height: 1.5rem;
+  width: var(--ax-space-6);
+  height: var(--ax-space-6);
   background: none;
-  border: var(--ax-border-width) solid var(--ax-border-color);
-  border-radius: var(--ax-radius-sm);
+  border: var(--ax-border-width) solid var(--ax-border-default);
+  border-radius: var(--ax-radius-xs);
   cursor: pointer;
-  font-size: var(--ax-font-size-xs);
-  color: var(--ax-text-secondary);
-  transition: all var(--ax-duration-fast) var(--ax-ease-default);
-}
+  font-size: var(--ax-text-xs);
+  color: var(--ax-fg-muted);
+  transition: background-color var(--ax-dur-fast) var(--ax-ease-standard), color var(--ax-dur-fast) var(--ax-ease-standard), border-color var(--ax-dur-fast) var(--ax-ease-standard), box-shadow var(--ax-dur-fast) var(--ax-ease-standard), transform var(--ax-dur-fast) var(--ax-ease-standard);}
 
-.copyBtn:hover {
-  background: var(--ax-surface-primary);
-  border-color: var(--ax-color-blue-500);
-  color: var(--ax-color-blue-600);
-}
+.copyBtn:hover {background: var(--ax-bg-surface);
+  border-color: var(--ax-status-info-border);
+  color: var(--ax-status-info-fg);}
 
-.copyBtn:focus-visible {
-  outline: 2px solid var(--ax-color-blue-500);
-  outline-offset: 2px;
-}
+.copyBtn:focus-visible {outline: var(--ax-space-0-5) solid var(--ax-status-info-border);
+  outline-offset: var(--ax-space-0-5);}
 
-.auditBtn {
-  font-family: var(--ax-font-family);
-  font-size: var(--ax-font-size-xs);
-  font-weight: var(--ax-font-weight-medium);
-  color: var(--ax-color-blue-600);
+.auditBtn {font-family: var(--ax-font-sans);
+  font-size: var(--ax-text-xs);
+  font-weight: var(--ax-weight-medium);
+  color: var(--ax-status-info-fg);
   background: none;
   border: none;
   cursor: pointer;
   padding: 0;
   text-align: left;
-  transition: color var(--ax-duration-fast) var(--ax-ease-default);
-}
+  transition: color var(--ax-dur-fast) var(--ax-ease-standard);}
 
-.auditBtn:hover {
-  color: var(--ax-color-blue-700);
-}
+.auditBtn:hover {color: var(--ax-status-info-fg);}
 
-.auditBtn:focus-visible {
-  outline: 2px solid var(--ax-color-blue-500);
-  outline-offset: 2px;
-}
+.auditBtn:focus-visible {outline: var(--ax-space-0-5) solid var(--ax-status-info-border);
+  outline-offset: var(--ax-space-0-5);}

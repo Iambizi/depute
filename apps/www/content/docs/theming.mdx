@@ -1,0 +1,50 @@
+---
+title: Theming
+description: Token tiers, the rename map, and density.
+---
+
+Components read semantic and component tokens. Base ramps (`--ax-gray-*`, `--ax-accent-*`, status hues) stay internal. Override a semantic token to theme the library.
+
+## Tiers
+
+Import the stylesheet once:
+
+```css
+@import "./styles/depute.css";
+```
+
+That file loads four layers:
+
+1. **Base** — 12-step gray, one accent, and status hues. Light is the default. Dark follows `data-theme="dark"`, a `.dark` class, or `prefers-color-scheme`, unless the page sets `data-theme="light"` or `.light`.
+2. **Semantic** — surfaces, text, borders, status pairs, type, space, radius, shadow, and motion.
+3. **Component** — card, button, badge, meter, and row tokens.
+4. **Legacy** — the 0.4 names, aliased for this minor version.
+
+Fonts are not bundled. Install `@fontsource/geist-sans` and `@fontsource/geist-mono`, or use `next/font`. The stack falls back to the system font.
+
+## Density
+
+Set `data-ax-density="comfortable"` on a parent to raise card padding, row height, and the default button height. Compact is the default. Coarse pointers raise the button and row height to 44px.
+
+```html
+<div data-ax-density="comfortable">
+  <!-- depute components -->
+</div>
+```
+
+## Rename map
+
+| 0.4 name | 0.5 name |
+| --- | --- |
+| `--ax-surface-primary` | `--ax-bg-surface` |
+| `--ax-text-primary` / `--ax-text-secondary` | `--ax-fg-default` / `--ax-fg-muted` |
+| `--ax-border-color` | `--ax-border-default` |
+| `--ax-status-pending-*` | `--ax-status-neutral-*` |
+| `--ax-status-active-*` | `--ax-status-info-*` |
+| `--ax-status-completed-*` | `--ax-status-success-*` |
+| `--ax-status-failed-*` | `--ax-status-danger-*` |
+| `--ax-status-waiting-*` | `--ax-status-warning-*` |
+| `--ax-font-family` | `--ax-font-sans` |
+| `--ax-shadow-sm` / `md` / `lg` | `--ax-shadow-1` / `2` / `3` |
+
+Status text uses step 11 on a step 3 tint so the pair stays at least 4.5:1 in both themes.

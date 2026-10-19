@@ -1,128 +1,111 @@
 /* ConfidenceMeter — CSS Module */
 
 .confidenceMeter {
-  font-family: var(--ax-font-family);
+  font-family: var(--ax-font-sans);
   display: inline-flex;
   align-items: center;
   gap: var(--ax-space-2);
-}
+  background: var(--ax-card-bg);
+  color: var(--ax-fg-default);
+  font-variant-numeric: var(--ax-numeric);
+  border-radius: var(--ax-card-radius);
+  box-shadow: var(--ax-card-shadow);
+  border: 0;}
 
 /* ------------------------------------------------------------------ */
 /* Meter display (horizontal bar)                                      */
 /* ------------------------------------------------------------------ */
 
-.meterContainer {
-  display: flex;
+.meterContainer {display: flex;
   align-items: center;
   gap: var(--ax-space-2);
-  width: 100%;
-}
+  width: 100%;}
 
-.meterTrack {
-  flex: 1;
-  height: 0.5rem;
-  background: var(--ax-color-gray-100);
+.meterTrack {flex: 1;
+  height: var(--ax-space-2);
+  background: var(--ax-bg-muted);
   border-radius: var(--ax-radius-full);
-  overflow: hidden;
-}
+  overflow: hidden;}
 
-.meterTrackSm { height: 0.25rem; }
-.meterTrackMd { height: 0.5rem; }
-.meterTrackLg { height: 0.75rem; }
+.meterTrackSm {height: var(--ax-space-1);}
+.meterTrackMd {height: var(--ax-space-2);}
+.meterTrackLg {height: var(--ax-space-3);}
 
-.meterFill {
-  height: 100%;
+.meterFill {height: 100%;
   border-radius: var(--ax-radius-full);
-  transition: width var(--ax-duration-normal) var(--ax-ease-default);
-}
+  transition: width var(--ax-dur-base) var(--ax-ease-standard);}
 
-.meterFillNoAnimate {
-  transition: none;
-}
+.meterFillNoAnimate {transition: none;}
 
-.meterFillHigh { background: var(--ax-confidence-high-color); }
-.meterFillMedium { background: var(--ax-confidence-medium-color); }
-.meterFillLow { background: var(--ax-confidence-low-color); }
+.meterFillHigh {background: var(--ax-status-success-fg);}
+.meterFillMedium {background: var(--ax-status-warning-fg);}
+.meterFillLow {background: var(--ax-status-danger-fg);}
 
 /* ------------------------------------------------------------------ */
 /* Badge display (compact inline)                                      */
 /* ------------------------------------------------------------------ */
 
-.badge {
-  display: inline-flex;
+.badge {display: inline-flex;
   align-items: center;
   gap: var(--ax-space-1);
-  font-weight: var(--ax-font-weight-medium);
-  border-radius: var(--ax-radius-full);
+  font-weight: var(--ax-weight-medium);
+  border-radius: var(--ax-badge-radius);
   white-space: nowrap;
-}
+  height: var(--ax-badge-h);
+  font-size: var(--ax-badge-text);
+  padding: 0 var(--ax-badge-pad-x);}
 
-.badgeSm {
-  font-size: var(--ax-font-size-xs);
-  padding: 0.125rem var(--ax-space-2);
-}
+.badgeSm {font-size: var(--ax-text-xs);
+  padding: var(--ax-space-0-5) var(--ax-space-2);}
 
-.badgeMd {
-  font-size: var(--ax-font-size-sm);
-  padding: var(--ax-space-1) var(--ax-space-3);
-}
+.badgeMd {font-size: var(--ax-text-md);
+  padding: var(--ax-space-1) var(--ax-space-3);}
 
-.badgeLg {
-  font-size: var(--ax-font-size-base);
-  padding: var(--ax-space-2) var(--ax-space-4);
-}
+.badgeLg {font-size: var(--ax-text-lg);
+  padding: var(--ax-space-2) var(--ax-space-4);}
 
-.badgeHigh {
-  background: var(--ax-confidence-high-bg);
-  color: var(--ax-confidence-high-color);
-}
+.badgeHigh {background: var(--ax-status-success-bg);
+  color: var(--ax-status-success-fg);}
 
-.badgeMedium {
-  background: var(--ax-confidence-medium-bg);
-  color: var(--ax-confidence-medium-color);
-}
+.badgeMedium {background: var(--ax-status-warning-bg);
+  color: var(--ax-status-warning-fg);}
 
-.badgeLow {
-  background: var(--ax-confidence-low-bg);
-  color: var(--ax-confidence-low-color);
-}
+.badgeLow {background: var(--ax-status-danger-bg);
+  color: var(--ax-status-danger-fg);}
 
 /* ------------------------------------------------------------------ */
 /* Shared labels                                                       */
 /* ------------------------------------------------------------------ */
 
-.valueLabel {
-  font-weight: var(--ax-font-weight-semibold);
-  white-space: nowrap;
-}
+.valueLabel {font-weight: var(--ax-weight-semibold);
+  white-space: nowrap;}
 
-.valueLabelSm { font-size: var(--ax-font-size-xs); }
-.valueLabelMd { font-size: var(--ax-font-size-sm); }
-.valueLabelLg { font-size: var(--ax-font-size-base); }
+.valueLabelSm {font-size: var(--ax-text-xs);}
+.valueLabelMd {font-size: var(--ax-text-md);}
+.valueLabelLg {font-size: var(--ax-text-lg);}
 
-.levelLabel {
-  font-weight: var(--ax-font-weight-medium);
-  text-transform: capitalize;
-}
+.levelLabel {font-weight: var(--ax-weight-medium);
+  text-transform: capitalize;}
 
 /* Dot indicator for badge */
-.dot {
-  width: 0.375rem;
-  height: 0.375rem;
-  border-radius: var(--ax-radius-full);
-}
+.dot {width: var(--ax-space-1-5);
+  height: var(--ax-space-1-5);
+  border-radius: var(--ax-radius-full);}
 
-.dotHigh { background: var(--ax-confidence-high-color); }
-.dotMedium { background: var(--ax-confidence-medium-color); }
-.dotLow { background: var(--ax-confidence-low-color); }
+.dotHigh {background: var(--ax-status-success-fg);}
+.dotMedium {background: var(--ax-status-warning-fg);}
+.dotLow {background: var(--ax-status-danger-fg);}
 
 /* ------------------------------------------------------------------ */
 /* Reasoning                                                           */
 /* ------------------------------------------------------------------ */
 
-.reasoning {
-  margin-top: var(--ax-space-2);
-  font-size: var(--ax-font-size-xs);
-  color: var(--ax-text-secondary);
-  line-height: var(--ax-line-height-relaxed);
+.reasoning {margin-top: var(--ax-space-2);
+  font-size: var(--ax-text-xs);
+  color: var(--ax-fg-muted);
+  line-height: var(--ax-leading-lg);}
+
+.confidenceMeter :focus-visible {
+  outline: none;
+  box-shadow: var(--ax-ring);
 }

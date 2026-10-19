@@ -39,6 +39,13 @@ const SEVERITY_CLASSES: Record<BudgetSeverity, string> = {
   exceeded: styles.severityExceeded,
 };
 
+const SEVERITY_BADGES: Record<BudgetSeverity, string> = {
+  normal: 'ax-badge ax-badge-success',
+  elevated: 'ax-badge ax-badge-warning',
+  critical: 'ax-badge ax-badge-warning',
+  exceeded: 'ax-badge ax-badge-danger',
+};
+
 const SEVERITY_LABELS: Record<BudgetSeverity, string> = {
   normal: 'Within budget',
   elevated: 'Approaching limit',
@@ -123,7 +130,8 @@ export function BudgetMeter({
   if (compact) {
     return (
       <div
-        className={`${styles.budgetMeterCompact} ${SEVERITY_CLASSES[resolvedSeverity]} ${className ?? ''}`}
+        className={`${styles.budgetMeterCompact} ax-card ${SEVERITY_CLASSES[resolvedSeverity]} ${className ?? ''}`}
+        data-ax=""
         role="meter"
         aria-label={ariaLabel}
         aria-valuetext={`${formattedSpent} of ${formattedLimit} ${unitLabel}`}
@@ -149,7 +157,8 @@ export function BudgetMeter({
 
   return (
     <div
-      className={`${styles.budgetMeter} ${SEVERITY_CLASSES[resolvedSeverity]} ${className ?? ''}`}
+      className={`${styles.budgetMeter} ax-card ${SEVERITY_CLASSES[resolvedSeverity]} ${className ?? ''}`}
+      data-ax=""
       role="meter"
       aria-label={ariaLabel}
       aria-valuetext={`${formattedSpent} of ${formattedLimit} ${unitLabel}`}
@@ -160,7 +169,7 @@ export function BudgetMeter({
       {/* Header */}
       <div className={styles.header}>
         <span className={styles.label}>{label}</span>
-        <span className={`${styles.severityBadge} ${SEVERITY_CLASSES[resolvedSeverity]}`}>
+        <span className={`${styles.severityBadge} ${SEVERITY_BADGES[resolvedSeverity]}`}>
           {SEVERITY_LABELS[resolvedSeverity]}
         </span>
       </div>

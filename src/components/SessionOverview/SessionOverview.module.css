@@ -1,153 +1,120 @@
 .container {
-  border: var(--ax-border-width) solid var(--ax-border-color);
-  border-radius: var(--ax-radius-lg);
-  background: var(--ax-surface-primary);
-  font-family: var(--ax-font-family);
+  border: 0;
+  border-radius: var(--ax-card-radius);
+  background: var(--ax-card-bg);
+  font-family: var(--ax-font-sans);
   overflow: hidden;
-  box-shadow: var(--ax-shadow-md);
-  color: var(--ax-text-primary);
-}
+  box-shadow: var(--ax-card-shadow);
+  color: var(--ax-fg-default);
+  font-variant-numeric: var(--ax-numeric);}
 
-.header {
-  display: flex;
+.header {display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: var(--ax-space-3) var(--ax-space-4);
-  border-bottom: var(--ax-border-width) solid var(--ax-border-color);
-  background: var(--ax-surface-secondary);
-}
+  padding: var(--ax-card-pad-y) var(--ax-card-pad-x);
+  border-bottom: var(--ax-border-width) solid var(--ax-border-default);
+  background: var(--ax-card-header-bg);
+  min-height: var(--ax-header-min);
+  gap: var(--ax-space-2);}
 
-.title {
-  display: flex;
+.title {display: flex;
   align-items: center;
   gap: var(--ax-space-2);
-  font-size: var(--ax-font-size-sm);
-  font-weight: var(--ax-font-weight-semibold);
-  letter-spacing: -0.01em;
-}
+  font-size: var(--ax-text-md);
+  font-weight: var(--ax-weight-semibold);
+  letter-spacing: var(--ax-tracking-tight);
+  line-height: var(--ax-leading-md);
+  color: var(--ax-fg-default);}
 
-.duration {
-  font-size: var(--ax-font-size-xs);
-  color: var(--ax-text-secondary);
-  font-family: var(--ax-font-family-mono);
-  background: var(--ax-surface-primary);
+.duration {font-size: var(--ax-text-xs);
+  color: var(--ax-fg-muted);
+  font-family: var(--ax-font-mono);
+  background: var(--ax-bg-surface);
   padding: var(--ax-space-1) var(--ax-space-2);
-  border: var(--ax-border-width) solid var(--ax-border-color);
-  border-radius: var(--ax-radius-md);
-}
+  border: var(--ax-border-width) solid var(--ax-border-default);
+  border-radius: var(--ax-radius-sm);}
 
-.body {
-  padding: var(--ax-space-4);
-}
+.body {padding: var(--ax-space-4);}
 
-.summaryBlock {
-  font-size: var(--ax-font-size-base);
-  line-height: var(--ax-line-height-relaxed);
-  color: var(--ax-text-primary);
+.summaryBlock {font-size: var(--ax-text-lg);
+  line-height: var(--ax-leading-lg);
+  color: var(--ax-fg-default);
   margin-bottom: var(--ax-space-6);
   padding-bottom: var(--ax-space-4);
-  border-bottom: 1px dashed var(--ax-border-color);
-}
+  border-bottom: 1px dashed var(--ax-border-default);}
 
 .grid {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--ax-panel)), 1fr));
   gap: var(--ax-space-6);
 }
 
-@media (min-width: 640px) {
-  .grid {
-    grid-template-columns: 1fr 1fr;
-  }
-}
-
-.sectionTitle {
-  font-size: var(--ax-font-size-xs);
-  color: var(--ax-text-tertiary);
+.sectionTitle {font-size: var(--ax-text-xs);
+  color: var(--ax-fg-muted);
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  font-weight: var(--ax-font-weight-bold);
+  font-weight: var(--ax-weight-semibold);
   margin-bottom: var(--ax-space-3);
   display: flex;
   align-items: center;
-  gap: var(--ax-space-2);
-}
+  gap: var(--ax-space-2);}
 
-.surfacesList {
-  display: flex;
+.surfacesList {display: flex;
   flex-direction: column;
-  gap: var(--ax-space-2);
-}
+  gap: var(--ax-space-2);}
 
-.surfaceItem {
-  display: flex;
+.surfaceItem {display: flex;
   align-items: center;
   justify-content: space-between;
   padding: var(--ax-space-2) var(--ax-space-3);
-  background: var(--ax-surface-secondary);
-  border-radius: var(--ax-radius-md);
+  background: var(--ax-bg-subtle);
+  border-radius: var(--ax-radius-sm);
   border: var(--ax-border-width) solid transparent;
-  transition: border-color var(--ax-duration-fast) var(--ax-ease-default);
-}
+  transition: border-color var(--ax-dur-fast) var(--ax-ease-standard);}
 
-.surfaceItem:hover {
-  border-color: var(--ax-border-color);
-}
+.surfaceItem:hover {border-color: var(--ax-border-default);}
 
-.surfaceLabel {
-  display: flex;
+.surfaceLabel {display: flex;
   align-items: center;
   gap: var(--ax-space-2);
-  font-size: var(--ax-font-size-sm);
-  font-weight: var(--ax-font-weight-medium);
-}
+  font-size: var(--ax-text-md);
+  font-weight: var(--ax-weight-medium);}
 
-.surfaceType {
-  color: var(--ax-text-tertiary);
-}
+.surfaceType {color: var(--ax-fg-muted);}
 
-.surfaceAction {
-  font-size: var(--ax-font-size-xs);
-  font-family: var(--ax-font-family-mono);
-  padding: 2px 6px;
-  border-radius: var(--ax-radius-sm);
-  text-transform: uppercase;
-}
+.surfaceAction {font-size: var(--ax-text-xs);
+  font-family: var(--ax-font-mono);
+  padding: var(--ax-space-0-5) var(--ax-space-1-5);
+  border-radius: var(--ax-radius-xs);
+  text-transform: uppercase;}
 
-.surfaceAction.read {
-  background: var(--ax-color-blue-50);
-  color: var(--ax-color-blue-600);
-}
-.surfaceAction.write {
-  background: var(--ax-color-amber-50);
-  color: var(--ax-color-amber-700);
-}
-.surfaceAction.execute {
-  background: var(--ax-color-red-50);
-  color: var(--ax-color-red-600);
-}
+.surfaceAction.read {background: var(--ax-status-info-bg);
+  color: var(--ax-status-info-fg);}
+.surfaceAction.write {background: var(--ax-status-warning-bg);
+  color: var(--ax-status-warning-fg);}
+.surfaceAction.execute {background: var(--ax-status-danger-bg);
+  color: var(--ax-status-danger-fg);}
 
-.decisionsList {
-  display: flex;
+.decisionsList {display: flex;
   flex-direction: column;
-  gap: var(--ax-space-3);
-}
+  gap: var(--ax-space-3);}
 
-.decisionItem {
-  position: relative;
+.decisionItem {position: relative;
   padding-left: var(--ax-space-4);
-  font-size: var(--ax-font-size-sm);
-  line-height: var(--ax-line-height-normal);
-  color: var(--ax-text-secondary);
-}
+  font-size: var(--ax-text-md);
+  line-height: var(--ax-leading-md);
+  color: var(--ax-fg-muted);}
 
-.decisionItem::before {
-  content: '';
+.decisionItem::before {content: '';
   position: absolute;
   left: 0;
-  top: 8px;
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--ax-color-gray-300);
+  top: var(--ax-space-2);
+  width: var(--ax-space-1-5);
+  height: var(--ax-space-1-5);
+  border-radius: var(--ax-radius-full);
+  background: var(--ax-border-strong);}
+
+.container :focus-visible {
+  outline: none;
+  box-shadow: var(--ax-ring);
 }

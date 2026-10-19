@@ -1,0 +1,340 @@
+/**
+ * Shared anatomy: cards, buttons, badges, key-value rows, wells, callouts.
+ * Global class names, loaded once with the tokens. Not a CSS module.
+ */
+
+.ax-card {
+  background: var(--ax-card-bg);
+  color: var(--ax-fg-default);
+  font-family: var(--ax-font-sans);
+  font-variant-numeric: var(--ax-numeric);
+  border-radius: var(--ax-card-radius);
+  box-shadow: var(--ax-card-shadow);
+}
+
+.ax-gate {
+  box-shadow: var(--ax-shadow-2);
+}
+
+.ax-eyebrow {
+  margin: 0;
+  font-size: var(--ax-text-2xs);
+  line-height: var(--ax-leading-2xs);
+  font-weight: var(--ax-weight-medium);
+  letter-spacing: var(--ax-tracking-caps);
+  text-transform: uppercase;
+  color: var(--ax-fg-muted);
+}
+
+.ax-title {
+  margin: 0;
+  font-size: var(--ax-text-md);
+  line-height: var(--ax-leading-md);
+  font-weight: var(--ax-weight-semibold);
+  letter-spacing: var(--ax-tracking-tight);
+  color: var(--ax-fg-default);
+}
+
+.ax-gate .ax-title {
+  font-size: var(--ax-text-lg);
+  line-height: var(--ax-leading-lg);
+}
+
+.ax-numeric {
+  font-variant-numeric: var(--ax-numeric);
+}
+
+.ax-mono {
+  font-family: var(--ax-font-mono);
+  font-size: var(--ax-text-xs);
+  line-height: var(--ax-leading-xs);
+}
+
+.ax-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ax-space-2);
+  height: var(--ax-btn-h-md);
+  padding: 0 var(--ax-btn-pad-x);
+  border: 0;
+  border-radius: var(--ax-btn-radius);
+  background: transparent;
+  color: var(--ax-fg-default);
+  font-family: inherit;
+  font-size: var(--ax-text-sm);
+  font-weight: var(--ax-weight-medium);
+  line-height: var(--ax-leading-sm);
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    background-color var(--ax-dur-fast) var(--ax-ease-standard),
+    color var(--ax-dur-fast) var(--ax-ease-standard),
+    box-shadow var(--ax-dur-fast) var(--ax-ease-standard),
+    transform var(--ax-dur-fast) var(--ax-ease-standard);
+}
+
+.ax-btn-sm { height: var(--ax-btn-h-sm); }
+.ax-btn-lg { height: var(--ax-btn-h-lg); }
+
+.ax-btn-primary {
+  background: var(--ax-bg-emphasis);
+  color: var(--ax-fg-on-emphasis);
+}
+
+.ax-btn-primary:hover {
+  background: color-mix(in srgb, var(--ax-bg-emphasis) 90%, var(--ax-bg-surface));
+}
+
+.ax-btn-secondary {
+  background: var(--ax-bg-surface);
+  color: var(--ax-fg-default);
+  box-shadow: var(--ax-shadow-1);
+}
+
+.ax-btn-secondary:hover { background: var(--ax-bg-subtle); }
+
+.ax-btn-ghost { color: var(--ax-fg-muted); }
+.ax-btn-ghost:hover {
+  background: var(--ax-bg-muted);
+  color: var(--ax-fg-default);
+}
+
+.ax-btn-danger {
+  background: var(--ax-status-danger-solid);
+  color: var(--ax-fg-on-solid);
+}
+
+.ax-btn-danger:hover {
+  background: color-mix(in srgb, var(--ax-status-danger-solid) 88%, black);
+}
+
+.ax-btn:active { transform: translateY(0.5px); }
+
+.ax-btn:focus-visible {
+  outline: none;
+  box-shadow: var(--ax-ring);
+}
+
+.ax-btn-danger:focus-visible { box-shadow: var(--ax-ring-danger); }
+
+.ax-btn:disabled,
+.ax-btn[aria-disabled="true"] {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.ax-btn:disabled:hover,
+.ax-btn[aria-disabled="true"]:hover {
+  background: inherit;
+}
+
+.ax-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ax-space-1);
+  height: var(--ax-badge-h);
+  padding: 0 var(--ax-badge-pad-x);
+  border-radius: var(--ax-badge-radius);
+  background: var(--ax-status-neutral-bg);
+  color: var(--ax-status-neutral-fg);
+  box-shadow: inset 0 0 0 1px var(--ax-status-neutral-border);
+  font-size: var(--ax-badge-text);
+  font-weight: var(--ax-weight-medium);
+  line-height: var(--ax-leading-xs);
+  white-space: nowrap;
+}
+
+.ax-badge-info {
+  background: var(--ax-status-info-bg);
+  color: var(--ax-status-info-fg);
+  box-shadow: inset 0 0 0 1px var(--ax-status-info-border);
+}
+
+.ax-badge-success {
+  background: var(--ax-status-success-bg);
+  color: var(--ax-status-success-fg);
+  box-shadow: inset 0 0 0 1px var(--ax-status-success-border);
+}
+
+.ax-badge-warning {
+  background: var(--ax-status-warning-bg);
+  color: var(--ax-status-warning-fg);
+  box-shadow: inset 0 0 0 1px var(--ax-status-warning-border);
+}
+
+.ax-badge-danger {
+  background: var(--ax-status-danger-bg);
+  color: var(--ax-status-danger-fg);
+  box-shadow: inset 0 0 0 1px var(--ax-status-danger-border);
+}
+
+.ax-badge-dot::before {
+  content: "";
+  width: var(--ax-space-1-5);
+  height: var(--ax-space-1-5);
+  border-radius: var(--ax-radius-full);
+  background: currentColor;
+  flex: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .ax-badge-info.ax-badge-dot::before {
+    animation: ax-pulse var(--ax-dur-emph) var(--ax-ease-standard) infinite;
+  }
+}
+
+.ax-kv {
+  display: grid;
+  grid-template-columns: var(--ax-kv-key) 1fr;
+  margin: 0;
+}
+
+.ax-kv > div {
+  display: contents;
+}
+
+.ax-kv dt,
+.ax-kv dd {
+  min-height: var(--ax-row-h);
+  margin: 0;
+  padding: var(--ax-space-2) 0;
+  border-bottom: 1px solid var(--ax-card-divider);
+  font-size: var(--ax-text-sm);
+  line-height: var(--ax-leading-sm);
+}
+
+.ax-kv dt { color: var(--ax-fg-muted); }
+.ax-kv dd { margin: 0; color: var(--ax-fg-default); }
+
+.ax-well {
+  background: var(--ax-bg-subtle);
+  border-radius: var(--ax-radius-sm);
+  padding: var(--ax-space-3);
+  color: var(--ax-fg-default);
+  font-size: var(--ax-text-sm);
+  line-height: var(--ax-leading-sm);
+}
+
+.ax-well-quote {
+  border-left: 2px solid var(--ax-border-strong);
+}
+
+.ax-callout {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--ax-space-2);
+  padding: var(--ax-space-3);
+  border-radius: var(--ax-radius-sm);
+  background: var(--ax-status-danger-bg);
+  color: var(--ax-status-danger-fg);
+  box-shadow: inset 0 0 0 1px var(--ax-status-danger-border);
+  font-size: var(--ax-text-sm);
+  line-height: var(--ax-leading-sm);
+}
+
+.ax-callout-warning {
+  background: var(--ax-status-warning-bg);
+  color: var(--ax-status-warning-fg);
+  box-shadow: inset 0 0 0 1px var(--ax-status-warning-border);
+}
+
+.ax-resolution {
+  display: flex;
+  align-items: center;
+  gap: var(--ax-space-2);
+  min-height: var(--ax-row-h);
+  color: var(--ax-fg-muted);
+  font-size: var(--ax-text-sm);
+  line-height: var(--ax-leading-sm);
+}
+
+.ax-stamp {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--ax-space-16);
+  height: var(--ax-space-16);
+  border: 1px solid var(--ax-status-success-fg);
+  border-radius: var(--ax-radius-full);
+  color: var(--ax-status-success-fg);
+  font-size: var(--ax-text-2xs);
+  font-weight: var(--ax-weight-semibold);
+  letter-spacing: var(--ax-tracking-caps);
+  text-transform: uppercase;
+  opacity: 1;
+  transform: none;
+}
+
+.ax-receipt-enter {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .ax-stamp {
+    animation: ax-stamp var(--ax-dur-emph) var(--ax-ease-stamp) both;
+  }
+
+  .ax-receipt-enter {
+    animation: ax-receipt-enter var(--ax-dur-emph) var(--ax-ease-enter) both;
+    animation-delay: var(--ax-dur-base);
+  }
+
+  .ax-hash-reveal {
+    animation: ax-hash-reveal var(--ax-dur-slow) var(--ax-ease-enter) both;
+    animation-delay: var(--ax-dur-emph);
+  }
+}
+
+@keyframes ax-stamp {
+  from { opacity: 0; transform: rotate(-6deg) scale(1.15); }
+  to { opacity: 1; transform: rotate(-6deg) scale(1); }
+}
+
+@keyframes ax-receipt-enter {
+  from { opacity: 0; transform: translateY(var(--ax-space-2)); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes ax-hash-reveal {
+  from { clip-path: inset(0 100% 0 0); }
+  to { clip-path: inset(0 0 0 0); }
+}
+
+@keyframes ax-shimmer {
+  from { opacity: 0.45; }
+  to { opacity: 1; }
+}
+
+.ax-skeleton {
+  height: var(--ax-space-3);
+  border-radius: var(--ax-radius-xs);
+  background: var(--ax-bg-muted);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .ax-skeleton {
+    animation: ax-shimmer calc(var(--ax-dur-emph) * 3) var(--ax-ease-linear) infinite alternate;
+  }
+}
+
+[data-ax] :focus-visible {
+  outline: none;
+  box-shadow: var(--ax-ring);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ax-btn:active { transform: none; }
+
+  [data-ax],
+  [data-ax]::before,
+  [data-ax]::after,
+  [data-ax] *,
+  [data-ax] *::before,
+  [data-ax] *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}

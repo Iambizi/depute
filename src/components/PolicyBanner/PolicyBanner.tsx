@@ -91,7 +91,8 @@ export function PolicyBanner({
 
   return (
     <div
-      className={`${styles.policyBanner} ${SEVERITY_CLASSES[resolvedSeverity]} ${className ?? ''}`}
+      className={`${styles.policyBanner} ax-card ${SEVERITY_CLASSES[resolvedSeverity]} ${className ?? ''}`}
+      data-ax=""
       role="status"
       aria-label={ariaLabel}
     >

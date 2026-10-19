@@ -1,212 +1,167 @@
 /* AgentRoster — dense table layout for flat swarm scanning */
 
-.base {
-  display: flex;
+.base {display: flex;
   flex-direction: column;
-  border-radius: 8px;
-  border: 1px solid var(--ax-border-color, #e5e7eb);
-  background: var(--ax-bg-primary, #ffffff);
-  box-shadow: var(--ax-shadow-sm);
-  font-family: var(--ax-font-sans, system-ui, sans-serif);
+  border-radius: var(--ax-card-radius);
+  border: 0;
+  background: var(--ax-card-bg);
+  box-shadow: var(--ax-card-shadow);
+  font-family: var(--ax-font-sans);
   overflow: hidden;
-}
+  color: var(--ax-fg-default);
+  font-variant-numeric: var(--ax-numeric);}
 
 /* Header */
-.header {
-  display: flex;
+.header {display: flex;
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
-  gap: 8px;
-  padding: 14px 20px;
-  background: var(--ax-bg-secondary, #f9fafb);
-  border-bottom: 1px solid var(--ax-border-color, #e5e7eb);
-}
+  gap: var(--ax-space-2);
+  padding: var(--ax-card-pad-y) var(--ax-card-pad-x);
+  background: var(--ax-card-header-bg);
+  border-bottom: 1px solid var(--ax-border-default);
+  min-height: var(--ax-header-min);}
 
 .title {
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--ax-text-primary, #111827);
-}
+  font-size: var(--ax-text-md);
+  font-weight: var(--ax-weight-semibold);
+  color: var(--ax-fg-default);
+  line-height: var(--ax-leading-md);
+  letter-spacing: var(--ax-tracking-tight);}
 
-.summary {
-  display: flex;
+.summary {display: flex;
   flex-wrap: wrap;
-  gap: 6px;
-}
+  gap: var(--ax-space-1-5);}
 
 .pill {
-  font-size: 10px;
-  font-weight: 600;
+  font-size: var(--ax-badge-text);
+  font-weight: var(--ax-weight-medium);
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  padding: 2px 8px;
-  border-radius: 10px;
-}
+  padding: 0 var(--ax-badge-pad-x);
+  border-radius: var(--ax-badge-radius);
+  height: var(--ax-badge-h);}
 
-.pillWorking { background: var(--ax-color-green-100, #d1fae5); color: var(--ax-color-green-800, #065f46); }
-.pillBlocked { background: var(--ax-color-amber-100, #fef3c7); color: var(--ax-color-amber-800, #92400e); }
-.pillFailed { background: var(--ax-color-red-100, #fee2e2); color: var(--ax-color-red-800, #991b1b); }
-.pillIdle { background: var(--ax-color-gray-100, #f3f4f6); color: var(--ax-color-gray-500, #6b7280); }
-.pillCompleted { background: var(--ax-color-indigo-50, #ede9fe); color: var(--ax-color-indigo-900, #4c1d95); }
+.pillWorking {background: var(--ax-status-success-bg);
+  color: var(--ax-status-success-fg);}
+.pillBlocked {background: var(--ax-status-warning-bg);
+  color: var(--ax-status-warning-fg);}
+.pillFailed {background: var(--ax-status-danger-bg);
+  color: var(--ax-status-danger-fg);}
+.pillIdle {background: var(--ax-bg-muted);
+  color: var(--ax-fg-muted);}
+.pillCompleted {background: var(--ax-tag-1-bg);
+  color: var(--ax-tag-1-fg);}
 
 /* Empty */
-.empty {
-  padding: 48px 24px;
+.empty {padding: var(--ax-space-12) var(--ax-space-6);
   text-align: center;
-  font-size: 13px;
-  color: var(--ax-text-tertiary, #9ca3af);
-}
+  font-size: var(--ax-text-sm);
+  color: var(--ax-fg-muted);}
 
 /* Table wrapper */
-.tableWrapper {
-  overflow-x: auto;
-}
+.tableWrapper {overflow-x: auto;}
 
-.table {
-  width: 100%;
+.table {width: 100%;
   border-collapse: collapse;
-  font-size: 12px;
-  background: transparent !important;
-}
+  font-size: var(--ax-text-xs);
+  background: transparent !important;}
 
 /* Head row */
-.headRow {
-  background: var(--ax-bg-secondary, #f9fafb) !important;
-}
+.headRow {background: var(--ax-bg-subtle) !important;}
 
-.headCell {
-  padding: 10px 16px;
+.headCell {padding: var(--ax-space-2) var(--ax-space-4);
   text-align: left;
-  font-size: 10px;
-  font-weight: 600;
+  font-size: var(--ax-text-2xs);
+  font-weight: var(--ax-weight-semibold);
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: var(--ax-text-secondary, #6b7280);
-  border-bottom: 1px solid var(--ax-border-color, #e5e7eb) !important;
+  color: var(--ax-fg-muted);
+  border-bottom: 1px solid var(--ax-border-default) !important;
   border-left: none !important;
   border-right: none !important;
   border-top: none !important;
   background: transparent !important;
-  white-space: nowrap;
-}
+  white-space: nowrap;}
 
 /* Base table bleed resets */
-.table tr {
-  background: var(--ax-bg-primary, #ffffff) !important;
-  border: none !important;
-}
+.table tr {background: var(--ax-bg-surface) !important;
+  border: none !important;}
 
-.table td {
-  background: transparent !important;
-  border: none !important;
-}
+.table td {background: transparent !important;
+  border: none !important;}
 
 /* Body rows */
-.row {
-  border-bottom: 1px solid var(--ax-border-color, #f3f4f6) !important;
-  transition: background 0.12s ease;
-  background: var(--ax-bg-primary, #ffffff) !important;
-}
+.row {border-bottom: 1px solid var(--ax-border-default) !important;
+  transition: background-color var(--ax-dur-fast) var(--ax-ease-standard), color var(--ax-dur-fast) var(--ax-ease-standard), border-color var(--ax-dur-fast) var(--ax-ease-standard), box-shadow var(--ax-dur-fast) var(--ax-ease-standard), transform var(--ax-dur-fast) var(--ax-ease-standard);
+  background: var(--ax-bg-surface) !important;}
 
-.row:last-child {
-  border-bottom: none !important;
-}
+.row:last-child {border-bottom: none !important;}
 
-.rowClickable {
-  cursor: pointer;
-}
+.rowClickable {cursor: pointer;}
 
-.rowClickable:hover {
-  background: var(--ax-bg-secondary, #f9fafb) !important;
-}
+.rowClickable:hover {background: var(--ax-bg-subtle) !important;}
 
-.rowClickable:focus-visible {
-  outline: 2px solid var(--ax-color-blue-500, #3b82f6);
-  outline-offset: -2px;
-}
+.rowClickable:focus-visible {outline: var(--ax-space-0-5) solid var(--ax-status-info-border);
+  outline-offset: calc(var(--ax-space-0-5) * -1);}
 
-.rowSelected {
-  background: var(--ax-color-blue-50, #eff6ff) !important;
-}
+.rowSelected {background: var(--ax-status-info-bg) !important;}
 
 /* Cells */
-.cellStatus {
-  padding: 10px 0 10px 20px;
-  width: 24px;
-}
+.cellStatus {padding: var(--ax-space-2) 0 var(--ax-space-2) var(--ax-space-5);
+  width: var(--ax-space-6);}
 
-.cellName {
-  padding: 10px 16px;
-  min-width: 150px;
-}
+.cellName {padding: var(--ax-space-2) var(--ax-space-4);
+  min-width: var(--ax-kv-key);}
 
-.cellTask {
-  padding: 10px 16px;
-  max-width: 280px;
-}
+.cellTask {padding: var(--ax-space-2) var(--ax-space-4);
+  max-width: var(--ax-kv-key);}
 
-.cellMeta {
-  padding: 10px 16px;
+.cellMeta {padding: var(--ax-space-2) var(--ax-space-4);
   white-space: nowrap;
-  color: var(--ax-text-secondary, #64748b);
-}
+  color: var(--ax-fg-muted);}
 
 /* Status dot */
-.dot {
-  display: inline-block;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-}
+.dot {display: inline-block;
+  width: var(--ax-space-2);
+  height: var(--ax-space-2);
+  border-radius: var(--ax-radius-full);}
 
-.dotIdle { background: var(--ax-color-gray-300, #d1d5db); }
-.dotWorking { background: var(--ax-color-green-500, #10b981); }
-.dotBlocked { background: var(--ax-color-amber-500, #f59e0b); }
-.dotFailed { background: var(--ax-color-red-500, #ef4444); }
-.dotCompleted { background: var(--ax-color-indigo-500, #6366f1); }
+.dotIdle {background: var(--ax-border-strong);}
+.dotWorking {background: var(--ax-status-success-solid);}
+.dotBlocked {background: var(--ax-status-warning-solid);}
+.dotFailed {background: var(--ax-status-danger-solid);}
+.dotCompleted {background: var(--ax-status-info-solid);}
 
-.dotPulsing {
-  animation: rosterPulse 1.5s ease-in-out infinite;
-}
+.dotPulsing {animation: rosterPulse var(--ax-dur-emph) var(--ax-ease-standard) infinite;}
 
 @keyframes rosterPulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.3; }
+  0%, 100% {opacity: 1;}
+  50% {opacity: 0.3;}
 }
 
 /* Agent name/role */
-.agentName {
-  display: block;
-  font-weight: 600;
-  color: var(--ax-text-primary, #111827);
-}
+.agentName {display: block;
+  font-weight: var(--ax-weight-semibold);
+  color: var(--ax-fg-default);}
 
-.agentRole {
-  display: block;
-  font-size: 10px;
-  color: var(--ax-text-secondary, #6b7280);
+.agentRole {display: block;
+  font-size: var(--ax-text-2xs);
+  color: var(--ax-fg-muted);
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  margin-top: 1px;
-}
+  margin-top: 1px;}
 
 /* Task text */
-.taskText {
-  color: var(--ax-text-secondary, #374151);
+.taskText {color: var(--ax-fg-muted);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   display: block;
-  max-width: 280px;
-  font-style: italic;
-}
+  max-width: var(--ax-kv-key);
+  font-style: italic;}
 
 .taskEmpty,
-.metaEmpty {
-  color: var(--ax-text-tertiary, #d1d5db);
-}
+.metaEmpty {color: var(--ax-fg-muted);}
 
-.metaValue {
-  color: var(--ax-text-secondary, #374151);
-}
+.metaValue {color: var(--ax-fg-muted);}

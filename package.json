@@ -1,6 +1,6 @@
 {
   "name": "ax-components-react",
-  "version": "0.4.4",
+  "version": "0.5.0",
   "description": "React component library for human-in-the-loop oversight in agentic applications. Approval gates, plan cards, tool traces, confidence meters, run controls, and more.",
   "homepage": "https://depute.dev",
   "keywords": [
@@ -53,6 +53,7 @@
     "lint": "eslint .",
     "checksums": "node scripts/generate-checksums.mjs",
     "checksums:check": "node scripts/verify-checksums.mjs",
+    "styles:check": "node scripts/check-styles.mjs",
     "type-check": "tsc -p tsconfig.build.json --noEmit"
   },
   "devDependencies": {

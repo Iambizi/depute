@@ -85,7 +85,8 @@ export const SwarmInbox: React.FC<SwarmInboxProps> = ({
 
   return (
     <div
-      className={`${styles.base} ${className || ''}`}
+      className={`${styles.base} ax-card ${className || ''}`}
+      data-ax=""
       role="region"
       aria-label={`Swarm Inbox, ${items.length} items${criticalCount > 0 ? `, ${criticalCount} critical` : ''}`}
     >

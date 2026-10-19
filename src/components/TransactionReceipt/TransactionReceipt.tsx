@@ -9,7 +9,8 @@
  * @see docs/internal/research/catalog-versions/CATALOG-v2.md (Primitive 5)
  */
 
-import { useState, useMemo, useCallback } from 'react';
+import { useState, useMemo, useCallback, type ReactNode } from 'react';
+import { IconCheck, IconCircle, IconCopy, IconUndo, IconX } from '../../utils/icons';
 import { VisuallyHidden } from '../../utils/a11y';
 import type {
   TransactionReceiptProps,
@@ -21,6 +22,16 @@ import styles from './TransactionReceipt.module.css';
 /* Constants                                                           */
 /* ------------------------------------------------------------------ */
 
+function formatStamp(value: string): string {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return value;
+  return new Intl.DateTimeFormat('en-US', {
+    dateStyle: 'medium',
+    timeStyle: 'short',
+    timeZone: 'UTC',
+  }).format(date);
+}
+
 const STATUS_LABELS: Record<TransactionStatus, string> = {
   success: 'Success',
   failed: 'Failed',
@@ -28,11 +39,11 @@ const STATUS_LABELS: Record<TransactionStatus, string> = {
   reverted: 'Reverted',
 };
 
-const STATUS_SYMBOLS: Record<TransactionStatus, string> = {
-  success: '✓',
-  failed: '✕',
-  pending: '◌',
-  reverted: '↩',
+const STATUS_SYMBOLS: Record<TransactionStatus, ReactNode> = {
+  success: <IconCheck />,
+  failed: <IconX />,
+  pending: <IconCircle />,
+  reverted: <IconUndo />,
 };
 
 const STATUS_CLASSES: Record<TransactionStatus, string> = {
@@ -84,7 +95,8 @@ export function TransactionReceipt({
 
   return (
     <div
-      className={`${styles.receipt} ${STATUS_CLASSES[status]} ${className ?? ''}`}
+      className={`${styles.receipt} ax-card ${status === 'success' ? 'ax-receipt-enter' : ''} ${STATUS_CLASSES[status]} ${className ?? ''}`}
+      data-ax=""
       role="region"
       aria-label={ariaLabel}
     >
@@ -102,6 +114,7 @@ export function TransactionReceipt({
         <span className={`${styles.statusBadge} ${STATUS_CLASSES[status]}`}>
           {STATUS_LABELS[status]}
         </span>
+        {status === 'success' && <span className="ax-stamp">Approved</span>}
       </div>
 
       {/* Line items */}
@@ -109,7 +122,7 @@ export function TransactionReceipt({
         {/* Timestamp */}
         <div className={styles.lineItem} role="listitem">
           <span className={styles.lineLabel}>Timestamp</span>
-          <span className={styles.lineValue}>{timestamp}</span>
+          <span className={styles.lineValue}>{formatStamp(timestamp)}</span>
         </div>
 
         {/* Agent ID */}
@@ -137,7 +150,7 @@ export function TransactionReceipt({
       {(hash || signature || onViewAuditTrail || onVerify) && (
         <div className={styles.footer}>
           {signature && (
-            <div className={styles.hashRow}>
+            <div className={`${styles.hashRow} ax-hash-reveal`}>
               <span className={styles.hashLabel}>Signature</span>
               <code className={styles.hashValue}>
                 {signature.length > 16 ? `${signature.slice(0, 8)}…${signature.slice(-8)}` : signature}
@@ -145,7 +158,7 @@ export function TransactionReceipt({
             </div>
           )}
           {hash && (
-            <div className={styles.hashRow}>
+            <div className={`${styles.hashRow} ax-hash-reveal`}>
               <span className={styles.hashLabel}>Verification</span>
               <code className={styles.hashValue}>
                 {hash.length > 16 ? `${hash.slice(0, 8)}…${hash.slice(-8)}` : hash}
@@ -157,7 +170,7 @@ export function TransactionReceipt({
                   onClick={handleCopy}
                   aria-label={copied ? 'Hash copied' : 'Copy hash'}
                 >
-                  {copied ? '✓' : '⧉'}
+                  {copied ? <IconCheck /> : <IconCopy />}
                 </button>
               )}
             </div>

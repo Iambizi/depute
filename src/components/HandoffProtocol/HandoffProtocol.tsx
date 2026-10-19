@@ -22,7 +22,8 @@ export const HandoffProtocol: React.FC<HandoffProtocolProps> = ({
 }) => {
   return (
     <div
-      className={`${styles.base} ${className || ''}`}
+      className={`${styles.base} ax-card ax-gate ${className || ''}`}
+      data-ax=""
       role="dialog"
       aria-modal="false"
       aria-label={`Handoff from ${sourceAgent} to ${destinationAgent}`}

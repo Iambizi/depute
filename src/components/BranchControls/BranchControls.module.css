@@ -1,141 +1,81 @@
 /* BranchControls — scoped steering for a single agent branch */
 
-.base {
-  display: flex;
+.base {display: flex;
   flex-direction: column;
   gap: 0;
-  border-radius: 8px;
-  border: 1px solid var(--ax-border-color, #e5e7eb);
-  background: var(--ax-bg-primary, #fff);
-  font-family: var(--ax-font-sans, system-ui, sans-serif);
+  border-radius: var(--ax-card-radius);
+  border: 0;
+  background: var(--ax-card-bg);
+  font-family: var(--ax-font-sans);
   overflow: hidden;
-}
+  color: var(--ax-fg-default);
+  font-variant-numeric: var(--ax-numeric);
+  box-shadow: var(--ax-card-shadow);}
 
-/* Status-based border accent */
-.base_running { border-top: 3px solid var(--ax-color-green-500, #10b981); }
-.base_paused  { border-top: 3px solid var(--ax-color-amber-500, #f59e0b); }
-.base_quarantined { border-top: 3px solid var(--ax-color-red-500, #ef4444); }
+.base_running {box-shadow: var(--ax-card-shadow), var(--ax-rail-success);}
+.base_paused {box-shadow: var(--ax-card-shadow), var(--ax-rail-warning);}
+.base_quarantined {box-shadow: var(--ax-card-shadow), var(--ax-rail-danger);}
 
 /* Header */
-.header {
-  display: flex;
+.header {display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 14px;
-  background: var(--ax-bg-secondary, #f9fafb);
-  border-bottom: 1px solid var(--ax-border-color, #e5e7eb);
-}
+  padding: var(--ax-card-pad-y) var(--ax-card-pad-x);
+  background: var(--ax-card-header-bg);
+  border-bottom: 1px solid var(--ax-border-default);
+  min-height: var(--ax-header-min);
+  gap: var(--ax-space-2);}
 
-.identity {
-  display: flex;
+.identity {display: flex;
   align-items: center;
-  gap: 10px;
-}
+  gap: var(--ax-space-2);}
 
-.nameBlock {
-  display: flex;
-  flex-direction: column;
-}
+.nameBlock {display: flex;
+  flex-direction: column;}
 
-.label {
-  font-size: 9px;
-  font-weight: 600;
+.label {font-size: var(--ax-text-2xs);
+  font-weight: var(--ax-weight-semibold);
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  color: var(--ax-text-tertiary, #9ca3af);
-}
+  color: var(--ax-fg-muted);}
 
-.branchName {
-  font-size: 13px;
-  font-weight: 700;
-  font-family: var(--ax-font-mono, monospace);
-  color: var(--ax-text-primary, #111827);
-}
+.branchName {font-size: var(--ax-text-sm);
+  font-weight: var(--ax-weight-semibold);
+  font-family: var(--ax-font-mono);
+  color: var(--ax-fg-default);}
 
 /* Status dot */
-.dot {
-  width: 9px;
-  height: 9px;
-  border-radius: 50%;
-  flex-shrink: 0;
-}
+.dot {width: var(--ax-space-2);
+  height: var(--ax-space-2);
+  border-radius: var(--ax-radius-full);
+  flex-shrink: 0;}
 
-.dotRunning      { background: var(--ax-color-green-500, #10b981); }
-.dotPaused       { background: var(--ax-color-amber-500, #f59e0b); }
-.dotQuarantined  { background: var(--ax-color-red-500, #ef4444); }
+.dotRunning      {background: var(--ax-status-success-solid);}
+.dotPaused       {background: var(--ax-status-warning-solid);}
+.dotQuarantined  {background: var(--ax-status-danger-solid);}
 
-.dotPulsing {
-  animation: bcPulse 1.5s ease-in-out infinite;
-}
+.dotPulsing {animation: bcPulse var(--ax-dur-emph) var(--ax-ease-standard) infinite;}
 
 @keyframes bcPulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.3; }
+  0%, 100% {opacity: 1;}
+  50% {opacity: 0.3;}
 }
 
 /* Status badge */
-.statusBadge {
-  font-size: 10px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  padding: 2px 8px;
-  border-radius: 10px;
-}
-
-.badge_running     { background: var(--ax-color-green-100, #d1fae5); color: var(--ax-color-green-800, #065f46); }
-.badge_paused      { background: var(--ax-color-amber-100, #fef3c7); color: var(--ax-color-amber-800, #92400e); }
-.badge_quarantined { background: var(--ax-color-red-100, #fee2e2); color: var(--ax-color-red-800, #991b1b); }
+.statusBadge {text-transform: uppercase;
+  letter-spacing: var(--ax-tracking-caps);}
 
 /* Actions */
-.actions {
-  display: flex;
-  gap: 6px;
-  padding: 12px 14px;
-  flex-wrap: wrap;
-}
+.actions {display: flex;
+  gap: var(--ax-space-1-5);
+  padding: var(--ax-space-3) var(--ax-space-3);
+  flex-wrap: wrap;}
 
 .btnPrimary,
 .btnSecondary,
-.btnWarning,
-.btnDanger {
-  font-size: 11px;
-  font-weight: 600;
-  padding: 6px 12px;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: all 0.15s ease;
-  border: 1px solid transparent;
+.btnDanger {font-family: inherit;}
+
+.base :focus-visible {
+  outline: none;
+  box-shadow: var(--ax-ring);
 }
-
-.btnPrimary {
-  background: var(--ax-color-gray-900, #111827);
-  color: var(--ax-surface-primary, #fff);
-  border-color: var(--ax-color-gray-900, #111827);
-}
-
-.btnPrimary:hover { background: var(--ax-color-gray-700, #374151); }
-
-.btnSecondary {
-  background: var(--ax-bg-primary, #fff);
-  color: var(--ax-text-secondary, #374151);
-  border-color: var(--ax-border-color, #d1d5db);
-}
-
-.btnSecondary:hover { background: var(--ax-bg-secondary, #f3f4f6); }
-
-.btnWarning {
-  background: var(--ax-color-amber-50, #fffbeb);
-  color: var(--ax-color-amber-700, #b45309);
-  border-color: var(--ax-color-amber-200, #fde68a);
-}
-
-.btnWarning:hover { background: var(--ax-color-amber-100, #fef3c7); }
-
-.btnDanger {
-  background: var(--ax-color-red-50, #fef2f2);
-  color: var(--ax-color-red-700, #b91c1c);
-  border-color: var(--ax-color-red-200, #fecaca);
-}
-
-.btnDanger:hover { background: var(--ax-color-red-100, #fee2e2); }

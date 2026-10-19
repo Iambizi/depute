@@ -37,7 +37,8 @@ export function ConfidenceMeter({
 
     return (
       <span
-        className={`${styles.confidenceMeter} ${styles.badge} ${badgeSizeClass} ${badgeColorClass} ${className ?? ''}`}
+        className={`${styles.confidenceMeter} ax-card ${styles.badge} ${badgeSizeClass} ${badgeColorClass} ${className ?? ''}`}
+      data-ax=""
         role="meter"
         aria-valuenow={clamped}
         aria-valuemin={0}

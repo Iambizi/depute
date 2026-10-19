@@ -11,6 +11,17 @@ import type { PlanStep, ToolCall, Artifact } from '../types/common';
 import type { ApprovalGateProps } from '../components/ApprovalGate';
 import type { ExportFormat } from '../components/ArtifactCard';
 
+/** Fixed seed so stories render the same data on every load. */
+function createRng(seed: number) {
+  let state = seed >>> 0;
+  return () => {
+    state = (Math.imul(state, 1664525) + 1013904223) >>> 0;
+    return state / 4294967296;
+  };
+}
+
+const random = createRng(0xde5e);
+
 // ---------------------------------------------------------------------------
 // Label Banks
 // ---------------------------------------------------------------------------
@@ -79,11 +90,11 @@ export const MOCK_APPROVAL_SCENARIOS: Array<{ title: string; description: string
 // ---------------------------------------------------------------------------
 
 function pick<T>(arr: T[]): T {
-  return arr[Math.floor(Math.random() * arr.length)];
+  return arr[Math.floor(random() * arr.length)];
 }
 
 function uid(): string {
-  return Math.random().toString(36).slice(2, 9);
+  return random().toString(36).slice(2, 9);
 }
 
 function isoNow(): string {
@@ -121,7 +132,7 @@ export function generateMockPlan({
   includeReasoning = false,
 }: GenerateMockPlanOptions = {}): MockPlan {
   const labels = [...MOCK_STEP_LABELS]
-    .sort(() => Math.random() - 0.5)
+    .sort(() => random() - 0.5)
     .slice(0, stepCount);
 
   const steps: PlanStep[] = labels.map((label, i) => ({
@@ -133,7 +144,7 @@ export function generateMockPlan({
         : undefined,
     status: 'pending',
     confidence: includeConfidence
-      ? Math.floor(Math.random() * 40) + 60
+      ? Math.floor(random() * 40) + 60
       : undefined,
     reasoning: includeReasoning
       ? `Step ${i + 1} is required because the output of the previous step must be validated before proceeding.`
@@ -231,7 +242,7 @@ export function generateMockApproval(
       'Based on the task requirements, this action is necessary to complete the workflow successfully.',
     status: 'pending',
     mode: 'simple',
-    confidence: Math.floor(Math.random() * 30) + 60,
+    confidence: Math.floor(random() * 30) + 60,
     timeoutSeconds: 120,
     scope: {
       resourceLimit: '$500',
@@ -252,7 +263,7 @@ export function generateMockApproval(
 
 /** Generate a random confidence score in range [0, 100]. */
 export function generateRandomConfidence(): number {
-  return Math.floor(Math.random() * 100);
+  return Math.floor(random() * 100);
 }
 
 // ---------------------------------------------------------------------------
@@ -268,7 +279,7 @@ export function generateRandomConfidence(): number {
 export function generateMockToolCalls(count = 4): ToolCall[] {
   return Array.from({ length: count }, (_, i) => {
     const name = pick(MOCK_TOOL_NAMES);
-    const failed = Math.random() < 0.15; // ~15% failure rate
+    const failed = random() < 0.15; // ~15% failure rate
     const status = failed ? 'failed' : 'completed';
 
     return {
@@ -276,7 +287,7 @@ export function generateMockToolCalls(count = 4): ToolCall[] {
       name,
       status,
       timestamp: isoNow(),
-      duration: Math.floor(Math.random() * 2000) + 50,
+      duration: Math.floor(random() * 2000) + 50,
       input: { query: `param_${i}`, limit: 10 },
       output: status === 'completed' ? { results: [{ id: uid(), score: 0.92 }] } : undefined,
       error: status === 'failed' ? 'Connection timeout after 5000ms' : undefined,
@@ -328,11 +339,11 @@ export function simulateToolStream({
     // Emit as running
     onCall({ id, name, status: 'running', timestamp: isoNow() });
 
-    const completionDelay = Math.floor(Math.random() * 600) + 300;
+    const completionDelay = Math.floor(random() * 600) + 300;
     setTimeout(() => {
       if (cancelled) return;
 
-      const failed = Math.random() < 0.1;
+      const failed = random() < 0.1;
       onCall({
         id,
         name,
@@ -549,7 +560,7 @@ const LEDGER_VALUES = [
 const AGENT_STATUSES: AgentStatus[] = ['idle', 'working', 'blocked', 'failed', 'completed'];
 
 function timeAgo(): string {
-  const mins = Math.floor(Math.random() * 30) + 1;
+  const mins = Math.floor(random() * 30) + 1;
   return mins < 2 ? 'just now' : `${mins}m ago`;
 }
 
@@ -613,7 +624,7 @@ export function generateMockAgentRoster(count = 6): AgentRosterItem[] {
       role: AGENT_DIRECTORY[i % AGENT_DIRECTORY.length].role,
       status,
       currentTask: status !== 'idle' && status !== 'completed' ? pick(TASK_DESCRIPTIONS) : undefined,
-      tokensUsed: Math.floor(Math.random() * 40000) + 2000,
+      tokensUsed: Math.floor(random() * 40000) + 2000,
       lastActive: timeAgo(),
     };
   });
@@ -633,8 +644,8 @@ export function generateMockAgentRoster(count = 6): AgentRosterItem[] {
 export function generateMockSubagentCard(overrides?: Partial<SubagentCardProps>): SubagentCardProps {
   const status = pick(AGENT_STATUSES);
   const agent = pick(AGENT_DIRECTORY);
-  const totalSteps = Math.floor(Math.random() * 8) + 3;
-  const completedSteps = Math.floor(Math.random() * totalSteps);
+  const totalSteps = Math.floor(random() * 8) + 3;
+  const completedSteps = Math.floor(random() * totalSteps);
   return {
     agentName: agent.name,
     role: agent.role,
@@ -642,7 +653,7 @@ export function generateMockSubagentCard(overrides?: Partial<SubagentCardProps>)
     currentTask: status !== 'idle' ? pick(TASK_DESCRIPTIONS) : undefined,
     planStepCount: totalSteps,
     planStepsCompleted: completedSteps,
-    tokensUsed: Math.floor(Math.random() * 20000) + 1000,
+    tokensUsed: Math.floor(random() * 20000) + 1000,
     ...overrides,
   };
 }
@@ -670,7 +681,7 @@ export function generateMockTaskQueue(count = 8): TaskQueueItem[] {
       priority: pick(TASK_PRIORITIES),
       status,
       assignedTo: status !== 'pending' ? pick(AGENT_NAMES) : undefined,
-      estimatedTokens: Math.floor(Math.random() * 8000) + 500,
+      estimatedTokens: Math.floor(random() * 8000) + 500,
     };
   });
 }
@@ -722,15 +733,15 @@ export function generateMockHandoff(overrides?: Partial<HandoffProtocolProps>): 
 export function generateMockDelegationGate(
   overrides?: Partial<DelegationGateProps>
 ): Omit<DelegationGateProps, 'onApprove' | 'onDeny'> {
-  const tokenBudget = Math.floor(Math.random() * 20000) + 5000;
+  const tokenBudget = Math.floor(random() * 20000) + 5000;
   const estimatedCost = `$${(tokenBudget * 0.000015).toFixed(2)}`;
   return {
     requestingAgent: pick(AGENT_NAMES),
     proposedSubagent: {
       role: pick(AGENT_ROLES),
       mandate: pick(MOCK_MANDATES),
-      allowedTools: [...new Set(Array.from({ length: Math.floor(Math.random() * 4) + 2 }, () => pick(MOCK_TOOLS)))],
-      maxDepth: Math.floor(Math.random() * 2) + 1,
+      allowedTools: [...new Set(Array.from({ length: Math.floor(random() * 4) + 2 }, () => pick(MOCK_TOOLS)))],
+      maxDepth: Math.floor(random() * 2) + 1,
       estimatedTokens: tokenBudget,
       estimatedCost,
     },
@@ -750,16 +761,16 @@ export function generateMockDelegationGate(
  * <SwarmMonitor {...props} />
  */
 export function generateMockSwarmMetrics(overrides?: Partial<SwarmMonitorProps>): SwarmMonitorProps {
-  const tokensBurned = Math.floor(Math.random() * 200000) + 10000;
+  const tokensBurned = Math.floor(random() * 200000) + 10000;
   return {
     metrics: {
-      activeInstances: Math.floor(Math.random() * 8) + 2,
-      idleInstances: Math.floor(Math.random() * 4),
+      activeInstances: Math.floor(random() * 8) + 2,
+      idleInstances: Math.floor(random() * 4),
       totalCost: `$${(tokensBurned * 0.000015).toFixed(2)}`,
       tokensBurned,
-      errorRate: Math.floor(Math.random() * 20),
-      taskCompletionRate: Math.floor(Math.random() * 60) + 20,
-      estimatedTimeRemaining: `${Math.floor(Math.random() * 15) + 2}m`,
+      errorRate: Math.floor(random() * 20),
+      taskCompletionRate: Math.floor(random() * 60) + 20,
+      estimatedTimeRemaining: `${Math.floor(random() * 15) + 2}m`,
     },
     ...overrides,
   };
@@ -797,7 +808,7 @@ export function generateMockEscalation(
     failedAgent: pick(AGENT_NAMES),
     branchId: `branch-${uid()}`,
     errorSummary: pick(MOCK_ERROR_SUMMARIES),
-    errorTrace: Math.random() > 0.3 ? pick(MOCK_TRACES) : undefined,
+    errorTrace: random() > 0.3 ? pick(MOCK_TRACES) : undefined,
     recommendation: pick(['retry', 'reassign', 'cancel'] as const),
     ...overrides,
   };
@@ -858,7 +869,7 @@ export function generateMockSwarmInbox(count = 5): SwarmInboxItem[] {
  * <SharedContextLedger {...props} />
  */
 export function generateMockContextLedger(overrides?: Partial<SharedContextLedgerProps>): SharedContextLedgerProps {
-  const count = Math.floor(Math.random() * 5) + 4;
+  const count = Math.floor(random() * 5) + 4;
   const entryTypes = ['fact', 'decision', 'constraint', 'artifact'] as const;
   const scopes = ['global', 'branch', 'agent-local'] as const;
   const entries: ContextLedgerEntry[] = Array.from({ length: count }, () => ({
@@ -871,7 +882,7 @@ export function generateMockContextLedger(overrides?: Partial<SharedContextLedge
       authorAgent: pick(AGENT_NAMES),
       timestamp: timeAgo(),
     },
-    conflict: Math.random() < 0.15,
+    conflict: random() < 0.15,
   }));
   return {
     currentScope: 'branch',

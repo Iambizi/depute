@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { GeistPixelGrid } from 'geist/font/pixel';
 import { motion } from 'framer-motion';
 import { AgentRosterDemo } from '@/components/demos/AgentRosterDemo';
+import { PixelWordmark } from '@/components/pixel-wordmark';
 import { Terminal, Shield, Workflow, ArrowRight, Lock } from 'lucide-react';
 
 const features = [
@@ -93,8 +94,8 @@ export default function HomePage() {
   return (
     <main className="relative min-h-screen overflow-x-clip bg-fd-background selection:bg-fd-focus">
       <header className="relative z-20 mx-auto flex max-w-6xl items-center justify-between gap-4 px-6 py-5">
-        <Link href="/" className="font-mono text-sm font-semibold tracking-tight text-fd-foreground">
-          depute
+        <Link href="/" className="text-fd-foreground" aria-label="depute">
+          <PixelWordmark className="h-4 w-auto" />
         </Link>
         <nav aria-label="Primary" className="flex flex-wrap items-center justify-end gap-x-5 gap-y-2 text-sm text-fd-muted-foreground">
           <Link href="/demo" className="hover:text-fd-foreground">Demo</Link>
@@ -128,7 +129,7 @@ export default function HomePage() {
         >
           <span className="inline-flex items-center gap-2 px-3 py-1 text-xs font-mono font-medium rounded-full border border-fd-border bg-fd-muted text-fd-foreground shadow-sm">
             <span className="flex h-2 w-2 rounded-full bg-fd-primary animate-pulse" />
-            v0.4.4: Async Approval Handoff
+            v0.5.0: Dark mode and one visual system
           </span>
         </motion.div>
 

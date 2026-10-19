@@ -65,7 +65,7 @@ export function SessionOverview({
   className = '',
 }: SessionOverviewProps) {
   return (
-    <div className={`${styles.container} ${className}`} data-testid="ax-session-overview">
+    <div className={`${styles.container} ax-card ${className}`} data-ax="" data-testid="ax-session-overview">
       <div className={styles.header}>
         <div className={styles.title}>
           <svg
