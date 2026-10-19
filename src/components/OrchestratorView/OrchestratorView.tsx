@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import type React from 'react';
+import { IconChevron } from '../../utils/icons';
 import styles from './OrchestratorView.module.css';
 import type { OrchestratorNode, OrchestratorViewProps } from './OrchestratorView.types';
 
@@ -75,7 +76,7 @@ function TreeNode({ node, depth, selectedNodeId, onNodeClick }: TreeNodeProps) {
             aria-expanded={expanded}
           >
             <span className={`${styles.chevron} ${expanded ? styles.chevronOpen : ''}`}>
-              ▶
+              <IconChevron />
             </span>
           </button>
         )}
@@ -141,7 +142,8 @@ export const OrchestratorView: React.FC<OrchestratorViewProps> = ({
 
   return (
     <div
-      className={`${styles.base} ${className || ''}`}
+      className={`${styles.base} ax-card ${className || ''}`}
+      data-ax=""
       role="region"
       aria-label="Orchestrator agent tree"
     >

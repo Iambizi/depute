@@ -32,7 +32,13 @@ const MIRROR_FILES = [
   'src/components/ApprovalGate/index.ts',
   'src/types/common.ts',
   'src/utils/a11y.tsx',
+  'src/utils/icons.tsx',
   'src/utils/mockData.ts',
+  'src/styles/base.css',
+  'src/styles/semantic.css',
+  'src/styles/component.css',
+  'src/styles/legacy.css',
+  'src/styles/primitives.css',
   'src/styles/tokens.css',
   'src/styles/animations.css',
   'src/styles/index.css',
@@ -57,8 +63,8 @@ function mirrorRepo(tamperPath) {
 }
 
 test('CLI ref is the package version, not main', () => {
-  assert.equal(VERSION, '0.4.4');
-  assert.equal(REF, 'v0.4.4');
+  assert.equal(VERSION, '0.5.0');
+  assert.equal(REF, 'v0.5.0');
   assert.equal(REF.includes('main'), false);
 });
 

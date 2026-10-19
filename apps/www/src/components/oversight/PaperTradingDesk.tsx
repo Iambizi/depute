@@ -197,6 +197,7 @@ export function PaperTradingDesk() {
 
       {phase === 'filled' && (
         <>
+          <p className="sr-only" aria-live="polite">Approved. Receipt paper-fill-aapl-40 recorded.</p>
           <DecisionRecord
             decision="approved"
             approver={{ name: 'You', role: 'Supervisor', timestamp: new Date() }}

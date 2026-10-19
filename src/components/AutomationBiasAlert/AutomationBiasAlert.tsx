@@ -44,7 +44,7 @@ export function AutomationBiasAlert({
   };
 
   return (
-    <div className={`${styles.automationBiasAlert} ${className ?? ''}`}>
+    <div className={`${styles.automationBiasAlert} ax-card ${className ?? ''}`} data-ax="">
       {children}
 
       {isActive && (

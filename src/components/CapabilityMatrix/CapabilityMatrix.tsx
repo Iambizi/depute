@@ -9,7 +9,8 @@
  * @see docs/internal/research/catalog-versions/CATALOG-v2.md (Primitive 3)
  */
 
-import { useMemo } from 'react';
+import { useMemo, type ReactNode } from 'react';
+import { IconCheck, IconCircle, IconDot, IconX } from '../../utils/icons';
 import { VisuallyHidden } from '../../utils/a11y';
 import type {
   CapabilityMatrixProps,
@@ -30,12 +31,12 @@ const PERMISSION_LABELS: Record<PermissionLevel, string> = {
   conditional: 'Conditional',
 };
 
-const PERMISSION_SYMBOLS: Record<PermissionLevel, string> = {
-  full: '✓',
-  read: '◐',
-  write: '◑',
-  none: '✕',
-  conditional: '◎',
+const PERMISSION_SYMBOLS: Record<PermissionLevel, ReactNode> = {
+  full: <IconCheck />,
+  read: <IconCircle />,
+  write: <IconDot />,
+  none: <IconX />,
+  conditional: <IconCircle />,
 };
 
 const PERMISSION_CLASSES: Record<PermissionLevel, string> = {
@@ -138,7 +139,8 @@ export function CapabilityMatrix({
 
   return (
     <div
-      className={`${styles.capabilityMatrix} ${className ?? ''}`}
+      className={`${styles.capabilityMatrix} ax-card ${className ?? ''}`}
+      data-ax=""
       role="region"
       aria-label={ariaLabel}
     >

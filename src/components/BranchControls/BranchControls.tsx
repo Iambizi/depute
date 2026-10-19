@@ -1,4 +1,5 @@
 import type React from 'react';
+import { IconPause, IconPlay } from '../../utils/icons';
 import styles from './BranchControls.module.css';
 import type { BranchControlsProps } from './BranchControls.types';
 
@@ -26,7 +27,8 @@ export const BranchControls: React.FC<BranchControlsProps> = ({
 
   return (
     <div
-      className={`${styles.base} ${styles[`base_${status}`] ?? ''} ${className || ''}`}
+      className={`${styles.base} ax-card ${styles[`base_${status}`] ?? ''} ${className || ''}`}
+      data-ax=""
       role="region"
       aria-label={`Branch controls for ${branchName}`}
     >
@@ -51,11 +53,11 @@ export const BranchControls: React.FC<BranchControlsProps> = ({
       <div className={styles.actions}>
         {status === 'running' ? (
           <button className={styles.btnSecondary} onClick={() => onPause?.()}>
-            ⏸ Pause
+            <IconPause /> Pause
           </button>
         ) : (
           <button className={styles.btnPrimary} onClick={() => onResume?.()}>
-            ▶ Resume
+            <IconPlay /> Resume
           </button>
         )}
 
@@ -80,12 +82,12 @@ export const BranchControls: React.FC<BranchControlsProps> = ({
             onClick={onThrottle}
             title="Reduce token burn rate and concurrency"
           >
-            ↓ Throttle
+            Throttle
           </button>
         )}
 
         <button className={styles.btnDanger} onClick={() => onCancel?.()}>
-          ⊘ Cancel Branch
+          Cancel Branch
         </button>
       </div>
     </div>

@@ -123,7 +123,8 @@ export function BudgetMeter({
   if (compact) {
     return (
       <div
-        className={`${styles.budgetMeterCompact} ${SEVERITY_CLASSES[resolvedSeverity]} ${className ?? ''}`}
+        className={`${styles.budgetMeterCompact} ax-card ${SEVERITY_CLASSES[resolvedSeverity]} ${className ?? ''}`}
+        data-ax=""
         role="meter"
         aria-label={ariaLabel}
         aria-valuetext={`${formattedSpent} of ${formattedLimit} ${unitLabel}`}
@@ -149,7 +150,8 @@ export function BudgetMeter({
 
   return (
     <div
-      className={`${styles.budgetMeter} ${SEVERITY_CLASSES[resolvedSeverity]} ${className ?? ''}`}
+      className={`${styles.budgetMeter} ax-card ${SEVERITY_CLASSES[resolvedSeverity]} ${className ?? ''}`}
+      data-ax=""
       role="meter"
       aria-label={ariaLabel}
       aria-valuetext={`${formattedSpent} of ${formattedLimit} ${unitLabel}`}

@@ -1,0 +1,58 @@
+/**
+ * Tier 3 — component tokens.
+ * These are the names component CSS should prefer, along with semantic tokens.
+ */
+
+:root {
+  --ax-card-bg: var(--ax-bg-surface);
+  --ax-card-radius: var(--ax-radius-md);
+  --ax-card-shadow: var(--ax-shadow-1);
+  --ax-card-pad-x: var(--ax-space-4);
+  --ax-card-pad-y: var(--ax-space-3);
+  --ax-card-header-bg: transparent;
+  --ax-card-divider: var(--ax-border-default);
+
+  --ax-btn-h-sm: 28px;
+  --ax-btn-h-md: 32px;
+  --ax-btn-h-lg: 36px;
+  --ax-btn-pad-x: var(--ax-space-3);
+  --ax-btn-radius: var(--ax-radius-sm);
+
+  --ax-badge-h: 20px;
+  --ax-badge-pad-x: var(--ax-space-1-5);
+  --ax-badge-radius: var(--ax-radius-xs);
+  --ax-badge-text: var(--ax-text-xs);
+
+  --ax-meter-h: 6px;
+  --ax-meter-radius: var(--ax-radius-full);
+  --ax-meter-track: var(--ax-bg-muted);
+
+  --ax-row-h: 36px;
+  --ax-row-hover: var(--ax-bg-subtle);
+
+  --ax-icon: 16px;
+  --ax-target: 44px;
+  --ax-kv-key: 120px;
+  --ax-panel: 280px;
+  --ax-header-min: 44px;
+  --ax-dot: 8px;
+
+  --ax-rail: inset 2px 0 0 var(--ax-accent-9);
+  --ax-rail-warning: inset 2px 0 0 var(--ax-amber-9);
+  --ax-rail-danger: inset 2px 0 0 var(--ax-status-danger-solid);
+  --ax-rail-success: inset 2px 0 0 var(--ax-green-9);
+}
+
+[data-ax-density="comfortable"] {
+  --ax-card-pad-x: var(--ax-space-5);
+  --ax-card-pad-y: var(--ax-space-4);
+  --ax-row-h: 44px;
+  --ax-btn-h-md: 36px;
+}
+
+@media (pointer: coarse) {
+  :root {
+    --ax-btn-h-md: 44px;
+    --ax-row-h: 44px;
+  }
+}

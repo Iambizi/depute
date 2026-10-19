@@ -33,7 +33,7 @@ export function DecisionRecord({
       : approver.timestamp.toLocaleString();
 
   return (
-    <div className={`${styles.container} ${className}`} data-testid="ax-decision-record">
+    <div className={`${styles.container} ax-card ${className}`} data-ax="" data-testid="ax-decision-record">
       <div className={styles.header}>
         <div className={styles.title}>
           <svg

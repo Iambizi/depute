@@ -2,195 +2,153 @@
 /* v2 — Strict Compliance & Forensics */
 
 .capabilityMatrix {
-  font-family: var(--ax-font-family);
-  border: var(--ax-border-width) solid var(--ax-border-color);
-  border-radius: var(--ax-radius-lg);
-  background: var(--ax-surface-primary);
+  font-family: var(--ax-font-sans);
+  border: 0;
+  border-radius: var(--ax-card-radius);
+  background: var(--ax-card-bg);
   overflow: hidden;
-}
+  color: var(--ax-fg-default);
+  font-variant-numeric: var(--ax-numeric);
+  box-shadow: var(--ax-card-shadow);}
 
 /* ------------------------------------------------------------------ */
 /* Header                                                              */
 /* ------------------------------------------------------------------ */
 
-.header {
-  display: flex;
+.header {display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: var(--ax-space-3) var(--ax-space-4);
-  background: var(--ax-surface-secondary);
-  border-bottom: var(--ax-border-width) solid var(--ax-border-color);
-  gap: var(--ax-space-3);
-}
-
-.headerLeft {
-  display: flex;
-  align-items: center;
+  padding: var(--ax-card-pad-y) var(--ax-card-pad-x);
+  background: var(--ax-card-header-bg);
+  border-bottom: var(--ax-border-width) solid var(--ax-border-default);
   gap: var(--ax-space-2);
-}
+  min-height: var(--ax-header-min);}
+
+.headerLeft {display: flex;
+  align-items: center;
+  gap: var(--ax-space-2);}
 
 .title {
-  font-size: var(--ax-font-size-sm);
-  font-weight: var(--ax-font-weight-semibold);
-  color: var(--ax-text-primary);
+  font-size: var(--ax-text-md);
+  font-weight: var(--ax-weight-semibold);
+  color: var(--ax-fg-default);
   margin: 0;
-}
+  line-height: var(--ax-leading-md);
+  letter-spacing: var(--ax-tracking-tight);}
 
-.agentId {
-  font-family: var(--ax-font-family-mono);
-  font-size: var(--ax-font-size-xs);
-  color: var(--ax-text-tertiary);
+.agentId {font-family: var(--ax-font-mono);
+  font-size: var(--ax-text-xs);
+  color: var(--ax-fg-muted);
   padding: var(--ax-space-1) var(--ax-space-2);
-  background: var(--ax-surface-primary);
-  border-radius: var(--ax-radius-sm);
-  border: var(--ax-border-width) solid var(--ax-border-color);
-}
+  background: var(--ax-bg-surface);
+  border-radius: var(--ax-radius-xs);
+  border: var(--ax-border-width) solid var(--ax-border-default);}
 
-.summaryBadges {
-  display: flex;
-  gap: var(--ax-space-2);
-}
+.summaryBadges {display: flex;
+  gap: var(--ax-space-2);}
 
-.summaryBadge {
-  font-size: var(--ax-font-size-xs);
-  font-weight: var(--ax-font-weight-medium);
+.summaryBadge {font-size: var(--ax-text-xs);
+  font-weight: var(--ax-weight-medium);
   padding: var(--ax-space-1) var(--ax-space-2);
-  border-radius: var(--ax-radius-sm);
-  line-height: 1;
-}
+  border-radius: var(--ax-radius-xs);
+  line-height: var(--ax-leading-xs);}
 
 /* ------------------------------------------------------------------ */
 /* Description                                                         */
 /* ------------------------------------------------------------------ */
 
-.description {
-  padding: var(--ax-space-2) var(--ax-space-4);
+.description {padding: var(--ax-space-2) var(--ax-space-4);
   margin: 0;
-  font-size: var(--ax-font-size-sm);
-  color: var(--ax-text-secondary);
-  border-bottom: var(--ax-border-width) solid var(--ax-border-color);
-}
+  font-size: var(--ax-text-md);
+  color: var(--ax-fg-muted);
+  border-bottom: var(--ax-border-width) solid var(--ax-border-default);}
 
 /* ------------------------------------------------------------------ */
 /* Body                                                                */
 /* ------------------------------------------------------------------ */
 
-.body {
-  padding: var(--ax-space-2) 0;
-}
+.body {padding: var(--ax-space-2) 0;}
 
-.group + .group {
-  border-top: var(--ax-border-width) solid var(--ax-border-color);
+.group + .group {border-top: var(--ax-border-width) solid var(--ax-border-default);
   margin-top: var(--ax-space-2);
-  padding-top: var(--ax-space-2);
-}
+  padding-top: var(--ax-space-2);}
 
-.groupLabel {
-  padding: var(--ax-space-1) var(--ax-space-4);
-  font-size: var(--ax-font-size-xs);
-  font-weight: var(--ax-font-weight-semibold);
-  color: var(--ax-text-tertiary);
+.groupLabel {padding: var(--ax-space-1) var(--ax-space-4);
+  font-size: var(--ax-text-xs);
+  font-weight: var(--ax-weight-semibold);
+  color: var(--ax-fg-muted);
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
+  letter-spacing: 0.05em;}
 
 /* ------------------------------------------------------------------ */
 /* Row                                                                 */
 /* ------------------------------------------------------------------ */
 
-.row {
-  display: flex;
+.row {display: flex;
   align-items: center;
   gap: var(--ax-space-2);
   padding: var(--ax-space-2) var(--ax-space-4);
-  font-size: var(--ax-font-size-sm);
-  transition: background var(--ax-duration-fast) var(--ax-ease-default);
-}
+  font-size: var(--ax-text-md);
+  transition: background var(--ax-dur-fast) var(--ax-ease-standard);}
 
-.row:hover {
-  background: var(--ax-surface-secondary);
-}
+.row:hover {background: var(--ax-bg-subtle);}
 
-.row:focus-visible {
-  outline: 2px solid var(--ax-color-blue-500);
-  outline-offset: -2px;
-  border-radius: var(--ax-radius-sm);
-}
+.row:focus-visible {outline: var(--ax-space-0-5) solid var(--ax-status-info-border);
+  outline-offset: calc(var(--ax-space-0-5) * -1);
+  border-radius: var(--ax-radius-xs);}
 
-.rowDenied {
-  background: color-mix(in srgb, var(--ax-color-red-50) 40%, transparent);
-}
+.rowDenied {background: color-mix(in srgb, var(--ax-status-danger-bg) 40%, transparent);}
 
-.rowDenied:hover {
-  background: color-mix(in srgb, var(--ax-color-red-50) 60%, transparent);
-}
+.rowDenied:hover {background: color-mix(in srgb, var(--ax-status-danger-bg) 60%, transparent);}
 
 /* ------------------------------------------------------------------ */
 /* Permission badge                                                    */
 /* ------------------------------------------------------------------ */
 
-.permBadge {
-  display: inline-flex;
+.permBadge {display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 1.5rem;
-  height: 1.5rem;
-  border-radius: var(--ax-radius-sm);
-  font-size: var(--ax-font-size-xs);
-  font-weight: var(--ax-font-weight-bold);
-  flex-shrink: 0;
-}
+  width: var(--ax-space-6);
+  height: var(--ax-space-6);
+  border-radius: var(--ax-radius-xs);
+  font-size: var(--ax-text-xs);
+  font-weight: var(--ax-weight-semibold);
+  flex-shrink: 0;}
 
 /* ------------------------------------------------------------------ */
 /* Permission colors                                                   */
 /* ------------------------------------------------------------------ */
 
-.permFull {
-  background: var(--ax-color-green-100);
-  color: var(--ax-color-green-700);
-}
+.permFull {background: var(--ax-status-success-bg);
+  color: var(--ax-status-success-fg);}
 
-.permRead {
-  background: var(--ax-color-blue-100);
-  color: var(--ax-color-blue-700);
-}
+.permRead {background: var(--ax-status-info-bg);
+  color: var(--ax-status-info-fg);}
 
-.permWrite {
-  background: var(--ax-color-amber-100);
-  color: var(--ax-color-amber-700);
-}
+.permWrite {background: var(--ax-status-warning-bg);
+  color: var(--ax-status-warning-fg);}
 
-.permNone {
-  background: var(--ax-color-red-100);
-  color: var(--ax-color-red-700);
-}
+.permNone {background: var(--ax-status-danger-bg);
+  color: var(--ax-status-danger-fg);}
 
-.permConditional {
-  background: var(--ax-color-gray-100);
-  color: var(--ax-color-gray-700);
-}
+.permConditional {background: var(--ax-bg-muted);
+  color: var(--ax-fg-default);}
 
 /* ------------------------------------------------------------------ */
 /* Capability name, description, condition                             */
 /* ------------------------------------------------------------------ */
 
-.capName {
-  font-family: var(--ax-font-family-mono);
-  font-weight: var(--ax-font-weight-medium);
-  color: var(--ax-text-primary);
-  min-width: 10rem;
-  flex-shrink: 0;
-}
+.capName {font-family: var(--ax-font-mono);
+  font-weight: var(--ax-weight-medium);
+  color: var(--ax-fg-default);
+  min-width: var(--ax-kv-key);
+  flex-shrink: 0;}
 
-.capDesc {
-  color: var(--ax-text-secondary);
-  font-size: var(--ax-font-size-xs);
-}
+.capDesc {color: var(--ax-fg-muted);
+  font-size: var(--ax-text-xs);}
 
-.capCondition {
-  font-family: var(--ax-font-family-mono);
-  font-size: var(--ax-font-size-xs);
-  color: var(--ax-color-amber-600);
+.capCondition {font-family: var(--ax-font-mono);
+  font-size: var(--ax-text-xs);
+  color: var(--ax-status-warning-fg);
   font-style: italic;
-  margin-left: auto;
-}
+  margin-left: auto;}

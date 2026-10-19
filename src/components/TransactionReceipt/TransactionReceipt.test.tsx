@@ -39,7 +39,7 @@ describe('TransactionReceipt', () => {
 
     it('renders timestamp', () => {
       render(<TransactionReceipt {...defaultProps} />);
-      expect(screen.getByText('2026-03-19T14:30:00Z')).toBeInTheDocument();
+      expect(screen.getByText('Mar 19, 2026, 2:30 PM')).toBeInTheDocument();
     });
 
     it('renders agent ID when provided', () => {

@@ -1,4 +1,5 @@
 import type React from 'react';
+import { IconDot } from '../../utils/icons';
 import styles from './TaskQueue.module.css';
 import type { TaskQueueItem, TaskQueueProps, TaskPriority } from './TaskQueue.types';
 
@@ -70,8 +71,9 @@ function TaskRow({ task, onTaskAction }: TaskRowProps) {
               className={styles.btnAssign}
               onClick={() => onTaskAction(task.id, 'assign')}
               title="Assign to agent"
+              aria-label="Assign to agent"
             >
-              ⊕
+              <IconDot />
             </button>
           )}
           <button
@@ -122,7 +124,8 @@ export const TaskQueue: React.FC<TaskQueueProps> = ({
 
   return (
     <div
-      className={`${styles.base} ${className || ''}`}
+      className={`${styles.base} ax-card ${className || ''}`}
+      data-ax=""
       role="region"
       aria-label="Task Queue"
     >

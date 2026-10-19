@@ -16,6 +16,7 @@
 import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import type React from 'react';
 import { getConfidenceLevel } from '../../types/common';
+import { IconArrowLeft, IconArrowRight } from '../../utils/icons';
 import { useAnnouncer, useFocusTrap, VisuallyHidden } from '../../utils/a11y';
 import type { ApprovalGateProps, HandoffContext, StagedStep } from './ApprovalGate.types';
 import styles from './ApprovalGate.module.css';
@@ -321,7 +322,8 @@ export function ApprovalGate({
   return (
     <div
       ref={trapRef}
-      className={`${styles.approvalGate} ${getContainerClass(status)} ${className ?? ''}`}
+      className={`${styles.approvalGate} ax-card ax-gate ${getContainerClass(status)} ${className ?? ''}`}
+      data-ax=""
       role={isPending ? 'alertdialog' : 'region'}
       aria-label={ariaLabel}
       aria-modal={isPending ? true : undefined}
@@ -357,13 +359,13 @@ export function ApprovalGate({
       {mode === 'staged' && isPending && !isHandoffPending && (
         <div className={styles.stageIndicator} aria-label="Approval stages">
           <span className={`${styles.stage} ${stagedStep === 'previewing' ? styles.stageActive : styles.stageCompleted}`}>
-            {stagedStep === 'confirming' ? '✓' : '1.'} Preview
+            {stagedStep === 'confirming' ? <IconCheck /> : '1.'} Preview
           </span>
-          <span className={styles.stageSeparator} aria-hidden="true">→</span>
+          <span className={styles.stageSeparator} aria-hidden="true" />
           <span className={`${styles.stage} ${stagedStep === 'confirming' ? styles.stageActive : ''}`}>
             2. Confirm
           </span>
-          <span className={styles.stageSeparator} aria-hidden="true">→</span>
+          <span className={styles.stageSeparator} aria-hidden="true" />
           <span className={styles.stage}>3. Execute</span>
         </div>
       )}
@@ -444,7 +446,7 @@ export function ApprovalGate({
               onClick={handleBack}
               type="button"
             >
-              ← Back
+              <IconArrowLeft /> Back
             </button>
           )}
 
@@ -464,9 +466,9 @@ export function ApprovalGate({
             type="button"
           >
             {mode === 'staged' && stagedStep === 'previewing'
-              ? 'Preview & Continue →'
+              ? <>Preview and continue <IconArrowRight /></>
               : mode === 'staged' && stagedStep === 'confirming'
-                ? 'Confirm & Execute ✓'
+                ? <>Confirm and execute <IconCheck /></>
                 : 'Approve'}
           </button>
         </div>
@@ -493,7 +495,7 @@ export function ApprovalGate({
       {/* Resolved state banner */}
       {isResolved && (
         <div
-          className={`${styles.resolvedBanner} ${
+          className={`ax-resolution ${styles.resolvedBanner} ${
             status === 'approved'
               ? styles.resolvedApproved
               : (status === 'rejected' || status === 'handoff_denied')

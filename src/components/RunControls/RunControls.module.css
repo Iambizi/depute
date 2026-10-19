@@ -1,116 +1,89 @@
 /* RunControls — CSS Module */
 
 .runControls {
-  font-family: var(--ax-font-family);
+  font-family: var(--ax-font-sans);
   display: inline-flex;
   align-items: center;
   gap: var(--ax-space-2);
-}
+  background: var(--ax-card-bg);
+  color: var(--ax-fg-default);
+  font-variant-numeric: var(--ax-numeric);
+  border-radius: var(--ax-card-radius);
+  box-shadow: var(--ax-card-shadow);
+  border: 0;}
 
 /* ------------------------------------------------------------------ */
 /* Status indicator                                                    */
 /* ------------------------------------------------------------------ */
 
-.statusDot {
-  width: 0.5rem;
-  height: 0.5rem;
+.statusDot {width: var(--ax-space-2);
+  height: var(--ax-space-2);
   border-radius: var(--ax-radius-full);
-  flex-shrink: 0;
-}
+  flex-shrink: 0;}
 
-.statusDotIdle { background: var(--ax-color-gray-400); }
-.statusDotRunning {
-  background: var(--ax-status-active-color);
-  animation: ax-pulse var(--ax-duration-slow) var(--ax-ease-default) infinite;
-}
-.statusDotPaused { background: var(--ax-color-amber-500); }
-.statusDotCompleted { background: var(--ax-status-completed-color); }
-.statusDotFailed { background: var(--ax-status-failed-color); }
+.statusDotIdle {background: var(--ax-fg-muted);}
+.statusDotRunning {background: var(--ax-status-info-fg);
+  animation: ax-pulse var(--ax-dur-slow) var(--ax-ease-standard) infinite;}
+.statusDotPaused {background: var(--ax-status-warning-solid);}
+.statusDotCompleted {background: var(--ax-status-success-fg);}
+.statusDotFailed {background: var(--ax-status-danger-fg);}
 
-.statusLabel {
-  font-size: var(--ax-font-size-xs);
-  font-weight: var(--ax-font-weight-medium);
-  color: var(--ax-text-secondary);
-  text-transform: capitalize;
-}
+.statusLabel {font-size: var(--ax-text-xs);
+  font-weight: var(--ax-weight-medium);
+  color: var(--ax-fg-muted);
+  text-transform: capitalize;}
 
 /* ------------------------------------------------------------------ */
 /* Buttons                                                             */
 /* ------------------------------------------------------------------ */
 
-.btn {
-  display: inline-flex;
+.btn {display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 2rem;
-  height: 2rem;
-  border-radius: var(--ax-radius-md);
-  border: var(--ax-border-width) solid var(--ax-border-color);
-  background: var(--ax-surface-primary);
-  color: var(--ax-text-primary);
+  width: var(--ax-space-8);
+  height: var(--ax-space-8);
+  border-radius: var(--ax-radius-sm);
+  border: var(--ax-border-width) solid var(--ax-border-default);
+  background: var(--ax-bg-surface);
+  color: var(--ax-fg-default);
   cursor: pointer;
-  font-size: var(--ax-font-size-sm);
-  transition: all var(--ax-duration-fast) var(--ax-ease-default);
-}
+  font-size: var(--ax-text-md);
+  transition: background-color var(--ax-dur-fast) var(--ax-ease-standard), color var(--ax-dur-fast) var(--ax-ease-standard), border-color var(--ax-dur-fast) var(--ax-ease-standard), box-shadow var(--ax-dur-fast) var(--ax-ease-standard), transform var(--ax-dur-fast) var(--ax-ease-standard);}
 
-.btn:hover {
-  background: var(--ax-surface-secondary);
-  border-color: var(--ax-color-gray-400);
-}
+.btn:hover {background: var(--ax-bg-subtle);
+  border-color: var(--ax-fg-muted);}
 
-.btn:focus-visible {
-  outline: 2px solid var(--ax-color-blue-500);
-  outline-offset: 2px;
-}
+.btn:focus-visible {outline: var(--ax-space-0-5) solid var(--ax-status-info-border);
+  outline-offset: var(--ax-space-0-5);}
 
-.btn:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
-}
+.btn:disabled {opacity: 0.4;
+  cursor: not-allowed;}
 
-.btnStart {
-  color: var(--ax-color-green-600);
-  border-color: var(--ax-color-green-300);
-}
+.btnStart {color: var(--ax-status-success-fg);
+  border-color: var(--ax-status-success-border);}
 
-.btnStart:hover {
-  background: var(--ax-color-green-50);
-}
+.btnStart:hover {background: var(--ax-status-success-bg);}
 
-.btnPause {
-  color: var(--ax-color-amber-600);
-  border-color: var(--ax-color-amber-300);
-}
+.btnPause {color: var(--ax-status-warning-fg);
+  border-color: var(--ax-status-warning-border);}
 
-.btnPause:hover {
-  background: var(--ax-color-amber-50);
-}
+.btnPause:hover {background: var(--ax-status-warning-bg);}
 
-.btnStop {
-  color: var(--ax-color-red-600);
-  border-color: var(--ax-color-red-300);
-}
+.btnStop {color: var(--ax-status-danger-fg);
+  border-color: var(--ax-status-danger-border);}
 
-.btnStop:hover {
-  background: var(--ax-color-red-50);
-}
+.btnStop:hover {background: var(--ax-status-danger-bg);}
 
-.btnRetry {
-  color: var(--ax-color-blue-600);
-  border-color: var(--ax-color-blue-300);
-}
+.btnRetry {color: var(--ax-status-info-fg);
+  border-color: var(--ax-status-info-border);}
 
-.btnRetry:hover {
-  background: var(--ax-color-blue-50);
-}
+.btnRetry:hover {background: var(--ax-status-info-bg);}
 
 /* ------------------------------------------------------------------ */
 /* Actions slot separator                                              */
 /* ------------------------------------------------------------------ */
 
-.separator {
-  width: var(--ax-border-width);
-  height: 1.5rem;
-  background: var(--ax-border-color);
-  margin: 0 var(--ax-space-1);
-}
+.separator {width: var(--ax-border-width);
+  height: var(--ax-space-6);
+  background: var(--ax-border-default);
+  margin: 0 var(--ax-space-1);}

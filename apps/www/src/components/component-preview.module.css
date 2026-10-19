@@ -70,16 +70,18 @@
 .preview {
   padding: 2.5rem 2rem;
   min-height: 5rem;
-  background-color: hsl(0 0% 98.5%);
+  background-color: var(--ax-bg-canvas, hsl(0 0% 98.5%));
   background-image:
     radial-gradient(circle, hsl(0 0% 82%) 1px, transparent 1px);
   background-size: 16px 16px;
+  color: var(--ax-fg-default, inherit);
 }
 
-:global([data-theme="dark"]) .preview {
-  background-color: hsl(0 0% 7%);
-  background-image:
-    radial-gradient(circle, hsl(0 0% 20%) 1px, transparent 1px);
+:global([data-theme="dark"]) .preview,
+:global(.dark) .preview {
+  background-color: var(--ax-bg-canvas, #111111);
+  background-image: none;
+  color: var(--ax-fg-default, #eeeeee);
 }
 
 .preview.center {

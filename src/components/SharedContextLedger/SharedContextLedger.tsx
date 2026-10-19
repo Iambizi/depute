@@ -12,7 +12,7 @@ export const SharedContextLedger: React.FC<SharedContextLedgerProps> = ({
   onFilterContext,
 }) => {
   return (
-    <div className={`${styles.base} ${className || ''}`}>
+    <div className={`${styles.base} ax-card ${className || ''}`} data-ax="">
       <div className={styles.header}>
         <h3>Shared Context Ledger</h3>
         <div className={styles.scopeTabs}>

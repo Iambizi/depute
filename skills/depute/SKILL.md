@@ -5,7 +5,7 @@ license: MIT
 compatibility: React 18+, TypeScript, CSS Modules. Agent-agnostic — works with any AI backend (OpenAI, Anthropic, LangChain, AutoGen, or custom).
 metadata:
   author: Iambizi
-  version: 0.4.4
+  version: 0.5.0
   documentation: https://github.com/Iambizi/depute
   category: ui-components
   tags: [agentic-ui, react, human-in-the-loop, agent-oversight, multi-agent]

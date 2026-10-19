@@ -79,7 +79,7 @@ describe('EscalationRouter', () => {
       const handleRetry = vi.fn();
       render(<EscalationRouter {...BASE_PROPS} onRetry={handleRetry} />);
 
-      await user.click(screen.getByRole('button', { name: /↺ Retry/i }));
+      await user.click(screen.getByRole('button', { name: /^Retry$/i }));
       expect(handleRetry).toHaveBeenCalledTimes(1);
     });
 

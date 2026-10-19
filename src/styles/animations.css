@@ -43,3 +43,15 @@
   70% { transform: scale(1.1); }
   100% { transform: scale(1); }
 }
+
+@media (prefers-reduced-motion: reduce) {
+  [data-ax],
+  [data-ax]::before,
+  [data-ax]::after,
+  [data-ax] *,
+  [data-ax] *::before,
+  [data-ax] *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}

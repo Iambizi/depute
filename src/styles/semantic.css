@@ -1,0 +1,148 @@
+/**
+ * Tier 2 — semantic tokens.
+ * Components may read these. They follow the base ramp, including dark mode.
+ * Fonts are not bundled. Install @fontsource/geist-sans and @fontsource/geist-mono,
+ * or use next/font. The stack falls back to the system font.
+ */
+
+:root {
+  --ax-bg-canvas: var(--ax-gray-1);
+  --ax-bg-surface: #ffffff;
+  --ax-bg-subtle: var(--ax-gray-2);
+  --ax-bg-muted: var(--ax-gray-3);
+  --ax-bg-emphasis: var(--ax-gray-12);
+
+  --ax-fg-default: var(--ax-gray-12);
+  --ax-fg-muted: var(--ax-gray-11);
+  /* gray-10 is under 4.5:1 on white. Subtle copy uses the muted step. */
+  --ax-fg-subtle: var(--ax-gray-11);
+  --ax-fg-on-emphasis: var(--ax-gray-1);
+  /* Solid danger buttons. Does not flip in dark mode. */
+  --ax-fg-on-solid: #ffffff;
+  --ax-fg-accent: var(--ax-accent-11);
+
+  --ax-border-default: var(--ax-gray-5);
+  --ax-border-strong: var(--ax-gray-7);
+  --ax-border-width: 1px;
+  --ax-ring: 0 0 0 2px var(--ax-bg-surface), 0 0 0 4px var(--ax-accent-9);
+  --ax-ring-danger: 0 0 0 2px var(--ax-bg-surface), 0 0 0 4px var(--ax-red-9);
+
+  --ax-status-neutral-fg: var(--ax-gray-11);
+  --ax-status-neutral-bg: var(--ax-gray-3);
+  --ax-status-neutral-border: var(--ax-gray-6);
+  --ax-status-info-fg: var(--ax-accent-11);
+  --ax-status-info-bg: var(--ax-accent-3);
+  --ax-status-info-border: var(--ax-accent-6);
+  --ax-status-success-fg: var(--ax-green-11);
+  --ax-status-success-bg: var(--ax-green-3);
+  --ax-status-success-border: var(--ax-green-6);
+  --ax-status-warning-fg: var(--ax-amber-11);
+  --ax-status-warning-bg: var(--ax-amber-3);
+  --ax-status-warning-border: var(--ax-amber-6);
+  --ax-status-danger-fg: var(--ax-red-11);
+  --ax-status-danger-bg: var(--ax-red-3);
+  --ax-status-danger-border: var(--ax-red-6);
+  /* red-9 (#e5484d) is 3.91:1 with white. #cd2f34 clears 4.5:1. */
+  --ax-status-danger-solid: #cd2f34;
+  --ax-status-success-solid: var(--ax-green-9);
+  --ax-status-warning-solid: var(--ax-amber-9);
+  --ax-status-info-solid: var(--ax-accent-9);
+
+  --ax-tag-1-fg: var(--ax-accent-11);
+  --ax-tag-1-bg: var(--ax-accent-3);
+  --ax-tag-2-fg: var(--ax-gray-11);
+  --ax-tag-2-bg: var(--ax-gray-3);
+  --ax-tag-3-fg: var(--ax-gray-12);
+  --ax-tag-3-bg: var(--ax-gray-4);
+  --ax-tag-4-fg: var(--ax-accent-11);
+  --ax-tag-4-bg: var(--ax-gray-3);
+  --ax-tag-5-fg: var(--ax-gray-12);
+  --ax-tag-5-bg: var(--ax-accent-3);
+  --ax-tag-6-fg: var(--ax-gray-11);
+  --ax-tag-6-bg: var(--ax-gray-4);
+
+  --ax-font-sans: "Geist", "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --ax-font-mono: "Geist Mono", "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --ax-numeric: tabular-nums slashed-zero;
+
+  --ax-text-2xs: 0.6875rem;
+  --ax-leading-2xs: 1rem;
+  --ax-text-xs: 0.75rem;
+  --ax-leading-xs: 1rem;
+  --ax-text-sm: 0.8125rem;
+  --ax-leading-sm: 1.25rem;
+  --ax-text-md: 0.875rem;
+  --ax-leading-md: 1.25rem;
+  --ax-text-lg: 1rem;
+  --ax-leading-lg: 1.5rem;
+  --ax-text-xl: 1.25rem;
+  --ax-leading-xl: 1.75rem;
+  --ax-weight-regular: 400;
+  --ax-weight-medium: 500;
+  --ax-weight-semibold: 600;
+  --ax-tracking-tight: -0.01em;
+  --ax-tracking-caps: 0.04em;
+
+  --ax-space-0: 0;
+  --ax-space-px: 1px;
+  --ax-space-0-5: 2px;
+  --ax-space-1: 4px;
+  --ax-space-1-5: 6px;
+  --ax-space-2: 8px;
+  --ax-space-3: 12px;
+  --ax-space-4: 16px;
+  --ax-space-5: 20px;
+  --ax-space-6: 24px;
+  --ax-space-8: 32px;
+  --ax-space-10: 40px;
+  --ax-space-12: 48px;
+  --ax-space-16: 64px;
+
+  --ax-radius-xs: 4px;
+  --ax-radius-sm: 6px;
+  --ax-radius-md: 10px;
+  --ax-radius-full: 9999px;
+
+  --ax-shadow-0: none;
+  --ax-shadow-1: 0 1px 2px rgb(0 0 0 / 0.04), 0 0 0 1px var(--ax-border-default);
+  --ax-shadow-2: 0 4px 12px -2px rgb(0 0 0 / 0.08), 0 0 0 1px var(--ax-border-default);
+  --ax-shadow-3: 0 16px 32px -8px rgb(0 0 0 / 0.16), 0 0 0 1px var(--ax-border-strong);
+
+  --ax-dur-instant: 80ms;
+  --ax-dur-fast: 140ms;
+  --ax-dur-base: 200ms;
+  --ax-dur-slow: 320ms;
+  --ax-dur-emph: 480ms;
+  --ax-ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --ax-ease-enter: cubic-bezier(0.16, 1, 0.3, 1);
+  --ax-ease-exit: cubic-bezier(0.4, 0, 1, 1);
+  --ax-ease-linear: linear;
+  --ax-ease-stamp: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+:root[data-theme="dark"],
+.dark {
+  --ax-bg-surface: var(--ax-gray-2);
+  --ax-shadow-1: 0 0 0 1px var(--ax-border-default);
+  --ax-shadow-2: 0 0 0 1px var(--ax-border-strong), 0 8px 24px -4px rgb(0 0 0 / 0.5);
+  --ax-shadow-3: 0 0 0 1px var(--ax-border-strong), 0 24px 48px -12px rgb(0 0 0 / 0.7);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]):not(.light) {
+    --ax-bg-surface: var(--ax-gray-2);
+    --ax-shadow-1: 0 0 0 1px var(--ax-border-default);
+    --ax-shadow-2: 0 0 0 1px var(--ax-border-strong), 0 8px 24px -4px rgb(0 0 0 / 0.5);
+    --ax-shadow-3: 0 0 0 1px var(--ax-border-strong), 0 24px 48px -12px rgb(0 0 0 / 0.7);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --ax-dur-instant: 0ms;
+    --ax-dur-fast: 0ms;
+    --ax-dur-base: 0ms;
+    --ax-dur-slow: 0ms;
+    --ax-dur-emph: 0ms;
+  }
+}

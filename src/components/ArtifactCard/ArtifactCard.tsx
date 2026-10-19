@@ -87,7 +87,8 @@ export function ArtifactCard({
 
   return (
     <article
-      className={`${styles.artifactCard} ${className ?? ''}`}
+      className={`${styles.artifactCard} ax-card ${className ?? ''}`}
+      data-ax=""
       aria-label={`Artifact: ${artifact.title}`}
       data-streaming={isStreaming || undefined}
     >

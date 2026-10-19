@@ -2,6 +2,7 @@ import { DocsLayout } from 'fumadocs-ui/layouts/docs';
 import type { Folder, Item, Node, Root } from 'fumadocs-core/page-tree';
 import type { ReactNode } from 'react';
 import { source } from '@/lib/source';
+import { PixelWordmark } from '@/components/pixel-wordmark';
 
 function readBadge(data: object): string | undefined {
   const record = data as Record<string, unknown>;
@@ -67,9 +68,7 @@ export default function Layout({ children }: { children: ReactNode }) {
       tree={mapTree(source.pageTree)}
       nav={{ 
         title: (
-          <div className="flex items-center">
-            <img src="/title-logo.webp" alt="Depute Logo" className="w-28 md:w-36 h-auto object-contain scale-[1.3] md:scale-[1.5] origin-left" />
-          </div>
+          <PixelWordmark className="h-4 w-auto text-fd-foreground" />
         )
       }}
       githubUrl="https://github.com/Iambizi/depute"

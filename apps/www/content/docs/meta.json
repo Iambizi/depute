@@ -4,6 +4,7 @@
     "index",
     "governance-levels",
     "installation",
+    "theming",
     "---Single Agent---",
     "components/plan-card",
     "components/approval-gate",
