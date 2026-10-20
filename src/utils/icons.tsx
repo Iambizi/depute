@@ -105,6 +105,15 @@ export function IconArrowRight(props: IconProps) {
   );
 }
 
+export function IconArrowUp(props: IconProps) {
+  return (
+    <Icon {...props}>
+      <path d="M8 13 V3" />
+      <path d="M4 7 L8 3 L12 7" />
+    </Icon>
+  );
+}
+
 export function IconAlert(props: IconProps) {
   return (
     <Icon {...props}>

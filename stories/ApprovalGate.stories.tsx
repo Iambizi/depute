@@ -18,16 +18,24 @@ const meta: Meta<typeof ApprovalGate> = {
 export default meta;
 type Story = StoryObj<typeof ApprovalGate>;
 
+const STORY_NOW = 1_735_689_600_000;
+
+function storyApproval(
+  partial?: Parameters<typeof generateMockApproval>[0],
+): ReturnType<typeof generateMockApproval> & { now: number } {
+  return { ...generateMockApproval(partial), now: STORY_NOW };
+}
+
 // ============================================================
 // SHARED STORIES
 // ============================================================
 
 export const Default: Story = {
-  args: generateMockApproval({ status: 'pending', mode: 'simple' }),
+  args: storyApproval({ status: 'pending', mode: 'simple' }),
 };
 
 export const AllFeatures: Story = {
-  args: generateMockApproval({
+  args: storyApproval({
     mode: 'staged',
     status: 'pending',
     timeoutSeconds: 120,
@@ -39,22 +47,22 @@ export const AllFeatures: Story = {
 // State stories
 export const StatePending: Story = {
   name: 'State: Pending',
-  args: generateMockApproval({ status: 'pending' }),
+  args: storyApproval({ status: 'pending' }),
 };
 
 export const StateApproved: Story = {
   name: 'State: Approved',
-  args: generateMockApproval({ status: 'approved' }),
+  args: storyApproval({ status: 'approved' }),
 };
 
 export const StateRejected: Story = {
   name: 'State: Rejected',
-  args: generateMockApproval({ status: 'rejected' }),
+  args: storyApproval({ status: 'rejected' }),
 };
 
 export const StateExpired: Story = {
   name: 'State: Expired (Countdown)',
-  args: generateMockApproval({ status: 'pending', timeoutSeconds: 30 }),
+  args: storyApproval({ status: 'pending', timeoutSeconds: 30 }),
 };
 
 // ============================================================
@@ -64,7 +72,7 @@ export const StateExpired: Story = {
 export const PrototypeQuickStart: Story = {
   name: 'Quick Start: Prototype Approval Flow',
   render: () => {
-    const base = generateMockApproval({ status: 'pending', mode: 'simple' });
+    const base = storyApproval({ status: 'pending', mode: 'simple' });
     const [status, setStatus] = useState<'pending' | 'approved' | 'rejected' | 'expired'>('pending');
 
     return (
@@ -128,7 +136,7 @@ export const TestVariations: Story = {
 export const SimulateRealTimeUpdates: Story = {
   name: 'Simulate Real-Time Updates — Staged Mode',
   render: () => {
-    const base = generateMockApproval({ mode: 'staged', status: 'pending', confidence: 72 });
+    const base = storyApproval({ mode: 'staged', status: 'pending', confidence: 72 });
     const [status, setStatus] = useState<'pending' | 'approved' | 'rejected' | 'expired'>('pending');
     const [key, setKey] = useState(0);
 
@@ -181,12 +189,12 @@ export const AsyncHandoffFlow: Story = {
         />
         {status === 'handoff_pending' && (
            <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem', fontFamily: 'sans-serif', fontSize: '12px' }}>
-             <button onClick={() => setStatus('approved')} style={{ padding: '0.4rem', background: '#e0e7ff', border: '1px solid #4f46e5', borderRadius: '4px', cursor: 'pointer' }}>📱 Simulate Mobile SMS 'APPROVE'</button>
-             <button onClick={() => setStatus('handoff_denied')} style={{ padding: '0.4rem', background: '#fee2e2', border: '1px solid #ef4444', borderRadius: '4px', cursor: 'pointer' }}>📱 Simulate Mobile SMS 'DENY'</button>
+             <button type="button" onClick={() => setStatus('approved')}>Simulate mobile approval</button>
+             <button type="button" onClick={() => setStatus('handoff_denied')}>Simulate mobile denial</button>
            </div>
         )}
         {status !== 'pending' && status !== 'handoff_pending' && (
-           <button onClick={() => setStatus('pending')} style={{ marginTop: '1rem', padding: '0.4rem', border: '1px solid #ccc', borderRadius: '4px', cursor: 'pointer', alignSelf: 'flex-start' }}>↻ Reset Gateway</button>
+           <button type="button" onClick={() => setStatus('pending')}>Reset gateway</button>
         )}
       </div>
     );
@@ -279,7 +287,7 @@ export const WithAutomationBiasAlert: Story = {
           actionName="the deployment of this script"
         >
           <ApprovalGate
-            {...generateMockApproval({ status, title: 'Production Script Deployment' })}
+            {...storyApproval({ status, title: 'Production Script Deployment' })}
             onApprove={handleApprove}
             onReject={() => setStatus('rejected')}
           />

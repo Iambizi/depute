@@ -10,7 +10,7 @@
  */
 
 import { useState, useMemo, useCallback, type ReactNode } from 'react';
-import { IconCheck, IconCircle, IconCopy, IconUndo, IconX } from '../../utils/icons';
+import { IconArrowRight, IconCheck, IconCircle, IconCopy, IconUndo, IconX } from '../../utils/icons';
 import { VisuallyHidden } from '../../utils/a11y';
 import type {
   TransactionReceiptProps,
@@ -191,7 +191,7 @@ export function TransactionReceipt({
               onClick={onViewAuditTrail}
               aria-label="View full audit trail"
             >
-              View Audit Trail →
+              View audit trail <IconArrowRight />
             </button>
           )}
         </div>

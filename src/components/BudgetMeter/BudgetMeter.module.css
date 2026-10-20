@@ -81,7 +81,7 @@
 
 /* Pulse animation on critical/exceeded */
 .barFill.severityCritical,
-.barFill.severityExceeded {animation: ax-budget-pulse var(--ax-dur-emph) var(--ax-ease-standard) infinite;}
+.barFill.severityExceeded {animation: ax-budget-pulse var(--ax-dur-emph) var(--ax-ease-standard) 3;}
 
 @keyframes ax-budget-pulse {
   0%, 100% {opacity: 1;}

@@ -1,5 +1,5 @@
 import type React from 'react';
-import { IconDot } from '../../utils/icons';
+import { IconArrowRight, IconArrowUp, IconDot, IconX } from '../../utils/icons';
 import styles from './TaskQueue.module.css';
 import type { TaskQueueItem, TaskQueueProps, TaskPriority } from './TaskQueue.types';
 
@@ -46,7 +46,7 @@ function TaskRow({ task, onTaskAction }: TaskRowProps) {
         )}
         <div className={styles.taskMeta}>
           {task.assignedTo && (
-            <span className={styles.metaItem}>→ {task.assignedTo}</span>
+            <span className={styles.metaItem}><IconArrowRight /> {task.assignedTo}</span>
           )}
           {task.estimatedTokens != null && (
             <span className={styles.metaItem}>~{task.estimatedTokens.toLocaleString()} tok</span>
@@ -62,8 +62,9 @@ function TaskRow({ task, onTaskAction }: TaskRowProps) {
               className={styles.btnPromote}
               onClick={() => onTaskAction(task.id, 'promote')}
               title="Promote to top"
+              aria-label="Promote to top"
             >
-              ↑
+              <IconArrowUp />
             </button>
           )}
           {task.status !== 'in_progress' && (
@@ -81,10 +82,7 @@ function TaskRow({ task, onTaskAction }: TaskRowProps) {
             onClick={() => onTaskAction(task.id, 'cancel')}
             title="Cancel task"
           >
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <line x1="18" y1="6" x2="6" y2="18"></line>
-              <line x1="6" y1="6" x2="18" y2="18"></line>
-            </svg>
+            <IconX />
           </button>
         </div>
       )}
@@ -137,7 +135,7 @@ export const TaskQueue: React.FC<TaskQueueProps> = ({
       {tasks.length === 0 ? (
         <div className={styles.empty}>Queue is empty.</div>
       ) : (
-        <div className={styles.body}>
+        <div className={styles.body} tabIndex={0} aria-label="Queued tasks">
           {renderSection('In Progress', inProgress, inProgress.length)}
           {renderSection('Assigned', assigned, assigned.length)}
           {renderSection('Pending', pending, pending.length)}

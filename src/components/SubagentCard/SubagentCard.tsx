@@ -1,4 +1,5 @@
 import type React from 'react';
+import { IconArrowRight } from '../../utils/icons';
 import styles from './SubagentCard.module.css';
 import type { SubagentCardProps } from './SubagentCard.types';
 
@@ -62,7 +63,7 @@ export const SubagentCard: React.FC<SubagentCardProps> = ({
           </span>
           {onExpand && (
             <button className={styles.expandBtn} onClick={(e) => { e.stopPropagation(); onExpand(); }} aria-label={`Expand ${agentName}`} tabIndex={-1}>
-              ↗
+              <IconArrowRight />
             </button>
           )}
         </div>

@@ -18,19 +18,15 @@ for (const page of source.getPages()) {
 }
 
 function badgeName(url: string, title: ReactNode, badge: string): ReactNode {
-  const typeColor =
-    badge === 'Primitive' ? 'bg-blue-500/10 text-blue-500 dark:text-blue-400 border-blue-500/20' :
-    badge === 'View' ? 'bg-indigo-500/10 text-indigo-500 dark:text-indigo-400 border-indigo-500/20' :
-    badge === 'Pattern' ? 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20' :
-    'bg-zinc-500/10 text-zinc-600 dark:text-zinc-400 border-zinc-500/20';
+  const typeColor = 'bg-fd-muted text-fd-muted-foreground border-fd-border';
 
   return (
-    <div key={`badge-wrap-${url}`} className="flex items-center justify-between w-full pr-1">
+    <span key={`badge-wrap-${url}`} className="flex items-center justify-between w-full pr-1">
       <span key={`title-${url}`}>{title}</span>
-      <span key={`tag-${url}`} className={`ml-2 text-[10px] uppercase font-mono px-1.5 py-0.5 rounded-sm border ${typeColor}`}>
+      <span key={`tag-${url}`} className={`ml-2 shrink-0 whitespace-nowrap text-xs uppercase font-mono px-1.5 py-0.5 rounded-sm border ${typeColor}`}>
         {badge}
       </span>
-    </div>
+    </span>
   );
 }
 

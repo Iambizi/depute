@@ -1,4 +1,5 @@
 import type React from 'react';
+import { IconDot, IconX } from '../../utils/icons';
 import styles from './SwarmInbox.module.css';
 import type { SwarmInboxItem, SwarmInboxProps } from './SwarmInbox.types';
 
@@ -33,7 +34,7 @@ function InboxRow({ item, onOpen, onDismiss }: InboxRowProps) {
       aria-label={`${item.title} from ${item.agentId}, ${item.severity}`}
     >
       <span className={styles.typeIcon} aria-hidden="true">
-        {item.icon ?? '•'}
+        {item.icon ?? <IconDot />}
       </span>
 
       <div className={styles.itemContent}>
@@ -56,10 +57,7 @@ function InboxRow({ item, onOpen, onDismiss }: InboxRowProps) {
           onClick={(e) => { e.stopPropagation(); onDismiss(item.id); }}
           aria-label={`Dismiss: ${item.title}`}
         >
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <line x1="18" y1="6" x2="6" y2="18"></line>
-            <line x1="6" y1="6" x2="18" y2="18"></line>
-          </svg>
+          <IconX />
         </button>
       )}
     </div>
@@ -112,7 +110,7 @@ export const SwarmInbox: React.FC<SwarmInboxProps> = ({
           <p>No items requiring attention.</p>
         </div>
       ) : (
-        <div className={styles.list}>
+        <div className={styles.list} tabIndex={0} aria-label="Inbox items">
           {items.map((item) => (
             <InboxRow
               key={item.id}

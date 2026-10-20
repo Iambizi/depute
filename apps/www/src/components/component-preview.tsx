@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, type ReactNode } from 'react';
+import { useEffect, useState, type ReactNode } from 'react';
 import styles from './component-preview.module.css';
 
 interface ComponentPreviewProps {
@@ -20,6 +20,11 @@ export function ComponentPreview({
   className,
 }: ComponentPreviewProps) {
   const [activeTab, setActiveTab] = useState<'preview' | 'code'>('preview');
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   return (
     <div className={`${styles.wrapper} ${className ?? ''}`}>
@@ -44,7 +49,7 @@ export function ComponentPreview({
       {/* Preview pane */}
       {activeTab === 'preview' && (
         <div className={`${styles.preview} ${center ? styles.center : ''}`}>
-          {children}
+          {mounted ? children : null}
         </div>
       )}
 

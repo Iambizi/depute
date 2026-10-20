@@ -7,6 +7,12 @@
 
 :root {
   --fd-nav-height: 56px;
+  --color-fd-muted-foreground: #646464;
+}
+
+.dark,
+[data-theme="dark"] {
+  --color-fd-muted-foreground: #b4b4b4;
 }
 
 /* Make sidebar section separators visually distinct as bold headers */

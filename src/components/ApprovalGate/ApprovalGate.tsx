@@ -7,7 +7,7 @@
  * - role="alertdialog" for screen reader urgency
  * - Countdown timer with escalating visual urgency
  * - Scoped approvals (Stripe SPT pattern)
- * - Simple and staged (preview → confirm → execute) modes
+ * - Simple and staged (preview, confirm, execute) modes
  *
  * @see docs/orchestration/06-technical-specifications.md (Component 2)
  * @see docs/orchestration/05-interface-states.md (ApprovalGate state matrix)
@@ -80,6 +80,17 @@ function getContainerClass(status: string): string {
   }
 }
 
+function getDotClass(status: string): string {
+  switch (status) {
+    case 'approved': return styles.statusDotApproved;
+    case 'rejected':
+    case 'handoff_denied': return styles.statusDotRejected;
+    case 'expired':
+    case 'handoff_expired': return styles.statusDotExpired;
+    default: return '';
+  }
+}
+
 function getIconClass(status: string): string {
   switch (status) {
     case 'pending': return styles.statusIconPending;
@@ -112,6 +123,7 @@ export function ApprovalGate({
   mode = 'simple',
   confidence,
   timeoutSeconds,
+  now,
   scope,
   metadata,
   onApprove,
@@ -223,6 +235,10 @@ export function ApprovalGate({
   // not to timeoutSeconds. Callbacks run from the timer, not from a state updater.
   useEffect(() => {
     const active = isPending || isHandoffPending;
+    if (now != null) {
+      if (active && timeoutSeconds != null) setTimeRemaining(timeoutSeconds);
+      return;
+    }
     if (!active) return;
     const knownHandoffDeadline = isHandoffPending
       ? (handoffDeadlineMs ?? handoffContextRef.current?.deadline ?? null)
@@ -271,6 +287,7 @@ export function ApprovalGate({
   }, [
     isPending,
     isHandoffPending,
+    now,
     timeoutSeconds,
     handoffDeadlineMs,
     handoffInitiated,
@@ -331,16 +348,19 @@ export function ApprovalGate({
     >
       {/* Header */}
       <div className={styles.header}>
-        {(icon || STATUS_ICONS[status]) && (
+        {icon && (
           <span
             className={`${styles.statusIcon} ${getIconClass(status)}`}
             aria-hidden="true"
           >
-            {icon || STATUS_ICONS[status]}
+            {icon}
           </span>
         )}
         <div className={styles.headerContent}>
-          <p className={`${styles.statusLabel} ax-eyebrow`}>{STATUS_LABELS[status]}</p>
+          <p className={`${styles.statusLabel} ax-eyebrow`}>
+            <span className={`${styles.statusDot} ${getDotClass(status)}`} aria-hidden="true" />
+            {STATUS_LABELS[status]}
+          </p>
           <h3 className={`${styles.title} ax-title`}>{title}</h3>
         </div>
 

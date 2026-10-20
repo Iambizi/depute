@@ -52,6 +52,12 @@ export interface ApprovalGateProps {
   /** Optional timeout in seconds */
   timeoutSeconds?: number;
 
+  /**
+   * Frozen clock, in unix milliseconds. When set, the countdown does not tick.
+   * Stories pass this so two loads show the same remaining time.
+   */
+  now?: number;
+
   /** Scoped constraints for the approval (per Stripe's SPT pattern) */
   scope?: {
     /** Resource/spend limit (e.g. "$500", "10 API calls") */

@@ -19,7 +19,7 @@ import type {
 import styles from './PolicyBanner.module.css';
 
 /* ------------------------------------------------------------------ */
-/* Mode → default severity mapping                                     */
+/* Mode to default severity mapping                                    */
 /* ------------------------------------------------------------------ */
 
 const MODE_SEVERITY: Record<PolicyMode, PolicySeverity> = {

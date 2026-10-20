@@ -41,7 +41,7 @@
   font-weight: var(--ax-weight-medium);
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  background: var(--ax-status-warning-border);
+  background: var(--ax-status-warning-bg);
   color: var(--ax-status-warning-fg);
   padding: 0 var(--ax-badge-pad-x);
   border-radius: var(--ax-badge-radius);

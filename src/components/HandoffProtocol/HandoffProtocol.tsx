@@ -1,4 +1,5 @@
 import type React from 'react';
+import { IconArrowRight } from '../../utils/icons';
 import styles from './HandoffProtocol.module.css';
 import type { HandoffProtocolProps } from './HandoffProtocol.types';
 
@@ -32,7 +33,7 @@ export const HandoffProtocol: React.FC<HandoffProtocolProps> = ({
       <div className={styles.header}>
         <div className={styles.route}>
           <span className={styles.agent}>{sourceAgent}</span>
-          <span className={styles.arrow} aria-hidden="true">→</span>
+          <span className={styles.arrow} aria-hidden="true"><IconArrowRight /></span>
           <span className={styles.agent}>{destinationAgent}</span>
         </div>
         <span className={styles.badge}>Context Packet</span>

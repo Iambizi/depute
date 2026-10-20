@@ -12,9 +12,9 @@
   font-variant-numeric: var(--ax-numeric);
   box-shadow: var(--ax-card-shadow);}
 
-.base_running {box-shadow: var(--ax-card-shadow), var(--ax-rail-success);}
-.base_paused {box-shadow: var(--ax-card-shadow), var(--ax-rail-warning);}
-.base_quarantined {box-shadow: var(--ax-card-shadow), var(--ax-rail-danger);}
+.base_running,
+.base_paused,
+.base_quarantined {box-shadow: var(--ax-card-shadow);}
 
 /* Header */
 .header {display: flex;

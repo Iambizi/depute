@@ -1,4 +1,5 @@
 import type React from 'react';
+import { IconArrowRight } from '../../utils/icons';
 import styles from './SharedContextLedger.module.css';
 import type { SharedContextLedgerProps } from './SharedContextLedger.types';
 
@@ -60,7 +61,7 @@ export const SharedContextLedger: React.FC<SharedContextLedgerProps> = ({
                 <span className={styles.author}>{entry.provenance.authorAgent}</span>
                 {entry.provenance.source && (
                   <>
-                    <span className={styles.divider}>→</span>
+                    <span className={styles.divider} aria-hidden="true"><IconArrowRight /></span>
                     <span className={styles.source}>{entry.provenance.source}</span>
                   </>
                 )}
