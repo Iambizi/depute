@@ -57,7 +57,7 @@ function TreeNode({ node, depth, selectedNodeId, onNodeClick }: TreeNodeProps) {
     <li className={styles.treeItem} role="treeitem" aria-expanded={hasChildren ? expanded : undefined}>
       {/* Node card */}
       <div
-        className={`${styles.node} ${styles[`depth${Math.min(depth, 3)}`] ?? ''} ${
+        className={`${styles.node} ${
           isSelected ? styles.nodeSelected : ''
         } ${isClickable ? styles.nodeClickable : ''}`}
         onClick={isClickable ? handleClick : undefined}

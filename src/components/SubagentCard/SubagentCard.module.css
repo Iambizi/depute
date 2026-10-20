@@ -21,13 +21,6 @@
 .card[role="button"]:focus-visible {outline: var(--ax-space-0-5) solid var(--ax-status-info-border);
   outline-offset: var(--ax-space-0-5);}
 
-/* Status-based left border accent */
-.card_idle    {border-left: var(--ax-space-0-5) solid var(--ax-border-strong);}
-.card_working {border-left: var(--ax-space-0-5) solid var(--ax-status-success-solid);}
-.card_blocked {border-left: var(--ax-space-0-5) solid var(--ax-status-warning-solid);}
-.card_failed  {border-left: var(--ax-space-0-5) solid var(--ax-status-danger-solid);}
-.card_completed {border-left: var(--ax-space-0-5) solid var(--ax-status-info-solid);}
-
 /* Header */
 .header {display: flex;
   align-items: center;
