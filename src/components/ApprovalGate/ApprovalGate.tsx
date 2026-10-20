@@ -80,6 +80,17 @@ function getContainerClass(status: string): string {
   }
 }
 
+function getDotClass(status: string): string {
+  switch (status) {
+    case 'approved': return styles.statusDotApproved;
+    case 'rejected':
+    case 'handoff_denied': return styles.statusDotRejected;
+    case 'expired':
+    case 'handoff_expired': return styles.statusDotExpired;
+    default: return '';
+  }
+}
+
 function getIconClass(status: string): string {
   switch (status) {
     case 'pending': return styles.statusIconPending;
@@ -337,16 +348,19 @@ export function ApprovalGate({
     >
       {/* Header */}
       <div className={styles.header}>
-        {(icon || STATUS_ICONS[status]) && (
+        {icon && (
           <span
             className={`${styles.statusIcon} ${getIconClass(status)}`}
             aria-hidden="true"
           >
-            {icon || STATUS_ICONS[status]}
+            {icon}
           </span>
         )}
         <div className={styles.headerContent}>
-          <p className={`${styles.statusLabel} ax-eyebrow`}>{STATUS_LABELS[status]}</p>
+          <p className={`${styles.statusLabel} ax-eyebrow`}>
+            <span className={`${styles.statusDot} ${getDotClass(status)}`} aria-hidden="true" />
+            {STATUS_LABELS[status]}
+          </p>
           <h3 className={`${styles.title} ax-title`}>{title}</h3>
         </div>
 

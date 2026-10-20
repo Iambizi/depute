@@ -11,11 +11,11 @@
   font-variant-numeric: var(--ax-numeric);
   box-shadow: var(--ax-shadow-2);}
 
-.bindingApproval.statusReviewing {box-shadow: var(--ax-shadow-2), var(--ax-rail-warning);}
-.bindingApproval.statusSigning {box-shadow: var(--ax-shadow-2), var(--ax-rail);
+.bindingApproval.statusReviewing {box-shadow: var(--ax-shadow-2);}
+.bindingApproval.statusSigning {box-shadow: var(--ax-shadow-2);
   animation: ax-binding-pulse var(--ax-dur-emph) var(--ax-ease-standard) 3;}
-.bindingApproval.statusSigned {box-shadow: var(--ax-shadow-1), var(--ax-rail-success);}
-.bindingApproval.statusRejected {box-shadow: var(--ax-shadow-1), var(--ax-rail-danger);}
+.bindingApproval.statusSigned {box-shadow: var(--ax-shadow-1);}
+.bindingApproval.statusRejected {box-shadow: var(--ax-shadow-1);}
 .bindingApproval.statusExpired {box-shadow: var(--ax-shadow-1);}
 
 @keyframes ax-binding-pulse {

@@ -7,7 +7,7 @@
   background: var(--ax-card-bg);
   font-family: var(--ax-font-sans);
   overflow: hidden;
-  box-shadow: var(--ax-shadow-2), var(--ax-rail-warning);
+  box-shadow: var(--ax-shadow-2);
   color: var(--ax-fg-default);
   font-variant-numeric: var(--ax-numeric);}
 

@@ -2,9 +2,9 @@
 
 Geist is intentional. The pixel wordmark is drawn from the same family, and the components are meant to sit in a Vercel-style product. Do not swap the sans. Use Geist Mono for amounts, hashes, and IDs, and the pixel wordmark only for the name.
 
-## Rails
+## Status
 
-A 2px inset rail encodes risk, and only on ApprovalGate, DelegationGate, and BindingApproval. It is always paired with a text status. It is inset, so a card radius above 6px does not clip a painted left border. Other cards stay hairline, with no side stripe.
+Status sits on the label, not on the card edge. Approval Gate puts a 6px dot in front of the eyebrow: accent while waiting, green when approved, red when rejected. Resolved gates still end in a text footer. No card has a colored side stripe.
 
 ## Motion
 
