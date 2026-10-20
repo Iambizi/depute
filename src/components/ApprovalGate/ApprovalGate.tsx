@@ -7,7 +7,7 @@
  * - role="alertdialog" for screen reader urgency
  * - Countdown timer with escalating visual urgency
  * - Scoped approvals (Stripe SPT pattern)
- * - Simple and staged (preview → confirm → execute) modes
+ * - Simple and staged (preview, confirm, execute) modes
  *
  * @see docs/orchestration/06-technical-specifications.md (Component 2)
  * @see docs/orchestration/05-interface-states.md (ApprovalGate state matrix)
@@ -112,6 +112,7 @@ export function ApprovalGate({
   mode = 'simple',
   confidence,
   timeoutSeconds,
+  now,
   scope,
   metadata,
   onApprove,
@@ -223,6 +224,10 @@ export function ApprovalGate({
   // not to timeoutSeconds. Callbacks run from the timer, not from a state updater.
   useEffect(() => {
     const active = isPending || isHandoffPending;
+    if (now != null) {
+      if (active && timeoutSeconds != null) setTimeRemaining(timeoutSeconds);
+      return;
+    }
     if (!active) return;
     const knownHandoffDeadline = isHandoffPending
       ? (handoffDeadlineMs ?? handoffContextRef.current?.deadline ?? null)
@@ -271,6 +276,7 @@ export function ApprovalGate({
   }, [
     isPending,
     isHandoffPending,
+    now,
     timeoutSeconds,
     handoffDeadlineMs,
     handoffInitiated,

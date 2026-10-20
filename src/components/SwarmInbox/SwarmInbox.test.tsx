@@ -5,7 +5,7 @@ import { SwarmInbox } from './SwarmInbox';
 import type { SwarmInboxItem } from './SwarmInbox.types';
 
 const MOCK_ITEMS: SwarmInboxItem[] = [
-  { id: 'i1', type: 'escalation', severity: 'critical', title: 'Agent failure escalated', agentId: 'Code-Writer-1', branchPath: 'root → Code Writer', timestamp: 'just now' },
+  { id: 'i1', type: 'escalation', severity: 'critical', title: 'Agent failure escalated', agentId: 'Code-Writer-1', branchPath: 'root / Code Writer', timestamp: 'just now' },
   { id: 'i2', type: 'budget_overrun', severity: 'warning', title: 'Token budget exceeded', agentId: 'Data-Analyst', timestamp: '3m ago', detail: 'Consumed 142% of allocation.' },
   { id: 'i3', type: 'approval', severity: 'info', title: 'Action requires your sign-off', agentId: 'Orchestrator-Prime', timestamp: '5m ago' },
 ];
@@ -38,7 +38,7 @@ describe('SwarmInbox', () => {
 
     it('shows critical count badge with "X critical" format in header', () => {
       render(<SwarmInbox items={MOCK_ITEMS} />);
-      // 1 critical item → badge shows "1 critical"
+      // 1 critical item, badge shows "1 critical"
       expect(screen.getByText('1 critical')).toBeInTheDocument();
     });
 

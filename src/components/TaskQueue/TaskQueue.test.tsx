@@ -26,7 +26,7 @@ describe('TaskQueue', () => {
 
     it('shows priority chips with correct labels', () => {
       render(<TaskQueue tasks={MOCK_TASKS} />);
-      // PRIORITY_LABEL: critical→'Critical', high→'High', medium→'Med'
+      // PRIORITY_LABEL: critical is 'Critical', high is 'High', medium is 'Med'
       expect(screen.getByText('Critical')).toBeInTheDocument();
       expect(screen.getByText('High')).toBeInTheDocument();
       expect(screen.getByText('Med')).toBeInTheDocument();

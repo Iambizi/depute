@@ -37,7 +37,7 @@
   color: var(--ax-status-danger-fg);
   padding: 1px var(--ax-space-1-5);
   border-radius: var(--ax-radius-md);
-  animation: inboxPulse var(--ax-dur-emph) var(--ax-ease-standard) infinite;}
+  animation: inboxPulse var(--ax-dur-emph) var(--ax-ease-standard) 3;}
 
 @keyframes inboxPulse {
   0%, 100% {opacity: 1;}

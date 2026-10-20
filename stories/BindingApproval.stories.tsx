@@ -62,7 +62,7 @@ export const WithTimeout: Story = {
 };
 
 export const CryptoTransaction: Story = {
-  name: '🪙 Crypto: Smart Contract',
+  name: 'Crypto: Smart Contract',
   args: {
     title: 'Smart Contract Deployment',
     description: 'Agent will deploy a new ERC-20 token contract to Ethereum mainnet.',
@@ -111,12 +111,12 @@ export const AsyncHandoffFlow: Story = {
         />
         {status === 'handoff_pending' && (
            <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem', fontFamily: 'sans-serif', fontSize: '12px' }}>
-             <button onClick={() => setStatus('signed')} style={{ padding: '0.4rem', background: '#e0e7ff', border: '1px solid #4f46e5', borderRadius: '4px', cursor: 'pointer' }}>📱 Simulate Mobile 'SIGN'</button>
-             <button onClick={() => setStatus('handoff_denied')} style={{ padding: '0.4rem', background: '#fee2e2', border: '1px solid #ef4444', borderRadius: '4px', cursor: 'pointer' }}>📱 Simulate Mobile 'DENY'</button>
+             <button type="button" onClick={() => setStatus('signed')}>Simulate mobile signature</button>
+             <button type="button" onClick={() => setStatus('handoff_denied')}>Simulate mobile denial</button>
            </div>
         )}
         {status !== 'reviewing' && status !== 'handoff_pending' && (
-           <button onClick={() => setStatus('reviewing')} style={{ marginTop: '1rem', padding: '0.4rem', border: '1px solid #ccc', borderRadius: '4px', cursor: 'pointer', alignSelf: 'flex-start' }}>↻ Reset Gateway</button>
+           <button type="button" onClick={() => setStatus('reviewing')}>Reset gateway</button>
         )}
       </div>
     );

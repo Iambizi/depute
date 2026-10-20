@@ -54,7 +54,7 @@ function TreeNode({ node, depth, selectedNodeId, onNodeClick }: TreeNodeProps) {
   };
 
   return (
-    <li className={styles.treeItem}>
+    <li className={styles.treeItem} role="treeitem" aria-expanded={hasChildren ? expanded : undefined}>
       {/* Node card */}
       <div
         className={`${styles.node} ${styles[`depth${Math.min(depth, 3)}`] ?? ''} ${
@@ -161,7 +161,6 @@ export const OrchestratorView: React.FC<OrchestratorViewProps> = ({
       <div className={styles.canvas}>
         {nodes.length === 0 ? (
           <div className={styles.empty}>
-            <span className={styles.emptyIcon}>⬡</span>
             <p>No agents spawned yet.</p>
           </div>
         ) : (

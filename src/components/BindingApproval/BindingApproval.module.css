@@ -13,7 +13,7 @@
 
 .bindingApproval.statusReviewing {box-shadow: var(--ax-shadow-2), var(--ax-rail-warning);}
 .bindingApproval.statusSigning {box-shadow: var(--ax-shadow-2), var(--ax-rail);
-  animation: ax-binding-pulse var(--ax-dur-emph) var(--ax-ease-standard) infinite;}
+  animation: ax-binding-pulse var(--ax-dur-emph) var(--ax-ease-standard) 3;}
 .bindingApproval.statusSigned {box-shadow: var(--ax-shadow-1), var(--ax-rail-success);}
 .bindingApproval.statusRejected {box-shadow: var(--ax-shadow-1), var(--ax-rail-danger);}
 .bindingApproval.statusExpired {box-shadow: var(--ax-shadow-1);}
@@ -272,7 +272,7 @@
   border-radius: var(--ax-radius-full);
   background: var(--ax-status-warning-bg);
   border: var(--ax-space-0-5) solid var(--ax-status-warning-fg);
-  animation: ax-pulse var(--ax-dur-slow) infinite;}
+  animation: ax-pulse var(--ax-dur-slow) var(--ax-ease-standard) 3;}
 
 .handoffSubtext {font-size: var(--ax-text-xs);
   color: var(--ax-fg-muted);

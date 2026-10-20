@@ -181,7 +181,7 @@
 
 @media (prefers-reduced-motion: no-preference) {
   .ax-badge-info.ax-badge-dot::before {
-    animation: ax-pulse var(--ax-dur-emph) var(--ax-ease-standard) infinite;
+    animation: ax-pulse var(--ax-dur-emph) var(--ax-ease-standard) 3;
   }
 }
 
@@ -316,7 +316,7 @@
 
 @media (prefers-reduced-motion: no-preference) {
   .ax-skeleton {
-    animation: ax-shimmer calc(var(--ax-dur-emph) * 3) var(--ax-ease-linear) infinite alternate;
+    animation: ax-shimmer calc(var(--ax-dur-emph) * 3) var(--ax-ease-linear) 3 alternate;
   }
 }
 

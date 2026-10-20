@@ -35,6 +35,7 @@
 
 .header {display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: var(--ax-space-2);
   padding: var(--ax-card-pad-y) var(--ax-card-pad-x);
   border-bottom: var(--ax-border-width) solid var(--ax-border-default);
@@ -52,7 +53,7 @@
 
 .statusIconPending {background: var(--ax-status-warning-bg);
   color: var(--ax-status-warning-fg);
-  animation: ax-pulse var(--ax-dur-slow) var(--ax-ease-standard) infinite;}
+  animation: ax-pulse var(--ax-dur-slow) var(--ax-ease-standard) 3;}
 
 .statusIconApproved {background: var(--ax-status-success-bg);
   color: var(--ax-status-success-fg);}
@@ -63,7 +64,7 @@
 .statusIconExpired {background: var(--ax-bg-muted);
   color: var(--ax-fg-muted);}
 
-.headerContent {flex: 1;
+.headerContent {flex: 1 1 var(--ax-panel);
   min-width: 0;
   display: flex;
   flex-direction: column;
@@ -197,7 +198,7 @@
 
 .countdownUrgent {background: var(--ax-status-danger-bg);
   color: var(--ax-status-danger-fg);
-  animation: ax-pulse var(--ax-dur-base) var(--ax-ease-standard) infinite;}
+  animation: ax-pulse var(--ax-dur-base) var(--ax-ease-standard) 3;}
 
 /* ------------------------------------------------------------------ */
 /* Staged mode indicator                                               */
@@ -312,4 +313,4 @@
   border-radius: var(--ax-radius-full);
   background: var(--ax-status-warning-bg);
   border: var(--ax-space-0-5) solid var(--ax-status-warning-fg);
-  animation: ax-pulse var(--ax-dur-slow) infinite;}
+  animation: ax-pulse var(--ax-dur-slow) var(--ax-ease-standard) 3;}

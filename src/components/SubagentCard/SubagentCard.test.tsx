@@ -45,7 +45,7 @@ describe('SubagentCard', () => {
   describe('states', () => {
     it('shows Working status badge', () => {
       render(<SubagentCard {...BASE_PROPS} status="working" />);
-      // STATUS_TEXT maps 'working' → 'Working'
+      // STATUS_TEXT maps 'working' to 'Working'
       expect(screen.getByText('Working')).toBeInTheDocument();
     });
 

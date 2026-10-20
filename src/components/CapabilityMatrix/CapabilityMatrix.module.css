@@ -97,7 +97,7 @@
   outline-offset: calc(var(--ax-space-0-5) * -1);
   border-radius: var(--ax-radius-xs);}
 
-.rowDenied {box-shadow: var(--ax-rail-danger);}
+.rowDenied {background: transparent;}
 
 /* ------------------------------------------------------------------ */
 /* Permission badge                                                    */

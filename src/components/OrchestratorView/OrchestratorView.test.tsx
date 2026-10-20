@@ -47,7 +47,7 @@ describe('OrchestratorView', () => {
   describe('states', () => {
     it('shows capitalized status badge for a working node', () => {
       render(<OrchestratorView nodes={MOCK_NODES} />);
-      // STATUS_LABELS maps 'working' → 'Working'
+      // STATUS_LABELS maps 'working' to 'Working'
       expect(screen.getAllByText('Working').length).toBeGreaterThan(0);
     });
 

@@ -56,7 +56,7 @@
   height: var(--ax-space-2);
   border-radius: var(--ax-radius-full);
   background: var(--_banner-accent);
-  animation: ax-policy-pulse var(--ax-dur-emph) var(--ax-ease-standard) infinite;
+  animation: ax-policy-pulse var(--ax-dur-emph) var(--ax-ease-standard) 3;
   flex-shrink: 0;}
 
 @keyframes ax-policy-pulse {

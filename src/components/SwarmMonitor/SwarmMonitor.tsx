@@ -45,7 +45,7 @@ export const SwarmMonitor: React.FC<SwarmMonitorProps> = ({
         <div className={styles.metric}>
           <span className={styles.metricValue}>{metrics.activeInstances}</span>
           <span className={styles.metricLabel}>Active</span>
-          <span className={`${styles.dot} ${styles.dotWorking}`} />
+          <span className={`${styles.dot} ${metrics.activeInstances > 0 ? styles.dotWorking : styles.dotIdle}`} />
         </div>
         <div className={styles.metric}>
           <span className={styles.metricValue}>{metrics.idleInstances}</span>

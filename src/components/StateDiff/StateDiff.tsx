@@ -11,6 +11,7 @@
 
 import { useState, useMemo } from 'react';
 import { VisuallyHidden } from '../../utils/a11y';
+import { IconArrowRight } from '../../utils/icons';
 import type {
   StateDiffProps,
   DiffEntry,
@@ -90,7 +91,7 @@ function DiffEntryRow({ entry }: { entry: DiffEntry }) {
         ) : entry.type === 'modified' ? (
           <>
             <span className={styles.valueBefore}>{formatValue(entry.before)}</span>
-            <span className={styles.arrow} aria-hidden="true">→</span>
+            <span className={styles.arrow} aria-hidden="true"><IconArrowRight /></span>
             <span className={styles.valueAfter}>{formatValue(entry.after)}</span>
           </>
         ) : (
@@ -198,9 +199,9 @@ export function StateDiff({
             const filtered = filterEntries(group.entries, hideUnchanged);
             if (filtered.length === 0) return null;
             return (
-              <div key={group.label || 'default'} className={styles.group}>
+              <div key={group.label || 'default'} className={styles.group} role="rowgroup">
                 {group.label && (
-                  <div className={styles.groupLabel} role="rowgroup">
+                  <div className={styles.groupLabel} role="row">
                     {group.label}
                   </div>
                 )}
