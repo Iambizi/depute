@@ -1,14 +1,18 @@
 # depute v0.5.0 Release Notes
 
-The component library now has a real dark mode and one visual system.
+**October 20, 2026**
+
+Published to npm as `ax-depute@0.5.0`. Tag `v0.5.0` is on `main`. Storybook on GitHub Pages and the docs site were redeployed the same day.
+
+The component library has a real dark mode and one visual system.
 
 - Base, semantic, and component tokens, with the 0.4 names kept as aliases for this minor version.
 - Cards set their own font and text color, so a dark host page no longer leaves gray text on a white card.
 - Shared buttons, badges, and focus rings. Emoji status marks are inline icons.
 - Storybook has light/dark and compact/comfortable controls. Mock data is seeded, so a story renders the same data on reload.
 - Status text and tint pairs are at least 4.5:1 in both themes.
-
-Publish `ax-depute@0.5.0` from `packages/cli` after the `v0.5.0` tag is on GitHub.
+- Gate status is a 6px dot on the eyebrow, not a colored side stripe. A resolved gate still ends in a text footer.
+- Docs sidebar badges stay colored by type: blue primitive, indigo view, zinc control, amber pattern.
 
 # depute v0.4.4 Release Notes
 

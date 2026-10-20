@@ -131,4 +131,4 @@ When multiple agents are running in a swarm, a single terminal log or chat threa
 The tree naturally collapses cognitive load by burying successful (`completed`) and waiting (`idle`) agents. However, `blocked` and `failed` nodes use high-contrast color codes to draw the supervisor's eye directly to the nodes requiring intervention, regardless of how deep they are nested.
 
 **3. Depth Coding**  
-To solve the "sea of gray boxes" problem, the left border of each node is color-coded by depth (e.g., Indigo → Sky → Emerald → Amber). This provides an instant visual anchor for nesting levels, even when inner branches are expanded.
+The left edge of a node marks its depth: ink at the root, gray for the next two levels, and amber at the fourth. It stays visible when a branch is expanded.
