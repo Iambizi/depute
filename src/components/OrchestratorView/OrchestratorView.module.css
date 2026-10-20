@@ -101,12 +101,6 @@
   background: var(--ax-status-info-bg) !important;
   box-shadow: 0 0 0 var(--ax-space-0-5) var(--ax-status-info-border);}
 
-/* Depth-based left accent */
-.depth0 {border-left: var(--ax-space-0-5) solid var(--ax-status-info-solid);}
-.depth1 {border-left: var(--ax-space-0-5) solid var(--ax-border-strong);}
-.depth2 {border-left: var(--ax-space-0-5) solid var(--ax-border-strong);}
-.depth3 {border-left: var(--ax-space-0-5) solid var(--ax-status-warning-solid);}
-
 /* Expand/collapse toggle */
 .toggle {background: none;
   border: none;

@@ -90,12 +90,9 @@
   outline-offset: calc(var(--ax-space-0-5) * -1);}
 
 /* Severity tints */
-.itemCritical {border-left: var(--ax-space-0-5) solid var(--ax-status-danger-solid);
-  background: var(--ax-status-danger-bg);}
-.itemWarning  {border-left: var(--ax-space-0-5) solid var(--ax-status-warning-solid);
-  background: var(--ax-status-warning-bg);}
-.itemInfo     {border-left: var(--ax-space-0-5) solid var(--ax-status-info-border);
-  background: var(--ax-bg-surface);}
+.itemCritical {background: var(--ax-status-danger-bg);}
+.itemWarning  {background: var(--ax-status-warning-bg);}
+.itemInfo     {background: var(--ax-bg-surface);}
 
 .typeIcon {font-size: var(--ax-text-lg);
   flex-shrink: 0;

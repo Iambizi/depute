@@ -40,7 +40,7 @@ export const SubagentCard: React.FC<SubagentCardProps> = ({
 
   return (
     <div
-      className={`${styles.card} ax-card ${styles[`card_${status}`] ?? ''} ${className || ''}`}
+      className={`${styles.card} ax-card ${className || ''}`}
       data-ax=""
       role={onExpand ? 'button' : undefined}
       tabIndex={onExpand ? 0 : undefined}
