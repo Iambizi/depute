@@ -66,7 +66,7 @@ export function DecisionRecord({
           </div>
           <div className={styles.section}>
             <span className={styles.label}>Timestamp</span>
-            <span className={styles.valueMono}>{formattedDate}</span>
+            <span className={styles.valueMono} suppressHydrationWarning>{formattedDate}</span>
           </div>
         </div>
 

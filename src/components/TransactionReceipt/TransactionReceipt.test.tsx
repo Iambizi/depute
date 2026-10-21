@@ -37,9 +37,13 @@ describe('TransactionReceipt', () => {
       expect(screen.getByText('Fee')).toBeInTheDocument();
     });
 
-    it('renders timestamp', () => {
+    it('renders timestamp in local time', () => {
       render(<TransactionReceipt {...defaultProps} />);
-      expect(screen.getByText('Mar 19, 2026, 2:30 PM')).toBeInTheDocument();
+      const expected = new Intl.DateTimeFormat('en-US', {
+        dateStyle: 'medium',
+        timeStyle: 'short',
+      }).format(new Date(defaultProps.timestamp));
+      expect(screen.getByText(expected)).toBeInTheDocument();
     });
 
     it('renders agent ID when provided', () => {

@@ -244,6 +244,7 @@
 
 .actions {display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: var(--ax-space-3);
   padding: var(--ax-space-4) var(--ax-space-5);
   border-top: var(--ax-border-width) solid var(--ax-border-default);}
@@ -251,6 +252,8 @@
 .btn {display: inline-flex;
   align-items: center;
   justify-content: center;
+  flex: 0 0 auto;
+  white-space: nowrap;
   gap: var(--ax-space-2);
   padding: var(--ax-space-2) var(--ax-space-4);
   border-radius: var(--ax-radius-sm);

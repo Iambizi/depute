@@ -89,16 +89,16 @@ function CapabilityRow({
       tabIndex={onClick ? 0 : undefined}
       style={onClick ? { cursor: 'pointer' } : undefined}
     >
-      <span className={`${styles.permBadge} ${PERMISSION_CLASSES[capability.permission]}`}>
+      <span className={`${styles.permBadge} ${PERMISSION_CLASSES[capability.permission]}`} role="cell">
         <span aria-hidden="true">{PERMISSION_SYMBOLS[capability.permission]}</span>
         <VisuallyHidden>{PERMISSION_LABELS[capability.permission]}</VisuallyHidden>
       </span>
-      <span className={styles.capName}>{capability.name}</span>
+      <span className={styles.capName} role="cell">{capability.name}</span>
       {capability.description && (
-        <span className={styles.capDesc}>{capability.description}</span>
+        <span className={styles.capDesc} role="cell">{capability.description}</span>
       )}
       {capability.permission === 'conditional' && capability.condition && (
-        <span className={styles.capCondition}>if {capability.condition}</span>
+        <span className={styles.capCondition} role="cell">if {capability.condition}</span>
       )}
     </div>
   );
@@ -168,8 +168,10 @@ export function CapabilityMatrix({
       <div className={styles.body} role="table" aria-label="Capability permissions">
         {grouped ? (
           Array.from(grouped.entries()).map(([category, caps]) => (
-            <div key={category} className={styles.group}>
-              <div className={styles.groupLabel} role="rowgroup">{category}</div>
+            <div key={category} className={styles.group} role="rowgroup">
+              <div className={styles.groupLabel} role="row">
+                <span role="columnheader">{category}</span>
+              </div>
               {caps.map((cap) => (
                 <CapabilityRow
                   key={cap.name}

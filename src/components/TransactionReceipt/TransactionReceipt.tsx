@@ -28,7 +28,6 @@ function formatStamp(value: string): string {
   return new Intl.DateTimeFormat('en-US', {
     dateStyle: 'medium',
     timeStyle: 'short',
-    timeZone: 'UTC',
   }).format(date);
 }
 
@@ -122,7 +121,9 @@ export function TransactionReceipt({
         {/* Timestamp */}
         <div className={styles.lineItem} role="listitem">
           <span className={styles.lineLabel}>Timestamp</span>
-          <span className={styles.lineValue}>{formatStamp(timestamp)}</span>
+          <span className={styles.lineValue} suppressHydrationWarning>
+            {formatStamp(timestamp)}
+          </span>
         </div>
 
         {/* Agent ID */}

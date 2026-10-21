@@ -62,10 +62,16 @@ function researchCalls(): ToolCall[] {
 }
 
 export function PaperTradingDesk() {
+  const [session, setSession] = useState(0);
+  return <DeskSession key={session} onRestart={() => setSession((value) => value + 1)} />;
+}
+
+function DeskSession({ onRestart }: { onRestart: () => void }) {
   const [phase, setPhase] = useState<Phase>('idle');
   const [calls, setCalls] = useState<ToolCall[]>([]);
   const [spent, setSpent] = useState(0);
   const [commitAfterReview, setCommitAfterReview] = useState(false);
+  const [decidedAt, setDecidedAt] = useState<Date | null>(null);
   const bias = useAutomationBias({ minApprovalTimeMs: 800, consecutiveApprovals: 8 });
 
   useEffect(() => {
@@ -91,6 +97,7 @@ export function PaperTradingDesk() {
     setPhase('researching');
     setCalls([]);
     setSpent(0);
+    setDecidedAt(null);
     setCommitAfterReview(false);
     window.setTimeout(() => {
       setCalls(researchCalls());
@@ -99,11 +106,13 @@ export function PaperTradingDesk() {
   }
 
   function approve() {
+    setDecidedAt(new Date());
     bias.recordAction('approved');
     setCommitAfterReview(true);
   }
 
   function reject() {
+    setDecidedAt(new Date());
     bias.recordAction('rejected');
     setCommitAfterReview(false);
     setPhase('rejected');
@@ -195,12 +204,12 @@ export function PaperTradingDesk() {
         </AutomationBiasAlert>
       )}
 
-      {phase === 'filled' && (
+      {phase === 'filled' && decidedAt && (
         <>
           <p className="sr-only" aria-live="polite">Approved. Receipt paper-fill-aapl-40 recorded.</p>
           <DecisionRecord
             decision="approved"
-            approver={{ name: 'You', role: 'Supervisor', timestamp: new Date() }}
+            approver={{ name: 'You', role: 'Supervisor', timestamp: decidedAt }}
             agentContext={{
               intent: `Buy ${PLAN.quantity} ${PLAN.symbol} with stop ${PLAN.stop} and target ${PLAN.target}.`,
               policyInvoked: 'Paper trading, staged approval above $5,000',
@@ -211,7 +220,7 @@ export function PaperTradingDesk() {
             transactionId={PAPER_HASH}
             title="Paper fill"
             status="success"
-            timestamp={new Date().toISOString()}
+            timestamp={decidedAt.toISOString()}
             agentId="paper-agent"
             hash={PAPER_HASH}
             lineItems={[
@@ -225,13 +234,23 @@ export function PaperTradingDesk() {
         </>
       )}
 
-      {phase === 'rejected' && (
+      {phase === 'rejected' && decidedAt && (
         <DecisionRecord
           decision="rejected"
-          approver={{ name: 'You', role: 'Supervisor', timestamp: new Date() }}
+          approver={{ name: 'You', role: 'Supervisor', timestamp: decidedAt }}
           agentContext={{ intent: `Buy ${PLAN.quantity} ${PLAN.symbol}.` }}
           humanReasoning="Rejected on the paper desk. No order was sent."
         />
+      )}
+
+      {(phase === 'filled' || phase === 'rejected') && (
+        <button
+          type="button"
+          className="inline-flex w-fit items-center rounded-full border border-fd-border px-5 py-2.5 text-sm font-medium text-fd-foreground"
+          onClick={onRestart}
+        >
+          Run again
+        </button>
       )}
     </div>
   );
