@@ -12,4 +12,4 @@ Status dots pulse only while an agent is running or working. Other pulses run at
 
 ## Color
 
-One ink accent, plus status pairs of step-11 text on step-3 tint. Both themes stay at or above 4.5:1. The site uses the same gray-11 muted text. No glow halos or glass panels. Docs taxonomy badges stay colored on purpose: blue, indigo, zinc, and amber name the component type in the sidebar.
+One ink accent, plus status pairs of step-11 text on step-3 tint. Both themes stay at or above 4.5:1. The site uses the same gray-11 muted text. No glow halos or glass panels. Docs taxonomy badges stay colored on purpose: blue, indigo, zinc, and amber name the component type in the sidebar, with step-11 text on a solid step-3 tint.

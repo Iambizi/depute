@@ -2,6 +2,7 @@ import { DocsLayout } from 'fumadocs-ui/layouts/docs';
 import type { Folder, Item, Node, Root } from 'fumadocs-core/page-tree';
 import type { ReactNode } from 'react';
 import { source } from '@/lib/source';
+import { taxonomyTone } from '@/lib/taxonomy-badge';
 
 function readBadge(data: object): string | undefined {
   const record = data as Record<string, unknown>;
@@ -17,11 +18,7 @@ for (const page of source.getPages()) {
 }
 
 function badgeName(url: string, title: ReactNode, badge: string): ReactNode {
-  const typeColor =
-    badge === 'Primitive' ? 'bg-blue-500/10 text-blue-500 dark:text-blue-400 border-blue-500/20' :
-    badge === 'View' ? 'bg-indigo-500/10 text-indigo-500 dark:text-indigo-400 border-indigo-500/20' :
-    badge === 'Pattern' ? 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20' :
-    'bg-zinc-500/10 text-zinc-600 dark:text-zinc-400 border-zinc-500/20';
+  const typeColor = taxonomyTone(badge);
 
   return (
     <span key={`badge-wrap-${url}`} className="flex items-center justify-between w-full pr-1">

@@ -79,11 +79,11 @@ function countChanges(entries: DiffEntry[]): number {
 function DiffEntryRow({ entry }: { entry: DiffEntry }) {
   return (
     <div className={`${styles.entry} ${CHANGE_CLASSES[entry.type]}`} role="row">
-      <span className={styles.entrySymbol} aria-hidden="true">
+      <span className={styles.entrySymbol} role="cell" aria-hidden="true">
         {CHANGE_SYMBOLS[entry.type]}
       </span>
-      <span className={styles.entryPath}>{getEntryLabel(entry)}</span>
-      <span className={styles.entryValues}>
+      <span className={styles.entryPath} role="cell">{getEntryLabel(entry)}</span>
+      <span className={styles.entryValues} role="cell">
         {entry.type === 'added' ? (
           <span className={styles.valueAfter}>{formatValue(entry.after)}</span>
         ) : entry.type === 'removed' ? (
@@ -97,18 +97,18 @@ function DiffEntryRow({ entry }: { entry: DiffEntry }) {
         ) : (
           <span className={styles.valueUnchanged}>{formatValue(entry.before)}</span>
         )}
+        <VisuallyHidden>
+          {`${getEntryLabel(entry)}: ${CHANGE_LABELS[entry.type]}${
+            entry.type === 'modified'
+              ? ` from ${formatValue(entry.before)} to ${formatValue(entry.after)}`
+              : entry.type === 'added'
+              ? ` value ${formatValue(entry.after)}`
+              : entry.type === 'removed'
+              ? ` value ${formatValue(entry.before)}`
+              : ''
+          }`}
+        </VisuallyHidden>
       </span>
-      <VisuallyHidden>
-        {`${getEntryLabel(entry)}: ${CHANGE_LABELS[entry.type]}${
-          entry.type === 'modified'
-            ? ` from ${formatValue(entry.before)} to ${formatValue(entry.after)}`
-            : entry.type === 'added'
-            ? ` value ${formatValue(entry.after)}`
-            : entry.type === 'removed'
-            ? ` value ${formatValue(entry.before)}`
-            : ''
-        }`}
-      </VisuallyHidden>
     </div>
   );
 }
@@ -202,7 +202,7 @@ export function StateDiff({
               <div key={group.label || 'default'} className={styles.group} role="rowgroup">
                 {group.label && (
                   <div className={styles.groupLabel} role="row">
-                    {group.label}
+                    <span role="columnheader">{group.label}</span>
                   </div>
                 )}
                 {filtered.map((entry) => (

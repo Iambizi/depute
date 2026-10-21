@@ -60,7 +60,7 @@
   color: var(--ax-fg-muted);}
 
 .emptyIcon {font-size: var(--ax-text-xl);
-  color: var(--ax-status-success-solid);}
+  color: var(--ax-status-success-fg);}
 
 .empty p {margin: 0;
   font-size: var(--ax-text-sm);}
@@ -93,6 +93,23 @@
 .itemCritical {background: var(--ax-status-danger-bg);}
 .itemWarning  {background: var(--ax-status-warning-bg);}
 .itemInfo     {background: var(--ax-bg-surface);}
+
+.itemWarning .itemTime,
+.itemWarning .itemMeta,
+.itemWarning .itemDetail,
+.itemWarning .branchPath,
+.itemWarning .typeIcon,
+.itemWarning .dismissBtn {color: var(--ax-status-warning-fg);}
+
+.itemCritical .itemTime,
+.itemCritical .itemMeta,
+.itemCritical .itemDetail,
+.itemCritical .branchPath,
+.itemCritical .typeIcon,
+.itemCritical .dismissBtn {color: var(--ax-status-danger-fg);}
+
+.itemWarning .dismissBtn:hover,
+.itemCritical .dismissBtn:hover {color: var(--ax-fg-default);}
 
 .typeIcon {font-size: var(--ax-text-lg);
   flex-shrink: 0;
