@@ -74,6 +74,8 @@ AX is the design discipline for interfaces where AI agents act on behalf of user
 | `Rollback Timeline`| Undo-tree with cascade awareness |
 | `Transaction Receipt`| Provenance receipt and audit. Displays a backend-supplied hash. |
 | `Binding Approval`| High-stakes intent gate. Displays a backend-supplied signature. |
+| `Decision Record` | Immutable visual receipt of a human approval decision |
+| `Session Overview` | Semantic rollup of a high-velocity agent session to prevent execution amnesia |
 
 ## Tech Stack
 
@@ -110,8 +112,7 @@ depute/
 ├── packages/cli/            # ax-depute CLI (npm package)
 ├── registry/                # registry.json (component manifest)
 ├── apps/www/                # Next.js + Fumadocs docs site
-├── skills/depute/           # Cross-agent skill (skills.sh)
-├── .claude/skills/depute/   # Claude-specific skill
+├── skills/depute/           # Cross-agent skill (skills.sh). No separate .claude/skills copy is in this repo.
 ├── examples/                # Prototype + production setups
 ├── docs/                    # Internal docs (gitignored)
 │   ├── internal/            # Session notes, strategy, research
@@ -128,14 +129,15 @@ depute/
 
 ## AI Skill Layer
 
-Two identical skill files teach AI agents how to use depute:
+The skill that teaches AI agents how to use depute lives in one place:
 - `skills/depute/SKILL.md` — cross-agent skill (skills.sh / Vercel standard)
+- `skills/depute/references/lexicon.md` — canonical term definitions
 
 It includes:
 - Component selection decision tree (v0 vs v1)
 - Install commands for the component set
 - Common composition patterns
-- **Audit Mode** — 8 heuristics for scanning codebases for missing oversight
+- **Audit Mode** — 12 heuristics (H1–H12) for scanning codebases for missing oversight. Definitions are in `references/lexicon.md`.
 
 ## Design Principles
 

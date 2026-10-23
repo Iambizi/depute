@@ -11,6 +11,8 @@ import { taxonomyTone } from '@/lib/taxonomy-badge';
 
 **Depute** is a React component library for Agentic Experience (AX) design — purpose-built UI primitives for AI agent supervision and human oversight.
 
+The founding frame is [Delegation UI](/docs/lexicon#delegation-ui). Terms used on this site are defined in the [Lexicon](/docs/lexicon).
+
 When an AI agent runs in your product, users need to see what's happening — not raw logs, but structured UI for delegation, trust, and control.
 
 ## Why Depute?
@@ -30,18 +32,18 @@ For Security & Risk Teams, Depute is compliance infrastructure. Under emerging g
 
 Human-automation research shows that humans are terrible at passively monitoring highly autonomous systems. When working with AI agents, users fall into predictable cognitive traps. Depute maps its primitives directly against these known failures:
 
-- **Automation Bias:** Users blindly rubber-stamp agent actions without scrutiny → *Mitigated by an [**Automation Bias Alert**](/docs/components/automation-bias-alert) and [**Confidence Meter**](/docs/components/confidence-meter)*
-- **Execution Amnesia:** Users lose track of the total "blast radius" of a massive agent session → *Mitigated by a [**Session Overview**](/docs/components/session-overview) and [**State Diff**](/docs/components/state-diff)*
-- **Responsibility Diffusion:** Users approve actions assuming the machine is accountable → *Mitigated by a [**Decision Record**](/docs/components/decision-record) and [**Binding Approval**](/docs/components/binding-approval)*
+- [**Automation Bias**](/docs/lexicon#automation-bias): Users blindly rubber-stamp agent actions without scrutiny → *Mitigated by an [**Automation Bias Alert**](/docs/components/automation-bias-alert) and [**Confidence Meter**](/docs/components/confidence-meter)*
+- [**Execution Amnesia**](/docs/lexicon#execution-amnesia): Users lose track of the total "blast radius" of a massive agent session → *Mitigated by a [**Session Overview**](/docs/components/session-overview) and [**State Diff**](/docs/components/state-diff)*
+- [**Responsibility Diffusion**](/docs/lexicon#responsibility-diffusion): Users approve actions assuming the machine is accountable → *Mitigated by a [**Decision Record**](/docs/components/decision-record) and [**Binding Approval**](/docs/components/binding-approval)*
 
 ## Mitigating Systemic Threats
 
 While Cognitive Failures describe UX traps, Systemic Threats describe catastrophic operational failure modes increasingly targeted by international AI legislation (e.g., IMDA Systemic Threats). Depute's components function as active algorithmic firebreaks:
 
-- **Cascading Failures:** An agentic error pollutes downstream autonomous systems rapidly → *Contained by a [**Swarm Monitor**](/docs/components/swarm-monitor) and [**Orchestrator View**](/docs/components/orchestrator-view)*
-- **Hallucinated Planning:** An agent proposes a destructive or nonsensical sequence of tools → *Exposed by a [**Plan Card**](/docs/components/plan-card) and [**Confidence Meter**](/docs/components/confidence-meter)*
-- **Rogue Tool Use:** An agent attempts an irreversible action out-of-bounds → *Blocked by an [**Approval Gate**](/docs/components/approval-gate) and [**Tool Trace**](/docs/components/tool-trace)*
-- **Unpredictable Outcomes:** A run completes with thousands of opaque, unlogged side effects → *Audited with a [**State Diff**](/docs/components/state-diff) and [**Session Overview**](/docs/components/session-overview)*
+- [**Cascading Failures**](/docs/lexicon#cascading-failures): An agentic error pollutes downstream autonomous systems rapidly → *Contained by a [**Swarm Monitor**](/docs/components/swarm-monitor) and [**Orchestrator View**](/docs/components/orchestrator-view)*
+- [**Hallucinated Planning**](/docs/lexicon#hallucinated-planning): An agent proposes a destructive or nonsensical sequence of tools → *Exposed by a [**Plan Card**](/docs/components/plan-card) and [**Confidence Meter**](/docs/components/confidence-meter)*
+- [**Rogue Tool Use**](/docs/lexicon#rogue-tool-use): An agent attempts an irreversible action out-of-bounds → *Blocked by an [**Approval Gate**](/docs/components/approval-gate) and [**Tool Trace**](/docs/components/tool-trace)*
+- [**Unpredictable Outcomes**](/docs/lexicon#unpredictable-outcomes): A run completes with thousands of opaque, unlogged side effects → *Audited with a [**State Diff**](/docs/components/state-diff) and [**Session Overview**](/docs/components/session-overview)*
 
 ## Use-Case Index (Problem-First)
 
@@ -93,6 +95,8 @@ To help you quickly understand how to compose the library, every component in th
 - <span className={`text-xs uppercase font-mono px-1.5 py-0.5 rounded-sm border align-middle mr-1 ${taxonomyTone('View')}`}>View</span> A compositional surface that aggregates multiple primitives into a larger macro-interface (e.g., `OrchestratorView`, `SwarmInbox`).
 - <span className={`text-xs uppercase font-mono px-1.5 py-0.5 rounded-sm border align-middle mr-1 ${taxonomyTone('Control')}`}>Control</span> An operational or forensic surface used to halt, direct, or audit execution (e.g., `EscalationRouter`, `DecisionRecord`).
 - <span className={`text-xs uppercase font-mono px-1.5 py-0.5 rounded-sm border align-middle mr-1 ${taxonomyTone('Pattern')}`}>Pattern</span> A highly specialized workflow wrapper designed to enforce a specific behavioral policy (e.g., `AutomationBiasAlert`, `HandoffProtocol`).
+
+Class definitions are canonical in the [Lexicon](/docs/lexicon#primitive).
 
 Start with Single Agent primitives. Add Multi-Agent when you need orchestration.
 

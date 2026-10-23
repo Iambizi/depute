@@ -4,7 +4,7 @@
 
 ---
 
-## The 6 Primitives
+## The 7 Primitives
 
 | # | Component | Role |
 |---|-----------|------|

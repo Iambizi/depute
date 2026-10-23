@@ -26,6 +26,7 @@ const files = new Set([
   'src/utils/icons.tsx',
   'skills/depute/SKILL.md',
   'skills/depute/references/design-rationale.md',
+  'skills/depute/references/lexicon.md',
   'skills/depute/references/v0-components.md',
   'skills/depute/references/v1-components.md',
   'skills/depute/references/v2-components.md',
