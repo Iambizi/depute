@@ -75,11 +75,12 @@ When in doubt, start with v0 boundaries and scale up to v1 orchestration and v2 
 | Permission inspector showing tool capability grants/denials | `Capability Matrix`| `npx ax-depute@latest add capability-matrix` |
 | Agentic undo-tree for reverting multi-step sequences | `Rollback Timeline`| `npx ax-depute@latest add rollback-timeline` |
 | High-stakes intent gate with an `isSigning` state. The signature comes from your backend | `Binding Approval`| `npx ax-depute@latest add binding-approval` |
-| Immutable audit log linking human approval to an executed action | `Transaction Receipt`| `npx ax-depute@latest add transaction-receipt` |
+| Per-action record of what the machine did, with a verification hash. The component does not compute it | `Transaction Receipt`| `npx ax-depute@latest add transaction-receipt` |
 | Immutable visual receipt of a human approval decision | `Decision Record`| `npx ax-depute@latest add decision-record` |
 | Semantic rollup of a high-velocity agent session | `Session Overview`| `npx ax-depute@latest add session-overview` |
 
 For deep component details, prop shapes, composition flows, and triage decisions, see:
+- `references/lexicon.md` — canonical definitions; quote them, do not paraphrase them
 - `references/v0-components.md`
 - `references/v1-components.md`
 - `references/v2-components.md`
@@ -218,7 +219,7 @@ For high-stakes execution, show intent, ask the person to confirm, and display t
 
 1. **Identify the agent boundary.** Find where the codebase makes LLM calls, executes tools, spawns agents, or runs autonomous workflows. Scan for: API calls to OpenAI/Anthropic/LangChain/AutoGen, tool-calling patterns, agent loop constructs, queue/task delegation logic.
 
-2. **Apply the 12 AX heuristics.** For each agent boundary found, check whether the following oversight surfaces exist:
+2. **Apply the 12 AX heuristics.** For each agent boundary found, check whether the following oversight surfaces exist. Definitions for the failure and system terms these heuristics name are in `references/lexicon.md`. Use those definitions; do not paraphrase them.
 
 | # | Heuristic | What to look for | Missing component | Severity |
 |---|-----------|-------------------|-------------------|----------|
@@ -234,6 +235,19 @@ For high-stakes execution, show intent, ask the person to confirm, and display t
 | H10 | **Budget ungoverned** | The agent can consume unbounded resources or tokens | `Budget Meter` | 🟡 Warning |
 | H11 | **Approval without receipt** | The agent executes an irreversible action after human approval, but the human is not presented with a persistent, immutable record of their decision | `Decision Record` | 🟡 Warning |
 | H12 | **Execution Amnesia** | The agent performs a high-velocity or high-volume series of mutations across many files/systems without a semantic rollup of the total impact | `Session Overview` | 🟡 Warning |
+
+Definitions in `references/lexicon.md`:
+
+- H1, H4 — Rogue Tool Use
+- H2, H5 — Hallucinated Planning
+- H3 — L4 Autonomous
+- H6 — Provenance
+- H7 — Cascading Failures
+- H8 — Mandate
+- H9 — Transaction Receipt (Audit Triad); State Diff is the field-level view of the same mutation
+- H10 — Budget
+- H11 — Responsibility Diffusion
+- H12 — Execution Amnesia
 
 3. **Produce the audit report.** Use this format:
 
@@ -330,5 +344,6 @@ Map your agent's event stream to the prop interfaces defined in `ax-common.ts`. 
 ## Resources
 
 - GitHub: https://github.com/Iambizi/depute
+- Lexicon: https://depute.dev/docs/lexicon
 - Storybook (live components): https://iambizi.github.io/depute/
 - npm: https://www.npmjs.com/package/ax-depute

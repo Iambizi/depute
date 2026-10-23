@@ -44,6 +44,7 @@ const MIRROR_FILES = [
   'src/styles/index.css',
   'skills/depute/SKILL.md',
   'skills/depute/references/design-rationale.md',
+  'skills/depute/references/lexicon.md',
   'skills/depute/references/v0-components.md',
   'skills/depute/references/v1-components.md',
   'skills/depute/references/v2-components.md',
@@ -261,6 +262,7 @@ test('init copies the skill and design tokens', () => {
   assert.equal(result.status, 0, result.stderr || result.stdout);
   assert.equal(fs.existsSync(path.join(cwd, 'skills/depute/SKILL.md')), true);
   assert.equal(fs.existsSync(path.join(cwd, 'skills/depute/references/v0-components.md')), true);
+  assert.equal(fs.existsSync(path.join(cwd, 'skills/depute/references/lexicon.md')), true);
   const config = JSON.parse(fs.readFileSync(path.join(cwd, 'skills/depute/depute.skill.json'), 'utf8'));
   assert.equal(config.version, VERSION);
   assert.equal(fs.existsSync(path.join(cwd, 'src/styles/depute.css')), true);

@@ -1,6 +1,6 @@
 # v2 — Strict Compliance & Forensics Components
 
-Reference guide for the 7 Compliance and Forensics primitives designed for high-stakes or irreversible agent interactions. Signatures and hashes are supplied by the caller's backend.
+Reference guide for the 9 Compliance and Forensics components designed for high-stakes or irreversible agent interactions. Signatures and hashes are supplied by the caller's backend. Term definitions live in `references/lexicon.md`. Quote those; do not paraphrase them.
 
 ## 1. State Diff (`<StateDiff />`)
 **Problem:** A human cannot blindly approve a raw JSON payload mutation in an `ApprovalGate`. They need to see a human-readable "before and after".
@@ -38,14 +38,30 @@ Reference guide for the 7 Compliance and Forensics primitives designed for high-
 
 ## 6. Binding Approval (`<BindingApproval />`)
 **Problem:** Native `ApprovalGate` is too frictionless for truly irreversible actions (money, core system destruction).
-**Usage:** The heaviest friction boundary. Multi-phase state machine that maps to protocol-level signing.
+**Usage:** The heaviest friction boundary. Multi-phase state machine that displays a signature while it is in flight.
 - `isSigning`: Replaces the `pending` state with a deterministic lock-out while a signature flows.
 - `terms`: Requires explicit visual acknowledgment.
+- `BindingApproval` does not sign, hash, or talk to a ledger. Pass `signature` and `hash` when your backend has already produced them. The component only displays those values.
 - **When to use:** Replaces `ApprovalGate` ONLY for critical, legally binding, or destructive terminal actions.
 
 ## 7. Transaction Receipt (`<TransactionReceipt />`)
-**Problem:** After an agent completes an irreversible action, the system offers no immutable proof logging that the human explicitly authorized *that specific* outcome.
-**Usage:** Read-only immutable audit block.
+**Problem:** The supervisor needs a per-action record of what the machine did.
+**Usage:** What the machine did, with a verification hash. Question it answers: "What actually happened?"
 - `hash`: Display value supplied by the caller's backend. The component does not compute it.
 - `lineItems`: What actually executed.
-- **When to use:** Output of an `OrchestratorView` or terminal step replacing `ArtifactCard` for financial events.
+- **When to use:** The machine side of the Audit Triad. Output of an `OrchestratorView` or terminal step replacing `ArtifactCard` for financial events.
+
+## 8. Decision Record (`<DecisionRecord />`)
+**Problem:** Users approve actions assuming the machine is accountable.
+**Usage:** Immutable visual receipt of a human approval decision to counteract Responsibility Diffusion. Scope: per-approval. Records who approved, why, and under what policy. Question it answers: "Who authorized this?" It is an immutable visual receipt. It displays the decision. Enforcement is the caller's backend.
+- `decision`: `'approved' | 'rejected' | 'modified'`
+- `approver`: name, role, timestamp
+- `agentContext`: intent, and the policy invoked when one applies
+- `humanReasoning`
+- **When to use:** The human side of the Audit Triad, at the end of an approval.
+
+## 9. Session Overview (`<SessionOverview />`)
+**Problem:** Users lose track of the total "blast radius" of a massive agent session.
+**Usage:** Semantic rollup of a high-velocity agent session to prevent execution amnesia and cognitive load. Scope: per-session. Records a semantic rollup of everything the agent touched. Question it answers: "What was the total blast radius?"
+- `sessionSummary`, `duration`, `surfacesTouched`, `keyDecisions`
+- **When to use:** The session side of the Audit Triad, at the end of a high-velocity run.

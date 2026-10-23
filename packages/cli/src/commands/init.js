@@ -17,6 +17,7 @@ const c = {
 const SKILL_FILES = [
   'skills/depute/SKILL.md',
   'skills/depute/references/design-rationale.md',
+  'skills/depute/references/lexicon.md',
   'skills/depute/references/v0-components.md',
   'skills/depute/references/v1-components.md',
   'skills/depute/references/v2-components.md',
