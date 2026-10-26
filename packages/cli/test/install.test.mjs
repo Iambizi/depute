@@ -64,8 +64,8 @@ function mirrorRepo(tamperPath) {
 }
 
 test('CLI ref is the package version, not main', () => {
-  assert.equal(VERSION, '0.5.0');
-  assert.equal(REF, 'v0.5.0');
+  assert.equal(VERSION, '0.5.1');
+  assert.equal(REF, 'v0.5.1');
   assert.equal(REF.includes('main'), false);
 });
 

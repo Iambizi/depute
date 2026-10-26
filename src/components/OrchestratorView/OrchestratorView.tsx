@@ -55,7 +55,7 @@ function TreeNode({ node, depth, selectedNodeId, onNodeClick }: TreeNodeProps) {
 
   return (
     <li className={styles.treeItem} role="treeitem" aria-expanded={hasChildren ? expanded : undefined}>
-      {/* Node card */}
+      {/* Node row */}
       <div
         className={`${styles.node} ${
           isSelected ? styles.nodeSelected : ''

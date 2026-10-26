@@ -1,3 +1,19 @@
+# depute v0.5.1 Release Notes
+
+**October 26, 2026**
+
+Patch. No new components. Tag `v0.5.1` from `main`, then publish `ax-depute@0.5.1` from `packages/cli`. Until that tag exists, `npx ax-depute@latest` still installs 0.5.0.
+
+- `init` copies the lexicon reference with the rest of the skill.
+- Approval gate actions wrap instead of overflowing.
+- Capability matrix and state diff expose their cells to assistive technology.
+- Decision record and transaction receipt timestamps render in local time.
+- Orchestrator nodes are rows inside the one card.
+- Subagent cards and swarm inbox rows no longer use a status stripe. Tinted inbox text uses the status foreground color.
+- The unused repo file `src/types/ax-common.ts` is gone. `add` still writes the user's `src/types/ax-common.ts` from `src/types/common.ts`.
+- The docs lexicon and the docs site's Next.js 16.4.3 upgrade are on this tag. They do not change the files `add` copies, apart from the skill lexicon.
+- Docs code comments in light mode use `#5c6570`. The theme gray `#66707B` was 4.46:1 on the code background.
+
 # depute v0.5.0 Release Notes
 
 **October 20, 2026**
