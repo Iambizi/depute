@@ -16,7 +16,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - v0.3.0 released (7 compliance primitives) ✅
 - v0.4.0 released (Taxonomy + Async Handoff) ✅
 - v0.5.0 released (visual system, dark mode, status on the label) ✅
-- npm `ax-depute@0.5.0` is latest. The CLI installs git tag `v0.5.0`.
+- v0.5.1 is the repo version (lexicon in `init`, orchestrator nodes are rows, unused `src/types/ax-common.ts` removed). Tag `v0.5.1` and npm publish follow once this commit is on `main`. Until then, `npx ax-depute@latest` installs `0.5.0`.
 - Storybook redeployed to GitHub Pages on October 20, 2026 ✅
 - Docs site deployed to Vercel (`apps/www`, Next.js + Fumadocs) ✅
 - AI Skill layer written (Claude + skills.sh) ✅
@@ -124,7 +124,7 @@ depute/
 
 - **CLI:** `npx ax-depute@latest add <component>` — installs the sources for the CLI's own version tag (not `main`), checks them against `packages/cli/src/checksums.json`, and copies them into the user's project
 - **Registry:** `registry/registry.json` — manifest of all 27 components with file lists and metadata
-- **Shared Files:** `src/types/ax-common.ts`, `src/utils/ax-a11y.tsx`, and `src/styles/depute.css` are installed once beside the component directory. `add mock-data` copies the generators separately.
+- **Shared Files:** The CLI copies `src/types/common.ts` into the user's project as `src/types/ax-common.ts`, copies `src/utils/a11y.tsx` as `src/utils/ax-a11y.tsx`, and installs `src/styles/index.css` as `depute.css` once beside the component directory. `add mock-data` copies the generators separately.
 - **Config:** Repo and version pin live in `packages/cli/src/config.js`
 
 ## AI Skill Layer

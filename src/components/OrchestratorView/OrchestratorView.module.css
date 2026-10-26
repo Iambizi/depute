@@ -77,29 +77,26 @@
   gap: var(--ax-space-1);
   margin-bottom: var(--ax-space-1);}
 
-/* Node card */
+/* Node row. The tree sits in the outer card, so a node has no card of its own. */
 .node {display: flex;
   align-items: center;
   gap: var(--ax-space-2);
   padding: var(--ax-space-2) var(--ax-space-2);
+  border: 0;
   border-radius: var(--ax-radius-sm);
-  border: 1px solid var(--ax-border-default);
-  background: var(--ax-bg-surface);
-  transition: background-color var(--ax-dur-fast) var(--ax-ease-standard), color var(--ax-dur-fast) var(--ax-ease-standard), border-color var(--ax-dur-fast) var(--ax-ease-standard), box-shadow var(--ax-dur-fast) var(--ax-ease-standard), transform var(--ax-dur-fast) var(--ax-ease-standard);
+  background: transparent;
+  transition: background-color var(--ax-dur-fast) var(--ax-ease-standard), color var(--ax-dur-fast) var(--ax-ease-standard);
   position: relative;
   min-height: var(--ax-space-10);}
 
 .nodeClickable {cursor: pointer;}
 
-.nodeClickable:hover {background: var(--ax-bg-subtle);
-  border-color: var(--ax-border-strong);}
+.nodeClickable:hover {background: var(--ax-bg-subtle);}
 
 .nodeClickable:focus-visible {outline: var(--ax-space-0-5) solid var(--ax-status-info-border);
   outline-offset: var(--ax-space-0-5);}
 
-.nodeSelected {border-color: var(--ax-status-info-border) !important;
-  background: var(--ax-status-info-bg) !important;
-  box-shadow: 0 0 0 var(--ax-space-0-5) var(--ax-status-info-border);}
+.nodeSelected {background: var(--ax-status-info-bg);}
 
 /* Expand/collapse toggle */
 .toggle {background: none;
