@@ -53,6 +53,9 @@
     "lint": "eslint .",
     "checksums": "node scripts/generate-checksums.mjs",
     "checksums:check": "node scripts/verify-checksums.mjs",
+    "test:core": "vitest run --config vitest.core.config.ts",
+    "schema:core": "node scripts/generate-core-schema.mjs",
+    "schema:core:check": "node scripts/generate-core-schema.mjs --check",
     "styles:check": "node scripts/check-styles.mjs",
     "type-check": "tsc -p tsconfig.build.json --noEmit"
   },
@@ -65,15 +68,17 @@
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^6.1.2",
+    "ajv": "^8.20.0",
     "eslint": "^10.12.0",
     "eslint-plugin-react-hooks": "^7.1.1",
     "jsdom": "^28.1.0",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
     "storybook": "^10.6.2",
+    "ts-json-schema-generator": "^2.9.0",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.71.2",
     "vite": "^8.3.4",
-    "vitest": "^5.0.4",
-    "react": "^19.2.4",
-    "react-dom": "^19.2.4"
+    "vitest": "^5.0.4"
   }
 }

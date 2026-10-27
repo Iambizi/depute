@@ -22,6 +22,8 @@ jobs:
       - run: npm run checksums:check
       - run: npm run styles:check
       - run: node --test packages/cli/test/install.test.mjs
+      - run: npm run schema:core:check
+      - run: npm run test:core
 
   react-18:
     name: Tests on React 18

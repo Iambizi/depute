@@ -1,0 +1,26 @@
+{
+  "request": {
+    "id": "apr-program-1",
+    "action": "mail the customer",
+    "title": "Send the follow-up",
+    "actionKind": "program",
+    "mode": "simple",
+    "createdAt": 0,
+    "deadline": 60000,
+    "approverIds": ["ada"],
+    "programText": "await mail.send({ to: 'ada' })",
+    "programHash": "hash-ok",
+    "allowedBindings": ["mail.send"],
+    "declaredEffects": [{ "kind": "write", "target": "mailbox" }],
+    "resourceLimits": { "durationSeconds": 30, "spend": "0", "scope": "mailbox" }
+  },
+  "state": "approved",
+  "acknowledged": [],
+  "deadline": 60000,
+  "history": [
+    { "type": "APPROVE", "by": { "id": "ada", "name": "Ada" }, "at": 10, "reason": "within policy" },
+    { "type": "DISPATCH", "at": 20, "binding": "mail.send", "detail": "to ada" }
+  ],
+  "consumed": false,
+  "dispatches": [{ "binding": "mail.send", "detail": "to ada", "at": 20 }]
+}

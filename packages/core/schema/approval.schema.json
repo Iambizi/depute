@@ -1,0 +1,448 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$ref": "#/definitions/ApprovalSnapshot",
+  "definitions": {
+    "ApprovalSnapshot": {
+      "type": "object",
+      "properties": {
+        "request": {
+          "$ref": "#/definitions/ApprovalRequest"
+        },
+        "state": {
+          "$ref": "#/definitions/ApprovalState"
+        },
+        "acknowledged": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "deadline": {
+          "type": "number"
+        },
+        "history": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ApprovalEvent"
+          }
+        },
+        "consumed": {
+          "type": "boolean"
+        },
+        "dispatches": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ProgramDispatch"
+          }
+        },
+        "error": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "request",
+        "state",
+        "acknowledged",
+        "history",
+        "consumed",
+        "dispatches"
+      ],
+      "additionalProperties": false
+    },
+    "ApprovalRequest": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "action": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "actionKind": {
+          "$ref": "#/definitions/ActionKind",
+          "description": "Single tool call, or a program that will dispatch many calls from a sandbox."
+        },
+        "riskScore": {
+          "type": "number"
+        },
+        "confidence": {
+          "type": "number"
+        },
+        "scope": {
+          "type": "object",
+          "properties": {
+            "resourceLimit": {
+              "type": "string"
+            },
+            "durationSeconds": {
+              "type": "number"
+            },
+            "target": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "mode": {
+          "type": "string",
+          "enum": [
+            "simple",
+            "staged",
+            "binding"
+          ]
+        },
+        "terms": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "text": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "text"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "timeoutMs": {
+          "type": "number"
+        },
+        "handoff": {
+          "type": "object",
+          "properties": {
+            "timeoutMs": {
+              "type": "number"
+            },
+            "fallback": {
+              "$ref": "#/definitions/FallbackBehavior"
+            },
+            "requireSigning": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "timeoutMs",
+            "fallback"
+          ],
+          "additionalProperties": false
+        },
+        "createdAt": {
+          "type": "number"
+        },
+        "deadline": {
+          "type": "number",
+          "description": "Server clock deadline. Events at a later `at` are refused."
+        },
+        "approverIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Actors allowed to approve. Empty or omitted skips the roster check."
+        },
+        "programText": {
+          "type": "string",
+          "description": "Program source. Display and audit. The hash is compared, not computed here."
+        },
+        "programHash": {
+          "type": "string",
+          "description": "Caller-supplied digest of the approved program text."
+        },
+        "allowedBindings": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Tool or API names a program may dispatch."
+        },
+        "declaredEffects": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/DeclaredEffect"
+          }
+        },
+        "resourceLimits": {
+          "$ref": "#/definitions/ResourceLimits"
+        }
+      },
+      "required": [
+        "id",
+        "action",
+        "title",
+        "actionKind",
+        "mode",
+        "createdAt"
+      ],
+      "additionalProperties": false
+    },
+    "ActionKind": {
+      "type": "string",
+      "enum": [
+        "tool-call",
+        "program"
+      ]
+    },
+    "FallbackBehavior": {
+      "type": "string",
+      "enum": [
+        "block",
+        "abort",
+        "deny"
+      ]
+    },
+    "DeclaredEffect": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "$ref": "#/definitions/EffectKind"
+        },
+        "target": {
+          "type": "string"
+        },
+        "detail": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind"
+      ],
+      "additionalProperties": false
+    },
+    "EffectKind": {
+      "type": "string",
+      "enum": [
+        "read",
+        "write",
+        "move"
+      ]
+    },
+    "ResourceLimits": {
+      "type": "object",
+      "properties": {
+        "durationSeconds": {
+          "type": "number"
+        },
+        "spend": {
+          "type": "string"
+        },
+        "scope": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "ApprovalState": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "handoff_pending",
+        "approved",
+        "rejected",
+        "expired",
+        "handoff_expired",
+        "handoff_denied"
+      ],
+      "description": "Framework-free approval model.\n\nHashes and signatures are caller-supplied strings. This module never computes them. Recording a decision here does not make the action safe and does not absorb liability. The caller's server is the authority."
+    },
+    "ApprovalEvent": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "APPROVE"
+            },
+            "by": {
+              "$ref": "#/definitions/Actor"
+            },
+            "at": {
+              "type": "number"
+            },
+            "reason": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "type",
+            "by",
+            "at"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "REJECT"
+            },
+            "by": {
+              "$ref": "#/definitions/Actor"
+            },
+            "at": {
+              "type": "number"
+            },
+            "reason": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "type",
+            "by",
+            "at"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "ACK_TERM"
+            },
+            "termId": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "type",
+            "termId"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "HANDOFF"
+            },
+            "deadline": {
+              "type": "number"
+            },
+            "at": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "type",
+            "deadline",
+            "at"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "TICK"
+            },
+            "at": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "type",
+            "at"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "EXECUTE"
+            },
+            "at": {
+              "type": "number"
+            },
+            "programHash": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "type",
+            "at"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "DISPATCH"
+            },
+            "at": {
+              "type": "number"
+            },
+            "binding": {
+              "type": "string"
+            },
+            "detail": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "type",
+            "at",
+            "binding"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "Actor": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "role": {
+          "type": "string"
+        },
+        "channel": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "ProgramDispatch": {
+      "type": "object",
+      "properties": {
+        "binding": {
+          "type": "string"
+        },
+        "detail": {
+          "type": "string"
+        },
+        "at": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "binding",
+        "at"
+      ],
+      "additionalProperties": false
+    }
+  }
+}
