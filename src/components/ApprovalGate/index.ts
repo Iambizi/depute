@@ -1,2 +1,2 @@
 export { ApprovalGate } from './ApprovalGate';
-export type { ApprovalGateProps, StagedStep } from './ApprovalGate.types';
+export type { ApprovalGateProps, ProgramPreview, StagedStep } from './ApprovalGate.types';

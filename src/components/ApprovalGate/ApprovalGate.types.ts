@@ -98,6 +98,22 @@ export interface ApprovalGateProps {
   /** Absolute unix timestamp for handoff TTL expiration (useful for resuming state) */
   handoffDeadlineMs?: number;
 
+  /**
+   * Program to approve before a sandbox runs it. Optional.
+   * The component displays this. It does not hash the program or run it.
+   * Display does not make the program safe.
+   */
+  program?: ProgramPreview;
+
   /** Additional CSS class */
   className?: string;
+}
+
+/** What the human reviews when the action is a program rather than one tool call. */
+export interface ProgramPreview {
+  text?: string;
+  summary?: string;
+  bindings?: string[];
+  declaredEffects?: { kind: 'read' | 'write' | 'move'; target?: string; detail?: string }[];
+  budget?: { durationSeconds?: number; spend?: string; scope?: string };
 }

@@ -2,8 +2,9 @@
  * TransactionReceipt — Provenance + audit log.
  *
  * A receipt-style display for completed agent actions.
- * Hash and signature values are supplied by the caller's backend.
- * This component does not hash or sign the transaction.
+ * Hash, signature, program hash, and the dispatch list are supplied by
+ * the caller's backend. This component does not hash, sign, or decide
+ * that a dispatch was allowed. Display does not make the action safe.
  *
  * v2 — Strict Compliance & Forensics
  * @see docs/internal/research/catalog-versions/CATALOG-v2.md (Primitive 5)
@@ -69,6 +70,9 @@ export function TransactionReceipt({
   copyableHash = true,
   onCopyHash,
   onViewAuditTrail,
+  programHash,
+  dispatches,
+  logs,
   className,
 }: TransactionReceiptProps) {
   const [copied, setCopied] = useState(false);
@@ -145,6 +149,29 @@ export function TransactionReceipt({
             <span className={styles.lineValue}>{item.value}</span>
           </div>
         ))}
+
+        {(programHash !== undefined || dispatches !== undefined || logs !== undefined) && (
+          <div className={styles.lineItem} role="listitem" data-testid="ax-program-receipt">
+            <span className={styles.lineLabel}>Dispatched effects</span>
+            <span className={`${styles.lineValue} ${styles.mono}`}>
+              {dispatches && dispatches.length > 0 ? dispatches.join(', ') : 'None recorded'}
+            </span>
+          </div>
+        )}
+        {programHash && (
+          <div className={styles.lineItem} role="listitem">
+            <span className={styles.lineLabel}>Program</span>
+            <span className={`${styles.lineValue} ${styles.mono}`}>
+              {programHash.length > 16 ? `${programHash.slice(0, 8)}…${programHash.slice(-8)}` : programHash}
+            </span>
+          </div>
+        )}
+        {logs && logs.length > 0 && (
+          <div className={styles.lineItem} role="listitem">
+            <span className={styles.lineLabel}>Logs</span>
+            <span className={styles.lineValue}>{logs.join(' · ')}</span>
+          </div>
+        )}
       </div>
 
       {/* Footer: hash + actions */}

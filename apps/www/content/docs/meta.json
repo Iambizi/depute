@@ -3,6 +3,7 @@
   "pages": [
     "index",
     "lexicon",
+    "server-enforcement",
     "governance-levels",
     "installation",
     "theming",

@@ -19,6 +19,30 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+export const ProgramReceipt: Story = {
+  args: {
+    decision: 'approved',
+    approver: {
+      name: 'Ada',
+      role: 'Owner',
+      timestamp: '2026-10-26T18:00:00Z',
+    },
+    agentContext: {
+      intent: 'Notify Ada',
+      policyInvoked: 'MAIL-01',
+    },
+    humanReasoning: 'One message, to Ada, then stop.',
+    program: {
+      text: 'await mail.send({ to: "ada@example.com" })',
+      hash: '9f2c0a7b1e44d0c6a1b8e3f54d77c2a0',
+      bindings: ['mail.send'],
+      declaredEffects: [{ kind: 'write', target: 'mailbox' }],
+      logs: ['sent'],
+      dispatches: [{ binding: 'mail.send', detail: 'to ada' }],
+    },
+  },
+};
+
 export const Default: Story = {
   args: {
     decision: 'approved',

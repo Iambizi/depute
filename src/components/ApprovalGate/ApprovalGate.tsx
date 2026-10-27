@@ -18,7 +18,7 @@ import type React from 'react';
 import { getConfidenceLevel } from '../../types/common';
 import { IconArrowLeft, IconArrowRight } from '../../utils/icons';
 import { useAnnouncer, useFocusTrap, VisuallyHidden } from '../../utils/a11y';
-import type { ApprovalGateProps, HandoffContext, StagedStep } from './ApprovalGate.types';
+import type { ApprovalGateProps, HandoffContext, ProgramPreview, StagedStep } from './ApprovalGate.types';
 import styles from './ApprovalGate.module.css';
 
 // ---------------------------------------------------------------------------
@@ -104,6 +104,19 @@ function getIconClass(status: string): string {
   }
 }
 
+function hasProgramPreview(program: ProgramPreview | undefined): program is ProgramPreview {
+  if (!program) return false;
+  return Boolean(
+    program.summary ||
+    program.text ||
+    (program.bindings && program.bindings.length > 0) ||
+    (program.declaredEffects && program.declaredEffects.length > 0) ||
+    program.budget?.spend ||
+    program.budget?.durationSeconds != null ||
+    program.budget?.scope
+  );
+}
+
 function formatTime(seconds: number): string {
   const m = Math.floor(seconds / 60);
   const s = seconds % 60;
@@ -135,6 +148,7 @@ export function ApprovalGate({
   onHandoffExpired,
   pendingApprovalId,
   handoffDeadlineMs,
+  program,
   className,
 }: ApprovalGateProps) {
   const isPending = status === 'pending';
@@ -411,6 +425,58 @@ export function ApprovalGate({
           <div className={styles.reasoning}>
             <div className={styles.reasoningLabel}>Agent Reasoning</div>
             {agentReasoning}
+          </div>
+        )}
+
+        {hasProgramPreview(program) && (
+          <div className={styles.metadata}>
+            <table className={styles.metadataTable}>
+              <tbody>
+                {program.summary && (
+                  <tr>
+                    <td>Program</td>
+                    <td>{program.summary}</td>
+                  </tr>
+                )}
+                {program.bindings && program.bindings.length > 0 && (
+                  <tr>
+                    <td>Bindings</td>
+                    <td>{program.bindings.join(', ')}</td>
+                  </tr>
+                )}
+                {program.declaredEffects && program.declaredEffects.length > 0 && (
+                  <tr>
+                    <td>Declared effects</td>
+                    <td>
+                      {program.declaredEffects
+                        .map((effect) => effect.target ? `${effect.kind} ${effect.target}` : effect.kind)
+                        .join(', ')}
+                    </td>
+                  </tr>
+                )}
+                {program.budget?.spend && (
+                  <tr>
+                    <td>Spend</td>
+                    <td>{program.budget.spend}</td>
+                  </tr>
+                )}
+                {program.budget?.durationSeconds != null && (
+                  <tr>
+                    <td>Duration</td>
+                    <td>{formatTime(program.budget.durationSeconds)}</td>
+                  </tr>
+                )}
+                {program.budget?.scope && (
+                  <tr>
+                    <td>Scope</td>
+                    <td>{program.budget.scope}</td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+            {program.text && (
+              <pre className={styles.programText}>{program.text}</pre>
+            )}
           </div>
         )}
 

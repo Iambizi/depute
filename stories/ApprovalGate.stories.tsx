@@ -30,6 +30,24 @@ function storyApproval(
 // SHARED STORIES
 // ============================================================
 
+export const Program: Story = {
+  args: {
+    title: 'Notify Ada',
+    description: 'The agent will run a program that sends one email, then stops.',
+    agentReasoning: 'Ada asked for the summary. The program may call mail.send only.',
+    status: 'pending',
+    mode: 'simple',
+    now: STORY_NOW,
+    program: {
+      summary: 'Send one message, then stop.',
+      text: 'await mail.send({ to: "ada@example.com" })',
+      bindings: ['mail.send'],
+      declaredEffects: [{ kind: 'write', target: 'mailbox' }],
+      budget: { durationSeconds: 90, spend: '$0', scope: 'one message' },
+    },
+  },
+};
+
 export const Default: Story = {
   args: storyApproval({ status: 'pending', mode: 'simple' }),
 };

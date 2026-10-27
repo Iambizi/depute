@@ -105,6 +105,26 @@
   color: var(--ax-fg-muted);
   font-style: italic;}
 
+.programText {font-family: var(--ax-font-mono);
+  font-size: var(--ax-text-xs);
+  line-height: var(--ax-leading-md);
+  color: var(--ax-fg-default);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  background: var(--ax-bg-subtle);
+  padding: var(--ax-space-2);
+  margin: 0;
+  border: var(--ax-border-width) solid var(--ax-border-default);
+  border-radius: var(--ax-radius-xs);}
+
+.list {margin: 0;
+  padding-left: var(--ax-space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--ax-space-1);
+  font-size: var(--ax-text-md);
+  color: var(--ax-fg-default);}
+
 .container :focus-visible {
   outline: none;
   box-shadow: var(--ax-ring);

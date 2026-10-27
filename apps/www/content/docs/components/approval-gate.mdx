@@ -121,6 +121,26 @@ To solve this, configure the `approvalHandoff` prop to automatically hand the ap
 
 When `status` shifts to `handoff_pending`, the component drops the blocking modal trap and gracefully collapses into a non-blocking ambient status card that counts down to the deadline.
 
+## Program preview
+
+Pass `program` when the human is approving a program before a sandbox runs it. The gate shows the summary, the program text, the bindings it may call, the effects it declares, and the budget bounds. Approving the screen does not run the program and does not hash it. The server checks the approved snapshot at dispatch. See [Server enforcement](/docs/server-enforcement).
+
+```tsx
+<ApprovalGate
+  title="Notify Ada"
+  status="pending"
+  program={{
+    summary: "Send one message, then stop.",
+    text: 'await mail.send({ to: "ada@example.com" })',
+    bindings: ["mail.send"],
+    declaredEffects: [{ kind: "write", target: "mailbox" }],
+    budget: { durationSeconds: 90, spend: "$0", scope: "one message" },
+  }}
+  onApprove={() => submitDecision("approved")}
+  onReject={() => submitDecision("rejected")}
+/>
+```
+
 ## Props
 
 | Prop | Type | Default | Description |
@@ -136,6 +156,7 @@ When `status` shifts to `handoff_pending`, the component drops the blocking moda
 | `approvalHandoff` | `ApprovalHandoff` | — | Configures timeout and fallback to automatically trigger async handoff. |
 | `onHandoff` | `(ctx) => Promise<void>` | — | Fires when the synchronous timeout is breached. |
 | `handoffDeadlineMs` | `number` | — | Absolute unix timestamp for TTL enforcement (useful for UI sync on session restore). |
+| `program` | `ProgramPreview` | — | Optional program text or summary, bindings, declared effects, and budget. Display only. |
 
 ## When to use
 

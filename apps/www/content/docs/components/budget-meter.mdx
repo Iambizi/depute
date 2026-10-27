@@ -76,6 +76,10 @@ Integrate `BudgetMeter` directly into a `DelegationGate` prior to spawning a new
 | `criticalThreshold` | `number` | `85` | Percentage to trigger critical state |
 | `compact` | `boolean` | `false` | Render inline variant |
 
+## Code Mode
+
+Meter program executions, tool dispatches, and real-world effects (money moved, records written), not only tokens. A program that runs in a sandbox can spend few context tokens and still be expensive in consequences. Point `unit` at the thing that matters for that grant. The server is what records the spend. See [Server enforcement](/docs/server-enforcement).
+
 ## Design rationale
 
 **Why proportional thresholds?** Raw numbers (e.g., "45,000 tokens") are meaningless without context. Auto-calculating elevated (>60%) and critical (>85%) severity colors translates abstract numbers into actionable visual urgency.

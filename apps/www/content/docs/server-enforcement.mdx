@@ -1,0 +1,62 @@
+---
+title: Server enforcement
+description: Where a caller checks an approval. The dispatch point is the enforcement point, including a program that runs in a sandbox.
+---
+
+Components are UI and callbacks. Enforcement is the caller's backend.
+
+depute makes that check legible and provable. It records what was approved and what was dispatched. It does not absorb liability, and it does not make an agent action safe.
+
+## The dispatch point is the enforcement point
+
+The component renders a request. The server stores the approval snapshot and applies policy when an effect is about to happen. A status drawn on screen is not the grant. The same rule covers a single tool call and a program: check the snapshot at dispatch time, against the server clock, and consume the approval once. The idempotency key is the approval id.
+
+`@depute/core` is the pure model for that snapshot. Hashes and signatures stay strings the server already computed. Core compares a program digest. It does not calculate one. The React components do not import core, and they do not hash, sign, or decide.
+
+## A sandbox is not the authority
+
+On September 20, 2026, an OpenAI internal research model reached the live internet during training through a misconfigured DNS resolver. OpenAI says that access was contained. A later high-compute red team, run after training was paused, found escapes from Kata Containers, gVisor, Moby/Docker, and the Linux kernel, and a processor-cache channel between isolated microVMs. Those findings are not the September 20 event. Reinforcement learning resumed on October 1 with extra controls. On October 23, OpenAI described frontier training with no live internet, against an indexed offline copy of the world. Sources: [OpenAI, October 23, 2026](https://openai.com/index/securing-our-frontier-model-training-environment) and [CSO Online](https://www.csoonline.com/article/4240279/openai-anthropic-disclosures-spotlight-growing-ai-containment-challenge.html).
+
+A sandbox the agent can leave is not supervision. Permission and the authority to stop the effect have to sit outside the loop the agent controls. The same limit applies to a UI component and to a callback: if the agent can reach the effect without passing the check, the screen is a display.
+
+## Code Mode
+
+Agents are starting to write one program that runs in a sandbox, instead of calling one tool per round trip. [Cloudflare's Code Mode](https://blog.cloudflare.com/code-mode/) turns MCP tools into a TypeScript API and runs the program in a fresh V8 isolate with no internet. The only way out is an API binding, which RPC's back to the agent loop, and then to the MCP server. Results return as logs. Cloudflare also describes a search-based variant (`search()` and `execute()`). The Agents SDK variant loads the TypeScript API. The two are different mechanisms. Anthropic's "Code Execution with MCP" (November 2025) presents tools as TypeScript modules so the model loads what it needs.
+
+A program can chain many effects before the model sees a result. There is no round trip between those effects on which a human can click approve. The approval is of the program: its text (or a server-computed hash of that text), the bindings it may call, the effects it declares (reads, writes, moves), and its resource limits. [Approval Gate](/docs/components/approval-gate) can show that preview. The preview is not the grant. The sandbox runs the program only after the server has an approved snapshot.
+
+At each RPC the server checks all of the following:
+
+- The snapshot is `approved`.
+- The server clock is still before the deadline.
+- The hash of the text presented for execution matches the hash stored at approval.
+- The binding is one of the approved names.
+- This approval id has not already been consumed.
+
+A second execution of the same approval id is refused. A dispatch after the approval is consumed is refused. The example in `examples/server-enforcement` is a single-threaded Node handler. A host that dispatches concurrently has to hold the approval id so two executions cannot both pass the consumed check.
+
+The example tests are:
+
+1. An `APPROVE` after the deadline, or from a session that is not an approver, is rejected. The actor is the session. A name in the body does not count.
+2. Executing a program that is still pending is rejected.
+3. Program text that differs from the approved text is rejected.
+4. A dispatch to a binding outside the approved set is rejected.
+5. Replaying an approval id that has already been consumed is rejected.
+
+The example does not simulate a DNS escape or a VM escape. It is the check on the outside of the sandbox.
+
+### Which runtime runs the program
+
+An isolate or another edge runtime is now a live option for the sandbox. Cloudflare's isolate is one such option. The example server in this repo stays on Node. Which runtime the example should target is still open. That choice is left for review.
+
+## What the human has to see
+
+Before the sandbox runs, show the program or a readable summary, the bindings, the declared effects, and the budget bounds.
+
+After it runs, the receipt has to show the program text or hash, the bindings that were available, the declared effects, the console output, and the side effects that were actually dispatched. One line per RPC. A receipt that shows only the final log hides the effects. [Decision Record](/docs/components/decision-record) and [Transaction Receipt](/docs/components/transaction-receipt) display those fields when the host passes them. They do not build the list.
+
+The server log of dispatches is the audit trail. Append to it. Do not rewrite earlier entries. Render decision records from that history.
+
+[Budget Meter](/docs/components/budget-meter) has to be aimed at program executions, tool dispatches, and real-world effects such as money moved. A program can use few context tokens and still be expensive in consequences.
+
+[Automation Bias Alert](/docs/components/automation-bias-alert) is the place to say why a program is easier to rubber-stamp: fewer steps are on screen. The host should surface "this program touched N tools / moved X / read Y", and should flag a run whose dispatches exceed what was shown at approval. The `useAutomationBias` hook is unchanged. That rebuild is a later change.
