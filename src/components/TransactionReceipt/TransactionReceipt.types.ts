@@ -62,6 +62,21 @@ export interface TransactionReceiptProps {
   /** Called when user requests full audit trail */
   onViewAuditTrail?: () => void;
 
+  /**
+   * Caller-supplied digest of the program that ran.
+   * This component does not hash the program.
+   */
+  programHash?: string;
+
+  /**
+   * Side effects the server actually dispatched, one string per RPC.
+   * Logs are not a substitute for this list.
+   */
+  dispatches?: string[];
+
+  /** Caller-supplied console output from the program. */
+  logs?: string[];
+
   /** Additional CSS class */
   className?: string;
 }

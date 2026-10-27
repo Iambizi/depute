@@ -29,7 +29,7 @@ export { PlanCard } from './components/PlanCard';
 export type { PlanCardProps } from './components/PlanCard';
 
 export { ApprovalGate } from './components/ApprovalGate';
-export type { ApprovalGateProps, StagedStep } from './components/ApprovalGate';
+export type { ApprovalGateProps, ProgramPreview, StagedStep } from './components/ApprovalGate';
 
 export { ConfidenceMeter } from './components/ConfidenceMeter';
 export type { ConfidenceMeterProps, ConfidenceDisplay, ConfidenceMeterSize } from './components/ConfidenceMeter';
@@ -82,7 +82,7 @@ export type { SharedContextLedgerProps, ContextLedgerEntry } from './components/
 
 // --- v2 Compliance & Forensics Primitives ---
 export { DecisionRecord } from './components/DecisionRecord';
-export type { DecisionRecordProps } from './components/DecisionRecord';
+export type { DecisionRecordProps, ProgramReceiptDisplay } from './components/DecisionRecord';
 
 export { SessionOverview } from './components/SessionOverview';
 export type { SessionOverviewProps, SurfaceTouched, KeyDecision } from './components/SessionOverview';

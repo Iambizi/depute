@@ -193,6 +193,18 @@
 .metadataTable td:last-child {color: var(--ax-fg-default);
   font-family: var(--ax-font-mono);}
 
+.programText {font-family: var(--ax-font-mono);
+  font-size: var(--ax-text-xs);
+  line-height: var(--ax-leading-md);
+  color: var(--ax-fg-default);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  background: var(--ax-bg-subtle);
+  padding: var(--ax-space-2);
+  margin: var(--ax-space-2) 0 0;
+  border: var(--ax-border-width) solid var(--ax-border-default);
+  border-radius: var(--ax-radius-xs);}
+
 /* ------------------------------------------------------------------ */
 /* Countdown                                                           */
 /* ------------------------------------------------------------------ */

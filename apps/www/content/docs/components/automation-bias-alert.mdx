@@ -164,6 +164,10 @@ const { isAlertTriggered, recordAction, dismissAlert } = useAutomationBias({
 ```
 *If a user approves 5 items in a row without rejection, the enforced pause climbs from 1.5 seconds to 5 seconds. This explicitly breaks their automatic rhythm.*
 
+## Code Mode
+
+A program hides the steps a human used to see one call at a time. Fewer visible steps makes rubber-stamping more likely. Before approval, show the program, its bindings, and its declared effects on [Approval Gate](/docs/components/approval-gate). After the run, show "this program touched N tools / moved X / read Y" from the server's dispatch list, and flag a run whose dispatches exceed what was on screen at approval. This is host guidance. `useAutomationBias` is unchanged. See [Server enforcement](/docs/server-enforcement).
+
 ## Design rationale
 
 **Why friction?**

@@ -12,6 +12,24 @@ const meta: Meta<TransactionReceiptProps> = {
 export default meta;
 type Story = StoryObj<TransactionReceiptProps>;
 
+export const ProgramReceipt: Story = {
+  args: {
+    transactionId: 'TX-program-1',
+    title: 'Program finished',
+    status: 'success',
+    timestamp: '2026-10-26T18:04:00Z',
+    agentId: 'notifier',
+    hash: '0xabcdef1234567890abcdef1234567890fedcba09',
+    programHash: '9f2c0a7b1e44d0c6a1b8e3f54d77c2a0',
+    dispatches: ['mail.send to ada'],
+    logs: ['sent'],
+    lineItems: [
+      { label: 'Declared', value: 'write mailbox' },
+      { label: 'Spend', value: '$0' },
+    ],
+  },
+};
+
 export const Success: Story = {
   args: {
     transactionId: 'TX-98765',

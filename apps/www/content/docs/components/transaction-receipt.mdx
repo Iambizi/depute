@@ -77,6 +77,9 @@ This component acts as the final terminal output of an `OrchestratorView` node, 
 | `status` | `'success' \| 'failed' \| 'pending' \| 'reverted'` | `'success'` | Current status |
 | `timestamp` | `string` | — | Completion timestamp |
 | `lineItems` | `ReceiptLineItem[]` | — | Key-value pairs of the transaction |
+| `programHash` | `string` | — | Caller-supplied digest of the program that ran. Display only. |
+| `dispatches` | `string[]` | — | One string per side effect the server dispatched. |
+| `logs` | `string[]` | — | Caller-supplied console output. Logs do not replace `dispatches`. |
 | `hash` | `string` | — | Hash supplied by your backend. Display only. |
 | `signature` | `string` | — | Signature supplied by your backend. Display only. |
 | `onVerify` | `(proof) => void` | — | Your app's check for the displayed hash and signature. |

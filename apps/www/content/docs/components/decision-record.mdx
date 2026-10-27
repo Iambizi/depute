@@ -83,6 +83,7 @@ export function AuditLog() {
 | `approver` | `{ name: string, role?: string, timestamp: Date \| string }` | — | The human who made the decision |
 | `agentContext` | `{ intent: string, policyInvoked?: string }` | — | The agent intent and policy at the time |
 | `humanReasoning` | `string` | — | Optional human reasoning for the decision |
+| `program` | `ProgramReceiptDisplay` | — | Optional program text or hash, bindings, declared effects, logs, and the effects that were dispatched. Display only. A log with no dispatch list is shown as "None recorded". |
 
 The component intentionally requires strict object shapes to ensure the audit log is semantically complete for role-based access control (RBAC) environments.
 
@@ -96,6 +97,10 @@ Action Propsed → [Approval Gate] → (Approves) → [Action Executes] → [Dec
 ```
 
 This closes the "Execution Amnesia" loop by confirming to the user that their identity is now bound to the output.
+
+## Program receipts
+
+When the approved action was a program, pass `program` with the hash your server computed, the console output, and each RPC the server actually dispatched. The component renders that list. It does not decide whether the dispatch was allowed. The check itself is in the [server enforcement guide](/docs/server-enforcement).
 
 ## Design rationale
 

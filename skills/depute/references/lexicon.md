@@ -6,6 +6,8 @@ depute documents this vocabulary. It does not claim to have invented the underly
 
 Components are UI and callbacks. Enforcement is the caller's backend.
 
+Where that check runs, including a program that dispatches tools from a sandbox, is the server enforcement guide (`apps/www/content/docs/server-enforcement.mdx`).
+
 ## Frame
 
 ### Delegation UI
@@ -119,6 +121,8 @@ Use all three together for full audit coverage: `DecisionRecord` captures the hu
 Immutable visual receipt of a human approval decision to counteract Responsibility Diffusion. Scope: per-approval. Records who approved, why, and under what policy. Question it answers: "Who authorized this?"
 
 It is an immutable *visual* receipt. It displays the decision. Enforcement is the caller's backend.
+
+A program receipt — the program, its bindings, and the effects that were actually dispatched — is specified in the server enforcement guide (`apps/www/content/docs/server-enforcement.mdx`).
 
 ### Who approved
 

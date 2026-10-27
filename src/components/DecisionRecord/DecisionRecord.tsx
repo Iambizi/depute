@@ -1,5 +1,19 @@
 import styles from './DecisionRecord.module.css';
 
+/**
+ * Program fields are caller-supplied. This component displays them.
+ * It does not hash the program or decide that the dispatch was allowed.
+ * A visible receipt does not make the action safe.
+ */
+export interface ProgramReceiptDisplay {
+  text?: string;
+  hash?: string;
+  bindings?: string[];
+  declaredEffects?: { kind: 'read' | 'write' | 'move'; target?: string; detail?: string }[];
+  logs?: string[];
+  dispatches?: { binding: string; detail?: string }[];
+}
+
 export interface DecisionRecordProps {
   /** The final human decision */
   decision: 'approved' | 'rejected' | 'modified';
@@ -16,6 +30,11 @@ export interface DecisionRecordProps {
   };
   /** Optional human reasoning for the decision */
   humanReasoning?: string;
+  /**
+   * Program receipt. When set, the dispatched-effects list is always shown.
+   * Logs alone are not the record of what ran.
+   */
+  program?: ProgramReceiptDisplay;
   /** Optional CSS class name */
   className?: string;
 }
@@ -25,6 +44,7 @@ export function DecisionRecord({
   approver,
   agentContext,
   humanReasoning,
+  program,
   className = '',
 }: DecisionRecordProps) {
   const formattedDate =
@@ -86,6 +106,46 @@ export function DecisionRecord({
           <div className={styles.section}>
             <span className={styles.label}>Stated Reasoning</span>
             <div className={styles.reasoning}>{humanReasoning}</div>
+          </div>
+        )}
+
+        {program && (
+          <div className={styles.section} data-testid="ax-program-receipt">
+            <span className={styles.label}>Program</span>
+            {program.hash && <span className={styles.valueMono}>{program.hash}</span>}
+            {program.text && <pre className={styles.programText}>{program.text}</pre>}
+            {program.bindings && program.bindings.length > 0 && (
+              <span className={styles.value}>Bindings: {program.bindings.join(', ')}</span>
+            )}
+            {program.declaredEffects && program.declaredEffects.length > 0 && (
+              <span className={styles.value}>
+                Declared: {program.declaredEffects
+                  .map((effect) => effect.target ? `${effect.kind} ${effect.target}` : effect.kind)
+                  .join(', ')}
+              </span>
+            )}
+            <span className={styles.label}>Dispatched effects</span>
+            {program.dispatches && program.dispatches.length > 0 ? (
+              <ul className={styles.list}>
+                {program.dispatches.map((dispatch, index) => (
+                  <li key={`${dispatch.binding}-${index}`}>
+                    {dispatch.detail ? `${dispatch.binding} — ${dispatch.detail}` : dispatch.binding}
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <span className={styles.value}>None recorded</span>
+            )}
+            {program.logs && program.logs.length > 0 && (
+              <>
+                <span className={styles.label}>Logs</span>
+                <ul className={styles.list}>
+                  {program.logs.map((line, index) => (
+                    <li key={`${index}-${line}`}>{line}</li>
+                  ))}
+                </ul>
+              </>
+            )}
           </div>
         )}
       </div>
