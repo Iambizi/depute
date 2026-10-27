@@ -1,0 +1,12 @@
+{
+  "name": "@depute/core",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Framework-free approval model for depute. Not published. The copy-paste versus npm decision (epic Q1) is still open.",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {}
+}
