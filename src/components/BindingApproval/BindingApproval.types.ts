@@ -9,6 +9,8 @@
  * @see https://github.com/Iambizi/depute/issues/3 (RFC: isSigning)
  */
 
+import type { ApprovalHandoff, HandoffContext } from '../../types/core';
+
 /** Binding approval status */
 export type BindingStatus =
   | 'reviewing'
@@ -82,16 +84,16 @@ export interface BindingApprovalProps {
   onVerify?: (proof: { signature?: string; hash?: string }) => void;
 
   /** Async delegation configuration */
-  approvalHandoff?: import('../ApprovalGate/ApprovalGate.types').ApprovalHandoff;
+  approvalHandoff?: ApprovalHandoff;
 
   /** Fired when gate cannot find a present human */
-  onHandoff?: (ctx: import('../ApprovalGate/ApprovalGate.types').HandoffContext) => Promise<void>;
+  onHandoff?: (ctx: HandoffContext) => Promise<void>;
 
   /** Fired when an async approval response arrives */
-  onHandoffResolved?: (decision: 'approved' | 'denied', ctx: import('../ApprovalGate/ApprovalGate.types').HandoffContext) => void;
+  onHandoffResolved?: (decision: 'approved' | 'denied', ctx: HandoffContext) => void;
 
   /** Fired when the handoff deadline passes before a response */
-  onHandoffExpired?: (ctx: import('../ApprovalGate/ApprovalGate.types').HandoffContext) => void;
+  onHandoffExpired?: (ctx: HandoffContext) => void;
 
   /** Rehydrate a gate waiting for a response */
   pendingApprovalId?: string;

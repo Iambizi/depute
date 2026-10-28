@@ -2,7 +2,7 @@
   "name": "@depute/core",
   "version": "0.0.0",
   "private": true,
-  "description": "Framework-free approval model for depute. Not published. The copy-paste versus npm decision (epic Q1) is still open.",
+  "description": "Framework-free approval model for depute. Not published. The CLI copies the presented-payload types; the machine stays in this package.",
   "license": "MIT",
   "type": "module",
   "exports": {

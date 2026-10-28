@@ -20,6 +20,9 @@ export type RunState = 'idle' | 'running' | 'paused' | 'completed' | 'failed';
 /** Approval gate status */
 export type ApprovalStatus = 'pending' | 'approved' | 'rejected' | 'expired';
 
+/** Operational status shared by orchestrator nodes, roster rows, and subagent cards. */
+export type AgentStatus = 'idle' | 'working' | 'blocked' | 'failed' | 'completed';
+
 /** Confidence level thresholds */
 export type ConfidenceLevel = 'high' | 'medium' | 'low';
 

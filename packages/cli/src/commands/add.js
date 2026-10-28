@@ -78,10 +78,12 @@ function importSpecifier(fromDir, toPath) {
  */
 function rewriteComponentImports(content, componentDir, sharedRoot) {
   const typesImport = importSpecifier(componentDir, path.posix.join(sharedRoot, 'types/ax-common'));
+  const coreImport = importSpecifier(componentDir, path.posix.join(sharedRoot, 'types/ax-core'));
   const a11yImport = importSpecifier(componentDir, path.posix.join(sharedRoot, 'utils/ax-a11y'));
   const iconsImport = importSpecifier(componentDir, path.posix.join(sharedRoot, 'utils/ax-icons'));
   return content
     .replace(/from (['"])(?:\.\.\/)+types\/common\1/g, (_, quote) => `from ${quote}${typesImport}${quote}`)
+    .replace(/from (['"])(?:\.\.\/)+types\/core\1/g, (_, quote) => `from ${quote}${coreImport}${quote}`)
     .replace(/from (['"])(?:\.\.\/)+utils\/a11y\1/g, (_, quote) => `from ${quote}${a11yImport}${quote}`)
     .replace(/from (['"])(?:\.\.\/)+utils\/icons\1/g, (_, quote) => `from ${quote}${iconsImport}${quote}`);
 }
@@ -172,6 +174,15 @@ export async function loadShared(sharedRoot) {
   const typesDest = path.posix.join(sharedRoot, 'types/ax-common.ts');
   if (!fileExists(typesDest)) {
     files.push({ dest: typesDest, content: await loadFile('src/types/common.ts'), note: 'types' });
+  }
+
+  const coreDest = path.posix.join(sharedRoot, 'types/ax-core.ts');
+  if (!fileExists(coreDest)) {
+    files.push({
+      dest: coreDest,
+      content: await loadFile('packages/core/src/presented.ts'),
+      note: 'types',
+    });
   }
 
   const a11yDest = path.posix.join(sharedRoot, 'utils/ax-a11y.tsx');

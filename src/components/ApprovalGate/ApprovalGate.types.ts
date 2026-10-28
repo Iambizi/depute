@@ -6,23 +6,11 @@
 
 import type React from 'react';
 import type { ApprovalStatus } from '../../types/common';
+import type { ApprovalHandoff, HandoffContext } from '../../types/core';
+
+export type { ApprovalHandoff, HandoffContext };
 
 export type ExtendedApprovalStatus = ApprovalStatus | 'handoff_pending' | 'handoff_expired' | 'handoff_denied';
-
-export interface ApprovalHandoff {
-  timeoutMs: number;
-  fallbackBehavior: 'block' | 'abort' | 'deny';
-  requireSigning?: boolean;
-}
-
-export interface HandoffContext {
-  approvalId: string;
-  action: string;
-  riskScore?: number;
-  confidence?: number;
-  deadline: number;
-  timestamp: number;
-}
 
 /** Staged mode sub-states */
 export type StagedStep = 'previewing' | 'confirming';

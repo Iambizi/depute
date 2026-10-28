@@ -102,7 +102,7 @@ Components are **copied into your project** — not imported from `node_modules`
 npx ax-depute@latest add approval-gate
 
 # Files are written to src/components/ApprovalGate/
-# Shared types land in src/types/ax-common.ts
+# Shared types land in src/types/ax-common.ts and src/types/ax-core.ts
 # Design tokens land in src/styles/depute.css and are imported once
 
 # Copy the agent skill, plus shared types and tokens when they are missing

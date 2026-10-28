@@ -136,3 +136,15 @@ export interface DecisionRecordView {
   reasoning?: string;
   program?: ProgramReceiptView;
 }
+
+export type {
+  ApprovalHandoff,
+  HandoffContext,
+  PresentedAmount,
+  PresentedLineItem,
+  PresentedPayload,
+  PresentedPayee,
+  PresentedProvenance,
+  PresentedScope,
+  ProvenanceTrust,
+} from './presented';
