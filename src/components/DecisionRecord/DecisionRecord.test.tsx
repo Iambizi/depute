@@ -1,7 +1,9 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { describe, it, expect } from 'vitest';
 import { DecisionRecord } from './DecisionRecord';
+import { buildReceipt } from '../../utils/receipt';
 
 describe('DecisionRecord', () => {
   const defaultProps = {
@@ -70,5 +72,24 @@ describe('DecisionRecord', () => {
     render(<DecisionRecord {...defaultProps} decision="modified" />);
     const modifiedBadge = screen.getByText('modified');
     expect(modifiedBadge.className).toMatch(/modified/);
+  });
+
+  it('shows the approval receipt hash and reports a mismatch', async () => {
+    const user = userEvent.setup();
+    const receipt = buildReceipt({
+      id: 'r-9',
+      instruction: 'Pay vendor',
+      payload: { title: 'Pay vendor' },
+      decision: {
+        outcome: 'approved',
+        decidedAt: '2026-10-28T16:00:00.000Z',
+        presentedAt: '2026-10-28T16:00:00.000Z',
+        reviewDurationMs: 0,
+      },
+    });
+    render(<DecisionRecord {...defaultProps} approvalReceipt={{ ...receipt, instruction: 'Changed' }} />);
+    expect(screen.getByText(receipt.receiptHash)).toBeInTheDocument();
+    await user.click(screen.getByRole('button', { name: 'Verify hash' }));
+    expect(await screen.findByRole('status')).toHaveTextContent('Hash does not match');
   });
 });

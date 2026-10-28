@@ -2,6 +2,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, it, expect, vi } from 'vitest';
 import { TransactionReceipt } from './TransactionReceipt';
+import { buildReceipt } from '../../utils/receipt';
 
 const defaultProps = {
   transactionId: 'TX-98765',
@@ -154,6 +155,31 @@ describe('TransactionReceipt', () => {
         hash: 'abc123hashvalue',
         signature: 'sig-from-backend',
       });
+    });
+
+    it('checks an approval receipt hash and exports its JSON', async () => {
+      const user = userEvent.setup();
+      const receipt = buildReceipt({
+        id: 'r-1',
+        instruction: 'Pay vendor',
+        payload: { title: 'Pay vendor', amount: { value: '3.00', currency: 'USD' } },
+        decision: {
+          outcome: 'approved',
+          decidedAt: '2026-10-28T16:00:00.000Z',
+          presentedAt: '2026-10-28T15:59:58.000Z',
+          reviewDurationMs: 2000,
+        },
+      });
+      const createObjectURL = vi.fn(() => 'blob:receipt');
+      const revokeObjectURL = vi.fn();
+      vi.stubGlobal('URL', { createObjectURL, revokeObjectURL });
+      render(<TransactionReceipt {...defaultProps} approvalReceipt={receipt} />);
+      expect(screen.getByText(receipt.receiptHash)).toBeInTheDocument();
+      await user.click(screen.getByRole('button', { name: 'Verify hash' }));
+      expect(await screen.findByRole('status')).toHaveTextContent('Hash matches');
+      await user.click(screen.getByRole('button', { name: 'Export JSON' }));
+      expect(createObjectURL).toHaveBeenCalledTimes(1);
+      vi.unstubAllGlobals();
     });
   });
 });

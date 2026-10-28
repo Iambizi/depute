@@ -81,9 +81,13 @@ function rewriteComponentImports(content, componentDir, sharedRoot) {
   const coreImport = importSpecifier(componentDir, path.posix.join(sharedRoot, 'types/ax-core'));
   const a11yImport = importSpecifier(componentDir, path.posix.join(sharedRoot, 'utils/ax-a11y'));
   const iconsImport = importSpecifier(componentDir, path.posix.join(sharedRoot, 'utils/ax-icons'));
+  const receiptImport = importSpecifier(componentDir, path.posix.join(sharedRoot, 'utils/ax-receipt'));
+  const downloadImport = importSpecifier(componentDir, path.posix.join(sharedRoot, 'utils/ax-receipt-download'));
   return content
     .replace(/from (['"])(?:\.\.\/)+types\/common\1/g, (_, quote) => `from ${quote}${typesImport}${quote}`)
     .replace(/from (['"])(?:\.\.\/)+types\/core\1/g, (_, quote) => `from ${quote}${coreImport}${quote}`)
+    .replace(/from (['"])(?:\.\.\/)+utils\/receiptDownload\1/g, (_, quote) => `from ${quote}${downloadImport}${quote}`)
+    .replace(/from (['"])(?:\.\.\/)+utils\/receipt\1/g, (_, quote) => `from ${quote}${receiptImport}${quote}`)
     .replace(/from (['"])(?:\.\.\/)+utils\/a11y\1/g, (_, quote) => `from ${quote}${a11yImport}${quote}`)
     .replace(/from (['"])(?:\.\.\/)+utils\/icons\1/g, (_, quote) => `from ${quote}${iconsImport}${quote}`);
 }
@@ -168,7 +172,7 @@ async function loadFile(repoPath) {
  * @param {string} sharedRoot
  */
 export async function loadShared(sharedRoot) {
-  /** @type {{ dest: string, content: string, note: 'types' | 'a11y' | 'icons' | 'styles' }[]} */
+  /** @type {{ dest: string, content: string, note: 'types' | 'receipt' | 'a11y' | 'icons' | 'styles' }[]} */
   const files = [];
 
   const typesDest = path.posix.join(sharedRoot, 'types/ax-common.ts');
@@ -182,6 +186,30 @@ export async function loadShared(sharedRoot) {
       dest: coreDest,
       content: await loadFile('packages/core/src/presented.ts'),
       note: 'types',
+    });
+  }
+
+  const receiptDest = path.posix.join(sharedRoot, 'utils/ax-receipt.ts');
+  if (!fileExists(receiptDest)) {
+    const presentedImport = importSpecifier(
+      path.posix.join(sharedRoot, 'utils'),
+      path.posix.join(sharedRoot, 'types/ax-core'),
+    );
+    const raw = await loadFile('packages/core/src/receipt.ts');
+    files.push({
+      dest: receiptDest,
+      content: raw.replace(/from (['"])\.\/presented\1/g, (_, quote) => `from ${quote}${presentedImport}${quote}`),
+      note: 'receipt',
+    });
+  }
+
+  const downloadDest = path.posix.join(sharedRoot, 'utils/ax-receipt-download.ts');
+  if (!fileExists(downloadDest)) {
+    const raw = await loadFile('src/utils/receiptDownload.ts');
+    files.push({
+      dest: downloadDest,
+      content: raw.replace(/from (['"])\.\/receipt\1/g, (_, quote) => `from ${quote}./ax-receipt${quote}`),
+      note: 'receipt',
     });
   }
 
@@ -209,20 +237,23 @@ export async function loadShared(sharedRoot) {
 }
 
 /**
- * @param {{ files: { dest: string, content: string, note: 'types' | 'a11y' | 'icons' | 'styles' }[], stylesDest: string | null }} plan
+ * @param {{ files: { dest: string, content: string, note: 'types' | 'receipt' | 'a11y' | 'icons' | 'styles' }[], stylesDest: string | null }} plan
  * @param {ReturnType<typeof createInstallTransaction> | null} [transaction]
  */
 export function writeShared(plan, transaction = null) {
   let wroteTypes = false;
+  let wroteReceipt = false;
   let wroteA11y = false;
   let wroteStyles = false;
   for (const file of plan.files) {
     writeFileToDisk(file.dest, file.content, { transaction });
     if (file.note === 'types') wroteTypes = true;
+    if (file.note === 'receipt') wroteReceipt = true;
     if (file.note === 'a11y') wroteA11y = true;
     if (file.note === 'styles') wroteStyles = true;
   }
   if (wroteTypes) console.log(`  ${c.dim('(shared types — added once)')}`);
+  if (wroteReceipt) console.log(`  ${c.dim('(approval receipt — added once)')}`);
   if (wroteA11y) console.log(`  ${c.dim('(a11y utilities — added once)')}`);
   if (wroteStyles) console.log(`  ${c.dim('(design tokens — added once)')}`);
   return plan.stylesDest;

@@ -1,0 +1,372 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$ref": "#/definitions/ApprovalReceipt",
+  "definitions": {
+    "ApprovalReceipt": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "type": "string",
+          "const": "1"
+        },
+        "id": {
+          "type": "string"
+        },
+        "instruction": {
+          "type": "string"
+        },
+        "presented": {
+          "type": "object",
+          "properties": {
+            "payload": {
+              "$ref": "#/definitions/PresentedPayload"
+            },
+            "payloadHash": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "payload",
+            "payloadHash"
+          ],
+          "additionalProperties": false
+        },
+        "decision": {
+          "$ref": "#/definitions/ReceiptDecision"
+        },
+        "execution": {
+          "$ref": "#/definitions/ReceiptExecution"
+        },
+        "triggers": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "provenance": {
+          "$ref": "#/definitions/PresentedProvenance"
+        },
+        "highStakes": {
+          "type": "boolean"
+        },
+        "attestations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ReceiptAttestation"
+          }
+        },
+        "previousReceiptHash": {
+          "type": "string"
+        },
+        "signatures": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ReceiptSignature"
+          }
+        },
+        "receiptHash": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "version",
+        "id",
+        "instruction",
+        "presented",
+        "decision",
+        "receiptHash"
+      ],
+      "additionalProperties": false
+    },
+    "PresentedPayload": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "agentReasoning": {
+          "type": "string"
+        },
+        "payee": {
+          "$ref": "#/definitions/PresentedPayee"
+        },
+        "amount": {
+          "$ref": "#/definitions/PresentedAmount"
+        },
+        "lineItems": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/PresentedLineItem"
+          }
+        },
+        "scope": {
+          "$ref": "#/definitions/PresentedScope"
+        },
+        "justification": {
+          "type": "string"
+        },
+        "provenance": {
+          "$ref": "#/definitions/PresentedProvenance"
+        }
+      },
+      "required": [
+        "title"
+      ],
+      "additionalProperties": false,
+      "description": "What the human was shown. Later receipts hash this object. Fields stay optional until a gate starts filling them in."
+    },
+    "PresentedPayee": {
+      "type": "object",
+      "properties": {
+        "rail": {
+          "type": "string"
+        },
+        "identifier": {
+          "type": "string"
+        },
+        "displayName": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "rail",
+        "identifier"
+      ],
+      "additionalProperties": false,
+      "description": "Who would be paid. Identity is rail plus identifier. The display name is not the key."
+    },
+    "PresentedAmount": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "type": "string"
+        },
+        "currency": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "value",
+        "currency"
+      ],
+      "additionalProperties": false,
+      "description": "Decimal amount. `value` is a string so a receipt never stores a float."
+    },
+    "PresentedLineItem": {
+      "type": "object",
+      "properties": {
+        "label": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "label",
+        "value"
+      ],
+      "additionalProperties": false
+    },
+    "PresentedScope": {
+      "type": "object",
+      "properties": {
+        "resourceLimit": {
+          "type": "string"
+        },
+        "durationSeconds": {
+          "type": "number"
+        },
+        "target": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "description": "Same fields as an approval gate scope."
+    },
+    "PresentedProvenance": {
+      "type": "object",
+      "properties": {
+        "source": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        },
+        "trust": {
+          "$ref": "#/definitions/ProvenanceTrust"
+        }
+      },
+      "required": [
+        "source",
+        "trust"
+      ],
+      "additionalProperties": false
+    },
+    "ProvenanceTrust": {
+      "type": "string",
+      "enum": [
+        "trusted",
+        "untrusted",
+        "unknown"
+      ],
+      "description": "Handoff and presented-payload types.\n\nThis file is the copy-paste source for `types/ax-core.ts`. It imports nothing. React components import the same text from `src/types/core.ts`, which stays byte-for-byte identical (`npm run types:core:check`).\n\n`ApprovalHandoff.fallbackBehavior` uses the same three values as the reducer's `FallbackBehavior`. The component prop name stays `fallbackBehavior`.\n\nAmounts are decimal strings. This module does not hash or sign."
+    },
+    "ReceiptDecision": {
+      "type": "object",
+      "properties": {
+        "outcome": {
+          "$ref": "#/definitions/ReceiptOutcome"
+        },
+        "approver": {
+          "$ref": "#/definitions/ReceiptApprover"
+        },
+        "decidedAt": {
+          "type": "string",
+          "description": "ISO-8601 time."
+        },
+        "presentedAt": {
+          "type": "string",
+          "description": "ISO-8601 time the payload was first shown."
+        },
+        "reviewDurationMs": {
+          "type": "number"
+        },
+        "justification": {
+          "type": "string"
+        },
+        "acknowledgedTermIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "outcome",
+        "decidedAt",
+        "presentedAt"
+      ],
+      "additionalProperties": false
+    },
+    "ReceiptOutcome": {
+      "type": "string",
+      "enum": [
+        "approved",
+        "rejected",
+        "expired",
+        "denied"
+      ]
+    },
+    "ReceiptApprover": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "method": {
+          "$ref": "#/definitions/ReceiptMethod"
+        }
+      },
+      "required": [
+        "id",
+        "method"
+      ],
+      "additionalProperties": false
+    },
+    "ReceiptMethod": {
+      "type": "string",
+      "enum": [
+        "click",
+        "passkey",
+        "handoff",
+        "chat"
+      ]
+    },
+    "ReceiptExecution": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "#/definitions/ReceiptExecutionStatus"
+        },
+        "at": {
+          "type": "string"
+        },
+        "detail": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "status"
+      ],
+      "additionalProperties": false
+    },
+    "ReceiptExecutionStatus": {
+      "type": "string",
+      "enum": [
+        "success",
+        "failed",
+        "pending",
+        "reverted",
+        "not-run"
+      ]
+    },
+    "ReceiptAttestation": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "value"
+      ],
+      "additionalProperties": false
+    },
+    "ReceiptSignature": {
+      "type": "object",
+      "properties": {
+        "signerType": {
+          "type": "string",
+          "enum": [
+            "app",
+            "user"
+          ]
+        },
+        "algorithm": {
+          "type": "string"
+        },
+        "publicKey": {
+          "type": "string"
+        },
+        "signature": {
+          "type": "string"
+        },
+        "authenticatorData": {
+          "type": "string"
+        },
+        "clientDataJSON": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "signerType",
+        "algorithm",
+        "publicKey",
+        "signature"
+      ],
+      "additionalProperties": false,
+      "description": "Present in the schema now. R1a does not create these."
+    }
+  }
+}

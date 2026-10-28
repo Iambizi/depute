@@ -33,6 +33,13 @@ export type {
   ProvenanceTrust,
 } from './types/core';
 
+export type {
+  ApprovalReceipt,
+  ReceiptDecision,
+  ReceiptVerification,
+} from './utils/receipt';
+export { buildDecisionReceipt, buildReceipt, verify } from './utils/receipt';
+
 // A11y utilities
 export { VisuallyHidden, useAnnouncer, useFocusTrap } from './utils/a11y';
 export type { VisuallyHiddenProps } from './utils/a11y';

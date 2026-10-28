@@ -47,7 +47,8 @@ export function printHelp() {
 
     Copies the component source files directly into your project so
     you own the code — no black box, no lock-in. Shared types are
-    added once to src/types/ax-common.ts and src/types/ax-core.ts.
+    added once to src/types/ax-common.ts, src/types/ax-core.ts, and
+    src/utils/ax-receipt.ts.
 
   ${c.dim(`Docs: ${DOCS_URL}`)}
 `);

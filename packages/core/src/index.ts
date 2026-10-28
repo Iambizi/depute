@@ -23,6 +23,30 @@ export type {
   Receipt,
   ResourceLimits,
 } from './types';
+export type {
+  ApprovalReceipt,
+  DecisionReceiptInput,
+  ReceiptApprover,
+  ReceiptAttestation,
+  ReceiptDecision,
+  ReceiptDraft,
+  ReceiptExecution,
+  ReceiptExecutionStatus,
+  ReceiptMethod,
+  ReceiptOutcome,
+  ReceiptSignature,
+  ReceiptVerification,
+  ReceiptVerifier,
+  SignatureCheck,
+} from './receipt';
+export {
+  buildDecisionReceipt,
+  buildReceipt,
+  canonicalize,
+  isReceiptHash,
+  sha256,
+  verify,
+} from './receipt';
 export { createClock } from './clock';
 export type { Clock } from './clock';
 export { can, createApproval, isTerminal, toDecisionRecord, transition } from './machine';

@@ -6,7 +6,8 @@
 
 import type React from 'react';
 import type { ApprovalStatus } from '../../types/common';
-import type { ApprovalHandoff, HandoffContext } from '../../types/core';
+import type { ApprovalHandoff, HandoffContext, PresentedPayload } from '../../types/core';
+import type { ApprovalReceipt } from '../../utils/receipt';
 
 export type { ApprovalHandoff, HandoffContext };
 
@@ -85,6 +86,36 @@ export interface ApprovalGateProps {
 
   /** Absolute unix timestamp for handoff TTL expiration (useful for resuming state) */
   handoffDeadlineMs?: number;
+
+  /** Stable id stored on the approval receipt. Falls back to the handoff id. */
+  receiptId?: string;
+
+  /** Instruction stored on the receipt. Falls back to the title. */
+  instruction?: string;
+
+  /** Exact payload the human was shown. Falls back to the gate's own fields. */
+  presentedPayload?: PresentedPayload;
+
+  /** Person recorded on the receipt when they approve or reject. */
+  approver?: { id: string; name?: string };
+
+  /** Unix milliseconds when the payload was first shown. */
+  presentedAt?: number;
+
+  /** Why the person approved. Optional until a later rule requires it. */
+  justification?: string;
+
+  /** Policy reasons that opened the gate. */
+  triggers?: string[];
+
+  /** Hash of the previous receipt in this session, when the host has one. */
+  previousReceiptHash?: string;
+
+  /** Recorded on the receipt. Enforcement of a passkey waits for a later change. */
+  highStakes?: boolean;
+
+  /** Fired with a hashed receipt when the person decides or the gate expires. */
+  onReceipt?: (receipt: ApprovalReceipt) => void;
 
   /** Additional CSS class */
   className?: string;

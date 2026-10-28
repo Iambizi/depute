@@ -10,6 +10,8 @@
  */
 
 import { useState, useMemo, useCallback, type ReactNode } from 'react';
+import { verify } from '../../utils/receipt';
+import { downloadApprovalReceipt } from '../../utils/receiptDownload';
 import { IconArrowRight, IconCheck, IconCircle, IconCopy, IconUndo, IconX } from '../../utils/icons';
 import { VisuallyHidden } from '../../utils/a11y';
 import type {
@@ -69,9 +71,11 @@ export function TransactionReceipt({
   copyableHash = true,
   onCopyHash,
   onViewAuditTrail,
+  approvalReceipt,
   className,
 }: TransactionReceiptProps) {
   const [copied, setCopied] = useState(false);
+  const [hashCheck, setHashCheck] = useState<string | null>(null);
 
   const handleCopy = useCallback(async () => {
     if (hash) {
@@ -148,7 +152,7 @@ export function TransactionReceipt({
       </div>
 
       {/* Footer: hash + actions */}
-      {(hash || signature || onViewAuditTrail || onVerify) && (
+      {(hash || signature || onViewAuditTrail || onVerify || approvalReceipt) && (
         <div className={styles.footer}>
           {signature && (
             <div className={`${styles.hashRow} ax-hash-reveal`}>
@@ -174,6 +178,35 @@ export function TransactionReceipt({
                   {copied ? <IconCheck /> : <IconCopy />}
                 </button>
               )}
+            </div>
+          )}
+          {approvalReceipt && (
+            <div className={styles.hashRow}>
+              <span className={styles.hashLabel}>Receipt hash</span>
+              <code className={`${styles.hashValue} ${styles.hashFull}`}>{approvalReceipt.receiptHash}</code>
+            </div>
+          )}
+          {approvalReceipt && (
+            <div className={styles.proofActions}>
+              <button
+                type="button"
+                className={styles.auditBtn}
+                onClick={() => downloadApprovalReceipt(approvalReceipt)}
+              >
+                Export JSON
+              </button>
+              <button
+                type="button"
+                className={styles.auditBtn}
+                onClick={() => {
+                  void verify(approvalReceipt).then((result) => {
+                    setHashCheck(result.valid ? 'Hash matches' : 'Hash does not match');
+                  });
+                }}
+              >
+                Verify hash
+              </button>
+              {hashCheck && <span role="status">{hashCheck}</span>}
             </div>
           )}
           {onVerify && (

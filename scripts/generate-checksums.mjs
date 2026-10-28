@@ -14,6 +14,8 @@ const files = new Set([
   'registry/registry.json',
   'src/types/common.ts',
   'packages/core/src/presented.ts',
+  'packages/core/src/receipt.ts',
+  'src/utils/receiptDownload.ts',
   'src/utils/a11y.tsx',
   'src/utils/mockData.ts',
   'src/styles/base.css',

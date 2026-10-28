@@ -18,6 +18,8 @@ import type React from 'react';
 import { getConfidenceLevel } from '../../types/common';
 import { IconArrowLeft, IconArrowRight } from '../../utils/icons';
 import { useAnnouncer, useFocusTrap, VisuallyHidden } from '../../utils/a11y';
+import { buildDecisionReceipt } from '../../utils/receipt';
+import type { ReceiptMethod, ReceiptOutcome } from '../../utils/receipt';
 import type { ApprovalGateProps, HandoffContext, StagedStep } from './ApprovalGate.types';
 import styles from './ApprovalGate.module.css';
 
@@ -135,6 +137,16 @@ export function ApprovalGate({
   onHandoffExpired,
   pendingApprovalId,
   handoffDeadlineMs,
+  receiptId,
+  instruction,
+  presentedPayload,
+  approver,
+  presentedAt,
+  justification,
+  triggers,
+  previousReceiptHash,
+  highStakes,
+  onReceipt,
   className,
 }: ApprovalGateProps) {
   const isPending = status === 'pending';
@@ -170,6 +182,8 @@ export function ApprovalGate({
     }
   }, [status, title, announce, isPending, isHandoffPending]);
 
+  const shownAtRef = useRef(presentedAt ?? now ?? Date.now());
+  const emitReceiptRef = useRef<(outcome: ReceiptOutcome, method: ReceiptMethod) => void>(() => {});
   const [handoffInitiated, setHandoffInitiated] = useState(false);
   const handoffContextRef = useRef<HandoffContext | null>(null);
   const prevStatusRef = useRef(status);
@@ -264,10 +278,11 @@ export function ApprovalGate({
       expiryFiredRef.current = true;
       if (isHandoffPending) {
         onHandoffExpired?.(fallbackContext(deadlineAt));
-        if (approvalHandoff?.fallbackBehavior === 'deny') {
-          onReject?.('Handoff expired (fallback: deny)');
-        }
+        const denied = approvalHandoff?.fallbackBehavior === 'deny';
+        emitReceiptRef.current(denied ? 'denied' : 'expired', 'handoff');
+        if (denied) onReject?.('Handoff expired (fallback: deny)');
       } else {
+        emitReceiptRef.current('expired', 'click');
         onTimeout?.();
       }
     };
@@ -306,6 +321,48 @@ export function ApprovalGate({
     return styles.countdownNormal;
   }, [timeRemaining]);
 
+  const emitReceipt = useCallback((outcome: ReceiptOutcome, method: ReceiptMethod) => {
+    if (!onReceipt) return;
+    onReceipt(buildDecisionReceipt({
+      id: receiptId,
+      instruction,
+      payload: presentedPayload,
+      title,
+      description,
+      agentReasoning,
+      scope,
+      justification,
+      approver,
+      outcome,
+      method,
+      presentedAtMs: presentedAt ?? shownAtRef.current,
+      decidedAtMs: now ?? Date.now(),
+      triggers,
+      provenance: presentedPayload?.provenance,
+      highStakes,
+      previousReceiptHash,
+      fallbackId: pendingApprovalId || 'local',
+    }));
+  }, [
+    onReceipt,
+    receiptId,
+    instruction,
+    presentedPayload,
+    title,
+    description,
+    agentReasoning,
+    scope,
+    justification,
+    approver,
+    presentedAt,
+    now,
+    triggers,
+    highStakes,
+    previousReceiptHash,
+    pendingApprovalId,
+  ]);
+  emitReceiptRef.current = emitReceipt;
+
   // Handlers
   const handleApprove = useCallback(() => {
     if (mode === 'staged' && stagedStep === 'previewing') {
@@ -313,12 +370,14 @@ export function ApprovalGate({
       announce('Confirm to proceed with approval');
       return;
     }
+    emitReceipt('approved', 'click');
     onApprove?.();
-  }, [mode, stagedStep, onApprove, announce]);
+  }, [mode, stagedStep, onApprove, announce, emitReceipt]);
 
   const handleReject = useCallback(() => {
+    emitReceipt('rejected', isHandoffPending ? 'handoff' : 'click');
     onReject?.();
-  }, [onReject]);
+  }, [onReject, emitReceipt, isHandoffPending]);
 
   const handleBack = useCallback(() => {
     setStagedStep('previewing');

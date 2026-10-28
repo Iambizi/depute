@@ -40,6 +40,8 @@ bunx ax-depute@latest add transaction-receipt
 
 `Transaction Receipt` is the audit-log component. After an irreversible action passes a gate, the supervisor needs a record of the outcome. A hash or signature shown here is supplied by your backend. The component does not create one.
 
+Pass `approvalReceipt` when the gate emitted an `ApprovalReceipt`. The card shows that document's hash, checks it with `verify`, and downloads the JSON. It still does not sign.
+
 <ComponentPreview>
   <TransactionReceiptDemo />
 </ComponentPreview>
