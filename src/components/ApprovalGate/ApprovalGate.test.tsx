@@ -97,6 +97,66 @@ describe('ApprovalGate', () => {
       expect(receipt.presented.payload.title).toBe('Pay vendor');
     });
 
+    it('keeps approve on one click when no payment trigger fired', () => {
+      render(<ApprovalGate title="Send email" />);
+      expect(screen.queryByRole('textbox', { name: 'Why are you approving this?' })).not.toBeInTheDocument();
+      expect(screen.getByRole('button', { name: 'Approve' })).toBeEnabled();
+    });
+
+    it('requires 100 characters before approve when a payment trigger fired', async () => {
+      const user = userEvent.setup();
+      const onApprove = vi.fn();
+      const onReject = vi.fn();
+      const onReceipt = vi.fn();
+      render(
+        <ApprovalGate
+          title="Pay vendor"
+          triggers={['new-payee']}
+          now={2_000}
+          presentedAt={1_000}
+          onApprove={onApprove}
+          onReject={onReject}
+          onReceipt={onReceipt}
+        />,
+      );
+      const approve = screen.getByRole('button', { name: 'Approve' });
+      const why = screen.getByRole('textbox', { name: 'Why are you approving this?' });
+      expect(approve).toBeDisabled();
+      expect(screen.getByText('0 of 100 characters')).toBeInTheDocument();
+
+      await user.click(screen.getByRole('button', { name: 'Reject' }));
+      expect(onReject).toHaveBeenCalledTimes(1);
+      expect(onApprove).not.toHaveBeenCalled();
+
+      await user.click(why);
+      await user.paste('x'.repeat(99));
+      expect(approve).toBeDisabled();
+      await user.paste('y');
+      expect(approve).toBeEnabled();
+      await user.click(approve);
+      expect(onApprove).toHaveBeenCalledTimes(1);
+      expect(onReceipt.mock.calls[1][0].decision.justification).toHaveLength(100);
+    });
+
+    it('uses the host minimum when that prop is set', async () => {
+      const user = userEvent.setup();
+      const onApprove = vi.fn();
+      render(
+        <ApprovalGate
+          title="Pay vendor"
+          minJustificationLength={4}
+          onApprove={onApprove}
+        />,
+      );
+      const approve = screen.getByRole('button', { name: 'Approve' });
+      expect(approve).toBeDisabled();
+      await user.click(screen.getByRole('textbox', { name: 'Why are you approving this?' }));
+      await user.paste('paid');
+      expect(approve).toBeEnabled();
+      await user.click(approve);
+      expect(onApprove).toHaveBeenCalledTimes(1);
+    });
+
     it('signs with the app key, and with a passkey only when the approval is high-stakes', async () => {
       const user = userEvent.setup();
       const onReceipt = vi.fn();

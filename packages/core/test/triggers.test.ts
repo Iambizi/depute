@@ -1,5 +1,10 @@
 import { describe, expect, it } from 'vitest';
-import { requiresApproval, type PayeeGrant } from '../src/triggers';
+import {
+  justificationLength,
+  requiredJustificationLength,
+  requiresApproval,
+  type PayeeGrant,
+} from '../src/triggers';
 
 const now = Date.parse('2026-10-28T16:00:00.000Z');
 
@@ -118,5 +123,16 @@ describe('requiresApproval', () => {
     });
     expect(large.required).toBe(false);
     expect(large.highStakes).toBe(true);
+  });
+});
+
+describe('required justification', () => {
+  it('asks for 100 characters only after a payment trigger', () => {
+    expect(requiredJustificationLength(undefined, undefined)).toBe(0);
+    expect(requiredJustificationLength(['other'], undefined)).toBe(0);
+    expect(requiredJustificationLength(['new-payee'], undefined)).toBe(100);
+    expect(requiredJustificationLength(['new-payee'], 40)).toBe(40);
+    expect(requiredJustificationLength(['new-payee'], 0)).toBe(0);
+    expect(justificationLength('  pay   the vendor  ')).toBe('pay the vendor'.length);
   });
 });

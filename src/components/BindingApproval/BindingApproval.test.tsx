@@ -103,6 +103,19 @@ describe('BindingApproval', () => {
   });
 
   describe('interactions', () => {
+    it('requires a why before sign when a payment trigger fired', async () => {
+      const user = userEvent.setup();
+      const onSign = vi.fn();
+      render(<BindingApproval {...defaultProps} triggers={['purpose-change']} onSign={onSign} />);
+      const sign = screen.getByRole('button', { name: /sign and approve/i });
+      expect(sign).toBeDisabled();
+      await user.click(screen.getByRole('textbox', { name: 'Why are you approving this?' }));
+      await user.paste('x'.repeat(100));
+      expect(sign).toBeEnabled();
+      await user.click(sign);
+      expect(onSign).toHaveBeenCalledTimes(1);
+    });
+
     it('calls onSign when sign button is clicked', async () => {
       const user = userEvent.setup();
       const onSign = vi.fn();

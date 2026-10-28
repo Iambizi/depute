@@ -214,6 +214,37 @@
 /* Actions                                                             */
 /* ------------------------------------------------------------------ */
 
+.why {margin: 0 var(--ax-space-4) var(--ax-space-3);}
+
+.whyLabel {display: block;
+  margin-bottom: var(--ax-space-1);
+  color: var(--ax-fg-default);
+  font-size: var(--ax-text-sm);
+  font-weight: var(--ax-weight-semibold);}
+
+.whyInput {box-sizing: border-box;
+  width: 100%;
+  min-height: calc(var(--ax-space-16) + var(--ax-space-8));
+  padding: var(--ax-space-2) var(--ax-space-3);
+  border: var(--ax-border-width) solid var(--ax-border-default);
+  border-radius: var(--ax-radius-sm);
+  background: var(--ax-bg-surface);
+  color: var(--ax-fg-default);
+  font-family: var(--ax-font-sans);
+  font-size: var(--ax-text-sm);
+  line-height: var(--ax-leading-lg);
+  resize: vertical;}
+
+.whyInput:focus-visible {outline: var(--ax-space-0-5) solid var(--ax-status-info-border);
+  outline-offset: var(--ax-space-0-5);}
+
+.whyCount {margin: var(--ax-space-1) 0 0;
+  color: var(--ax-fg-default);
+  font-size: var(--ax-text-xs);
+  line-height: var(--ax-leading-lg);}
+
+.whyCountMet {color: var(--ax-status-success-fg);}
+
 .signWait,
 .signError {flex-basis: 100%;
   margin: var(--ax-space-2) 0 0;

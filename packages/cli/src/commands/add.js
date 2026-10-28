@@ -81,12 +81,14 @@ function rewriteComponentImports(content, componentDir, sharedRoot) {
   const coreImport = importSpecifier(componentDir, path.posix.join(sharedRoot, 'types/ax-core'));
   const a11yImport = importSpecifier(componentDir, path.posix.join(sharedRoot, 'utils/ax-a11y'));
   const iconsImport = importSpecifier(componentDir, path.posix.join(sharedRoot, 'utils/ax-icons'));
+  const triggersImport = importSpecifier(componentDir, path.posix.join(sharedRoot, 'utils/ax-triggers'));
   const receiptImport = importSpecifier(componentDir, path.posix.join(sharedRoot, 'utils/ax-receipt'));
   const signImport = importSpecifier(componentDir, path.posix.join(sharedRoot, 'utils/ax-receipt-sign'));
   const downloadImport = importSpecifier(componentDir, path.posix.join(sharedRoot, 'utils/ax-receipt-download'));
   return content
     .replace(/from (['"])(?:\.\.\/)+types\/common\1/g, (_, quote) => `from ${quote}${typesImport}${quote}`)
     .replace(/from (['"])(?:\.\.\/)+types\/core\1/g, (_, quote) => `from ${quote}${coreImport}${quote}`)
+    .replace(/from (['"])(?:\.\.\/)+utils\/triggers\1/g, (_, quote) => `from ${quote}${triggersImport}${quote}`)
     .replace(/from (['"])(?:\.\.\/)+utils\/receiptDownload\1/g, (_, quote) => `from ${quote}${downloadImport}${quote}`)
     .replace(/from (['"])(?:\.\.\/)+utils\/receiptSign\1/g, (_, quote) => `from ${quote}${signImport}${quote}`)
     .replace(/from (['"])(?:\.\.\/)+utils\/receipt\1/g, (_, quote) => `from ${quote}${receiptImport}${quote}`)

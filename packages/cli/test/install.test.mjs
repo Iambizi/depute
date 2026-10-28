@@ -122,6 +122,8 @@ test('add approval-gate installs tokens and rewrites shared imports', () => {
   assert.doesNotMatch(installedTriggers, /from ['"]\.\/presented['"]/);
   assert.doesNotMatch(installedSign, /from ['"]\.\/receipt['"]/);
   assert.match(component, /from ['"]\.\.\/\.\.\/utils\/ax-receipt['"]/);
+  assert.match(component, /from ['"]\.\.\/\.\.\/utils\/ax-triggers['"]/);
+  assert.doesNotMatch(component, /from ['"][^'"]*utils\/triggers['"]/);
   assert.match(fs.readFileSync(path.join(cwd, 'src/index.css'), 'utf8'), /@import "\.\/styles\/depute\.css"/);
 });
 
