@@ -94,6 +94,8 @@ This primitive replaces `ApprovalGate` in high-stakes nodes. The internal state 
 
 ## Design rationale
 
+A binding approval is the high-stakes case of the [approval record](/docs/approval-record). The app key can attest every receipt. The passkey is reserved for a new payee, a purpose change, an untrusted source, an irreversible flag, or an amount above the host's own cutoff. Spending a biometric on every click trains people to dismiss it. The same 100-character why applies when a payment trigger opened this gate.
+
 **When to use `ApprovalGate` vs `BindingApproval`:**
 
 | | `ApprovalGate` | `BindingApproval` |

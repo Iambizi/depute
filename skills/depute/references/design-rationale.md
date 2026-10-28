@@ -153,3 +153,19 @@ Agents (and the developers building with them) need to **read and edit the UI co
 - Updates become breaking changes, not choices
 
 The copy-paste model (like shadcn/ui) means the source lives in your repo. You own it. The agent can read it. You can modify it. The CLI (`npx ax-depute@latest add`) delivers it, but you keep it.
+
+---
+
+## Why an approval keeps a portable record
+
+The dispute after an agent payment is what the person was shown, what they approved, and whether that was the action that ran. Institutions increasingly leave the person as the actor of record for an agent they did not drive step by step. A vendor-only log answers that for the vendor. The person needs the payload and the decision in a form a third party can check.
+
+The specification is that pattern. Public reporting from 26–28 October 2026 illustrated it: consumer-bank terms for agents, a payee or purpose that changed after a grant, an untrusted instruction on a payment, and supervision notes on agent payments. An illustration can be revised. An unconfirmed report is not a requirement. The human-facing writeup is `apps/www/content/docs/approval-record.mdx`.
+
+Apply it as follows:
+
+- Emit an `ApprovalReceipt` when the host passes `onReceipt`. The host stores the JSON. Do not add a receipt log component.
+- Call `requiresApproval` before showing a gate. A new payee always gates. Identity is rail plus identifier. The same purpose inside the granted limit and duration does not re-gate. An untrusted source gates again and is high-stakes.
+- When one of those payment triggers fired, leave Approve disabled until the why reaches 100 characters, unless the host set `minJustificationLength`. Reject stays immediate. Gates with no payment trigger stay one click.
+- Sign with the host's Ed25519 app key when the host supplies one. Ask for a passkey only when the decision is high-stakes: new payee, purpose change, untrusted source, irreversible flag, or an amount above the host's cutoff. There is no universal dollar cutoff.
+- A run of small payments, a log of whether the person followed the recommendation, and a minimum time on screen for the payee and amount are the same pattern and are not shipped yet. Do not invent those controls ahead of their pages.
