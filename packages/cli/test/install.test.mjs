@@ -33,6 +33,7 @@ const MIRROR_FILES = [
   'src/types/common.ts',
   'packages/core/src/presented.ts',
   'packages/core/src/receipt.ts',
+  'packages/core/src/triggers.ts',
   'src/utils/receiptDownload.ts',
   'src/utils/receiptSign.ts',
   'src/utils/a11y.tsx',
@@ -115,6 +116,10 @@ test('add approval-gate installs tokens and rewrites shared imports', () => {
   const installedSign = fs.readFileSync(path.join(cwd, 'src/utils/ax-receipt-sign.ts'), 'utf8');
   assert.match(installedSign, /export function createEd25519AppSigner/);
   assert.match(installedSign, /from ['"]\.\/ax-receipt['"]/);
+  const installedTriggers = fs.readFileSync(path.join(cwd, 'src/utils/ax-triggers.ts'), 'utf8');
+  assert.match(installedTriggers, /export function requiresApproval/);
+  assert.match(installedTriggers, /from ['"]\.\.\/types\/ax-core['"]/);
+  assert.doesNotMatch(installedTriggers, /from ['"]\.\/presented['"]/);
   assert.doesNotMatch(installedSign, /from ['"]\.\/receipt['"]/);
   assert.match(component, /from ['"]\.\.\/\.\.\/utils\/ax-receipt['"]/);
   assert.match(fs.readFileSync(path.join(cwd, 'src/index.css'), 'utf8'), /@import "\.\/styles\/depute\.css"/);
