@@ -60,7 +60,7 @@ Delegation requires guardrails. Instead of blocking every action, `Budget Meter`
 
 ## Small payments
 
-A per-payment limit misses a run of small auto-approved payments. Pass those payments and `nowMs`. When more than five of them, each under 5 in this meter's unit, are not all the same payee and purpose inside ten minutes, the meter shows one warning. Repeated payments to one payee for one purpose stay quiet. The warning does not open another approval.
+Pass auto-approved payments and `nowMs`. The props below set the count, the amount, and the time span. The story shows the warning row.
 
 ```tsx
 <BudgetMeter
@@ -101,6 +101,6 @@ Integrate `BudgetMeter` directly into a `DelegationGate` prior to spawning a new
 
 ## Design rationale
 
-A per-payment check misses a run of small auto-approved payments. The pattern is in [Approval record](/docs/approval-record). When more than five of those payments, each under 5 in this meter's unit, are not all the same payee and purpose inside ten minutes, this meter shows one warning. It does not open another approval. Repeated payments to one payee for one purpose stay quiet.
+A limit on one payment does not show a run of small ones. This meter shows that run as one warning and does not open another approval. When the row appears, and when a repeated payment stays quiet, is the pattern in [Approval record](/docs/approval-record).
 
 **Why proportional thresholds?** Raw numbers (e.g., "45,000 tokens") are meaningless without context. Auto-calculating elevated (>60%) and critical (>85%) severity colors translates abstract numbers into actionable visual urgency.

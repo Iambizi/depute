@@ -58,11 +58,7 @@ The why field uses the same triggers. `new-payee`, `purpose-change`, `untrusted-
 
 ## A run of small payments
 
-A limit on a single payment does not show a run of small ones. `smallPaymentBurst` counts auto-approved payments strictly under 5 in the meter's unit, across the last ten minutes. The host passes the list and `nowMs`, and leaves gated payments out.
-
-The same payee and the same purpose can repeat without a warning. The warning appears when the count is greater than five and the payments are not all that one pair. [Budget Meter](/docs/components/budget-meter) shows one row. The row does not open another approval. `smallTxThreshold`, `windowMs`, and `maxSmallTxCount` replace the defaults. There is no universal currency amount.
-
-The October 2026 review illustrated this as repeated payments under a per-payment threshold. That illustration is dated with the review. It is not a second rule.
+The row in the table is the rule. `smallPaymentBurst` is the check [Budget Meter](/docs/components/budget-meter) uses for it. The host passes auto-approved payments and `nowMs`, and leaves gated payments out. `smallTxThreshold`, `windowMs`, and `maxSmallTxCount` replace the defaults in that row.
 
 ## What this page will not claim
 
