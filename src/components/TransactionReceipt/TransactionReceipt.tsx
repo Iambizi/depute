@@ -10,7 +10,8 @@
  */
 
 import { useState, useMemo, useCallback, type ReactNode } from 'react';
-import { verify } from '../../utils/receipt';
+import { receiptCheckLabel, verify } from '../../utils/receipt';
+import { createReceiptVerifier } from '../../utils/receiptSign';
 import { downloadApprovalReceipt } from '../../utils/receiptDownload';
 import { IconArrowRight, IconCheck, IconCircle, IconCopy, IconUndo, IconX } from '../../utils/icons';
 import { VisuallyHidden } from '../../utils/a11y';
@@ -199,8 +200,8 @@ export function TransactionReceipt({
                 type="button"
                 className={styles.auditBtn}
                 onClick={() => {
-                  void verify(approvalReceipt).then((result) => {
-                    setHashCheck(result.valid ? 'Hash matches' : 'Hash does not match');
+                  void verify(approvalReceipt, createReceiptVerifier()).then((result) => {
+                    setHashCheck(receiptCheckLabel(result));
                   });
                 }}
               >

@@ -2,8 +2,11 @@ import { describe, expect, it } from 'vitest';
 import {
   buildDecisionReceipt,
   buildReceipt,
+  buildSignedDecisionReceipt,
   canonicalize,
+  receiptCheckLabel,
   sha256,
+  signApprovalReceipt,
   verify,
   type ApprovalReceipt,
 } from '../src/receipt';
@@ -154,5 +157,84 @@ describe('approval receipt', () => {
     expect(receipt.decision.reviewDurationMs).toBe(2000);
     expect(receipt.decision.approver).toEqual({ id: 'alice', name: 'Alice', method: 'click' });
     expect(receipt.decision.acknowledgedTermIds).toEqual(['wire']);
+  });
+});
+
+describe('signers', () => {
+  const app = {
+    sign: async () => ({ publicKey: 'app-key', signature: 'app-sig' }),
+  };
+  const passkey = {
+    sign: async () => ({
+      algorithm: 'ES256',
+      publicKey: 'user-key',
+      signature: 'user-sig',
+      authenticatorData: 'auth',
+      clientDataJSON: 'client',
+    }),
+  };
+
+  it('keeps the hash when signatures are attached', async () => {
+    const unsigned = draft();
+    const signed = await signApprovalReceipt(unsigned, { app, passkey });
+    expect(signed.receiptHash).toBe(unsigned.receiptHash);
+    expect(signed.signatures).toEqual([
+      { signerType: 'app', algorithm: 'Ed25519', publicKey: 'app-key', signature: 'app-sig' },
+      {
+        signerType: 'user',
+        algorithm: 'ES256',
+        publicKey: 'user-key',
+        signature: 'user-sig',
+        authenticatorData: 'auth',
+        clientDataJSON: 'client',
+      },
+    ]);
+  });
+
+  it('asks for a passkey only on a high-stakes human decision', async () => {
+    const calls: string[] = [];
+    const watching = {
+      app: { sign: async (hash: string) => { calls.push(`app:${hash.slice(0, 12)}`); return { publicKey: 'k', signature: 's' }; } },
+      passkey: { sign: async () => { calls.push('user'); return passkey.sign(); } },
+    };
+    const ordinary = await buildSignedDecisionReceipt({
+      title: 'Pay vendor',
+      outcome: 'approved',
+      presentedAtMs: 1,
+      decidedAtMs: 2,
+      fallbackId: 'local',
+    }, watching);
+    expect(ordinary.signatures?.map((entry) => entry.signerType)).toEqual(['app']);
+    expect(ordinary.decision.approver?.method).toBeUndefined();
+
+    const stakes = await buildSignedDecisionReceipt({
+      title: 'Pay vendor',
+      outcome: 'approved',
+      presentedAtMs: 1,
+      decidedAtMs: 2,
+      fallbackId: 'local',
+      highStakes: true,
+      approver: { id: 'alice' },
+    }, watching);
+    expect(stakes.decision.approver?.method).toBe('passkey');
+    expect(stakes.signatures?.map((entry) => entry.signerType)).toEqual(['app', 'user']);
+
+    await buildSignedDecisionReceipt({
+      title: 'Pay vendor',
+      outcome: 'expired',
+      presentedAtMs: 1,
+      decidedAtMs: 2,
+      fallbackId: 'local',
+      highStakes: true,
+    }, watching);
+    expect(calls.filter((entry) => entry === 'user')).toHaveLength(1);
+  });
+
+  it('names a hash failure separately from an unchecked signature', async () => {
+    const signed = await signApprovalReceipt(draft(), { app });
+    const unchecked = await verify(signed);
+    expect(receiptCheckLabel(unchecked)).toBe('Hash matches. Signature was not checked.');
+    const tampered = { ...signed, instruction: 'changed' };
+    expect(receiptCheckLabel(await verify(tampered))).toBe('Hash does not match');
   });
 });

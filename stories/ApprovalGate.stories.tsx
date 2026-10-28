@@ -304,3 +304,27 @@ export const WithAutomationBiasAlert: Story = {
     );
   }
 };
+
+export const SignedReceipt: Story = {
+  name: 'Signed receipt',
+  args: {
+    ...storyApproval({
+      status: 'pending',
+      title: 'Pay a new vendor',
+      description: 'The app key signs the receipt. A passkey is asked only when highStakes is set.',
+    }),
+    highStakes: true,
+    appSigner: {
+      sign: async () => ({ publicKey: 'app-public-key', signature: 'app-signature' }),
+    },
+    passkey: {
+      sign: async () => ({
+        algorithm: 'ES256',
+        publicKey: 'user-public-key',
+        signature: 'user-signature',
+        authenticatorData: 'authenticator-data',
+        clientDataJSON: 'client-data',
+      }),
+    },
+  },
+};
