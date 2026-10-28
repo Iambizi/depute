@@ -95,7 +95,7 @@ npx ax-depute list
 npx ax-depute@latest add approval-gate
 ```
 
-Components are written to `src/components/<ComponentName>/`. Shared types land once in `src/types/ax-common.ts`. No lock-in — customize freely.
+Components are written to `src/components/<ComponentName>/`. Shared types land once in `src/types/ax-common.ts`. Handoff and presented-payload types land once in `src/types/ax-core.ts`. No lock-in — customize freely.
 
 ### Step 4: Wire it to your agent's state
 
@@ -331,7 +331,7 @@ Use this format if the user wants a human-readable artifact to attach to a Jira 
 Run `npx ax-depute list` to see exact component slugs. Use kebab-case (e.g., `approval-gate` not `Approval Gate`).
 
 **TypeScript errors on shared types**
-Check that `src/types/ax-common.ts` exists — it's created on first install. If missing, re-run any `add` command.
+Check that `src/types/ax-common.ts` and `src/types/ax-core.ts` exist — both are created on first install. If one is missing, re-run any `add` command.
 
 **Customizing styles**
 Components are copied into your project. Edit the CSS module directly — there's no upstream to conflict with.

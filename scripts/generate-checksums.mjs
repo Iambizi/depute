@@ -13,6 +13,7 @@ const registry = JSON.parse(fs.readFileSync(path.join(root, 'registry/registry.j
 const files = new Set([
   'registry/registry.json',
   'src/types/common.ts',
+  'packages/core/src/presented.ts',
   'src/utils/a11y.tsx',
   'src/utils/mockData.ts',
   'src/styles/base.css',

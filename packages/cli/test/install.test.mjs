@@ -31,6 +31,7 @@ const MIRROR_FILES = [
   'src/components/ApprovalGate/ApprovalGate.types.ts',
   'src/components/ApprovalGate/index.ts',
   'src/types/common.ts',
+  'packages/core/src/presented.ts',
   'src/utils/a11y.tsx',
   'src/utils/icons.tsx',
   'src/utils/mockData.ts',
@@ -93,7 +94,64 @@ test('add approval-gate installs tokens and rewrites shared imports', () => {
   assert.equal(fs.existsSync(path.join(cwd, 'src/styles/depute.css')), true);
   assert.equal(fs.existsSync(path.join(cwd, 'src/styles/tokens.css')), true);
   assert.equal(fs.existsSync(path.join(cwd, 'src/types/ax-common.ts')), true);
+  assert.equal(fs.existsSync(path.join(cwd, 'src/types/ax-core.ts')), true);
+  const installedTypes = fs.readFileSync(
+    path.join(cwd, 'src/components/ApprovalGate/ApprovalGate.types.ts'),
+    'utf8',
+  );
+  assert.match(installedTypes, /from ['"]\.\.\/\.\.\/types\/ax-core['"]/);
+  assert.doesNotMatch(installedTypes, /from ['"][^'"]*types\/core['"]/);
+  const coreTypes = fs.readFileSync(path.join(cwd, 'src/types/ax-core.ts'), 'utf8');
+  assert.match(coreTypes, /export interface PresentedPayload/);
+  assert.match(coreTypes, /export interface HandoffContext/);
   assert.match(fs.readFileSync(path.join(cwd, 'src/index.css'), 'utf8'), /@import "\.\/styles\/depute\.css"/);
+});
+
+test('add binding-approval copies ax-core and does not import ApprovalGate', () => {
+  const cwd = fs.mkdtempSync(path.join(os.tmpdir(), 'depute-binding-'));
+  const result = runAdd(cwd, ['binding-approval', '--no-css']);
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+
+  const component = fs.readFileSync(
+    path.join(cwd, 'src/components/BindingApproval/BindingApproval.tsx'),
+    'utf8',
+  );
+  const types = fs.readFileSync(
+    path.join(cwd, 'src/components/BindingApproval/BindingApproval.types.ts'),
+    'utf8',
+  );
+  assert.match(component, /from ['"]\.\.\/\.\.\/types\/ax-core['"]/);
+  assert.match(types, /from ['"]\.\.\/\.\.\/types\/ax-core['"]/);
+  assert.doesNotMatch(component, /from ['"][^'"]*ApprovalGate/);
+  assert.doesNotMatch(types, /ApprovalGate/);
+  assert.equal(fs.existsSync(path.join(cwd, 'src/types/ax-core.ts')), true);
+});
+
+test('component sources do not import another component', () => {
+  const componentsRoot = path.join(repoRoot, 'src/components');
+  const offenders = [];
+  const files = [];
+  const walk = (dir) => {
+    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+      const abs = path.join(dir, entry.name);
+      if (entry.isDirectory()) walk(abs);
+      else if (entry.name.endsWith('.ts') || entry.name.endsWith('.tsx')) files.push(abs);
+    }
+  };
+  walk(componentsRoot);
+  for (const file of files) {
+    const owner = path.basename(path.dirname(file));
+    const text = fs.readFileSync(file, 'utf8');
+    for (const match of text.matchAll(/(?:from|import)\(?\s*(['"])(\.\.\/[^'"]+)\1/g)) {
+      const spec = match[2];
+      const parts = spec.split('/');
+      const target = parts[1];
+      if (target && target !== owner && /^[A-Z]/.test(target)) {
+        offenders.push(`${path.relative(repoRoot, file)} -> ${spec}`);
+      }
+    }
+  }
+  assert.deepEqual(offenders, []);
 });
 
 test('--dir installs shared files beside the chosen directory', () => {
@@ -107,8 +165,10 @@ test('--dir installs shared files beside the chosen directory', () => {
   assert.match(component, /from ['"][^'"]+ax-a11y['"]/);
 
   const typesPath = path.join(cwd, 'components/types/ax-common.ts');
+  const corePath = path.join(cwd, 'components/types/ax-core.ts');
   const a11yPath = path.join(cwd, 'components/utils/ax-a11y.tsx');
   assert.equal(fs.existsSync(typesPath), true);
+  assert.equal(fs.existsSync(corePath), true);
   assert.equal(fs.existsSync(a11yPath), true);
   assert.equal(fs.existsSync(path.join(cwd, 'src/types/ax-common.ts')), false);
 
@@ -266,5 +326,7 @@ test('init copies the skill and design tokens', () => {
   const config = JSON.parse(fs.readFileSync(path.join(cwd, 'skills/depute/depute.skill.json'), 'utf8'));
   assert.equal(config.version, VERSION);
   assert.equal(fs.existsSync(path.join(cwd, 'src/styles/depute.css')), true);
+  assert.equal(fs.existsSync(path.join(cwd, 'src/types/ax-common.ts')), true);
+  assert.equal(fs.existsSync(path.join(cwd, 'src/types/ax-core.ts')), true);
   assert.match(fs.readFileSync(path.join(cwd, 'src/index.css'), 'utf8'), /@import "\.\/styles\/depute\.css"/);
 });

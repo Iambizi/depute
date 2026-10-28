@@ -9,16 +9,29 @@ import './styles/index.css';
 
 // Shared types
 export type {
-  PlanStepStatus,
-  RunState,
+  AgentStatus,
   ApprovalStatus,
   ConfidenceLevel,
+  PlanStepStatus,
+  RunState,
   PlanStep,
   ToolCall,
   Artifact,
 } from './types/common';
 
 export { getConfidenceLevel } from './types/common';
+
+export type {
+  ApprovalHandoff,
+  HandoffContext,
+  PresentedAmount,
+  PresentedLineItem,
+  PresentedPayload,
+  PresentedPayee,
+  PresentedProvenance,
+  PresentedScope,
+  ProvenanceTrust,
+} from './types/core';
 
 // A11y utilities
 export { VisuallyHidden, useAnnouncer, useFocusTrap } from './utils/a11y';
@@ -48,7 +61,7 @@ export type { AutomationBiasAlertProps, AutomationBiasThresholds, ApprovalEvent 
 
 // --- v1 Orchestration Primitives ---
 export { OrchestratorView } from './components/OrchestratorView';
-export type { OrchestratorViewProps, OrchestratorNode, AgentStatus } from './components/OrchestratorView';
+export type { OrchestratorViewProps, OrchestratorNode } from './components/OrchestratorView';
 
 export { AgentRoster } from './components/AgentRoster';
 export type { AgentRosterProps, AgentRosterItem } from './components/AgentRoster';

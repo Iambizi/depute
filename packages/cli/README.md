@@ -38,6 +38,7 @@ src/
       index.ts
   types/
     ax-common.ts     ← shared types (added once)
+    ax-core.ts       ← handoff and presented-payload types (added once)
   utils/
     ax-a11y.tsx      ← accessibility utilities (added once)
   styles/

@@ -14,7 +14,7 @@
 import { useState, useEffect, useMemo, useRef, useCallback } from 'react';
 import { VisuallyHidden } from '../../utils/a11y';
 import { IconAlert, IconCheck, IconLock, IconX } from '../../utils/icons';
-import type { HandoffContext } from '../ApprovalGate/ApprovalGate.types';
+import type { HandoffContext } from '../../types/core';
 import type {
   BindingApprovalProps,
   BindingStatus,

@@ -2,7 +2,7 @@
 
 Framework-free approval model: types, a pure reducer, and a generated JSON Schema. No React, no DOM, and no hashing. Hashes and signatures stay caller-supplied strings.
 
-This package is not published. Whether core is copied by `ax-depute add`, published as `@depute/core`, or both (epic Q1) is still open. The React components do not import it, so the copy-paste CLI keeps working.
+This package is not published. The approval machine stays here. `ax-depute add` copies `src/presented.ts` into the user's project as `types/ax-core.ts`. React components import that same text from the repo file `src/types/core.ts`. Publishing the machine (epic Q1) is still open.
 
 Recording a transition here makes the decision legible. It does not make the action safe, and it does not absorb liability. The caller's server decides.
 

@@ -1,4 +1,4 @@
-import type { AgentStatus } from '../OrchestratorView/OrchestratorView.types';
+import type { AgentStatus } from '../../types/common';
 
 export interface SubagentCardProps {
   /** The root layout class name */

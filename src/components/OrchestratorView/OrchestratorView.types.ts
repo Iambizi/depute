@@ -1,4 +1,6 @@
-export type AgentStatus = 'idle' | 'working' | 'blocked' | 'failed' | 'completed';
+import type { AgentStatus } from '../../types/common';
+
+export type { AgentStatus };
 
 export interface OrchestratorNode {
   /** Unique agent identifier */

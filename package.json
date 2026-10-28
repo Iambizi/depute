@@ -56,6 +56,8 @@
     "test:core": "vitest run --config vitest.core.config.ts",
     "schema:core": "node scripts/generate-core-schema.mjs",
     "schema:core:check": "node scripts/generate-core-schema.mjs --check",
+    "types:core": "node scripts/sync-presented-types.mjs",
+    "types:core:check": "node scripts/sync-presented-types.mjs --check",
     "styles:check": "node scripts/check-styles.mjs",
     "type-check": "tsc -p tsconfig.build.json --noEmit"
   },
