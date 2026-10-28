@@ -8,7 +8,7 @@ Source: depute Intel Report #1, Oct 26–28, 2026. Supervision has to be legible
 | --- | --- | --- |
 | PR0 | Handoff types, `PresentedPayload`, CLI copy as `ax-core.ts` | Merged in #31 |
 | R1a | Receipt schema, canonical SHA-256, `verify`, export JSON | In review: https://github.com/Iambizi/depute/pull/32 |
-| R1b | App Ed25519 signature on every receipt; passkey on high-stakes approvals | In progress |
+| R1b | App Ed25519 signature on every receipt; passkey on high-stakes approvals | In review: https://github.com/Iambizi/depute/pull/33 |
 | R2 | Approval triggers for a new payee, purpose change, and untrusted source | Not started |
 | R3 | Required why, 100 characters when a payment trigger fired | Not started |
 | R4 | Budget meter warning for a burst of small auto-approved payments | Not started |
