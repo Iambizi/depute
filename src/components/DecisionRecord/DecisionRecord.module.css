@@ -105,6 +105,15 @@
   color: var(--ax-fg-muted);
   font-style: italic;}
 
+.hashFull {font-family: var(--ax-font-mono);
+  font-size: var(--ax-text-xs);
+  color: var(--ax-fg-default);
+  word-break: break-all;}
+
+.proofActions {display: flex;
+  align-items: center;
+  gap: var(--ax-space-2);}
+
 .container :focus-visible {
   outline: none;
   box-shadow: var(--ax-ring);

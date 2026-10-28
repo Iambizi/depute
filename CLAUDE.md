@@ -124,7 +124,7 @@ depute/
 
 - **CLI:** `npx ax-depute@latest add <component>` — installs the sources for the CLI's own version tag (not `main`), checks them against `packages/cli/src/checksums.json`, and copies them into the user's project
 - **Registry:** `registry/registry.json` — manifest of all 27 components with file lists and metadata
-- **Shared Files:** The CLI copies `src/types/common.ts` into the user's project as `src/types/ax-common.ts`, copies `packages/core/src/presented.ts` as `src/types/ax-core.ts`, copies `src/utils/a11y.tsx` as `src/utils/ax-a11y.tsx`, and installs `src/styles/index.css` as `depute.css` once beside the component directory. `add mock-data` copies the generators separately.
+- **Shared Files:** The CLI copies `src/types/common.ts` into the user's project as `src/types/ax-common.ts`, copies `packages/core/src/presented.ts` as `src/types/ax-core.ts`, copies `packages/core/src/receipt.ts` as `src/utils/ax-receipt.ts`, copies `src/utils/a11y.tsx` as `src/utils/ax-a11y.tsx`, and installs `src/styles/index.css` as `depute.css` once beside the component directory. `add mock-data` copies the generators separately.
 - **Config:** Repo and version pin live in `packages/cli/src/config.js`
 
 ## AI Skill Layer

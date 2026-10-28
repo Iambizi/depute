@@ -1,3 +1,7 @@
+import { useState } from 'react';
+import type { ApprovalReceipt } from '../../utils/receipt';
+import { verify } from '../../utils/receipt';
+import { downloadApprovalReceipt } from '../../utils/receiptDownload';
 import styles from './DecisionRecord.module.css';
 
 export interface DecisionRecordProps {
@@ -16,6 +20,11 @@ export interface DecisionRecordProps {
   };
   /** Optional human reasoning for the decision */
   humanReasoning?: string;
+  /**
+   * Hashed approval receipt. The record displays its hash, checks it,
+   * and can download the JSON. It does not sign.
+   */
+  approvalReceipt?: ApprovalReceipt;
   /** Optional CSS class name */
   className?: string;
 }
@@ -25,8 +34,10 @@ export function DecisionRecord({
   approver,
   agentContext,
   humanReasoning,
+  approvalReceipt,
   className = '',
 }: DecisionRecordProps) {
+  const [hashCheck, setHashCheck] = useState<string | null>(null);
   const formattedDate =
     typeof approver.timestamp === 'string'
       ? new Date(approver.timestamp).toLocaleString()
@@ -86,6 +97,30 @@ export function DecisionRecord({
           <div className={styles.section}>
             <span className={styles.label}>Stated Reasoning</span>
             <div className={styles.reasoning}>{humanReasoning}</div>
+          </div>
+        )}
+
+        {approvalReceipt && (
+          <div className={styles.section}>
+            <span className={styles.label}>Receipt hash</span>
+            <code className={styles.hashFull}>{approvalReceipt.receiptHash}</code>
+            <div className={styles.proofActions}>
+              <button type="button" className="ax-btn ax-btn-secondary ax-btn-sm" onClick={() => downloadApprovalReceipt(approvalReceipt)}>
+                Export JSON
+              </button>
+              <button
+                type="button"
+                className="ax-btn ax-btn-secondary ax-btn-sm"
+                onClick={() => {
+                  void verify(approvalReceipt).then((result) => {
+                    setHashCheck(result.valid ? 'Hash matches' : 'Hash does not match');
+                  });
+                }}
+              >
+                Verify hash
+              </button>
+              {hashCheck && <span role="status">{hashCheck}</span>}
+            </div>
           </div>
         )}
       </div>

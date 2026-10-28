@@ -73,6 +73,30 @@ describe('ApprovalGate', () => {
   });
 
   describe('interactions', () => {
+    it('emits a hashed receipt when Approve is clicked', async () => {
+      const user = userEvent.setup();
+      const onReceipt = vi.fn();
+      render(
+        <ApprovalGate
+          title="Pay vendor"
+          description="Invoice 104"
+          now={Date.parse('2026-10-28T16:00:00.000Z')}
+          presentedAt={Date.parse('2026-10-28T15:59:58.000Z')}
+          approver={{ id: 'alice', name: 'Alice' }}
+          receiptId="r-1"
+          onReceipt={onReceipt}
+        />,
+      );
+      await user.click(screen.getByRole('button', { name: 'Approve' }));
+      expect(onReceipt).toHaveBeenCalledTimes(1);
+      const receipt = onReceipt.mock.calls[0][0];
+      expect(receipt.decision.outcome).toBe('approved');
+      expect(receipt.decision.approver).toEqual({ id: 'alice', name: 'Alice', method: 'click' });
+      expect(receipt.decision.reviewDurationMs).toBe(2000);
+      expect(receipt.receiptHash.startsWith('sha256:')).toBe(true);
+      expect(receipt.presented.payload.title).toBe('Pay vendor');
+    });
+
     it('calls onApprove when Approve is clicked in simple mode', async () => {
       const user = userEvent.setup();
       const handleApprove = vi.fn();

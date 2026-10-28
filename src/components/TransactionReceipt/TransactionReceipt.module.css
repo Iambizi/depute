@@ -122,6 +122,14 @@
 .hashLabel {font-size: var(--ax-text-xs);
   color: var(--ax-fg-muted);}
 
+.hashFull {display: block;
+  word-break: break-all;
+  color: var(--ax-fg-default);}
+
+.proofActions {display: flex;
+  align-items: center;
+  gap: var(--ax-space-3);}
+
 .hashValue {font-family: var(--ax-font-mono);
   font-size: var(--ax-text-xs);
   color: var(--ax-fg-muted);

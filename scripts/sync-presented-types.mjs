@@ -6,20 +6,36 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const source = path.join(root, 'packages/core/src/presented.ts');
-const dest = path.join(root, 'src/types/core.ts');
 const check = process.argv.includes('--check');
-const text = fs.readFileSync(source, 'utf8');
 
-if (check) {
-  const current = fs.existsSync(dest) ? fs.readFileSync(dest, 'utf8') : '';
-  if (current !== text) {
-    console.error('src/types/core.ts is out of date. Run npm run types:core.');
-    process.exit(1);
+const pairs = [
+  {
+    source: path.join(root, 'packages/core/src/presented.ts'),
+    dest: path.join(root, 'src/types/core.ts'),
+    transform: (text) => text,
+  },
+  {
+    source: path.join(root, 'packages/core/src/receipt.ts'),
+    dest: path.join(root, 'src/utils/receipt.ts'),
+    transform: (text) => text.replaceAll("from './presented'", "from '../types/core'"),
+  },
+];
+
+let failed = false;
+for (const pair of pairs) {
+  const next = pair.transform(fs.readFileSync(pair.source, 'utf8'));
+  const current = fs.existsSync(pair.dest) ? fs.readFileSync(pair.dest, 'utf8') : '';
+  if (check) {
+    if (current !== next) {
+      console.error(`${path.relative(root, pair.dest)} is out of date. Run npm run types:core.`);
+      failed = true;
+    } else {
+      console.log(`${path.relative(root, pair.dest)} matches ${path.relative(root, pair.source)}.`);
+    }
+  } else {
+    fs.mkdirSync(path.dirname(pair.dest), { recursive: true });
+    fs.writeFileSync(pair.dest, next);
+    console.log(`Wrote ${path.relative(root, pair.dest)}`);
   }
-  console.log('src/types/core.ts matches packages/core/src/presented.ts.');
-} else {
-  fs.mkdirSync(path.dirname(dest), { recursive: true });
-  fs.writeFileSync(dest, text);
-  console.log(`Wrote ${path.relative(root, dest)}`);
 }
+if (failed) process.exit(1);

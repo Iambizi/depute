@@ -7,6 +7,8 @@
  * @see docs/internal/research/catalog-versions/CATALOG-v2.md (Primitive 5)
  */
 
+import type { ApprovalReceipt } from '../../utils/receipt';
+
 /** Transaction status */
 export type TransactionStatus = 'success' | 'failed' | 'pending' | 'reverted';
 
@@ -61,6 +63,12 @@ export interface TransactionReceiptProps {
 
   /** Called when user requests full audit trail */
   onViewAuditTrail?: () => void;
+
+  /**
+   * Hashed approval receipt. The component displays its hash, checks it,
+   * and can download the JSON. It does not sign.
+   */
+  approvalReceipt?: ApprovalReceipt;
 
   /** Additional CSS class */
   className?: string;

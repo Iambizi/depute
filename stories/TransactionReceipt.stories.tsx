@@ -1,6 +1,25 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { TransactionReceipt } from '../src/components/TransactionReceipt';
 import type { TransactionReceiptProps } from '../src/components/TransactionReceipt';
+import { buildReceipt } from '../src/utils/receipt';
+
+const approvalReceipt = buildReceipt({
+  id: 'r-104',
+  instruction: 'Pay invoice 104',
+  payload: {
+    title: 'Wire Transfer Complete',
+    amount: { value: '5000.00', currency: 'USD' },
+    payee: { rail: 'swift', identifier: '****8903', displayName: 'Vendor' },
+  },
+  decision: {
+    outcome: 'approved',
+    approver: { id: 'alice', name: 'Alice', method: 'click' },
+    decidedAt: '2026-03-19T14:30:00.000Z',
+    presentedAt: '2026-03-19T14:29:58.000Z',
+    reviewDurationMs: 2000,
+    justification: 'Invoice 104 matches the approved purchase order.',
+  },
+});
 
 const meta: Meta<TransactionReceiptProps> = {
   title: 'v2 — Compliance & Forensics/TransactionReceipt',
@@ -28,6 +47,13 @@ export const Success: Story = {
       { label: 'Network', value: 'SWIFT' },
     ],
     onViewAuditTrail: () => alert('Opening audit trail...'),
+  },
+};
+
+export const ApprovalDocument: Story = {
+  args: {
+    ...Success.args,
+    approvalReceipt,
   },
 };
 

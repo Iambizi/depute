@@ -32,6 +32,8 @@ const MIRROR_FILES = [
   'src/components/ApprovalGate/index.ts',
   'src/types/common.ts',
   'packages/core/src/presented.ts',
+  'packages/core/src/receipt.ts',
+  'src/utils/receiptDownload.ts',
   'src/utils/a11y.tsx',
   'src/utils/icons.tsx',
   'src/utils/mockData.ts',
@@ -104,6 +106,11 @@ test('add approval-gate installs tokens and rewrites shared imports', () => {
   const coreTypes = fs.readFileSync(path.join(cwd, 'src/types/ax-core.ts'), 'utf8');
   assert.match(coreTypes, /export interface PresentedPayload/);
   assert.match(coreTypes, /export interface HandoffContext/);
+  const installedReceipt = fs.readFileSync(path.join(cwd, 'src/utils/ax-receipt.ts'), 'utf8');
+  assert.match(installedReceipt, /export async function verify/);
+  assert.match(installedReceipt, /from ['"]\.\.\/types\/ax-core['"]/);
+  assert.doesNotMatch(installedReceipt, /from ['"]\.\/presented['"]/);
+  assert.equal(fs.existsSync(path.join(cwd, 'src/utils/ax-receipt-download.ts')), true);
   assert.match(fs.readFileSync(path.join(cwd, 'src/index.css'), 'utf8'), /@import "\.\/styles\/depute\.css"/);
 });
 
