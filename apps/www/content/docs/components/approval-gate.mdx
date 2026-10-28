@@ -121,6 +121,19 @@ To solve this, configure the `approvalHandoff` prop to automatically hand the ap
 
 When `status` shifts to `handoff_pending`, the component drops the blocking modal trap and gracefully collapses into a non-blocking ambient status card that counts down to the deadline.
 
+## Required why
+
+A payment trigger (`new-payee`, `purpose-change`, `untrusted-source`, `outside-grant`, or `grant-expired`) asks for 100 characters before Approve enables. Reject stays available. Set `minJustificationLength` to use another length, or `0` to leave the why optional. Gates with no payment trigger stay one click.
+
+```tsx
+<ApprovalGate
+  title="Pay a new vendor"
+  triggers={['new-payee']}
+  onApprove={() => agent.continue()}
+  onReceipt={(receipt) => save(receipt)}
+/>
+```
+
 ## Props
 
 | Prop | Type | Default | Description |
@@ -131,6 +144,8 @@ When `status` shifts to `handoff_pending`, the component drops the blocking moda
 | `mode` | `'simple' \| 'staged'` | `'simple'` | Staged adds Preview → Confirm → Execute steps |
 | `status` | `'pending' \| 'approved' \| 'rejected' \| 'handoff_pending' \| 'handoff_denied' \| 'handoff_expired'` | `'pending'` | Controls gate state |
 | `scope` | `ApprovalScope` | — | Optional scoped grant (target, resourceLimit, durationSeconds) |
+| `triggers` | `string[]` | — | Policy reasons that opened the gate. A payment trigger requires a why. |
+| `minJustificationLength` | `number` | — | Overrides the 100-character why. `0` turns the field off. |
 | `onApprove` | `() => void` | — | Called when user approves |
 | `onReject` | `() => void` | — | Called when user rejects |
 | `approvalHandoff` | `ApprovalHandoff` | — | Configures timeout and fallback to automatically trigger async handoff. |

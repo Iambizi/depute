@@ -95,7 +95,7 @@ npx ax-depute list
 npx ax-depute@latest add approval-gate
 ```
 
-Components are written to `src/components/<ComponentName>/`. Shared types land once in `src/types/ax-common.ts`. Handoff and presented-payload types land once in `src/types/ax-core.ts`. The approval receipt hasher lands once in `src/utils/ax-receipt.ts`. App and passkey signers land once in `src/utils/ax-receipt-sign.ts`. `requiresApproval` lands once in `src/utils/ax-triggers.ts`: a new payee, a changed purpose, or an untrusted source opens a gate. The same purpose inside the granted limit and duration does not. No lock-in — customize freely.
+Components are written to `src/components/<ComponentName>/`. Shared types land once in `src/types/ax-common.ts`. Handoff and presented-payload types land once in `src/types/ax-core.ts`. The approval receipt hasher lands once in `src/utils/ax-receipt.ts`. App and passkey signers land once in `src/utils/ax-receipt-sign.ts`. `requiresApproval` lands once in `src/utils/ax-triggers.ts`: a new payee, a changed purpose, or an untrusted source opens a gate. The same purpose inside the granted limit and duration does not. When one of those triggers fired, Approve stays off until the person writes 100 characters. Set `minJustificationLength` to change that, or `0` to leave the why optional. No lock-in — customize freely.
 
 ### Step 4: Wire it to your agent's state
 

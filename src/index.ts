@@ -54,7 +54,7 @@ export {
   generateEd25519KeyPair,
 } from './utils/receiptSign';
 export type { ApprovalPolicy, ApprovalTrigger, PayeeGrant } from './utils/triggers';
-export { requiresApproval } from './utils/triggers';
+export { justificationLength, requiredJustificationLength, requiresApproval } from './utils/triggers';
 
 // A11y utilities
 export { VisuallyHidden, useAnnouncer, useFocusTrap } from './utils/a11y';

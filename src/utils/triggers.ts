@@ -155,3 +155,32 @@ export function requiresApproval(input: ApprovalPolicyInput): ApprovalPolicy {
     highStakes,
   };
 }
+
+const PAYMENT_TRIGGERS = new Set<string>([
+  'new-payee',
+  'purpose-change',
+  'untrusted-source',
+  'outside-grant',
+  'grant-expired',
+]);
+
+/** Characters that count toward the why. Surrounding and extra inner space does not. */
+export function justificationLength(value: string): number {
+  return [...value.trim().replace(/\s+/g, ' ')].length;
+}
+
+/**
+ * 100 when a payment trigger fired. An explicit minimum replaces that,
+ * and zero or a negative number leaves the why optional.
+ */
+export function requiredJustificationLength(
+  triggers: readonly string[] | undefined,
+  minimum: number | undefined,
+): number {
+  if (minimum !== undefined) {
+    if (!Number.isFinite(minimum) || minimum <= 0) return 0;
+    return Math.floor(minimum);
+  }
+  if (triggers?.some((trigger) => PAYMENT_TRIGGERS.has(trigger))) return 100;
+  return 0;
+}
