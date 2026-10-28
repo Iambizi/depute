@@ -267,6 +267,9 @@
 .btn:focus-visible {outline: var(--ax-space-0-5) solid var(--ax-status-info-border);
   outline-offset: var(--ax-space-0-5);}
 
+.btn:disabled {opacity: 0.5;
+  cursor: not-allowed;}
+
 .btnApprove {background: var(--ax-fg-default);
   color: var(--ax-bg-surface);
   border-color: var(--ax-fg-default);}

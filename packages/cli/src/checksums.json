@@ -13,7 +13,7 @@
   "src/components/AgentRoster/AgentRoster.tsx": "60e5bc798e223c0b7193fdc3c1f269761a290c51b80d7534a7594b1148ba443d",
   "src/components/AgentRoster/AgentRoster.types.ts": "0b918c9c0296d83a2f8bff44f66bafcde17e47bd53c6663a15be062906f3715b",
   "src/components/AgentRoster/index.ts": "786e667c7af0771ad87ad9575fa8ae0a2fd1067374328cf873c72b2ae0e4eaf1",
-  "src/components/ApprovalGate/ApprovalGate.module.css": "3c112030b439cd8886317ca1a28bfeed88ff887c90d9f43c708a7291ed1a0bed",
+  "src/components/ApprovalGate/ApprovalGate.module.css": "e4194f706667994f0065e6eb2de7a50ea1a9651f112dbfcbce856d3dc0dbce4c",
   "src/components/ApprovalGate/ApprovalGate.tsx": "ed83b03fe6b146e5276b4410b3be05b3c67767c005b4e842d4949f4a008898e0",
   "src/components/ApprovalGate/ApprovalGate.types.ts": "66d7f6910b192c9707e7d68ce51e1fba9632874bcc44ac7a35c7dd72f7c39648",
   "src/components/ApprovalGate/index.ts": "2268b38274a85e8faff277efe4c7d65b5e1986112fd19a691cc373f224bfd93b",

@@ -10,7 +10,7 @@ Source: depute Intel Report #1, Oct 26–28, 2026. Supervision has to be legible
 | R1a | Receipt schema, canonical SHA-256, `verify`, export JSON | In review: https://github.com/Iambizi/depute/pull/32 |
 | R1b | App Ed25519 signature on every receipt; passkey on high-stakes approvals | In review: https://github.com/Iambizi/depute/pull/33 |
 | R2 | Approval triggers for a new payee, purpose change, and untrusted source | In review: https://github.com/Iambizi/depute/pull/34 |
-| R3 | Required why, 100 characters when a payment trigger fired | In progress |
+| R3 | Required why, 100 characters when a payment trigger fired | In review: https://github.com/Iambizi/depute/pull/35 |
 | R4 | Budget meter warning for a burst of small auto-approved payments | Not started |
 | R5 | Log whether the human followed the agent's recommendation | Not started |
 | R6 | Payee and amount confirm step a fast biometric cannot skip | Not started |
