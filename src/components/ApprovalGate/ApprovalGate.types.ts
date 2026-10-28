@@ -102,8 +102,14 @@ export interface ApprovalGateProps {
   /** Unix milliseconds when the payload was first shown. */
   presentedAt?: number;
 
-  /** Why the person approved. Optional until a later rule requires it. */
+  /** Why the person approved. A payment trigger asks them to write it in the gate. */
   justification?: string;
+
+  /**
+   * Minimum why length. When omitted, a payment trigger requires 100 characters
+   * and any other gate leaves the why optional. Zero turns the field off.
+   */
+  minJustificationLength?: number;
 
   /** Policy reasons that opened the gate. */
   triggers?: string[];

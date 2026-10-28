@@ -12,12 +12,13 @@
  * @see https://github.com/Iambizi/depute/issues/3 (RFC: isSigning)
  */
 
-import { useState, useEffect, useMemo, useRef, useCallback } from 'react';
+import { useState, useEffect, useMemo, useRef, useCallback, useId } from 'react';
 import { VisuallyHidden } from '../../utils/a11y';
 import { IconAlert, IconCheck, IconLock, IconX } from '../../utils/icons';
 import type { HandoffContext } from '../../types/core';
 import { buildDecisionReceipt, buildSignedDecisionReceipt } from '../../utils/receipt';
 import type { ReceiptMethod, ReceiptOutcome } from '../../utils/receipt';
+import { justificationLength, requiredJustificationLength } from '../../utils/triggers';
 import type {
   BindingApprovalProps,
   BindingStatus,
@@ -82,6 +83,7 @@ export function BindingApproval({
   approver,
   presentedAt,
   justification,
+  minJustificationLength,
   triggers,
   previousReceiptHash,
   highStakes,
@@ -98,6 +100,16 @@ export function BindingApproval({
   // Determine effective status — isSigning overrides to 'signing'
   const effectiveStatus = isSigning ? 'signing' : status;
   const isHandoffPending = effectiveStatus === 'handoff_pending';
+
+  const whyMinimum = requiredJustificationLength(triggers, minJustificationLength);
+  const whyId = useId();
+  const [why, setWhy] = useState(justification ?? '');
+  useEffect(() => {
+    setWhy(justification ?? '');
+  }, [justification]);
+  const whyCount = justificationLength(why);
+  const whyReady = whyMinimum === 0 || whyCount >= whyMinimum;
+  const recordedWhy = whyMinimum > 0 ? (why.trim() || undefined) : justification;
 
   const shownAtRef = useRef(presentedAt ?? Date.now());
   const emitReceiptRef = useRef<(outcome: ReceiptOutcome, method: ReceiptMethod) => void | Promise<void>>(() => {});
@@ -250,7 +262,7 @@ export function BindingApproval({
       payload: presentedPayload,
       title,
       description,
-      justification,
+      justification: recordedWhy,
       approver,
       outcome,
       method,
@@ -275,7 +287,7 @@ export function BindingApproval({
     presentedPayload,
     title,
     description,
-    justification,
+    recordedWhy,
     approver,
     presentedAt,
     checkedTerms,
@@ -438,6 +450,24 @@ export function BindingApproval({
         </div>
       )}
 
+      {effectiveStatus === 'reviewing' && whyMinimum > 0 && (
+        <div className={styles.why}>
+          <label className={styles.whyLabel} htmlFor={whyId}>Why are you approving this?</label>
+          <textarea
+            id={whyId}
+            className={styles.whyInput}
+            value={why}
+            onChange={(event) => setWhy(event.target.value)}
+            aria-describedby={`${whyId}-count`}
+            aria-invalid={whyCount > 0 && !whyReady ? true : undefined}
+            required
+          />
+          <p id={`${whyId}-count`} className={whyReady ? `${styles.whyCount} ${styles.whyCountMet}` : styles.whyCount}>
+            {whyCount} of {whyMinimum} characters
+          </p>
+        </div>
+      )}
+
       {/* Actions */}
       {!isTerminal && !isHandoffPending && (
         <div className={styles.actions}>
@@ -445,11 +475,13 @@ export function BindingApproval({
             type="button"
             className={`${styles.signBtn} ax-btn ax-btn-primary ax-btn-lg`}
             onClick={() => {
+              if (!whyReady) return;
               void decide('approved', 'click', () => {
                 onSign?.();
               });
             }}
-            disabled={!canSign || signingReceipt}
+            disabled={!canSign || signingReceipt || !whyReady}
+            aria-describedby={whyMinimum > 0 ? `${whyId}-count` : undefined}
             aria-label="Sign and approve"
           >
             {effectiveStatus === 'signing' || signingReceipt ? 'Signing…' : 'Sign and approve'}

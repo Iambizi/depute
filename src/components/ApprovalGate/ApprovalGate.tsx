@@ -13,13 +13,14 @@
  * @see docs/orchestration/05-interface-states.md (ApprovalGate state matrix)
  */
 
-import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
+import { useState, useEffect, useCallback, useMemo, useRef, useId } from 'react';
 import type React from 'react';
 import { getConfidenceLevel } from '../../types/common';
 import { IconArrowLeft, IconArrowRight } from '../../utils/icons';
 import { useAnnouncer, useFocusTrap, VisuallyHidden } from '../../utils/a11y';
 import { buildDecisionReceipt, buildSignedDecisionReceipt } from '../../utils/receipt';
 import type { ReceiptMethod, ReceiptOutcome } from '../../utils/receipt';
+import { justificationLength, requiredJustificationLength } from '../../utils/triggers';
 import type { ApprovalGateProps, HandoffContext, StagedStep } from './ApprovalGate.types';
 import styles from './ApprovalGate.module.css';
 
@@ -143,6 +144,7 @@ export function ApprovalGate({
   approver,
   presentedAt,
   justification,
+  minJustificationLength,
   triggers,
   previousReceiptHash,
   highStakes,
@@ -183,6 +185,16 @@ export function ApprovalGate({
       announce(`Approval expired: ${title}`);
     }
   }, [status, title, announce, isPending, isHandoffPending]);
+
+  const whyMinimum = requiredJustificationLength(triggers, minJustificationLength);
+  const whyId = useId();
+  const [why, setWhy] = useState(justification ?? '');
+  useEffect(() => {
+    setWhy(justification ?? '');
+  }, [justification]);
+  const whyCount = justificationLength(why);
+  const whyReady = whyMinimum === 0 || whyCount >= whyMinimum;
+  const recordedWhy = whyMinimum > 0 ? (why.trim() || undefined) : justification;
 
   const shownAtRef = useRef(presentedAt ?? now ?? Date.now());
   const emitReceiptRef = useRef<(outcome: ReceiptOutcome, method: ReceiptMethod) => void | Promise<void>>(() => {});
@@ -346,7 +358,7 @@ export function ApprovalGate({
       description,
       agentReasoning,
       scope,
-      justification,
+      justification: recordedWhy,
       approver,
       outcome,
       method,
@@ -372,7 +384,7 @@ export function ApprovalGate({
     description,
     agentReasoning,
     scope,
-    justification,
+    recordedWhy,
     approver,
     presentedAt,
     now,
@@ -414,10 +426,11 @@ export function ApprovalGate({
       announce('Confirm to proceed with approval');
       return;
     }
+    if (!whyReady) return;
     void decide('approved', 'click', () => {
       onApprove?.();
     });
-  }, [mode, stagedStep, onApprove, announce, decide]);
+  }, [mode, stagedStep, onApprove, announce, decide, whyReady]);
 
   const handleReject = useCallback(() => {
     void decide('rejected', isHandoffPending ? 'handoff' : 'click', () => {
@@ -559,6 +572,24 @@ export function ApprovalGate({
             </table>
           </div>
         )}
+
+        {isPending && whyMinimum > 0 && (
+          <div className={styles.why}>
+            <label className={styles.whyLabel} htmlFor={whyId}>Why are you approving this?</label>
+            <textarea
+              id={whyId}
+              className={styles.whyInput}
+              value={why}
+              onChange={(event) => setWhy(event.target.value)}
+              aria-describedby={`${whyId}-count`}
+              aria-invalid={whyCount > 0 && !whyReady ? true : undefined}
+              required
+            />
+            <p id={`${whyId}-count`} className={whyReady ? `${styles.whyCount} ${styles.whyCountMet}` : styles.whyCount}>
+              {whyCount} of {whyMinimum} characters
+            </p>
+          </div>
+        )}
       </div>
 
       {/* Actions — only visible when pending */}
@@ -591,7 +622,8 @@ export function ApprovalGate({
             className={`${styles.btn} ${styles.btnApprove}`}
             onClick={handleApprove}
             type="button"
-            disabled={signing}
+            disabled={signing || ((mode !== 'staged' || stagedStep === 'confirming') && !whyReady)}
+            aria-describedby={whyMinimum > 0 ? `${whyId}-count` : undefined}
           >
             {mode === 'staged' && stagedStep === 'previewing'
               ? <>Preview and continue <IconArrowRight /></>

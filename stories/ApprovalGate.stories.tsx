@@ -305,6 +305,18 @@ export const WithAutomationBiasAlert: Story = {
   }
 };
 
+export const RequiredWhy: Story = {
+  name: 'Required why',
+  args: {
+    ...storyApproval({
+      status: 'pending',
+      title: 'Pay a new vendor',
+      description: 'Approve stays off until the why reaches 100 characters. Reject stays available.',
+    }),
+    triggers: ['new-payee'],
+  },
+};
+
 export const SignedReceipt: Story = {
   name: 'Signed receipt',
   args: {

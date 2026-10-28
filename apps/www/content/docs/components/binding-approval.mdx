@@ -84,6 +84,8 @@ This primitive replaces `ApprovalGate` in high-stakes nodes. The internal state 
 | `isSigning` | `boolean` | `false` | Toggles the active signing visual state |
 | `signerIdentity` | `string` | — | Identity of the approver |
 | `timeoutSeconds` | `number` | — | Signing window timeout |
+| `triggers` | `string[]` | — | Policy reasons that opened the gate. A payment trigger requires a why of 100 characters. |
+| `minJustificationLength` | `number` | — | Overrides that length. `0` turns the field off. |
 | `onSign` | `() => void` | — | Called when the user confirms. Your backend records the intent. |
 | `onReject` | `(reason?: string) => void` | — | Called when rejected |
 | `signature` | `string` | — | Signature string from your backend. Display only. |

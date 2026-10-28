@@ -57,4 +57,4 @@ export { createClock } from './clock';
 export type { Clock } from './clock';
 export { can, createApproval, isTerminal, toDecisionRecord, transition } from './machine';
 export type { ApprovalPolicy, ApprovalPolicyInput, ApprovalTrigger, PayeeGrant } from './triggers';
-export { requiresApproval } from './triggers';
+export { justificationLength, requiredJustificationLength, requiresApproval } from './triggers';
