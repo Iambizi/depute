@@ -53,8 +53,24 @@ export {
   createReceiptVerifier,
   generateEd25519KeyPair,
 } from './utils/receiptSign';
-export type { ApprovalPolicy, ApprovalTrigger, PayeeGrant } from './utils/triggers';
-export { justificationLength, requiredJustificationLength, requiresApproval } from './utils/triggers';
+export type {
+  ApprovalPolicy,
+  ApprovalTrigger,
+  PayeeGrant,
+  SmallPayeeRef,
+  SmallPayment,
+  SmallPaymentBurst,
+  SmallPaymentBurstInput,
+} from './utils/triggers';
+export {
+  DEFAULT_MAX_SMALL_TX_COUNT,
+  DEFAULT_SMALL_TX_THRESHOLD,
+  DEFAULT_SMALL_TX_WINDOW_MS,
+  justificationLength,
+  requiredJustificationLength,
+  requiresApproval,
+  smallPaymentBurst,
+} from './utils/triggers';
 
 // A11y utilities
 export { VisuallyHidden, useAnnouncer, useFocusTrap } from './utils/a11y';

@@ -118,6 +118,7 @@ test('add approval-gate installs tokens and rewrites shared imports', () => {
   assert.match(installedSign, /from ['"]\.\/ax-receipt['"]/);
   const installedTriggers = fs.readFileSync(path.join(cwd, 'src/utils/ax-triggers.ts'), 'utf8');
   assert.match(installedTriggers, /export function requiresApproval/);
+  assert.match(installedTriggers, /export function smallPaymentBurst/);
   assert.match(installedTriggers, /from ['"]\.\.\/types\/ax-core['"]/);
   assert.doesNotMatch(installedTriggers, /from ['"]\.\/presented['"]/);
   assert.doesNotMatch(installedSign, /from ['"]\.\/receipt['"]/);
@@ -349,4 +350,22 @@ test('init copies the skill and design tokens', () => {
   assert.equal(fs.existsSync(path.join(cwd, 'src/types/ax-common.ts')), true);
   assert.equal(fs.existsSync(path.join(cwd, 'src/types/ax-core.ts')), true);
   assert.match(fs.readFileSync(path.join(cwd, 'src/index.css'), 'utf8'), /@import "\.\/styles\/depute\.css"/);
+});
+
+test('add budget-meter rewrites the small-payment import', () => {
+  const cwd = fs.mkdtempSync(path.join(os.tmpdir(), 'depute-budget-'));
+  const result = runAdd(cwd, ['budget-meter', '--no-css']);
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+  const component = fs.readFileSync(
+    path.join(cwd, 'src/components/BudgetMeter/BudgetMeter.tsx'),
+    'utf8',
+  );
+  const types = fs.readFileSync(
+    path.join(cwd, 'src/components/BudgetMeter/BudgetMeter.types.ts'),
+    'utf8',
+  );
+  assert.match(component, /from ['"]\.\.\/\.\.\/utils\/ax-triggers['"]/);
+  assert.match(types, /from ['"]\.\.\/\.\.\/utils\/ax-triggers['"]/);
+  assert.doesNotMatch(component, /from ['"][^'"]*utils\/triggers['"]/);
+  assert.doesNotMatch(types, /from ['"][^'"]*utils\/triggers['"]/);
 });

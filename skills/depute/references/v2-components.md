@@ -34,6 +34,7 @@ Reference guide for the 9 Compliance and Forensics components designed for high-
 **Usage:** Visual governor on resource limits.
 - `spent`, `limit`, `unit`, `burnRate`.
 - Auto-calculates `elevated` vs `critical` severities as the budget drains.
+- `transactions` and `nowMs` add one warning for a run of small auto-approved payments. The rule is in `references/design-rationale.md`.
 - **When to use:** Embedded into `RunControls` or displayed stat-bar style for the active session.
 
 ## 6. Binding Approval (`<BindingApproval />`)

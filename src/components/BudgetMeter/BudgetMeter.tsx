@@ -11,6 +11,12 @@
 
 import { useMemo, useEffect, useRef } from 'react';
 import { VisuallyHidden } from '../../utils/a11y';
+import {
+  DEFAULT_SMALL_TX_THRESHOLD,
+  DEFAULT_SMALL_TX_WINDOW_MS,
+  smallPaymentBurst,
+} from '../../utils/triggers';
+import type { SmallPaymentBurst } from '../../utils/triggers';
 import type { BudgetMeterProps, BudgetSeverity, BudgetUnit } from './BudgetMeter.types';
 import styles from './BudgetMeter.module.css';
 
@@ -71,6 +77,21 @@ const defaultFormatValue = (value: number): string => {
   return value.toLocaleString();
 };
 
+function windowLabel(windowMs: number): string {
+  if (windowMs > 0 && windowMs % 60_000 === 0) {
+    const minutes = windowMs / 60_000;
+    return minutes === 1 ? '1 minute' : `${minutes} minutes`;
+  }
+  const seconds = Math.round(windowMs / 1000);
+  return seconds === 1 ? '1 second' : `${seconds} seconds`;
+}
+
+function burstMessage(burst: SmallPaymentBurst, threshold: string, windowMs: number): string {
+  const payments = burst.count === 1 ? 'payment' : 'payments';
+  const payees = burst.payeeCount === 1 ? 'payee' : 'payees';
+  return `${burst.count} ${payments} under ${threshold} reached ${burst.payeeCount} ${payees} in the last ${windowLabel(windowMs)}. This warning does not open another approval.`;
+}
+
 /* ------------------------------------------------------------------ */
 /* Component                                                           */
 /* ------------------------------------------------------------------ */
@@ -90,6 +111,12 @@ export function BudgetMeter({
   onBudgetExceeded,
   onCriticalThreshold,
   compact = false,
+  transactions,
+  nowMs,
+  smallTxThreshold = DEFAULT_SMALL_TX_THRESHOLD,
+  windowMs = DEFAULT_SMALL_TX_WINDOW_MS,
+  maxSmallTxCount,
+  onSmallTxPattern,
   className,
 }: BudgetMeterProps) {
   const resolvedSeverity =
@@ -114,6 +141,35 @@ export function BudgetMeter({
     }
   }, [resolvedSeverity, onBudgetExceeded, onCriticalThreshold]);
 
+  const burst = useMemo(() => {
+    if (!transactions || nowMs === undefined) return null;
+    return smallPaymentBurst({
+      transactions,
+      nowMs,
+      smallTxThreshold,
+      windowMs,
+      maxSmallTxCount,
+    });
+  }, [transactions, nowMs, smallTxThreshold, windowMs, maxSmallTxCount]);
+
+  const notifiedPayees = useRef<string | null>(null);
+  useEffect(() => {
+    if (!burst?.warn) {
+      notifiedPayees.current = null;
+      return;
+    }
+    const key = burst.payees.map((payee) => `${payee.rail}\u0000${payee.identifier}`).join('\n');
+    if (notifiedPayees.current === key) return;
+    notifiedPayees.current = key;
+    onSmallTxPattern?.(burst);
+  }, [burst, onSmallTxPattern]);
+
+  const warning = burst?.warn ? (
+    <p className={styles.burst} role="status">
+      {burstMessage(burst, smallTxThreshold, windowMs)}
+    </p>
+  ) : null;
+
   const formattedSpent = formatValue(spent);
   const formattedLimit = formatValue(limit);
   const formattedBurnRate = burnRate != null
@@ -129,8 +185,39 @@ export function BudgetMeter({
 
   if (compact) {
     return (
+      <div className={styles.stack}>
+        <div
+          className={`${styles.budgetMeterCompact} ax-card ${SEVERITY_CLASSES[resolvedSeverity]} ${className ?? ''}`}
+          data-ax=""
+          role="meter"
+          aria-label={ariaLabel}
+          aria-valuetext={`${formattedSpent} of ${formattedLimit} ${unitLabel}`}
+          aria-valuenow={spent}
+          aria-valuemin={0}
+          aria-valuemax={limit}
+        >
+          <span className={styles.compactLabel}>{label}</span>
+          <span className={styles.compactValue}>
+            {formattedSpent}
+            <span className={styles.compactSeparator}>/</span>
+            {formattedLimit}
+          </span>
+          <div className={styles.compactBar}>
+            <div
+              className={`${styles.compactBarFill} ${SEVERITY_CLASSES[resolvedSeverity]}`}
+              style={{ width: `${percentage}%` }}
+            />
+          </div>
+        </div>
+        {warning}
+      </div>
+    );
+  }
+
+  return (
+    <div className={styles.stack}>
       <div
-        className={`${styles.budgetMeterCompact} ax-card ${SEVERITY_CLASSES[resolvedSeverity]} ${className ?? ''}`}
+        className={`${styles.budgetMeter} ax-card ${SEVERITY_CLASSES[resolvedSeverity]} ${className ?? ''}`}
         data-ax=""
         role="meter"
         aria-label={ariaLabel}
@@ -139,33 +226,6 @@ export function BudgetMeter({
         aria-valuemin={0}
         aria-valuemax={limit}
       >
-        <span className={styles.compactLabel}>{label}</span>
-        <span className={styles.compactValue}>
-          {formattedSpent}
-          <span className={styles.compactSeparator}>/</span>
-          {formattedLimit}
-        </span>
-        <div className={styles.compactBar}>
-          <div
-            className={`${styles.compactBarFill} ${SEVERITY_CLASSES[resolvedSeverity]}`}
-            style={{ width: `${percentage}%` }}
-          />
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <div
-      className={`${styles.budgetMeter} ax-card ${SEVERITY_CLASSES[resolvedSeverity]} ${className ?? ''}`}
-      data-ax=""
-      role="meter"
-      aria-label={ariaLabel}
-      aria-valuetext={`${formattedSpent} of ${formattedLimit} ${unitLabel}`}
-      aria-valuenow={spent}
-      aria-valuemin={0}
-      aria-valuemax={limit}
-    >
       {/* Header */}
       <div className={styles.header}>
         <span className={styles.label}>{label}</span>
@@ -210,6 +270,8 @@ export function BudgetMeter({
       )}
 
       <VisuallyHidden>{ariaLabel}</VisuallyHidden>
+      </div>
+      {warning}
     </div>
   );
 }

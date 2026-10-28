@@ -184,3 +184,99 @@ export function requiredJustificationLength(
   if (triggers?.some((trigger) => PAYMENT_TRIGGERS.has(trigger))) return 100;
   return 0;
 }
+
+/** Payments strictly under this decimal, in the meter's unit, are small. */
+export const DEFAULT_SMALL_TX_THRESHOLD = '5';
+
+/** Ten minutes. A payment ages out when its age reaches this. */
+export const DEFAULT_SMALL_TX_WINDOW_MS = 10 * 60 * 1000;
+
+/** The warning appears when the small-payment count is greater than this. */
+export const DEFAULT_MAX_SMALL_TX_COUNT = 5;
+
+/** One auto-approved payment. The host leaves gated payments out of the list. */
+export interface SmallPayment {
+  rail: string;
+  identifier: string;
+  purpose: string;
+  /** Decimal string in the meter's unit. */
+  amount: string;
+  /** Unix milliseconds when this payment was auto-approved. */
+  atMs: number;
+}
+
+export interface SmallPaymentBurstInput {
+  transactions: readonly SmallPayment[];
+  nowMs: number;
+  /** Payments strictly under this decimal count. Default "5". */
+  smallTxThreshold?: string;
+  /** A payment ages out when its age reaches this. Default ten minutes. */
+  windowMs?: number;
+  /** The warning appears when the count is greater than this. Default 5. */
+  maxSmallTxCount?: number;
+}
+
+export interface SmallPayeeRef {
+  rail: string;
+  identifier: string;
+}
+
+export interface SmallPaymentBurst {
+  /** True when one warning row should show. This never opens a gate. */
+  warn: boolean;
+  count: number;
+  payeeCount: number;
+  payees: SmallPayeeRef[];
+}
+
+/**
+ * A run of small auto-approved payments.
+ * One payee and one purpose stays quiet, however many times it repeats.
+ * The row appears when the count is over the maximum and the payments
+ * are not all the same payee and purpose.
+ */
+export function smallPaymentBurst(input: SmallPaymentBurstInput): SmallPaymentBurst {
+  const threshold = input.smallTxThreshold ?? DEFAULT_SMALL_TX_THRESHOLD;
+  const windowMs = input.windowMs ?? DEFAULT_SMALL_TX_WINDOW_MS;
+  const maxCount = input.maxSmallTxCount ?? DEFAULT_MAX_SMALL_TX_COUNT;
+  const empty: SmallPaymentBurst = { warn: false, count: 0, payeeCount: 0, payees: [] };
+  if (!Number.isFinite(input.nowMs) || !Number.isFinite(windowMs) || windowMs < 0) return empty;
+  if (!Number.isFinite(maxCount) || maxCount < 0) return empty;
+  if (parseDecimal(threshold) === null) return empty;
+
+  const payeeKeys = new Map<string, SmallPayeeRef>();
+  const groups = new Set<string>();
+  let count = 0;
+
+  for (const payment of input.transactions) {
+    if (!Number.isFinite(payment.atMs)) continue;
+    const age = input.nowMs - payment.atMs;
+    if (age < 0 || age >= windowMs) continue;
+    const amount = parseDecimal(payment.amount);
+    if (!amount || amount.negative) continue;
+    const compared = compareDecimal(payment.amount, threshold);
+    if (compared === null || compared >= 0) continue;
+
+    count += 1;
+    const rail = payment.rail.trim();
+    const identifier = payment.identifier.trim();
+    const payeeKey = `${rail}\u0000${identifier}`;
+    if (!payeeKeys.has(payeeKey)) payeeKeys.set(payeeKey, { rail, identifier });
+    groups.add(`${payeeKey}\u0000${normalizePurpose(payment.purpose)}`);
+  }
+
+  const payees = [...payeeKeys.values()].sort((left, right) => {
+    if (left.rail === right.rail) {
+      if (left.identifier === right.identifier) return 0;
+      return left.identifier < right.identifier ? -1 : 1;
+    }
+    return left.rail < right.rail ? -1 : 1;
+  });
+
+  return {
+    warn: count > maxCount && groups.size > 1,
+    count,
+    payeeCount: payees.length,
+    payees,
+  };
+}
