@@ -56,5 +56,22 @@ export {
 export { createClock } from './clock';
 export type { Clock } from './clock';
 export { can, createApproval, isTerminal, toDecisionRecord, transition } from './machine';
-export type { ApprovalPolicy, ApprovalPolicyInput, ApprovalTrigger, PayeeGrant } from './triggers';
-export { justificationLength, requiredJustificationLength, requiresApproval } from './triggers';
+export type {
+  ApprovalPolicy,
+  ApprovalPolicyInput,
+  ApprovalTrigger,
+  PayeeGrant,
+  SmallPayeeRef,
+  SmallPayment,
+  SmallPaymentBurst,
+  SmallPaymentBurstInput,
+} from './triggers';
+export {
+  DEFAULT_MAX_SMALL_TX_COUNT,
+  DEFAULT_SMALL_TX_THRESHOLD,
+  DEFAULT_SMALL_TX_WINDOW_MS,
+  justificationLength,
+  requiredJustificationLength,
+  requiresApproval,
+  smallPaymentBurst,
+} from './triggers';

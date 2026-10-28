@@ -3,7 +3,9 @@ import {
   justificationLength,
   requiredJustificationLength,
   requiresApproval,
+  smallPaymentBurst,
   type PayeeGrant,
+  type SmallPayment,
 } from '../src/triggers';
 
 const now = Date.parse('2026-10-28T16:00:00.000Z');
@@ -134,5 +136,125 @@ describe('required justification', () => {
     expect(requiredJustificationLength(['new-payee'], 40)).toBe(40);
     expect(requiredJustificationLength(['new-payee'], 0)).toBe(0);
     expect(justificationLength('  pay   the vendor  ')).toBe('pay the vendor'.length);
+  });
+});
+
+function payment(partial: Partial<SmallPayment> & Pick<SmallPayment, 'identifier'>): SmallPayment {
+  return {
+    rail: 'usdc',
+    purpose: 'Pay invoice 104',
+    amount: '1.00',
+    atMs: now - 60_000,
+    ...partial,
+  };
+}
+
+describe('smallPaymentBurst', () => {
+  it('warns once for a sub-threshold burst across several payees', () => {
+    const pattern = smallPaymentBurst({
+      nowMs: now,
+      transactions: [
+        payment({ identifier: '0xaaa', amount: '1.00', atMs: now - 60_000 }),
+        payment({ identifier: '0xaaa', amount: '2.00', atMs: now - 50_000 }),
+        payment({ identifier: '0xbbb', rail: 'ach', amount: '3.00', atMs: now - 40_000 }),
+        payment({ identifier: '0xbbb', rail: 'ach', amount: '1.50', atMs: now - 30_000 }),
+        payment({ identifier: 'iban', rail: 'sepa', amount: '4.00', atMs: now - 20_000 }),
+        payment({ identifier: 'iban', rail: 'sepa', amount: '0.75', atMs: now - 10_000 }),
+        payment({ identifier: 'iban', rail: 'sepa', amount: '4.99', atMs: now - 5_000 }),
+      ],
+    });
+    expect(pattern.warn).toBe(true);
+    expect(pattern.count).toBe(7);
+    expect(pattern.payeeCount).toBe(3);
+    expect(pattern.payees.map((payee) => payee.identifier)).toEqual(['0xbbb', 'iban', '0xaaa']);
+  });
+
+  it('stays quiet for repeated payments to one payee and one purpose', () => {
+    const pattern = smallPaymentBurst({
+      nowMs: now,
+      transactions: Array.from({ length: 8 }, (_, index) => payment({
+        identifier: '0xaaa',
+        amount: '1.00',
+        atMs: now - (index + 1) * 1_000,
+      })),
+    });
+    expect(pattern.warn).toBe(false);
+    expect(pattern.count).toBe(8);
+    expect(pattern.payeeCount).toBe(1);
+  });
+
+  it('warns when one payee is paid for two purposes past the count', () => {
+    const pattern = smallPaymentBurst({
+      nowMs: now,
+      transactions: [
+        payment({ identifier: '0xaaa', purpose: 'Pay invoice 104' }),
+        payment({ identifier: '0xaaa', purpose: 'Pay invoice 104' }),
+        payment({ identifier: '0xaaa', purpose: 'Pay invoice 104' }),
+        payment({ identifier: '0xaaa', purpose: 'Refund fee' }),
+        payment({ identifier: '0xaaa', purpose: 'Refund fee' }),
+        payment({ identifier: '0xaaa', purpose: 'Refund fee' }),
+      ],
+    });
+    expect(pattern.warn).toBe(true);
+    expect(pattern.payeeCount).toBe(1);
+  });
+
+  it('collapses whitespace so the same purpose stays one group', () => {
+    const pattern = smallPaymentBurst({
+      nowMs: now,
+      transactions: Array.from({ length: 6 }, () => payment({
+        identifier: ' 0xaaa ',
+        purpose: '  Pay   invoice 104  ',
+      })),
+    });
+    expect(pattern.warn).toBe(false);
+    expect(pattern.payees).toEqual([{ rail: 'usdc', identifier: '0xaaa' }]);
+  });
+
+  it('ignores amounts at the threshold, old payments, and a count that is not over the maximum', () => {
+    const under = smallPaymentBurst({
+      nowMs: now,
+      transactions: [
+        payment({ identifier: '0xaaa', amount: '5' }),
+        payment({ identifier: '0xaaa', amount: '5.00' }),
+        payment({ identifier: '0xbbb', amount: '9.00' }),
+        payment({ identifier: '0xccc', amount: '1.00', atMs: now - 10 * 60 * 1000 }),
+        payment({ identifier: '0xccc', amount: '1.00', atMs: now + 1_000 }),
+        payment({ identifier: '0xccc', amount: '-1.00' }),
+        payment({ identifier: '0xccc', amount: 'nope' }),
+      ],
+    });
+    expect(under).toEqual({ warn: false, count: 0, payeeCount: 0, payees: [] });
+
+    const five = smallPaymentBurst({
+      nowMs: now,
+      transactions: [
+        payment({ identifier: '0xaaa' }),
+        payment({ identifier: '0xaaa' }),
+        payment({ identifier: '0xbbb' }),
+        payment({ identifier: '0xbbb' }),
+        payment({ identifier: '0xccc' }),
+      ],
+    });
+    expect(five.warn).toBe(false);
+    expect(five.count).toBe(5);
+  });
+
+  it('uses a host threshold and interval', () => {
+    const pattern = smallPaymentBurst({
+      nowMs: now,
+      smallTxThreshold: '10',
+      windowMs: 30_000,
+      maxSmallTxCount: 1,
+      transactions: [
+        payment({ identifier: '0xaaa', amount: '9.50', atMs: now - 10_000 }),
+        payment({ identifier: '0xbbb', amount: '10', atMs: now - 10_000 }),
+        payment({ identifier: '0xbbb', amount: '1.00', atMs: now - 40_000 }),
+        payment({ identifier: '0xccc', amount: '2.00', atMs: now - 5_000 }),
+      ],
+    });
+    expect(pattern.warn).toBe(true);
+    expect(pattern.count).toBe(2);
+    expect(pattern.payeeCount).toBe(2);
   });
 });

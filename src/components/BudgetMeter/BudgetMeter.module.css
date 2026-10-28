@@ -37,6 +37,7 @@
 /* ------------------------------------------------------------------ */
 
 .budgetMeter {font-family: var(--ax-font-sans);
+  width: 100%;
   border: var(--ax-border-width) solid var(--ax-border-default);
   border-radius: var(--ax-radius-md);
   padding: var(--ax-space-4);
@@ -147,6 +148,7 @@
 .budgetMeterCompact {font-family: var(--ax-font-sans);
   display: inline-flex;
   align-items: center;
+  align-self: flex-start;
   gap: var(--ax-space-2);
   padding: var(--ax-space-1) var(--ax-space-3);
   border: var(--ax-border-width) solid var(--ax-border-default);
@@ -180,3 +182,21 @@
   outline: none;
   box-shadow: var(--ax-ring);
 }
+
+/* ------------------------------------------------------------------ */
+/* Small-payment warning                                               */
+/* ------------------------------------------------------------------ */
+
+.stack {display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--ax-space-2);}
+
+.burst {margin: 0;
+  padding: var(--ax-space-2) var(--ax-space-3);
+  background: var(--ax-status-warning-bg);
+  color: var(--ax-status-warning-fg);
+  border-radius: var(--ax-radius-md);
+  font-family: var(--ax-font-sans);
+  font-size: var(--ax-text-sm);
+  line-height: var(--ax-leading-sm);}
