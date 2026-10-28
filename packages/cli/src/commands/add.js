@@ -205,6 +205,20 @@ export async function loadShared(sharedRoot) {
     });
   }
 
+  const triggersDest = path.posix.join(sharedRoot, 'utils/ax-triggers.ts');
+  if (!fileExists(triggersDest)) {
+    const presentedImport = importSpecifier(
+      path.posix.join(sharedRoot, 'utils'),
+      path.posix.join(sharedRoot, 'types/ax-core'),
+    );
+    const raw = await loadFile('packages/core/src/triggers.ts');
+    files.push({
+      dest: triggersDest,
+      content: raw.replace(/from (['"])\.\/presented\1/g, (_, quote) => `from ${quote}${presentedImport}${quote}`),
+      note: 'receipt',
+    });
+  }
+
   const signDest = path.posix.join(sharedRoot, 'utils/ax-receipt-sign.ts');
   if (!fileExists(signDest)) {
     const raw = await loadFile('src/utils/receiptSign.ts');
