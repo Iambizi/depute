@@ -4,7 +4,8 @@
  * A high-stakes approval gate that implements the `isSigning`
  * state for irreversible actions. Unlike ApprovalGate, BindingApproval
  * requires explicit term acknowledgment. A signature or hash shown here
- * is supplied by the caller's backend. This component does not sign.
+ * is supplied by the caller's backend. An approval receipt is signed only
+ * when the host passes a signer.
  *
  * v2 — Strict Compliance & Forensics
  * @see docs/internal/research/catalog-versions/CATALOG-v2.md (Primitive 4)
@@ -15,7 +16,7 @@ import { useState, useEffect, useMemo, useRef, useCallback } from 'react';
 import { VisuallyHidden } from '../../utils/a11y';
 import { IconAlert, IconCheck, IconLock, IconX } from '../../utils/icons';
 import type { HandoffContext } from '../../types/core';
-import { buildDecisionReceipt } from '../../utils/receipt';
+import { buildDecisionReceipt, buildSignedDecisionReceipt } from '../../utils/receipt';
 import type { ReceiptMethod, ReceiptOutcome } from '../../utils/receipt';
 import type {
   BindingApprovalProps,
@@ -85,6 +86,8 @@ export function BindingApproval({
   previousReceiptHash,
   highStakes,
   onReceipt,
+  appSigner,
+  passkey,
   className,
 }: BindingApprovalProps) {
   const [checkedTerms, setCheckedTerms] = useState<Set<string>>(
@@ -97,7 +100,10 @@ export function BindingApproval({
   const isHandoffPending = effectiveStatus === 'handoff_pending';
 
   const shownAtRef = useRef(presentedAt ?? Date.now());
-  const emitReceiptRef = useRef<(outcome: ReceiptOutcome, method: ReceiptMethod) => void>(() => {});
+  const emitReceiptRef = useRef<(outcome: ReceiptOutcome, method: ReceiptMethod) => void | Promise<void>>(() => {});
+  const [signingReceipt, setSigningReceipt] = useState(false);
+  const signingRef = useRef(false);
+  const [signError, setSignError] = useState<string | null>(null);
   const [handoffInitiated, setHandoffInitiated] = useState(false);
   const handoffContextRef = useRef<HandoffContext | null>(null);
   const prevStatusRef = useRef(effectiveStatus);
@@ -190,14 +196,24 @@ export function BindingApproval({
     const expire = () => {
       if (cancelled || expiryFiredRef.current) return;
       expiryFiredRef.current = true;
+      const finish = (outcome: ReceiptOutcome, method: ReceiptMethod, after: () => void) => {
+        const pending = emitReceiptRef.current(outcome, method);
+        if (!pending) {
+          after();
+          return;
+        }
+        void Promise.resolve(pending).then(after, after);
+      };
       if (isHandoffPending) {
         onHandoffExpired?.(fallbackContext(deadlineAt));
         const denied = approvalHandoff?.fallbackBehavior === 'deny';
-        emitReceiptRef.current(denied ? 'denied' : 'expired', 'handoff');
-        if (denied) onReject?.('Handoff expired (fallback: deny)');
+        void finish(denied ? 'denied' : 'expired', 'handoff', () => {
+          if (denied) onReject?.('Handoff expired (fallback: deny)');
+        });
       } else {
-        emitReceiptRef.current('expired', 'click');
-        onTimeout?.();
+        void finish('expired', 'click', () => {
+          onTimeout?.();
+        });
       }
     };
 
@@ -226,9 +242,9 @@ export function BindingApproval({
     fallbackContext,
   ]);
 
-  const emitReceipt = useCallback((outcome: ReceiptOutcome, method: ReceiptMethod) => {
-    if (!onReceipt) return;
-    onReceipt(buildDecisionReceipt({
+  const emitReceipt = useCallback((outcome: ReceiptOutcome, method: ReceiptMethod): void | Promise<void> => {
+    if (!onReceipt) return undefined;
+    const input = {
       id: receiptId,
       instruction,
       payload: presentedPayload,
@@ -246,7 +262,12 @@ export function BindingApproval({
       highStakes,
       previousReceiptHash,
       fallbackId: pendingApprovalId || signerIdentity || 'local',
-    }));
+    };
+    if (!appSigner && !passkey) {
+      onReceipt(buildDecisionReceipt(input));
+      return undefined;
+    }
+    return buildSignedDecisionReceipt(input, { app: appSigner, passkey }).then(onReceipt);
   }, [
     onReceipt,
     receiptId,
@@ -263,8 +284,31 @@ export function BindingApproval({
     previousReceiptHash,
     pendingApprovalId,
     signerIdentity,
+    appSigner,
+    passkey,
   ]);
   emitReceiptRef.current = emitReceipt;
+
+  const decide = useCallback(async (
+    outcome: ReceiptOutcome,
+    method: ReceiptMethod,
+    after: () => void,
+  ) => {
+    if (signingRef.current) return;
+    signingRef.current = true;
+    setSignError(null);
+    setSigningReceipt(true);
+    try {
+      await emitReceipt(outcome, method);
+      after();
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'The signature could not be completed.';
+      setSignError(message);
+    } finally {
+      signingRef.current = false;
+      setSigningReceipt(false);
+    }
+  }, [emitReceipt]);
 
   const handleTermToggle = useCallback((termId: string) => {
     setCheckedTerms((prev) => {
@@ -292,6 +336,7 @@ export function BindingApproval({
       data-ax=""
       role="alertdialog"
       aria-label={ariaLabel}
+      aria-busy={signingReceipt || undefined}
     >
       {/* Header */}
       <div className={styles.header}>
@@ -399,28 +444,32 @@ export function BindingApproval({
           <button
             type="button"
             className={`${styles.signBtn} ax-btn ax-btn-primary ax-btn-lg`}
-                onClick={() => {
-                  emitReceipt('approved', 'click');
-                  onSign?.();
-                }}
-            disabled={!canSign}
+            onClick={() => {
+              void decide('approved', 'click', () => {
+                onSign?.();
+              });
+            }}
+            disabled={!canSign || signingReceipt}
             aria-label="Sign and approve"
           >
-            {effectiveStatus === 'signing' ? 'Signing…' : 'Sign and approve'}
-            {effectiveStatus !== 'signing' && <IconCheck />}
+            {effectiveStatus === 'signing' || signingReceipt ? 'Signing…' : 'Sign and approve'}
+            {effectiveStatus !== 'signing' && !signingReceipt && <IconCheck />}
           </button>
           <button
             type="button"
             className={styles.rejectBtn}
-                onClick={() => {
-                  emitReceipt('rejected', 'click');
-                  onReject?.();
-                }}
-                disabled={effectiveStatus === 'signing'}
+            onClick={() => {
+              void decide('rejected', 'click', () => {
+                onReject?.();
+              });
+            }}
+            disabled={effectiveStatus === 'signing' || signingReceipt}
             aria-label="Reject"
           >
             Reject
           </button>
+          {signingReceipt && <p className={styles.signWait} role="status">Waiting for a signature</p>}
+          {signError && <p className={styles.signError} role="alert">{signError}</p>}
         </div>
       )}
       {isHandoffPending && (
@@ -429,9 +478,11 @@ export function BindingApproval({
             type="button"
             className={styles.rejectBtn}
                 onClick={() => {
-                  emitReceipt('rejected', 'handoff');
-                  onReject?.();
+                  void decide('rejected', 'handoff', () => {
+                    onReject?.();
+                  });
                 }}
+                disabled={signingReceipt}
                 aria-label="Cancel signature request"
             style={{ marginLeft: 'auto' }}
           >

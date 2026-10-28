@@ -288,6 +288,16 @@
 
 .actionsSpacerRight {margin-left: auto;}
 
+.signWait,
+.signError {flex-basis: 100%;
+  margin: var(--ax-space-2) 0 0;
+  font-size: var(--ax-text-sm);
+  line-height: var(--ax-leading-lg);}
+
+.signWait {color: var(--ax-fg-muted);}
+
+.signError {color: var(--ax-status-danger-fg);}
+
 /* ------------------------------------------------------------------ */
 /* Resolved state banner                                               */
 /* ------------------------------------------------------------------ */

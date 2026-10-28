@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import type { ApprovalReceipt } from '../../utils/receipt';
-import { verify } from '../../utils/receipt';
+import { receiptCheckLabel, verify, type ApprovalReceipt } from '../../utils/receipt';
+import { createReceiptVerifier } from '../../utils/receiptSign';
 import { downloadApprovalReceipt } from '../../utils/receiptDownload';
 import styles from './DecisionRecord.module.css';
 
@@ -112,8 +112,8 @@ export function DecisionRecord({
                 type="button"
                 className="ax-btn ax-btn-secondary ax-btn-sm"
                 onClick={() => {
-                  void verify(approvalReceipt).then((result) => {
-                    setHashCheck(result.valid ? 'Hash matches' : 'Hash does not match');
+                  void verify(approvalReceipt, createReceiptVerifier()).then((result) => {
+                    setHashCheck(receiptCheckLabel(result));
                   });
                 }}
               >

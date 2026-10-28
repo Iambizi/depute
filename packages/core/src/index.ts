@@ -33,7 +33,9 @@ export type {
   ReceiptExecution,
   ReceiptExecutionStatus,
   ReceiptMethod,
+  ReceiptAppSigner,
   ReceiptOutcome,
+  ReceiptPasskeySigner,
   ReceiptSignature,
   ReceiptVerification,
   ReceiptVerifier,
@@ -42,10 +44,14 @@ export type {
 export {
   buildDecisionReceipt,
   buildReceipt,
+  buildSignedDecisionReceipt,
   canonicalize,
   isReceiptHash,
+  receiptCheckLabel,
   sha256,
+  signApprovalReceipt,
   verify,
+  withSignatures,
 } from './receipt';
 export { createClock } from './clock';
 export type { Clock } from './clock';

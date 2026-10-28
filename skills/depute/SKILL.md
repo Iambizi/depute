@@ -95,7 +95,7 @@ npx ax-depute list
 npx ax-depute@latest add approval-gate
 ```
 
-Components are written to `src/components/<ComponentName>/`. Shared types land once in `src/types/ax-common.ts`. Handoff and presented-payload types land once in `src/types/ax-core.ts`. The approval receipt hasher lands once in `src/utils/ax-receipt.ts`. No lock-in — customize freely.
+Components are written to `src/components/<ComponentName>/`. Shared types land once in `src/types/ax-common.ts`. Handoff and presented-payload types land once in `src/types/ax-core.ts`. The approval receipt hasher lands once in `src/utils/ax-receipt.ts`. App and passkey signers land once in `src/utils/ax-receipt-sign.ts`. No lock-in — customize freely.
 
 ### Step 4: Wire it to your agent's state
 

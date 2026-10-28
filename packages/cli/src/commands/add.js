@@ -82,11 +82,13 @@ function rewriteComponentImports(content, componentDir, sharedRoot) {
   const a11yImport = importSpecifier(componentDir, path.posix.join(sharedRoot, 'utils/ax-a11y'));
   const iconsImport = importSpecifier(componentDir, path.posix.join(sharedRoot, 'utils/ax-icons'));
   const receiptImport = importSpecifier(componentDir, path.posix.join(sharedRoot, 'utils/ax-receipt'));
+  const signImport = importSpecifier(componentDir, path.posix.join(sharedRoot, 'utils/ax-receipt-sign'));
   const downloadImport = importSpecifier(componentDir, path.posix.join(sharedRoot, 'utils/ax-receipt-download'));
   return content
     .replace(/from (['"])(?:\.\.\/)+types\/common\1/g, (_, quote) => `from ${quote}${typesImport}${quote}`)
     .replace(/from (['"])(?:\.\.\/)+types\/core\1/g, (_, quote) => `from ${quote}${coreImport}${quote}`)
     .replace(/from (['"])(?:\.\.\/)+utils\/receiptDownload\1/g, (_, quote) => `from ${quote}${downloadImport}${quote}`)
+    .replace(/from (['"])(?:\.\.\/)+utils\/receiptSign\1/g, (_, quote) => `from ${quote}${signImport}${quote}`)
     .replace(/from (['"])(?:\.\.\/)+utils\/receipt\1/g, (_, quote) => `from ${quote}${receiptImport}${quote}`)
     .replace(/from (['"])(?:\.\.\/)+utils\/a11y\1/g, (_, quote) => `from ${quote}${a11yImport}${quote}`)
     .replace(/from (['"])(?:\.\.\/)+utils\/icons\1/g, (_, quote) => `from ${quote}${iconsImport}${quote}`);
@@ -199,6 +201,16 @@ export async function loadShared(sharedRoot) {
     files.push({
       dest: receiptDest,
       content: raw.replace(/from (['"])\.\/presented\1/g, (_, quote) => `from ${quote}${presentedImport}${quote}`),
+      note: 'receipt',
+    });
+  }
+
+  const signDest = path.posix.join(sharedRoot, 'utils/ax-receipt-sign.ts');
+  if (!fileExists(signDest)) {
+    const raw = await loadFile('src/utils/receiptSign.ts');
+    files.push({
+      dest: signDest,
+      content: raw.replace(/from (['"])\.\/receipt\1/g, (_, quote) => `from ${quote}./ax-receipt${quote}`),
       note: 'receipt',
     });
   }

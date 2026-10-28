@@ -7,7 +7,7 @@
 import type React from 'react';
 import type { ApprovalStatus } from '../../types/common';
 import type { ApprovalHandoff, HandoffContext, PresentedPayload } from '../../types/core';
-import type { ApprovalReceipt } from '../../utils/receipt';
+import type { ApprovalReceipt, ReceiptAppSigner, ReceiptPasskeySigner } from '../../utils/receipt';
 
 export type { ApprovalHandoff, HandoffContext };
 
@@ -111,8 +111,17 @@ export interface ApprovalGateProps {
   /** Hash of the previous receipt in this session, when the host has one. */
   previousReceiptHash?: string;
 
-  /** Recorded on the receipt. Enforcement of a passkey waits for a later change. */
+  /**
+   * Recorded on the receipt. When this is set and `passkey` is set, an
+   * approval or rejection asks for that passkey before the receipt is emitted.
+   */
   highStakes?: boolean;
+
+  /** Ed25519 app signer. When set, it signs every receipt this gate emits. */
+  appSigner?: ReceiptAppSigner;
+
+  /** User passkey. Used only when `highStakes` is set and the person decides. */
+  passkey?: ReceiptPasskeySigner;
 
   /** Fired with a hashed receipt when the person decides or the gate expires. */
   onReceipt?: (receipt: ApprovalReceipt) => void;
