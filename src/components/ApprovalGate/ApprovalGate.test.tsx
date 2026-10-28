@@ -97,6 +97,75 @@ describe('ApprovalGate', () => {
       expect(receipt.presented.payload.title).toBe('Pay vendor');
     });
 
+    it('signs with the app key, and with a passkey only when the approval is high-stakes', async () => {
+      const user = userEvent.setup();
+      const onReceipt = vi.fn();
+      const onApprove = vi.fn();
+      const appSigner = { sign: vi.fn(async () => ({ publicKey: 'app-key', signature: 'app-sig' })) };
+      const passkey = {
+        sign: vi.fn(async () => ({
+          algorithm: 'ES256',
+          publicKey: 'user-key',
+          signature: 'user-sig',
+          authenticatorData: 'auth',
+          clientDataJSON: 'client',
+        })),
+      };
+      const { rerender } = render(
+        <ApprovalGate
+          title="Pay vendor"
+          now={1_700_000_002_000}
+          presentedAt={1_700_000_000_000}
+          approver={{ id: 'alice' }}
+          onReceipt={onReceipt}
+          onApprove={onApprove}
+          appSigner={appSigner}
+          passkey={passkey}
+        />,
+      );
+      await user.click(screen.getByRole('button', { name: 'Approve' }));
+      expect(passkey.sign).not.toHaveBeenCalled();
+      expect(onReceipt.mock.calls[0][0].signatures).toEqual([
+        { signerType: 'app', algorithm: 'Ed25519', publicKey: 'app-key', signature: 'app-sig' },
+      ]);
+      expect(onReceipt.mock.calls[0][0].decision.approver.method).toBe('click');
+      expect(onApprove).toHaveBeenCalledTimes(1);
+
+      rerender(
+        <ApprovalGate
+          title="Pay vendor"
+          now={1_700_000_002_000}
+          presentedAt={1_700_000_000_000}
+          approver={{ id: 'alice' }}
+          onReceipt={onReceipt}
+          onApprove={onApprove}
+          appSigner={appSigner}
+          passkey={passkey}
+          highStakes
+        />,
+      );
+      await user.click(screen.getByRole('button', { name: 'Approve' }));
+      expect(passkey.sign).toHaveBeenCalledTimes(1);
+      expect(onReceipt.mock.calls[1][0].decision.approver.method).toBe('passkey');
+      expect(onReceipt.mock.calls[1][0].signatures.map((entry: { signerType: string }) => entry.signerType)).toEqual(['app', 'user']);
+    });
+
+    it('does not approve when the app signer fails', async () => {
+      const user = userEvent.setup();
+      const onApprove = vi.fn();
+      render(
+        <ApprovalGate
+          title="Pay vendor"
+          onReceipt={vi.fn()}
+          onApprove={onApprove}
+          appSigner={{ sign: async () => { throw new Error('App key refused the receipt.'); } }}
+        />,
+      );
+      await user.click(screen.getByRole('button', { name: 'Approve' }));
+      expect(onApprove).not.toHaveBeenCalled();
+      expect(screen.getByRole('alert')).toHaveTextContent('App key refused the receipt.');
+    });
+
     it('calls onApprove when Approve is clicked in simple mode', async () => {
       const user = userEvent.setup();
       const handleApprove = vi.fn();

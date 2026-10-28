@@ -18,7 +18,7 @@ import type React from 'react';
 import { getConfidenceLevel } from '../../types/common';
 import { IconArrowLeft, IconArrowRight } from '../../utils/icons';
 import { useAnnouncer, useFocusTrap, VisuallyHidden } from '../../utils/a11y';
-import { buildDecisionReceipt } from '../../utils/receipt';
+import { buildDecisionReceipt, buildSignedDecisionReceipt } from '../../utils/receipt';
 import type { ReceiptMethod, ReceiptOutcome } from '../../utils/receipt';
 import type { ApprovalGateProps, HandoffContext, StagedStep } from './ApprovalGate.types';
 import styles from './ApprovalGate.module.css';
@@ -147,6 +147,8 @@ export function ApprovalGate({
   previousReceiptHash,
   highStakes,
   onReceipt,
+  appSigner,
+  passkey,
   className,
 }: ApprovalGateProps) {
   const isPending = status === 'pending';
@@ -183,7 +185,10 @@ export function ApprovalGate({
   }, [status, title, announce, isPending, isHandoffPending]);
 
   const shownAtRef = useRef(presentedAt ?? now ?? Date.now());
-  const emitReceiptRef = useRef<(outcome: ReceiptOutcome, method: ReceiptMethod) => void>(() => {});
+  const emitReceiptRef = useRef<(outcome: ReceiptOutcome, method: ReceiptMethod) => void | Promise<void>>(() => {});
+  const [signing, setSigning] = useState(false);
+  const signingRef = useRef(false);
+  const [signError, setSignError] = useState<string | null>(null);
   const [handoffInitiated, setHandoffInitiated] = useState(false);
   const handoffContextRef = useRef<HandoffContext | null>(null);
   const prevStatusRef = useRef(status);
@@ -276,14 +281,24 @@ export function ApprovalGate({
     const expire = () => {
       if (cancelled || expiryFiredRef.current) return;
       expiryFiredRef.current = true;
+      const finish = (outcome: ReceiptOutcome, method: ReceiptMethod, after: () => void) => {
+        const pending = emitReceiptRef.current(outcome, method);
+        if (!pending) {
+          after();
+          return;
+        }
+        void Promise.resolve(pending).then(after, after);
+      };
       if (isHandoffPending) {
         onHandoffExpired?.(fallbackContext(deadlineAt));
         const denied = approvalHandoff?.fallbackBehavior === 'deny';
-        emitReceiptRef.current(denied ? 'denied' : 'expired', 'handoff');
-        if (denied) onReject?.('Handoff expired (fallback: deny)');
+        void finish(denied ? 'denied' : 'expired', 'handoff', () => {
+          if (denied) onReject?.('Handoff expired (fallback: deny)');
+        });
       } else {
-        emitReceiptRef.current('expired', 'click');
-        onTimeout?.();
+        void finish('expired', 'click', () => {
+          onTimeout?.();
+        });
       }
     };
 
@@ -321,9 +336,9 @@ export function ApprovalGate({
     return styles.countdownNormal;
   }, [timeRemaining]);
 
-  const emitReceipt = useCallback((outcome: ReceiptOutcome, method: ReceiptMethod) => {
-    if (!onReceipt) return;
-    onReceipt(buildDecisionReceipt({
+  const emitReceipt = useCallback((outcome: ReceiptOutcome, method: ReceiptMethod): void | Promise<void> => {
+    if (!onReceipt) return undefined;
+    const input = {
       id: receiptId,
       instruction,
       payload: presentedPayload,
@@ -342,7 +357,12 @@ export function ApprovalGate({
       highStakes,
       previousReceiptHash,
       fallbackId: pendingApprovalId || 'local',
-    }));
+    };
+    if (!appSigner && !passkey) {
+      onReceipt(buildDecisionReceipt(input));
+      return undefined;
+    }
+    return buildSignedDecisionReceipt(input, { app: appSigner, passkey }).then(onReceipt);
   }, [
     onReceipt,
     receiptId,
@@ -360,8 +380,32 @@ export function ApprovalGate({
     highStakes,
     previousReceiptHash,
     pendingApprovalId,
+    appSigner,
+    passkey,
   ]);
   emitReceiptRef.current = emitReceipt;
+
+  const decide = useCallback(async (
+    outcome: ReceiptOutcome,
+    method: ReceiptMethod,
+    after: () => void,
+  ) => {
+    if (signingRef.current) return;
+    signingRef.current = true;
+    setSignError(null);
+    setSigning(true);
+    try {
+      await emitReceipt(outcome, method);
+      after();
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'The signature could not be completed.';
+      setSignError(message);
+      announce(message);
+    } finally {
+      signingRef.current = false;
+      setSigning(false);
+    }
+  }, [emitReceipt, announce]);
 
   // Handlers
   const handleApprove = useCallback(() => {
@@ -370,14 +414,16 @@ export function ApprovalGate({
       announce('Confirm to proceed with approval');
       return;
     }
-    emitReceipt('approved', 'click');
-    onApprove?.();
-  }, [mode, stagedStep, onApprove, announce, emitReceipt]);
+    void decide('approved', 'click', () => {
+      onApprove?.();
+    });
+  }, [mode, stagedStep, onApprove, announce, decide]);
 
   const handleReject = useCallback(() => {
-    emitReceipt('rejected', isHandoffPending ? 'handoff' : 'click');
-    onReject?.();
-  }, [onReject, emitReceipt, isHandoffPending]);
+    void decide('rejected', isHandoffPending ? 'handoff' : 'click', () => {
+      onReject?.();
+    });
+  }, [onReject, decide, isHandoffPending]);
 
   const handleBack = useCallback(() => {
     setStagedStep('previewing');
@@ -403,6 +449,7 @@ export function ApprovalGate({
       role={isPending ? 'alertdialog' : 'region'}
       aria-label={ariaLabel}
       aria-modal={isPending ? true : undefined}
+      aria-busy={signing || undefined}
       data-floating={isHandoffPending ? 'true' : 'false'}
     >
       {/* Header */}
@@ -523,6 +570,7 @@ export function ApprovalGate({
               className={`${styles.btn} ${styles.btnSecondary}`}
               onClick={handleBack}
               type="button"
+              disabled={signing}
             >
               <IconArrowLeft /> Back
             </button>
@@ -532,6 +580,7 @@ export function ApprovalGate({
             className={`${styles.btn} ${styles.btnReject}`}
             onClick={handleReject}
             type="button"
+            disabled={signing}
           >
             Reject
           </button>
@@ -542,13 +591,16 @@ export function ApprovalGate({
             className={`${styles.btn} ${styles.btnApprove}`}
             onClick={handleApprove}
             type="button"
+            disabled={signing}
           >
             {mode === 'staged' && stagedStep === 'previewing'
               ? <>Preview and continue <IconArrowRight /></>
               : mode === 'staged' && stagedStep === 'confirming'
                 ? <>Confirm and execute <IconCheck /></>
                 : 'Approve'}
-          </button>
+            </button>
+          {signing && <p className={styles.signWait} role="status">Waiting for a signature</p>}
+          {signError && <p className={styles.signError} role="alert">{signError}</p>}
         </div>
       )}
 
@@ -564,6 +616,7 @@ export function ApprovalGate({
             onClick={handleReject}
             type="button"
             title="Cancel request"
+            disabled={signing}
           >
             Cancel
           </button>
