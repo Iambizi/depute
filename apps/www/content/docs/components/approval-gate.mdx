@@ -185,6 +185,8 @@ It pauses execution until a person approves, rejects, or the handoff deadline pa
 
 ## Design rationale
 
+The durable reason for the payment rules on this gate is in [Approval record](/docs/approval-record). A prior grant covers one payee and one purpose. A new payee, a changed purpose, or an untrusted source is a new authorization. The why field exists so a payment the policy already flagged cannot be cleared with a bare click. The length is 100 characters because the field has to hold a reason, and it stays off for every gate that is not a payment trigger.
+
 **Why `scope`?** Binary approve/reject is the wrong mental model for agents. Stripe never approves an action with a simple yes/no — they issue capability grants scoped to a specific target, resource limit, and time window.
 
 **Why `mode="staged"`?** Agent flows are state machines, not request-response cycles. `staged` mode maps to Stripe's Authorization Chain pattern: Intent → Plan → Permission Check → Execution → Audit. Each phase can fail or pause for human input.

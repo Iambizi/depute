@@ -20,3 +20,7 @@ Source: depute Intel Report #1, Oct 26–28, 2026. Supervision has to be legible
 | R10 | Bank-scoped delegation: identity, scopes, expiry, revoke | Not started |
 
 Decided and not reopened: both keys, tiered (R1b); receipts are standalone with an optional `previousReceiptHash`; export JSON from day one; core stays copied, not published.
+
+The public rationale is `apps/www/content/docs/approval-record.mdx` (in review: https://github.com/Iambizi/depute/pull/36). The specification is the pattern. Reports from 26–28 October 2026 are illustrations, dated with the review. An unconfirmed report is not a requirement.
+
+With every later item, in the same change as the code: update that page, the component rationale, and `skills/depute/references/design-rationale.md`. A component page states the pattern and links to the writeup. It does not retell a headline as the reason the control exists.

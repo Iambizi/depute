@@ -193,6 +193,7 @@ cd apps/www && npm run build  # Production build (23 static pages)
 - CSS Modules preferred over Tailwind to avoid external dependencies
 - Components should never be tied to specific AI backends
 - Approvals should be scoped, bounded, and revocable — not binary yes/no (Stripe SPT pattern)
+- A new approval control ships with its rationale in the same change. The pattern is the requirement. A report is a dated illustration. An unconfirmed report is not a requirement. Update `apps/www/content/docs/approval-record.mdx`, the component page, and `skills/depute/references/design-rationale.md` together. The component page states the pattern and links to the approval record. It does not retell a headline as the reason.
 - `docs/` is gitignored — internal docs are local-only, not tracked in git
 - `RELEASES.md` is at repo root (tracked in git)
 - If GitHub username changes: edit `REPO` in `packages/cli/src/config.js` only

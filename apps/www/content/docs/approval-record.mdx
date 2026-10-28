@@ -1,0 +1,63 @@
+---
+title: Approval record
+description: Why a payment approval keeps a portable record of what was shown, and which events that record is answering.
+---
+
+When an agent pays someone or takes an irreversible action, the question that shows up later is specific. What was the person shown? What did they approve? Was that the action that ran?
+
+Several institutions now treat the person as the actor of record for an agent the person did not drive step by step. A log that exists only inside the vendor's system answers that question for the vendor. The person needs a copy of the same facts: the payload that was on screen, the decision, and a hash a third party can check.
+
+That is the approval record. The controls on this page exist to make that record portable. [Approval Gate](/docs/components/approval-gate), [Binding Approval](/docs/components/binding-approval), [Transaction Receipt](/docs/components/transaction-receipt), and [Decision Record](/docs/components/decision-record) are the surfaces. The host stores the JSON. This library does not keep a receipt log, and it does not decide who is legally liable.
+
+## How examples are used
+
+The specification is the pattern in the table below. Public reporting from 26–28 October 2026 was the review that made the pattern concrete: consumer-bank terms for agents, payment flows that change the payee or the purpose, instructions that arrive from outside the person's session, and supervision notes on agent payments.
+
+Each of those is an illustration. The review date stays on the illustration. A later correction to one report leaves the control in place, because the control answers the pattern. A report that was still unconfirmed at review time is not a requirement. The product does not grow a control to match a single headline.
+
+Every later control does this in the same change as the code:
+
+1. Name the durable pattern on this page. A planned row becomes the shipped control, or a new row is added.
+2. On the component page, state that pattern in a few sentences and link here.
+3. Date any report you cite, and call it an illustration. An unconfirmed report is not a requirement.
+4. Add the same rule to the agent skill's design rationale, so the next composition follows the pattern.
+
+## The pattern and the control
+
+| Pattern | What the October 2026 review illustrated | Control |
+| --- | --- | --- |
+| The person is left as the actor for an agent action | Consumer-bank terms for agents, and vendor flows that record the customer's approval as the authorization | An `ApprovalReceipt` of the payload that was shown and the decision that was recorded. The host keeps the JSON. |
+| A prior yes is reused for a different counterparty or purpose | Payment flows where the payee or the stated purpose changed after an earlier grant | `requiresApproval`. Identity is rail plus identifier. The display name is not the key. |
+| The instruction did not come from the person | A payment whose provenance is untrusted, including when the payee was already allowed | The gate opens again, and the decision is high-stakes. |
+| A flagged payment can be cleared with one click | Approvals of payments the policy had already decided were worth a gate | A why of 100 characters before Approve. Reject stays immediate. Other gates stay one click. |
+| A check that looks at one payment misses a run of small ones | Repeated payments under a per-payment threshold | Planned. One warning on the budget meter. A second gate is the wrong fix, because it trains people to click through. |
+| The person agrees with the agent almost every time | A run of decisions that follow the recommendation | Planned. Log whether the person followed the recommendation. Blind mode stays opt-in. |
+| A fast biometric skips the payee and the amount | A confirm step that can be cleared before those fields have been read | Planned. Staged payment mode waits until the payee and the amount have been on screen. Simple mode stays instant. |
+
+High-stakes, for the passkey, means a new payee, a purpose change, an untrusted source, an irreversible flag, or an amount above a cutoff the host sets. There is no universal dollar amount.
+
+## What the receipt holds
+
+`ApprovalReceipt` version `1` is canonical JSON: sorted keys, UTF-8, no extra whitespace. Amounts are decimal strings, so a float never becomes the record. The hash is `sha256:` plus the digest of that JSON. Signatures are stored on the receipt and left outside the hash, so adding a signature does not rewrite what was shown.
+
+`verify()` checks the hash. A signature with no verifier is reported as unchecked. A previous receipt hash, when the host has one, is checked for shape only. Receipts stand alone. The host may chain them. The library does not require a chain.
+
+The app key is Ed25519 and can sign every receipt the host asks it to sign. A passkey is requested only for a high-stakes approval or rejection. The challenge is the receipt digest. The relying-party id stays with the host. This package does not generate a keystore and does not store keys.
+
+## What a grant covers
+
+`requiresApproval` compares the payment to grants the host still holds.
+
+- A new payee always requires a gate, including under a spend cap. Payee identity is the rail and the identifier.
+- The same purpose, after trim and collapsed whitespace, inside the granted limit and duration, does not require another gate.
+- A different purpose, an expired grant, or an amount past the grant does.
+- An untrusted source requires a gate even when a grant would have covered the payee.
+- Grants are session-scoped. Durable grants count only when the host opts in.
+
+The why field uses the same triggers. `new-payee`, `purpose-change`, `untrusted-source`, `outside-grant`, and `grant-expired` ask for 100 characters. `minJustificationLength` replaces that number. `0` leaves the why optional. Extra whitespace does not count. The text is stored on the receipt.
+
+## What this page will not claim
+
+The receipt is evidence of what the interface showed and what the person did in it. It is not, by itself, a court finding, a bank authorization, or a guarantee that the action which ran matched the action which was shown. Matching execution to the receipt is the host's job. The hash makes a later swap visible.
+
+Planned rows in the table are the rest of the same pattern. They are not in the components until their own pages say they are.

@@ -87,4 +87,6 @@ This component acts as the final terminal output of an `OrchestratorView` node, 
 
 ## Design rationale
 
+The backend hash and the approval receipt answer different questions. The backend hash is proof of the action your system ran. The [approval record](/docs/approval-record) is proof of what the person was shown and what they decided. Pass `approvalReceipt` when you have the second one. The card can export that JSON and check its hash. It still displays your backend hash as you passed it.
+
 **Why show a hash?** A receipt is easier to trust when the backend's own proof is visible. `TransactionReceipt` displays the `hash` and `signature` you pass in. It does not compute them. Verification belongs in `onVerify`, which your app implements.
