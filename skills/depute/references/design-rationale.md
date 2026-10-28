@@ -169,3 +169,5 @@ Apply it as follows:
 - When one of those payment triggers fired, leave Approve disabled until the why reaches 100 characters, unless the host set `minJustificationLength`. Reject stays immediate. Gates with no payment trigger stay one click.
 - Sign with the host's Ed25519 app key when the host supplies one. Ask for a passkey only when the decision is high-stakes: new payee, purpose change, untrusted source, irreversible flag, or an amount above the host's cutoff. There is no universal dollar cutoff.
 - A run of small payments, a log of whether the person followed the recommendation, and a minimum time on screen for the payee and amount are the same pattern and are not shipped yet. Do not invent those controls ahead of their pages.
+
+When you add the next control, update this section in the same change. State the pattern it answers. Date any report you cite and treat it as an illustration. Leave an unconfirmed report out of the requirement. The component page states the same pattern in a few sentences and links to `apps/www/content/docs/approval-record.mdx`.
