@@ -1,6 +1,8 @@
+import { StrictMode } from 'react';
 import { render, screen } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
 import { BudgetMeter } from './BudgetMeter';
+import type { SmallPayment } from './BudgetMeter.types';
 
 describe('BudgetMeter', () => {
   const defaultProps = {
@@ -182,6 +184,131 @@ describe('BudgetMeter', () => {
       expect(
         screen.getByText(/Session Budget.*250.*1\.0k.*25%/i)
       ).toBeInTheDocument();
+    });
+  });
+
+  describe('small payment burst', () => {
+    const nowMs = Date.parse('2026-10-28T16:00:00.000Z');
+
+    function payment(identifier: string, index: number, base = nowMs): SmallPayment {
+      return {
+        rail: identifier === '0xbbb' ? 'ach' : 'usdc',
+        identifier,
+        purpose: 'Pay invoice 104',
+        amount: '1.00',
+        atMs: base - (index + 1) * 1_000,
+      };
+    }
+
+    const burst = [
+      payment('0xaaa', 0),
+      payment('0xaaa', 1),
+      payment('0xbbb', 2),
+      payment('0xbbb', 3),
+      payment('0xccc', 4),
+      payment('0xccc', 5),
+      payment('0xccc', 6),
+    ];
+
+    it('shows one warning row and does not add an approval control', () => {
+      render(<BudgetMeter {...defaultProps} transactions={burst} nowMs={nowMs} />);
+      expect(screen.getByRole('status')).toHaveTextContent(
+        '7 payments under 5 reached 3 payees in the last 10 minutes. This warning does not open another approval.',
+      );
+      expect(screen.queryByRole('button')).not.toBeInTheDocument();
+    });
+
+    it('stays quiet for one payee and when the clock is omitted', () => {
+      render(
+        <BudgetMeter
+          {...defaultProps}
+          transactions={Array.from({ length: 8 }, (_, index) => payment('0xaaa', index))}
+          nowMs={nowMs}
+        />,
+      );
+      expect(screen.queryByRole('status')).not.toBeInTheDocument();
+
+      render(<BudgetMeter {...defaultProps} transactions={burst} />);
+      expect(screen.queryByRole('status')).not.toBeInTheDocument();
+    });
+
+    it('shows the warning in the compact meter', () => {
+      render(<BudgetMeter {...defaultProps} compact transactions={burst} nowMs={nowMs} />);
+      expect(screen.getByRole('status')).toBeInTheDocument();
+      expect(screen.getByRole('meter')).toBeInTheDocument();
+    });
+
+    it('fires once per payee set, including inside StrictMode', () => {
+      const onSmallTxPattern = vi.fn();
+      const { rerender } = render(
+        <StrictMode>
+          <BudgetMeter
+            {...defaultProps}
+            transactions={burst}
+            nowMs={nowMs}
+            onSmallTxPattern={onSmallTxPattern}
+          />
+        </StrictMode>,
+      );
+      expect(onSmallTxPattern).toHaveBeenCalledTimes(1);
+
+      rerender(
+        <StrictMode>
+          <BudgetMeter
+            {...defaultProps}
+            transactions={burst}
+            nowMs={nowMs}
+            onSmallTxPattern={onSmallTxPattern}
+          />
+        </StrictMode>,
+      );
+      expect(onSmallTxPattern).toHaveBeenCalledTimes(1);
+
+      const next = [...burst, payment('0xddd', 7)];
+      rerender(
+        <StrictMode>
+          <BudgetMeter
+            {...defaultProps}
+            transactions={next}
+            nowMs={nowMs}
+            onSmallTxPattern={onSmallTxPattern}
+          />
+        </StrictMode>,
+      );
+      expect(onSmallTxPattern).toHaveBeenCalledTimes(2);
+
+      rerender(
+        <StrictMode>
+          <BudgetMeter
+            {...defaultProps}
+            transactions={Array.from({ length: 8 }, (_, index) => payment('0xaaa', index))}
+            nowMs={nowMs}
+            onSmallTxPattern={onSmallTxPattern}
+          />
+        </StrictMode>,
+      );
+      expect(onSmallTxPattern).toHaveBeenCalledTimes(2);
+
+      const later = nowMs + 11 * 60 * 1000;
+      rerender(
+        <StrictMode>
+          <BudgetMeter
+            {...defaultProps}
+            transactions={[
+              payment('0xaaa', 0, later),
+              payment('0xaaa', 1, later),
+              payment('0xbbb', 2, later),
+              payment('0xbbb', 3, later),
+              payment('0xccc', 4, later),
+              payment('0xccc', 5, later),
+              payment('0xccc', 6, later),
+            ]}
+            nowMs={later}
+            onSmallTxPattern={onSmallTxPattern}
+          />
+        </StrictMode>,
+      );
+      expect(onSmallTxPattern).toHaveBeenCalledTimes(3);
     });
   });
 });

@@ -30,7 +30,7 @@ Every later control does this in the same change as the code:
 | A prior yes is reused for a different counterparty or purpose | Payment flows where the payee or the stated purpose changed after an earlier grant | `requiresApproval`. Identity is rail plus identifier. The display name is not the key. |
 | The instruction did not come from the person | A payment whose provenance is untrusted, including when the payee was already allowed | The gate opens again, and the decision is high-stakes. |
 | A flagged payment can be cleared with one click | Approvals of payments the policy had already decided were worth a gate | A why of 100 characters before Approve. Reject stays immediate. Other gates stay one click. |
-| A check that looks at one payment misses a run of small ones | Repeated payments under a per-payment threshold | Planned. One warning on the budget meter. A second gate is the wrong fix, because it trains people to click through. |
+| A check that looks at one payment misses a run of small ones | Repeated payments under a per-payment threshold, reviewed 26–28 October 2026 | One warning on the budget meter when more than five auto-approved payments under 5 are not all the same payee and purpose, inside ten minutes. A second gate stays closed. |
 | The person agrees with the agent almost every time | A run of decisions that follow the recommendation | Planned. Log whether the person followed the recommendation. Blind mode stays opt-in. |
 | A fast biometric skips the payee and the amount | A confirm step that can be cleared before those fields have been read | Planned. Staged payment mode waits until the payee and the amount have been on screen. Simple mode stays instant. |
 
@@ -55,6 +55,14 @@ The app key is Ed25519 and can sign every receipt the host asks it to sign. A pa
 - Grants are session-scoped. Durable grants count only when the host opts in.
 
 The why field uses the same triggers. `new-payee`, `purpose-change`, `untrusted-source`, `outside-grant`, and `grant-expired` ask for 100 characters. `minJustificationLength` replaces that number. `0` leaves the why optional. Extra whitespace does not count. The text is stored on the receipt.
+
+## A run of small payments
+
+A limit on a single payment does not show a run of small ones. `smallPaymentBurst` counts auto-approved payments strictly under 5 in the meter's unit, across the last ten minutes. The host passes the list and `nowMs`, and leaves gated payments out.
+
+The same payee and the same purpose can repeat without a warning. The warning appears when the count is greater than five and the payments are not all that one pair. [Budget Meter](/docs/components/budget-meter) shows one row. The row does not open another approval. `smallTxThreshold`, `windowMs`, and `maxSmallTxCount` replace the defaults. There is no universal currency amount.
+
+The October 2026 review illustrated this as repeated payments under a per-payment threshold. That illustration is dated with the review. It is not a second rule.
 
 ## What this page will not claim
 

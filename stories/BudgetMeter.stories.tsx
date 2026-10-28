@@ -175,6 +175,29 @@ export const HRScreening: Story = {
   },
 };
 
+const burstNowMs = Date.parse('2026-10-28T16:00:00.000Z');
+
+export const SmallPaymentBurst: Story = {
+  name: 'Small payment burst',
+  args: {
+    label: 'Session Spend',
+    spent: 14,
+    limit: 100,
+    unit: 'currency',
+    formatValue: currencyFormat,
+    nowMs: burstNowMs,
+    transactions: [
+      { rail: 'usdc', identifier: '0xaaa', purpose: 'Pay invoice 104', amount: '1.00', atMs: burstNowMs - 60_000 },
+      { rail: 'usdc', identifier: '0xaaa', purpose: 'Pay invoice 104', amount: '2.00', atMs: burstNowMs - 50_000 },
+      { rail: 'ach', identifier: 'acct-1', purpose: 'Pay invoice 104', amount: '3.00', atMs: burstNowMs - 40_000 },
+      { rail: 'ach', identifier: 'acct-1', purpose: 'Pay invoice 104', amount: '1.50', atMs: burstNowMs - 30_000 },
+      { rail: 'sepa', identifier: 'iban-1', purpose: 'Pay invoice 104', amount: '4.00', atMs: burstNowMs - 20_000 },
+      { rail: 'sepa', identifier: 'iban-1', purpose: 'Pay invoice 104', amount: '0.75', atMs: burstNowMs - 10_000 },
+      { rail: 'sepa', identifier: 'iban-1', purpose: 'Pay invoice 104', amount: '1.25', atMs: burstNowMs - 5_000 },
+    ],
+  },
+};
+
 export const WithCallbacks: Story = {
   name: 'With Exceeded Callback',
   args: {
