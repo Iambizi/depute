@@ -1,8 +1,9 @@
 {
   "packages/core/src/presented.ts": "3aa470a6aceb492337636d9149fe60f6ec7e76300280777e27e3380b719d4953",
   "packages/core/src/receipt.ts": "dac6ade023d29c3a1622ecae72eaa59444d211aa992814e79bd6dde696e8560b",
+  "packages/core/src/triggers.ts": "be728f1a6c2765da8697b9b71eb5707543e91bcd9ec6097810ea16bda9ed1762",
   "registry/registry.json": "e668762f3fff76b66bb0a73cfa33aa83af940da2f8ad543bc2e1e8e120f461fa",
-  "skills/depute/SKILL.md": "a141bdf78ea66edfd1b749664c261984bb3606417b01e17e44a3f2433883a58d",
+  "skills/depute/SKILL.md": "11ae717e5db413e735a91626c487a3aa535774dc9f086ac891ed5eacd12c7f49",
   "skills/depute/references/design-rationale.md": "6972825a5c07ad6e4a5e0548f18ffe0db9d36b372c558668a3a92f503b41073c",
   "skills/depute/references/lexicon.md": "e0f72522cabad0c3cfaa0fe94391f47bdb200d29416550b5559f35346a052189",
   "skills/depute/references/v0-components.md": "eccbf61ed8e2c1fe4d9e78351a265a81a1b07640fd05457fda4efd5348076d9f",

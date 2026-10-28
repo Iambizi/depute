@@ -15,6 +15,7 @@ const files = new Set([
   'src/types/common.ts',
   'packages/core/src/presented.ts',
   'packages/core/src/receipt.ts',
+  'packages/core/src/triggers.ts',
   'src/utils/receiptDownload.ts',
   'src/utils/receiptSign.ts',
   'src/utils/a11y.tsx',
