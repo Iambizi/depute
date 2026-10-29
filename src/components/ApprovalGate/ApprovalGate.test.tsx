@@ -1,5 +1,5 @@
 import { StrictMode } from 'react';
-import { render, screen, waitFor, act } from '@testing-library/react';
+import { render, screen, waitFor, act, fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { ApprovalGate } from './ApprovalGate';
@@ -294,6 +294,164 @@ describe('ApprovalGate', () => {
       await user.click(screen.getByRole('button', { name: 'Confirm and execute' }));
       
       expect(handleApprove).toHaveBeenCalledTimes(1);
+    });
+
+    const paymentPayload = {
+      title: 'Pay a new vendor',
+      payee: { rail: 'ach', identifier: '021000021:9981', displayName: 'Northwind Supplies' },
+      amount: { value: '240.00', currency: 'USD' },
+    };
+
+    it('approves a simple payment immediately and records review time from paint', async () => {
+      const user = userEvent.setup();
+      const onApprove = vi.fn();
+      const onReceipt = vi.fn();
+      render(
+        <ApprovalGate
+          title="Pay a new vendor"
+          now={5_000}
+          presentedAt={0}
+          presentedPayload={paymentPayload}
+          onApprove={onApprove}
+          onReceipt={onReceipt}
+        />,
+      );
+      expect(screen.getByText('Northwind Supplies')).toBeInTheDocument();
+      expect(screen.getByText('ach · 021000021:9981')).toBeInTheDocument();
+      expect(screen.getByText('240.00 USD')).toBeInTheDocument();
+      expect(screen.queryByText(/Confirm waits until the payee/)).not.toBeInTheDocument();
+      await user.click(screen.getByRole('button', { name: 'Approve' }));
+      expect(onApprove).toHaveBeenCalledTimes(1);
+      expect(onReceipt.mock.calls[0][0].decision.reviewDurationMs).toBe(0);
+    });
+
+    it('keeps confirm off until a staged payment has shown the payee and the amount', async () => {
+      const user = userEvent.setup();
+      const onApprove = vi.fn();
+      const onReject = vi.fn();
+      const onReceipt = vi.fn();
+      const start = 1_700_000_000_000;
+      const gate = (now: number) => (
+        <ApprovalGate
+          title="Pay a new vendor"
+          mode="staged"
+          now={now}
+          presentedAt={start - 60_000}
+          presentedPayload={paymentPayload}
+          onApprove={onApprove}
+          onReject={onReject}
+          onReceipt={onReceipt}
+        />
+      );
+      const { rerender } = render(gate(start));
+      expect(screen.getByText('Northwind Supplies')).toBeInTheDocument();
+      expect(screen.getByText('240.00 USD')).toBeInTheDocument();
+      expect(screen.getByText('Confirm waits until the payee and the amount have been on screen.')).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: 'Preview and continue' })).toBeEnabled();
+      expect(screen.getByRole('button', { name: 'Reject' })).toBeEnabled();
+
+      await user.click(screen.getByRole('button', { name: 'Preview and continue' }));
+      const confirm = screen.getByRole('button', { name: 'Confirm and execute' });
+      expect(confirm).toBeDisabled();
+      fireEvent.click(confirm);
+      expect(onApprove).not.toHaveBeenCalled();
+
+      rerender(gate(start + 1499));
+      expect(screen.getByRole('button', { name: 'Confirm and execute' })).toBeDisabled();
+
+      rerender(gate(start + 1500));
+      const ready = screen.getByRole('button', { name: 'Confirm and execute' });
+      expect(ready).toBeEnabled();
+      expect(screen.queryByText('Confirm waits until the payee and the amount have been on screen.')).not.toBeInTheDocument();
+      await user.click(ready);
+      expect(onApprove).toHaveBeenCalledTimes(1);
+      expect(onReceipt.mock.calls[0][0].decision.reviewDurationMs).toBe(1500);
+    });
+
+    it('lets confirm proceed once a staged payment has painted when minReviewMs is 0', async () => {
+      const user = userEvent.setup();
+      const onApprove = vi.fn();
+      render(
+        <ApprovalGate
+          title="Pay a new vendor"
+          mode="staged"
+          minReviewMs={0}
+          now={1_700_000_000_000}
+          presentedPayload={paymentPayload}
+          onApprove={onApprove}
+        />,
+      );
+      await user.click(screen.getByRole('button', { name: 'Preview and continue' }));
+      const confirm = screen.getByRole('button', { name: 'Confirm and execute' });
+      expect(confirm).toBeEnabled();
+      await user.click(confirm);
+      expect(onApprove).toHaveBeenCalledTimes(1);
+    });
+
+    it('does not ask for a passkey before the staged payment review floor', async () => {
+      const user = userEvent.setup();
+      const passkey = {
+        sign: vi.fn(async () => ({
+          algorithm: 'ES256',
+          publicKey: 'user-key',
+          signature: 'user-sig',
+          authenticatorData: 'auth',
+          clientDataJSON: 'client',
+        })),
+      };
+      const start = 1_700_000_000_000;
+      const gate = (now: number) => (
+        <ApprovalGate
+          title="Pay a new vendor"
+          mode="staged"
+          highStakes
+          now={now}
+          presentedPayload={paymentPayload}
+          onReceipt={vi.fn()}
+          appSigner={{ sign: async () => ({ publicKey: 'app-key', signature: 'app-sig' }) }}
+          passkey={passkey}
+        />
+      );
+      const { rerender } = render(gate(start));
+      await user.click(screen.getByRole('button', { name: 'Preview and continue' }));
+      fireEvent.click(screen.getByRole('button', { name: 'Confirm and execute' }));
+      expect(passkey.sign).not.toHaveBeenCalled();
+      rerender(gate(start + 1500));
+      await user.click(screen.getByRole('button', { name: 'Confirm and execute' }));
+      expect(passkey.sign).toHaveBeenCalledTimes(1);
+    });
+
+    it('enables confirm after the review floor when the host does not pass now', async () => {
+      vi.useFakeTimers();
+      const onApprove = vi.fn();
+      try {
+        render(
+          <ApprovalGate
+            title="Pay a new vendor"
+            mode="staged"
+            presentedPayload={paymentPayload}
+            onApprove={onApprove}
+          />,
+        );
+        fireEvent.click(screen.getByRole('button', { name: 'Preview and continue' }));
+        expect(screen.getByRole('button', { name: 'Confirm and execute' })).toBeDisabled();
+        await act(async () => {
+          await vi.advanceTimersByTimeAsync(1499);
+        });
+        expect(screen.getByRole('button', { name: 'Confirm and execute' })).toBeDisabled();
+        await act(async () => {
+          await vi.advanceTimersByTimeAsync(1);
+        });
+        const confirm = screen.getByRole('button', { name: 'Confirm and execute' });
+        expect(confirm).toBeEnabled();
+        fireEvent.click(confirm);
+        await act(async () => {
+          await Promise.resolve();
+        });
+        expect(onApprove).toHaveBeenCalledTimes(1);
+      } finally {
+        vi.useRealTimers();
+      }
     });
   });
 

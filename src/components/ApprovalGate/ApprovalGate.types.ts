@@ -41,6 +41,13 @@ export interface ApprovalGateProps {
   /** Approval mode — simple (approve/reject) or staged (preview → confirm → execute) */
   mode?: 'simple' | 'staged';
 
+  /**
+   * Staged payment mode waits this long, in milliseconds, after the payee and
+   * the amount paint before Confirm enables. Defaults to 1500. Zero means
+   * those fields only need to have painted. Simple mode ignores it.
+   */
+  minReviewMs?: number;
+
   /** Confidence score (0-100) for this action */
   confidence?: number;
 
@@ -105,7 +112,7 @@ export interface ApprovalGateProps {
   /** Person recorded on the receipt when they approve or reject. */
   approver?: { id: string; name?: string };
 
-  /** Unix milliseconds when the payload was first shown. */
+  /** Unix milliseconds when the payload was first shown. A payment receipt starts when the payee and the amount paint. */
   presentedAt?: number;
 
   /** Why the person approved. A payment trigger asks them to write it in the gate. */
