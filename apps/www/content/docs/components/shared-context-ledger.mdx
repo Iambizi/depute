@@ -113,7 +113,8 @@ export interface ContextLedgerEntry {
   provenance: {
     authorAgent: string;    // Which agent wrote this memory?
     source?: string;        // Where did they get it? (e.g., a URL)
-    timestamp: string;      
+    timestamp: string;
+    trust?: 'trusted' | 'untrusted' | 'unknown';
   };
   conflict?: boolean;       // True if another agent tried to overwrite this with a different value
 }
@@ -133,7 +134,7 @@ It is typically rendered globally alongside the `Swarm Monitor`.
 When multiple agents collaborate, hallucinations compound. If Agent A hallucinates a "fact" and writes it to shared memory, Agents B, C, and D will treat it as ground truth. The `Shared Context Ledger` exists to expose the swarm's epistemology to the human supervisor.
 
 **2. Strict Provenance**  
-A memory without an author is useless for debugging. The UI forces the display of the `provenance` block. If a human sees a hallucination in the ledger, they can instantly trace it back to the specific `authorAgent` that wrote it and the `source` it originated from.
+A memory without an author is useless for debugging. The UI forces the display of the `provenance` block. If a human sees a hallucination in the ledger, they can instantly trace it back to the specific `authorAgent` that wrote it and the `source` it originated from. `trust` marks that same provenance. An untrusted value is marked on the row. The rule is in [Approval record](/docs/approval-record).
 
 **3. Conflict Visualization**  
 In autonomous swarms, agents frequently debate or arrive at different conclusions. When two agents attempt to write conflicting values to the same `key`, the ledger displays both and flags them with `conflict: true`. This turns a silent failure of consensus into a visible prompt for human resolution.

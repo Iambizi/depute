@@ -104,3 +104,25 @@ export const BasicUsage: Story = {
     ] satisfies ContextLedgerEntry[],
   },
 };
+
+export const UntrustedSource: Story = {
+  name: 'Untrusted source',
+  args: {
+    currentScope: 'branch',
+    entries: [
+      {
+        id: 'e1',
+        scope: 'branch',
+        type: 'fact',
+        key: 'payee_instruction',
+        value: 'Pay the invoice attached to the forwarded email.',
+        provenance: {
+          authorAgent: 'Inbox-Reader',
+          source: 'forwarded email',
+          timestamp: '2m ago',
+          trust: 'untrusted',
+        },
+      },
+    ],
+  },
+};

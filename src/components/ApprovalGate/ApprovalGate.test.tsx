@@ -453,6 +453,67 @@ describe('ApprovalGate', () => {
         vi.useRealTimers();
       }
     });
+
+    it('shows an untrusted source, forces staged mode, and stores provenance on the receipt', async () => {
+      const user = userEvent.setup();
+      const onApprove = vi.fn();
+      const onReceipt = vi.fn();
+      const provenance = { source: 'forwarded email', url: 'https://example.com/invoice', trust: 'untrusted' as const };
+      render(
+        <ApprovalGate
+          title="Pay a forwarded invoice"
+          mode="simple"
+          provenance={provenance}
+          now={1_700_000_000_000}
+          onApprove={onApprove}
+          onReceipt={onReceipt}
+        />,
+      );
+      expect(screen.getByText('This instruction came from an untrusted source.')).toBeInTheDocument();
+      expect(screen.getByText('forwarded email', { exact: false })).toBeInTheDocument();
+      expect(screen.getByRole('link', { name: 'https://example.com/invoice' })).toHaveAttribute('href', 'https://example.com/invoice');
+      expect(screen.queryByRole('button', { name: 'Approve' })).not.toBeInTheDocument();
+      await user.click(screen.getByRole('button', { name: 'Preview and continue' }));
+      expect(onApprove).not.toHaveBeenCalled();
+      await user.click(screen.getByRole('button', { name: 'Confirm and execute' }));
+      expect(onApprove).toHaveBeenCalledTimes(1);
+      expect(onReceipt.mock.calls[0][0].provenance).toEqual(provenance);
+    });
+
+    it('keeps a trusted source on one click and lets the presented payload win', async () => {
+      const user = userEvent.setup();
+      const onReceipt = vi.fn();
+      const payloadProvenance = { source: 'customer session', trust: 'trusted' as const };
+      render(
+        <ApprovalGate
+          title="Pay vendor"
+          mode="simple"
+          now={1_700_000_000_000}
+          presentedPayload={{ title: 'Pay vendor', provenance: payloadProvenance }}
+          provenance={{ source: 'forwarded email', url: 'javascript:alert(1)', trust: 'untrusted' }}
+          onReceipt={onReceipt}
+        />,
+      );
+      expect(screen.getByText('customer session', { exact: false })).toBeInTheDocument();
+      expect(screen.getByText('Trust: Trusted')).toBeInTheDocument();
+      expect(screen.queryByText('This instruction came from an untrusted source.')).not.toBeInTheDocument();
+      expect(screen.queryByRole('link')).not.toBeInTheDocument();
+      await user.click(screen.getByRole('button', { name: 'Approve' }));
+      expect(onReceipt.mock.calls[0][0].provenance).toEqual(payloadProvenance);
+    });
+
+    it('shows an unsafe source url as text', () => {
+      render(
+        <ApprovalGate
+          title="Pay vendor"
+          provenance={{ source: 'pasted note', url: 'javascript:alert(1)', trust: 'unknown' }}
+        />,
+      );
+      expect(screen.getByText('javascript:alert(1)', { exact: false })).toBeInTheDocument();
+      expect(screen.getByText('Trust: Unknown')).toBeInTheDocument();
+      expect(screen.queryByRole('link')).not.toBeInTheDocument();
+      expect(screen.getByRole('button', { name: 'Approve' })).toBeEnabled();
+    });
   });
 
   describe('timer behavior', () => {

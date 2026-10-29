@@ -6,7 +6,7 @@
 
 import type React from 'react';
 import type { ApprovalStatus } from '../../types/common';
-import type { ApprovalHandoff, HandoffContext, PresentedPayload } from '../../types/core';
+import type { ApprovalHandoff, HandoffContext, PresentedPayload, PresentedProvenance } from '../../types/core';
 import type { ApprovalReceipt, ReceiptAppSigner, ReceiptPasskeySigner } from '../../utils/receipt';
 
 export type { ApprovalHandoff, HandoffContext };
@@ -108,6 +108,13 @@ export interface ApprovalGateProps {
 
   /** Exact payload the human was shown. Falls back to the gate's own fields. */
   presentedPayload?: PresentedPayload;
+
+  /**
+   * Where the instruction came from. Untrusted trust shows a warning and
+   * keeps the gate in staged mode. The presented payload's provenance wins
+   * when both are set. Stored on the receipt.
+   */
+  provenance?: PresentedProvenance;
 
   /** Person recorded on the receipt when they approve or reject. */
   approver?: { id: string; name?: string };
