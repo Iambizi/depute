@@ -169,6 +169,7 @@ Apply it as follows:
 - When one of those payment triggers fired, leave Approve disabled until the why reaches 100 characters, unless the host set `minJustificationLength`. Reject stays immediate. Gates with no payment trigger stay one click.
 - Sign with the host's Ed25519 app key when the host supplies one. Ask for a passkey only when the decision is high-stakes: new payee, purpose change, untrusted source, irreversible flag, or an amount above the host's cutoff. There is no universal dollar cutoff.
 - Pass auto-approved payments to Budget Meter with `nowMs`. `smallPaymentBurst` warns when more than five payments under 5, in the last ten minutes, are not all the same payee and purpose. Show one row. Do not open a second gate. The same payee and purpose can repeat without that row.
-- A log of whether the person followed the recommendation, and a minimum time on screen for the payee and amount, are the same pattern and are not shipped yet. Do not invent those controls ahead of their pages.
+- When the host passes the agent's recommendation to `recordAction`, record whether the person followed it. Alert when agreement is over 80% across at least 5 decisions. Leave blind mode off unless the host sets `blind` on the gate. Keep the streak, speed, and approval-rate checks.
+- A minimum time on screen for the payee and amount is the same pattern and is not shipped yet. Do not invent that control ahead of its page.
 
 When you add the next control, update this section in the same change. State the pattern it answers. Date any report you cite and treat it as an illustration. Leave an unconfirmed report out of the requirement. The component page states the same pattern in a few sentences and links to `apps/www/content/docs/approval-record.mdx`.

@@ -157,6 +157,42 @@ describe('approval receipt', () => {
     expect(receipt.decision.reviewDurationMs).toBe(2000);
     expect(receipt.decision.approver).toEqual({ id: 'alice', name: 'Alice', method: 'click' });
     expect(receipt.decision.acknowledgedTermIds).toEqual(['wire']);
+    expect(receipt.decision.agreed).toBeUndefined();
+  });
+
+  it('records whether the person followed the recommendation', () => {
+    const followed = buildDecisionReceipt({
+      title: 'Pay vendor',
+      outcome: 'approved',
+      agentRecommendation: 'approved',
+      presentedAtMs: Date.parse('2026-10-28T16:00:00.000Z'),
+      decidedAtMs: Date.parse('2026-10-28T16:00:00.000Z'),
+      fallbackId: 'local',
+    });
+    expect(followed.decision.agentRecommendation).toBe('approved');
+    expect(followed.decision.humanChoice).toBe('approved');
+    expect(followed.decision.agreed).toBe(true);
+
+    const diverged = buildDecisionReceipt({
+      title: 'Pay vendor',
+      outcome: 'rejected',
+      agentRecommendation: 'approved',
+      presentedAtMs: Date.parse('2026-10-28T16:00:00.000Z'),
+      decidedAtMs: Date.parse('2026-10-28T16:00:00.000Z'),
+      fallbackId: 'local',
+    });
+    expect(diverged.decision.agreed).toBe(false);
+
+    const expired = buildDecisionReceipt({
+      title: 'Pay vendor',
+      outcome: 'expired',
+      agentRecommendation: 'approved',
+      presentedAtMs: Date.parse('2026-10-28T16:00:00.000Z'),
+      decidedAtMs: Date.parse('2026-10-28T16:00:00.000Z'),
+      fallbackId: 'local',
+    });
+    expect(expired.decision.agentRecommendation).toBeUndefined();
+    expect(expired.decision.humanChoice).toBeUndefined();
   });
 });
 

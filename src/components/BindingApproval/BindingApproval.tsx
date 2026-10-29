@@ -58,6 +58,8 @@ const STATUS_CLASSES: Record<BindingStatus, string> = {
 export function BindingApproval({
   title,
   description,
+  agentRecommendation,
+  blind = false,
   status = 'reviewing',
   terms = [],
   requireAllTerms = true,
@@ -262,6 +264,7 @@ export function BindingApproval({
       payload: presentedPayload,
       title,
       description,
+      agentRecommendation,
       justification: recordedWhy,
       approver,
       outcome,
@@ -287,6 +290,7 @@ export function BindingApproval({
     presentedPayload,
     title,
     description,
+    agentRecommendation,
     recordedWhy,
     approver,
     presentedAt,
@@ -372,6 +376,13 @@ export function BindingApproval({
 
       {/* Description */}
       <p className={styles.description}>{description}</p>
+
+      {agentRecommendation && (!blind || (effectiveStatus !== 'reviewing' && effectiveStatus !== 'signing' && !isHandoffPending)) && (
+        <p className={styles.recommendation}>
+          <span className={styles.recommendationLabel}>Agent recommends</span>
+          {agentRecommendation === 'approved' ? 'Approve' : 'Reject'}
+        </p>
+      )}
 
       {/* Impact statement */}
       {impactStatement && (

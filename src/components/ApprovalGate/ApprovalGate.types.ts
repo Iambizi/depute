@@ -29,6 +29,12 @@ export interface ApprovalGateProps {
   /** Agent's reasoning for this request */
   agentReasoning?: string;
 
+  /** The choice the agent recommends. Recorded on the receipt when the person approves or rejects. */
+  agentRecommendation?: 'approved' | 'rejected';
+
+  /** Hide the recommendation until the person chooses. Off unless the host sets it. */
+  blind?: boolean;
+
   /** Current approval status */
   status?: ExtendedApprovalStatus;
 

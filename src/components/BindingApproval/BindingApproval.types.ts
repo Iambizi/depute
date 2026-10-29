@@ -42,6 +42,12 @@ export interface BindingApprovalProps {
   /** Detailed description of the binding action */
   description: string;
 
+  /** The choice the agent recommends. Recorded on the receipt when the person signs or rejects. */
+  agentRecommendation?: 'approved' | 'rejected';
+
+  /** Hide the recommendation until the person chooses. Off unless the host sets it. */
+  blind?: boolean;
+
   /** Current status */
   status?: BindingStatus;
 

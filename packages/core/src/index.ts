@@ -75,3 +75,9 @@ export {
   requiresApproval,
   smallPaymentBurst,
 } from './triggers';
+export type { AgreementChoice, AgreementDecision, AgreementRate, AgreementRateInput } from './agreement';
+export {
+  DEFAULT_AGREEMENT_THRESHOLD,
+  DEFAULT_MINIMUM_AGREEMENT_DECISIONS,
+  agreementRate,
+} from './agreement';
