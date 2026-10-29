@@ -107,6 +107,23 @@ function getIconClass(status: string): string {
   }
 }
 
+function trustLabel(trust: 'trusted' | 'untrusted' | 'unknown'): string {
+  if (trust === 'untrusted') return 'Untrusted';
+  if (trust === 'trusted') return 'Trusted';
+  return 'Unknown';
+}
+
+function safeHttpUrl(value: string | undefined): string | null {
+  if (!value) return null;
+  try {
+    const url = new URL(value);
+    if (url.protocol !== 'http:' && url.protocol !== 'https:') return null;
+    return url.href;
+  } catch {
+    return null;
+  }
+}
+
 function formatTime(seconds: number): string {
   const m = Math.floor(seconds / 60);
   const s = seconds % 60;
@@ -152,6 +169,7 @@ export function ApprovalGate({
   receiptId,
   instruction,
   presentedPayload,
+  provenance,
   approver,
   presentedAt,
   justification,
@@ -219,7 +237,10 @@ export function ApprovalGate({
   } else {
     paymentPaintedAtRef.current = null;
   }
-  const paymentFloor = mode === 'staged' && paymentFields && isPending && !isHandoffPending;
+  const shownProvenance = presentedPayload?.provenance ?? provenance;
+  const untrustedSource = shownProvenance?.trust === 'untrusted';
+  const effectiveMode = untrustedSource ? 'staged' : mode;
+  const paymentFloor = effectiveMode === 'staged' && paymentFields && isPending && !isHandoffPending;
   const reviewWait = resolveMinReviewMs(minReviewMs);
   const reviewElapsed = paymentPaintedAtRef.current == null
     ? 0
@@ -415,7 +436,7 @@ export function ApprovalGate({
         : (presentedAt ?? shownAtRef.current),
       decidedAtMs: now ?? Date.now(),
       triggers,
-      provenance: presentedPayload?.provenance,
+      provenance: shownProvenance,
       highStakes,
       previousReceiptHash,
       fallbackId: pendingApprovalId || 'local',
@@ -430,6 +451,7 @@ export function ApprovalGate({
     receiptId,
     instruction,
     presentedPayload,
+    shownProvenance,
     title,
     description,
     agentReasoning,
@@ -472,7 +494,7 @@ export function ApprovalGate({
 
   // Handlers
   const handleApprove = useCallback(() => {
-    if (mode === 'staged' && stagedStep === 'previewing') {
+    if (effectiveMode === 'staged' && stagedStep === 'previewing') {
       setStagedStep('confirming');
       announce('Confirm to proceed with approval');
       return;
@@ -481,7 +503,7 @@ export function ApprovalGate({
     void decide('approved', 'click', () => {
       onApprove?.();
     });
-  }, [mode, stagedStep, onApprove, announce, decide, whyReady, reviewReady]);
+  }, [effectiveMode, stagedStep, onApprove, announce, decide, whyReady, reviewReady]);
 
   const handleReject = useCallback(() => {
     void decide('rejected', isHandoffPending ? 'handoff' : 'click', () => {
@@ -555,7 +577,7 @@ export function ApprovalGate({
       </div>
 
       {/* Staged mode indicator */}
-      {mode === 'staged' && isPending && !isHandoffPending && (
+      {effectiveMode === 'staged' && isPending && !isHandoffPending && (
         <div className={styles.stageIndicator} aria-label="Approval stages">
           <span className={`${styles.stage} ${stagedStep === 'previewing' ? styles.stageActive : styles.stageCompleted}`}>
             {stagedStep === 'confirming' ? <IconCheck /> : '1.'} Preview
@@ -571,6 +593,31 @@ export function ApprovalGate({
 
       {/* Body */}
       <div className={styles.body}>
+        {shownProvenance && (
+          <div
+            className={untrustedSource ? styles.sourceWarning : styles.provenanceNote}
+            role={untrustedSource ? 'status' : undefined}
+          >
+            {untrustedSource && (
+              <p className={styles.sourceWarningTitle}>This instruction came from an untrusted source.</p>
+            )}
+            <p className={styles.sourceLine}>
+              <span className={styles.scopeTitle}>Source</span>
+              {' '}
+              {shownProvenance.source}
+              {shownProvenance.url && (
+                <>
+                  {' · '}
+                  {safeHttpUrl(shownProvenance.url)
+                    ? <a className={styles.sourceLink} href={safeHttpUrl(shownProvenance.url) ?? undefined}>{shownProvenance.url}</a>
+                    : shownProvenance.url}
+                </>
+              )}
+            </p>
+            <p className={styles.sourceLine}>Trust: {trustLabel(shownProvenance.trust)}</p>
+          </div>
+        )}
+
         {(presentedPayload?.payee || presentedPayload?.amount) && (
           <div className={styles.payment}>
             {presentedPayload.payee && (
@@ -685,7 +732,7 @@ export function ApprovalGate({
             </p>
           )}
           {/* Staged: back button when confirming */}
-          {mode === 'staged' && stagedStep === 'confirming' && (
+          {effectiveMode === 'staged' && stagedStep === 'confirming' && (
             <button
               className={`${styles.btn} ${styles.btnSecondary}`}
               onClick={handleBack}
@@ -711,15 +758,15 @@ export function ApprovalGate({
             className={`${styles.btn} ${styles.btnApprove}`}
             onClick={handleApprove}
             type="button"
-            disabled={signing || ((mode !== 'staged' || stagedStep === 'confirming') && !whyReady) || (paymentFloor && stagedStep === 'confirming' && !reviewReady)}
+            disabled={signing || ((effectiveMode !== 'staged' || stagedStep === 'confirming') && !whyReady) || (paymentFloor && stagedStep === 'confirming' && !reviewReady)}
             aria-describedby={[
               whyMinimum > 0 ? `${whyId}-count` : null,
               paymentFloor && !reviewReady ? reviewStatusId : null,
             ].filter((id): id is string => id != null).join(' ') || undefined}
           >
-            {mode === 'staged' && stagedStep === 'previewing'
+            {effectiveMode === 'staged' && stagedStep === 'previewing'
               ? <>Preview and continue <IconArrowRight /></>
-              : mode === 'staged' && stagedStep === 'confirming'
+              : effectiveMode === 'staged' && stagedStep === 'confirming'
                 ? <>Confirm and execute <IconCheck /></>
                 : 'Approve'}
             </button>

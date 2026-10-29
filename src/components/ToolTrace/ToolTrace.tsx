@@ -45,6 +45,23 @@ const STATUS_DOT_CLASSES: Record<string, string> = {
   failed: styles.dotFailed,
 };
 
+function trustLabel(trust: 'trusted' | 'untrusted' | 'unknown'): string {
+  if (trust === 'untrusted') return 'Untrusted';
+  if (trust === 'trusted') return 'Trusted';
+  return 'Unknown';
+}
+
+function safeHttpUrl(value: string | undefined): string | null {
+  if (!value) return null;
+  try {
+    const url = new URL(value);
+    if (url.protocol !== 'http:' && url.protocol !== 'https:') return null;
+    return url.href;
+  } catch {
+    return null;
+  }
+}
+
 function formatDuration(ms: number): string {
   if (ms < 1000) return `${ms}ms`;
   return `${(ms / 1000).toFixed(1)}s`;
@@ -184,6 +201,28 @@ export function ToolTrace({
                       )}
                       {call.policyFlags.externalAction && (
                         <span className={styles.policyBadge}>external</span>
+                      )}
+                    </div>
+                  )}
+
+                  {call.provenance && (
+                    <div className={styles.provenance}>
+                      <span className={call.provenance.trust === 'untrusted' ? `${styles.trustTag} ${styles.trustUntrusted}` : styles.trustTag}>
+                        {trustLabel(call.provenance.trust)}
+                      </span>
+                      <span>{call.provenance.source}</span>
+                      {call.provenance.url && (
+                        safeHttpUrl(call.provenance.url)
+                          ? (
+                            <a
+                              className={styles.sourceLink}
+                              href={safeHttpUrl(call.provenance.url) ?? undefined}
+                              onClick={(event) => event.stopPropagation()}
+                            >
+                              {call.provenance.url}
+                            </a>
+                          )
+                          : <span>{call.provenance.url}</span>
                       )}
                     </div>
                   )}

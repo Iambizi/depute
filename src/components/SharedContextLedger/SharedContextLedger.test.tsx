@@ -99,6 +99,19 @@ describe('SharedContextLedger', () => {
       expect(screen.getByRole('heading', { name: /Shared Context Ledger/i })).toBeInTheDocument();
     });
 
+    it('marks the trust already recorded on an entry', () => {
+      render(
+        <SharedContextLedger
+          entries={[{
+            ...MOCK_ENTRIES[1],
+            provenance: { ...MOCK_ENTRIES[1].provenance, trust: 'untrusted' },
+          }]}
+        />,
+      );
+      expect(screen.getByText('Untrusted')).toBeInTheDocument();
+      expect(screen.getByText('User requirement')).toBeInTheDocument();
+    });
+
     it('scope filter buttons are rendered', () => {
       render(<SharedContextLedger entries={MOCK_ENTRIES} />);
       expect(screen.getByRole('button', { name: /Global/i })).toBeInTheDocument();

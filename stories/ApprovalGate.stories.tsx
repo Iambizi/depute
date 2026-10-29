@@ -371,3 +371,20 @@ export const PaymentReview: Story = {
     },
   },
 };
+
+export const UntrustedSource: Story = {
+  name: 'Untrusted source',
+  args: {
+    ...storyApproval({
+      mode: 'simple',
+      status: 'pending',
+      title: 'Pay a forwarded invoice',
+      description: 'The host asked for one click. The source keeps this gate in two steps.',
+    }),
+    provenance: {
+      source: 'forwarded email',
+      url: 'https://example.com/invoice',
+      trust: 'untrusted',
+    },
+  },
+};

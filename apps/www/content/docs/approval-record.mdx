@@ -28,7 +28,7 @@ Every later control does this in the same change as the code:
 | --- | --- | --- |
 | The person is left as the actor for an agent action | Consumer-bank terms for agents, and vendor flows that record the customer's approval as the authorization | An `ApprovalReceipt` of the payload that was shown and the decision that was recorded. The host keeps the JSON. |
 | A prior yes is reused for a different counterparty or purpose | Payment flows where the payee or the stated purpose changed after an earlier grant | `requiresApproval`. Identity is rail plus identifier. The display name is not the key. |
-| The instruction did not come from the person | A payment whose provenance is untrusted, including when the payee was already allowed | The gate opens again, and the decision is high-stakes. |
+| The instruction did not come from the person | A payment whose provenance is untrusted, including when the payee was already allowed, reviewed 26–28 October 2026 | The gate opens again, and the decision is high-stakes. The gate and each tool-trace step show the source, an optional url, and the trust. An untrusted source shows a warning and forces staged mode. A ledger entry can carry that trust on the provenance it already has. The receipt stores the gate's provenance. |
 | A flagged payment can be cleared with one click | Approvals of payments the policy had already decided were worth a gate | A why of 100 characters before Approve. Reject stays immediate. Other gates stay one click. |
 | A check that looks at one payment misses a run of small ones | Repeated payments under a per-payment threshold, reviewed 26–28 October 2026 | One warning on the budget meter when more than five auto-approved payments under 5 are not all the same payee and purpose, inside ten minutes. A second gate stays closed. |
 | The person agrees with the agent almost every time | A run of decisions that follow the recommendation, reviewed 26–28 October 2026 | Log the recommendation, the person's choice, and whether they agreed. Alert when agreement is over 80% across at least 5 decisions. Blind mode is opt-in and hides the recommendation until the person chooses. The streak, speed, and approval-rate checks stay. |
@@ -63,6 +63,10 @@ The row in the table is the rule. `smallPaymentBurst` is the check [Budget Meter
 ## Time on screen
 
 The row in the table is the rule. [Approval Gate](/docs/components/approval-gate) applies it in staged mode when the payload has a payee and an amount. `minReviewMs` replaces the default in that row. `0` means the fields only need to have painted. `now` drives the clock when the host sets it.
+
+## Where the instruction came from
+
+The row in the table is the rule. [Approval Gate](/docs/components/approval-gate) reads `provenance`, or the same field on the presented payload when that payload has one. [Tool Trace](/docs/components/tool-trace) reads it on each call. [Shared Context Ledger](/docs/components/shared-context-ledger) reads `provenance.trust` on the entry it already shows.
 
 ## What this page will not claim
 

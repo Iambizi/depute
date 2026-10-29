@@ -158,6 +158,30 @@
   gap: var(--ax-space-1);
   margin-top: var(--ax-space-1);}
 
+.provenance {display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ax-space-1);
+  margin-top: var(--ax-space-1);
+  color: var(--ax-fg-default);
+  font-size: var(--ax-text-xs);
+  line-height: var(--ax-leading-lg);}
+
+.trustTag {font-size: var(--ax-text-2xs);
+  font-weight: var(--ax-weight-medium);
+  padding: 0 var(--ax-space-1);
+  border-radius: var(--ax-radius-xs);
+  background: var(--ax-status-neutral-bg);
+  color: var(--ax-status-neutral-fg);
+  border: var(--ax-border-width) solid var(--ax-status-neutral-border);}
+
+.trustUntrusted {background: var(--ax-status-warning-bg);
+  color: var(--ax-status-warning-fg);
+  border-color: var(--ax-status-warning-border);}
+
+.sourceLink {color: inherit;
+  text-decoration: underline;}
+
 .policyBadge {font-size: var(--ax-text-2xs);
   font-weight: var(--ax-weight-medium);
   padding: 0 var(--ax-space-1);
