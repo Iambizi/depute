@@ -96,6 +96,7 @@ The `useAutomationBias` hook monitors three specific behavioral signals:
 1. **Consecutive Approvals**: Detecting long streaks of approvals without a single rejection or modification.
 2. **Approval Velocity**: Measuring the time between the UI rendering and the user clicking "Approve". If it's faster than a human could realistically review the content, it triggers friction.
 3. **Session Ceilings**: Monitoring the overall approval-to-rejection ratio. If a user approves >90% of actions over a long period, it indicates potential over-trust.
+4. **Following the recommendation**: Pass the agent's choice as the second argument to `recordAction`. When that run should raise an alert, and when blind mode hides the choice, is the pattern in [Approval record](/docs/approval-record).
 
 ## Props
 
@@ -107,6 +108,7 @@ The `useAutomationBias` hook monitors three specific behavioral signals:
 | `isActive` | `boolean` | `false` | Whether the friction overlay should be displayed. |
 | `onAcknowledge` | `() => void` | - | Callback when the user acknowledges the alert after the pause. |
 | `actionName` | `string` | `'this action'` | The name of the action being gated, used in the alert message. |
+| `cause` | `'streak' \| 'speed' \| 'approval-rate' \| 'agreement'` | — | Which check opened the alert. `agreement` uses its own explanation. |
 | `className` | `string` | - | Optional custom styling for the container. |
 
 ### useAutomationBias
@@ -116,6 +118,8 @@ The `useAutomationBias` hook monitors three specific behavioral signals:
 | `consecutiveApprovals` | `number` | `5` | Trigger alert after this many consecutive approvals. |
 | `minApprovalTimeMs` | `number` | `1500` | Minimum ms required for a "valid" review. |
 | `approvalRateCeiling` | `number` | `0.9` | Trigger alert if overall approval rate exceeds this % (0-1). |
+| `agreementRateCeiling` | `number` | `0.8` | Alert when agreement with the recommendation is strictly over this rate. |
+| `minimumAgreementDecisions` | `number` | `5` | Compared decisions required before that agreement rate can alert. |
 
 ## When to use
 
@@ -173,7 +177,7 @@ When an interface is too smooth, users stop paying attention. They settle into a
 The more a user feels "in control" of an AI system, the more likely they are to blindly accept its suggestions. Research by [Shalaleh Rismani](https://shalalehrismani.com/), an AI safety researcher at McGill and Mila, confirms this: users who better understood an AI writing assistant trusted it more — and accepted significantly more errors as a result. More transparency doesn't always lead to better oversight; it often leads to more trust and less scrutiny.
 
 **Why a mandatory pause?**
-`AutomationBiasAlert` detects when repeated approvals suggest a user has stopped actually reviewing — and introduces a pause to break the pattern. The discomfort is the point.
+`AutomationBiasAlert` detects when repeated approvals suggest a user has stopped actually reviewing — and introduces a pause to break the pattern. The discomfort is the point. Agreeing with the agent on almost every decision is a different signal from approving quickly. That pattern is in [Approval record](/docs/approval-record). Blind mode stays off until the host sets it on the gate.
 
 - **Non-blocking**: It doesn't prevent the user from approving, but it breaks the physical rhythm of repetitive clicking.
 - **Contextual**: It only appears when behavioral patterns suggest the human is no longer actually reviewing the data.

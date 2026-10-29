@@ -12,6 +12,7 @@
 import type { PresentedPayload, PresentedProvenance, PresentedScope } from '../types/core';
 
 export type ReceiptOutcome = 'approved' | 'rejected' | 'expired' | 'denied';
+export type ReceiptChoice = 'approved' | 'rejected';
 export type ReceiptMethod = 'click' | 'passkey' | 'handoff' | 'chat';
 export type ReceiptExecutionStatus = 'success' | 'failed' | 'pending' | 'reverted' | 'not-run';
 
@@ -31,6 +32,12 @@ export interface ReceiptDecision {
   reviewDurationMs?: number;
   justification?: string;
   acknowledgedTermIds?: string[];
+  /** The choice the agent recommended, when the host supplied one. */
+  agentRecommendation?: ReceiptChoice;
+  /** The choice the person made. Set only for an approve or a reject. */
+  humanChoice?: ReceiptChoice;
+  /** True when the person's choice matched the recommendation. */
+  agreed?: boolean;
 }
 
 export interface ReceiptExecution {
@@ -103,6 +110,8 @@ export interface DecisionReceiptInput {
   presentedAtMs: number;
   decidedAtMs: number;
   acknowledgedTermIds?: string[];
+  /** When set on an approve or reject, the receipt records whether the person followed it. */
+  agentRecommendation?: ReceiptChoice;
   triggers?: string[];
   provenance?: PresentedProvenance;
   highStakes?: boolean;
@@ -330,6 +339,14 @@ export function buildDecisionReceipt(input: DecisionReceiptInput): ApprovalRecei
   };
   if (input.approver && input.outcome !== 'expired') {
     decision.approver = { ...input.approver, method };
+  }
+  if (
+    input.agentRecommendation
+    && (input.outcome === 'approved' || input.outcome === 'rejected')
+  ) {
+    decision.agentRecommendation = input.agentRecommendation;
+    decision.humanChoice = input.outcome;
+    decision.agreed = input.agentRecommendation === input.outcome;
   }
   return buildReceipt({
     id: input.id ?? input.fallbackId,

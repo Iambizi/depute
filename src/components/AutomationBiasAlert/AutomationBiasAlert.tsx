@@ -10,6 +10,7 @@ import styles from './AutomationBiasAlert.module.css';
  */
 export function AutomationBiasAlert({
   actionName = 'this action',
+  cause = null,
   onAcknowledge,
   children,
   isActive = false,
@@ -60,7 +61,9 @@ export function AutomationBiasAlert({
             
             <h3 className={styles.title}>Deliberate Review Required</h3>
             <p className={styles.description}>
-              You&apos;ve approved several actions in rapid succession. Please take a moment to carefully review {actionName} before proceeding.
+              {cause === 'agreement'
+                ? `You have followed the agent's recommendation on most of the recent decisions. Review ${actionName} before proceeding.`
+                : `You've approved several actions in rapid succession. Please take a moment to carefully review ${actionName} before proceeding.`}
             </p>
 
             <div className={styles.actions}>

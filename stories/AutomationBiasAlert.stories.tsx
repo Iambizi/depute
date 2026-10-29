@@ -76,3 +76,22 @@ export const ForcedTrigger: Story = {
     )
   }
 };
+
+export const FollowingTheRecommendation: Story = {
+  name: 'Following the recommendation',
+  args: {
+    isActive: true,
+    cause: 'agreement',
+    actionName: 'this payment',
+    children: (
+      <ApprovalGate
+        {...generateMockApproval({
+          status: 'pending',
+          title: 'Pay vendor',
+          agentReasoning: 'The invoice matches the grant.',
+        })}
+        agentRecommendation="approved"
+      />
+    ),
+  },
+};
