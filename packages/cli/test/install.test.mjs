@@ -34,6 +34,7 @@ const MIRROR_FILES = [
   'packages/core/src/presented.ts',
   'packages/core/src/receipt.ts',
   'packages/core/src/triggers.ts',
+  'packages/core/src/agreement.ts',
   'src/utils/receiptDownload.ts',
   'src/utils/receiptSign.ts',
   'src/utils/a11y.tsx',
@@ -119,6 +120,8 @@ test('add approval-gate installs tokens and rewrites shared imports', () => {
   const installedTriggers = fs.readFileSync(path.join(cwd, 'src/utils/ax-triggers.ts'), 'utf8');
   assert.match(installedTriggers, /export function requiresApproval/);
   assert.match(installedTriggers, /export function smallPaymentBurst/);
+  const installedAgreement = fs.readFileSync(path.join(cwd, 'src/utils/ax-agreement.ts'), 'utf8');
+  assert.match(installedAgreement, /export function agreementRate/);
   assert.match(installedTriggers, /from ['"]\.\.\/types\/ax-core['"]/);
   assert.doesNotMatch(installedTriggers, /from ['"]\.\/presented['"]/);
   assert.doesNotMatch(installedSign, /from ['"]\.\/receipt['"]/);
@@ -368,4 +371,16 @@ test('add budget-meter rewrites the small-payment import', () => {
   assert.match(types, /from ['"]\.\.\/\.\.\/utils\/ax-triggers['"]/);
   assert.doesNotMatch(component, /from ['"][^'"]*utils\/triggers['"]/);
   assert.doesNotMatch(types, /from ['"][^'"]*utils\/triggers['"]/);
+});
+
+test('add automation-bias-alert rewrites the agreement import', () => {
+  const cwd = fs.mkdtempSync(path.join(os.tmpdir(), 'depute-bias-'));
+  const result = runAdd(cwd, ['automation-bias-alert', '--no-css']);
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+  const hook = fs.readFileSync(
+    path.join(cwd, 'src/components/AutomationBiasAlert/useAutomationBias.ts'),
+    'utf8',
+  );
+  assert.match(hook, /from ['"]\.\.\/\.\.\/utils\/ax-agreement['"]/);
+  assert.doesNotMatch(hook, /from ['"][^'"]*utils\/agreement['"]/);
 });

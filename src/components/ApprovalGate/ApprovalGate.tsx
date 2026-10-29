@@ -122,6 +122,8 @@ export function ApprovalGate({
   title,
   description,
   agentReasoning,
+  agentRecommendation,
+  blind = false,
   status = 'pending',
   mode = 'simple',
   confidence,
@@ -357,6 +359,7 @@ export function ApprovalGate({
       title,
       description,
       agentReasoning,
+      agentRecommendation,
       scope,
       justification: recordedWhy,
       approver,
@@ -383,6 +386,7 @@ export function ApprovalGate({
     title,
     description,
     agentReasoning,
+    agentRecommendation,
     scope,
     recordedWhy,
     approver,
@@ -530,6 +534,13 @@ export function ApprovalGate({
           <div className={styles.reasoning}>
             <div className={styles.reasoningLabel}>Agent Reasoning</div>
             {agentReasoning}
+          </div>
+        )}
+
+        {agentRecommendation && (!blind || (!isPending && !isHandoffPending)) && (
+          <div className={styles.reasoning}>
+            <div className={styles.reasoningLabel}>Agent recommends</div>
+            {agentRecommendation === 'approved' ? 'Approve' : 'Reject'}
           </div>
         )}
 

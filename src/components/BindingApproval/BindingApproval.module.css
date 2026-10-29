@@ -103,6 +103,16 @@
   color: var(--ax-fg-muted);
   line-height: var(--ax-leading-md);}
 
+.recommendation {margin: 0;
+  padding: var(--ax-space-2) var(--ax-space-4);
+  font-size: var(--ax-text-sm);
+  line-height: var(--ax-leading-sm);
+  color: var(--ax-fg-default);
+  background: var(--ax-bg-subtle);}
+
+.recommendationLabel {font-weight: var(--ax-weight-semibold);
+  margin-right: var(--ax-space-2);}
+
 /* ------------------------------------------------------------------ */
 /* Impact statement                                                    */
 /* ------------------------------------------------------------------ */

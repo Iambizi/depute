@@ -243,6 +243,18 @@
           "items": {
             "type": "string"
           }
+        },
+        "agentRecommendation": {
+          "$ref": "#/definitions/ReceiptChoice",
+          "description": "The choice the agent recommended, when the host supplied one."
+        },
+        "humanChoice": {
+          "$ref": "#/definitions/ReceiptChoice",
+          "description": "The choice the person made. Set only for an approve or a reject."
+        },
+        "agreed": {
+          "type": "boolean",
+          "description": "True when the person's choice matched the recommendation."
         }
       },
       "required": [
@@ -287,6 +299,13 @@
         "passkey",
         "handoff",
         "chat"
+      ]
+    },
+    "ReceiptChoice": {
+      "type": "string",
+      "enum": [
+        "approved",
+        "rejected"
       ]
     },
     "ReceiptExecution": {

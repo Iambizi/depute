@@ -97,6 +97,36 @@ describe('ApprovalGate', () => {
       expect(receipt.presented.payload.title).toBe('Pay vendor');
     });
 
+    it('records agreement on the receipt and hides the recommendation while blind', async () => {
+      const user = userEvent.setup();
+      const onReceipt = vi.fn();
+      const { rerender } = render(
+        <ApprovalGate
+          title="Pay vendor"
+          agentReasoning="The invoice matches the grant."
+          agentRecommendation="approved"
+          blind
+          now={Date.parse('2026-10-28T16:00:00.000Z')}
+          presentedAt={Date.parse('2026-10-28T16:00:00.000Z')}
+          onReceipt={onReceipt}
+        />,
+      );
+      expect(screen.getByText('The invoice matches the grant.')).toBeInTheDocument();
+      expect(screen.queryByText('Agent recommends')).not.toBeInTheDocument();
+      await user.click(screen.getByRole('button', { name: 'Approve' }));
+      expect(onReceipt.mock.calls[0][0].decision.agreed).toBe(true);
+      expect(onReceipt.mock.calls[0][0].decision.humanChoice).toBe('approved');
+
+      rerender(
+        <ApprovalGate
+          title="Pay vendor"
+          agentRecommendation="rejected"
+          status="approved"
+        />,
+      );
+      expect(screen.getByText('Reject')).toBeInTheDocument();
+    });
+
     it('keeps approve on one click when no payment trigger fired', () => {
       render(<ApprovalGate title="Send email" />);
       expect(screen.queryByRole('textbox', { name: 'Why are you approving this?' })).not.toBeInTheDocument();

@@ -340,3 +340,17 @@ export const SignedReceipt: Story = {
     },
   },
 };
+
+export const BlindRecommendation: Story = {
+  name: 'Blind recommendation',
+  args: {
+    ...storyApproval({
+      status: 'pending',
+      title: 'Pay vendor',
+      description: 'Invoice 104 matches the grant.',
+      agentReasoning: 'The payee and the purpose are already covered.',
+    }),
+    agentRecommendation: 'approved',
+    blind: true,
+  },
+};

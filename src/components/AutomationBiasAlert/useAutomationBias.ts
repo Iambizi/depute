@@ -1,10 +1,14 @@
 import { useState, useCallback, useMemo, useRef } from 'react';
-import type { ApprovalEvent, AutomationBiasThresholds } from './AutomationBiasAlert.types';
+import { agreementRate } from '../../utils/agreement';
+import type { AgreementChoice, AgreementDecision } from '../../utils/agreement';
+import type { ApprovalEvent, AutomationBiasCause, AutomationBiasThresholds } from './AutomationBiasAlert.types';
 
 const DEFAULT_THRESHOLDS: Required<AutomationBiasThresholds> = {
   consecutiveApprovals: 5,
   minApprovalTimeMs: 1500, // 1.5s is fast for manual review
   approvalRateCeiling: 0.9, // 90% approval rate
+  agreementRateCeiling: 0.8,
+  minimumAgreementDecisions: 5,
 };
 
 export function useAutomationBias(
@@ -12,7 +16,9 @@ export function useAutomationBias(
 ) {
   const [history, setHistory] = useState<ApprovalEvent[]>([]);
   const historyRef = useRef<ApprovalEvent[]>([]);
+  const agreementRef = useRef<AgreementDecision[]>([]);
   const [isAlertTriggered, setIsAlertTriggered] = useState(false);
+  const [cause, setCause] = useState<AutomationBiasCause | null>(null);
   const [startTime, setStartTime] = useState(() => Date.now());
 
   const mergedThresholds = useMemo(() => ({
@@ -25,7 +31,10 @@ export function useAutomationBias(
     setStartTime(Date.now());
   }, []);
 
-  const recordAction = useCallback((action: 'approved' | 'rejected') => {
+  const recordAction = useCallback((
+    action: 'approved' | 'rejected',
+    agentRecommendation?: AgreementChoice,
+  ) => {
     const now = Date.now();
     const durationMs = now - startTime;
     const event: ApprovalEvent = { timestamp: now, action, durationMs };
@@ -35,6 +44,7 @@ export function useAutomationBias(
     setHistory(newHistory);
 
     let triggered = false;
+    let nextCause: AutomationBiasCause | null = null;
 
     const lastN = newHistory.slice(-mergedThresholds.consecutiveApprovals);
     if (
@@ -42,21 +52,39 @@ export function useAutomationBias(
       lastN.every((e) => e.action === 'approved')
     ) {
       triggered = true;
+      nextCause = 'streak';
     }
 
     if (action === 'approved' && durationMs < mergedThresholds.minApprovalTimeMs) {
       triggered = true;
+      nextCause = 'speed';
     }
 
     if (newHistory.length >= 10) {
       const approvals = newHistory.filter((e) => e.action === 'approved').length;
       if (approvals / newHistory.length > mergedThresholds.approvalRateCeiling) {
         triggered = true;
+        nextCause = 'approval-rate';
+      }
+    }
+
+    if (agentRecommendation) {
+      const decisions = [...agreementRef.current, { agentRecommendation, humanChoice: action }].slice(-20);
+      agreementRef.current = decisions;
+      const rate = agreementRate({
+        decisions,
+        agreementThreshold: mergedThresholds.agreementRateCeiling,
+        minimumDecisions: mergedThresholds.minimumAgreementDecisions,
+      });
+      if (rate.alert) {
+        triggered = true;
+        nextCause = 'agreement';
       }
     }
 
     if (triggered) {
       setIsAlertTriggered(true);
+      setCause(nextCause);
     }
 
     const endNow = Date.now();
@@ -65,11 +93,13 @@ export function useAutomationBias(
 
   const dismissAlert = useCallback(() => {
     setIsAlertTriggered(false);
+    setCause(null);
     resetTimer(); // Reset timer after alert to allow review
   }, [resetTimer]);
 
   return {
     isAlertTriggered,
+    cause,
     recordAction,
     dismissAlert,
     resetTimer,

@@ -115,7 +115,7 @@ A highly specialized wrapper designed to enforce a specific behavioral policy.
 </AutomationBiasAlert>
 ```
 
-**Important:** Use the bundled `useAutomationBias()` hook to track consecutive approvals and time-between-approvals. It fires `isActive` when passive oversight is detected. Wrap any `ApprovalGate` or `DelegationGate` that sees repeat automatic approvals.
+**Important:** Use the bundled `useAutomationBias()` hook to track consecutive approvals, time-between-approvals, and, when you pass the agent's recommendation, whether the person followed it. The agreement rule is in `references/design-rationale.md`. It fires `isActive` when passive oversight is detected. Wrap any `ApprovalGate` or `DelegationGate` that sees repeat automatic approvals. Pass `cause` through so an agreement alert does not use the speed copy.
 
 ```tsx
 const { isAlertTriggered, recordAction, dismissAlert } = useAutomationBias({

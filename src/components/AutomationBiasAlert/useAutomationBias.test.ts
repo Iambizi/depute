@@ -62,4 +62,36 @@ describe('useAutomationBias', () => {
     });
     expect(result.current.isAlertTriggered).toBe(false);
   });
+
+  it('alerts when agreement with the recommendation is over 80 percent', () => {
+    const { result } = renderHook(() => useAutomationBias({
+      consecutiveApprovals: 100,
+      minApprovalTimeMs: 0,
+      approvalRateCeiling: 1,
+    }));
+
+    act(() => {
+      for (let index = 0; index < 4; index += 1) {
+        result.current.recordAction('approved', 'approved');
+      }
+      result.current.recordAction('rejected', 'approved');
+    });
+    expect(result.current.isAlertTriggered).toBe(false);
+    expect(result.current.cause).toBeNull();
+
+    act(() => {
+      result.current.recordAction('approved', 'approved');
+    });
+    expect(result.current.isAlertTriggered).toBe(true);
+    expect(result.current.cause).toBe('agreement');
+  });
+
+  it('keeps a fast approval on the speed check when no recommendation is passed', () => {
+    const { result } = renderHook(() => useAutomationBias({ minApprovalTimeMs: 1000 }));
+    act(() => {
+      vi.advanceTimersByTime(200);
+      result.current.recordAction('approved');
+    });
+    expect(result.current.cause).toBe('speed');
+  });
 });

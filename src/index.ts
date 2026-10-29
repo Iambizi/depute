@@ -71,6 +71,12 @@ export {
   requiresApproval,
   smallPaymentBurst,
 } from './utils/triggers';
+export type { AgreementChoice, AgreementDecision, AgreementRate, AgreementRateInput } from './utils/agreement';
+export {
+  DEFAULT_AGREEMENT_THRESHOLD,
+  DEFAULT_MINIMUM_AGREEMENT_DECISIONS,
+  agreementRate,
+} from './utils/agreement';
 
 // A11y utilities
 export { VisuallyHidden, useAnnouncer, useFocusTrap } from './utils/a11y';

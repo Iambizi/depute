@@ -37,6 +37,17 @@ describe('BindingApproval', () => {
       expect(screen.getByText('alice@company.com')).toBeInTheDocument();
     });
 
+    it('hides a blind recommendation until the decision is closed', () => {
+      const { rerender } = render(
+        <BindingApproval {...defaultProps} agentRecommendation="approved" blind />,
+      );
+      expect(screen.queryByText('Agent recommends')).not.toBeInTheDocument();
+      rerender(
+        <BindingApproval {...defaultProps} agentRecommendation="approved" blind status="signed" />,
+      );
+      expect(screen.getByText('Approve')).toBeInTheDocument();
+    });
+
     it('applies custom className', () => {
       render(<BindingApproval {...defaultProps} className="custom-binding" />);
       expect(screen.getByRole('alertdialog')).toHaveClass('custom-binding');
