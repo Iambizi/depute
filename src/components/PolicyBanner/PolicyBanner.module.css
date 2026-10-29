@@ -31,11 +31,18 @@
   --_banner-border: var(--ax-status-danger-solid);
   --_banner-badge-bg: var(--ax-status-danger-bg);}
 
+.severityNeutral {--_banner-accent: var(--ax-fg-default);
+  --_banner-bg: var(--ax-status-neutral-bg);
+  --_banner-border: var(--ax-status-neutral-border);
+  --_banner-badge-bg: var(--ax-status-neutral-bg);}
+
 /* Apply severity colors to the banner */
 .policyBanner.severityInfo {border-color: var(--_banner-border);}
 .policyBanner.severityWarning {border-color: var(--_banner-border);}
 .policyBanner.severityCritical {border-color: var(--_banner-border);
   border-width: var(--ax-space-0-5);}
+
+.policyBanner.severityNeutral {border-color: var(--_banner-border);}
 
 /* ------------------------------------------------------------------ */
 /* Header                                                              */
@@ -96,6 +103,10 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;}
+
+.descriptionWrap {white-space: normal;
+  overflow: visible;
+  text-overflow: unset;}
 
 /* ------------------------------------------------------------------ */
 /* Spacer                                                              */

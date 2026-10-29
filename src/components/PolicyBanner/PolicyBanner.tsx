@@ -30,6 +30,7 @@ const MODE_SEVERITY: Record<PolicyMode, PolicySeverity> = {
   test: 'info',
   drafting: 'info',
   executing: 'critical',
+  disclosure: 'neutral',
 };
 
 const MODE_LABELS: Record<PolicyMode, string> = {
@@ -40,12 +41,17 @@ const MODE_LABELS: Record<PolicyMode, string> = {
   test: 'Test',
   drafting: 'Drafting',
   executing: 'Executing',
+  disclosure: 'Disclosure',
 };
+
+/** Default sentence for `mode="disclosure"` when the host omits `description`. */
+export const DISCLOSURE_DESCRIPTION = 'You are the actor of record for what this agent does.';
 
 const SEVERITY_CLASSES: Record<PolicySeverity, string> = {
   info: styles.severityInfo,
   warning: styles.severityWarning,
   critical: styles.severityCritical,
+  neutral: styles.severityNeutral,
 };
 
 /* ------------------------------------------------------------------ */
@@ -70,6 +76,11 @@ export function PolicyBanner({
 
   const resolvedSeverity = severity ?? MODE_SEVERITY[mode];
   const resolvedLabel = label ?? MODE_LABELS[mode];
+  const resolvedDescription = description !== undefined
+    ? description
+    : mode === 'disclosure'
+      ? DISCLOSURE_DESCRIPTION
+      : undefined;
 
   const isLive =
     showLiveIndicator ??
@@ -85,8 +96,8 @@ export function PolicyBanner({
 
   const ariaLabel = useMemo(
     () =>
-      `Policy: ${resolvedLabel}${description ? ` — ${description}` : ''}`,
-    [resolvedLabel, description],
+      `Policy: ${resolvedLabel}${resolvedDescription ? ` — ${resolvedDescription}` : ''}`,
+    [resolvedLabel, resolvedDescription],
   );
 
   return (
@@ -95,6 +106,7 @@ export function PolicyBanner({
       data-ax=""
       role="status"
       aria-label={ariaLabel}
+      data-severity={resolvedSeverity}
     >
       {/* Header row */}
       <div className={styles.header}>
@@ -112,8 +124,10 @@ export function PolicyBanner({
         </span>
 
         {/* Description */}
-        {description && (
-          <span className={styles.description}>{description}</span>
+        {resolvedDescription && (
+          <span className={mode === 'disclosure' ? `${styles.description} ${styles.descriptionWrap}` : styles.description}>
+            {resolvedDescription}
+          </span>
         )}
 
         {/* Spacer */}

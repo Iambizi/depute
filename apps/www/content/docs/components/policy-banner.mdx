@@ -68,10 +68,10 @@ Render `PolicyBanner` at the top of the supervision viewport. Using `mode="produ
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `mode` | `PolicyMode` | — | E.g., `'sandbox'`, `'production'`, `'simulation'` |
+| `mode` | `PolicyMode` | — | E.g., `'sandbox'`, `'production'`, `'disclosure'` |
 | `label` | `string` | — | Optional override for mode name |
-| `description` | `string` | — | Short policy description |
-| `severity` | `'info' \| 'warning' \| 'critical'` | auto | Visual treatment level |
+| `description` | `string` | — | Short policy description. `disclosure` has a default sentence. |
+| `severity` | `'info' \| 'warning' \| 'critical' \| 'neutral'` | auto | Visual treatment level. `disclosure` is `neutral`. |
 | `constraints` | `PolicyConstraint[]` | — | Active policy constraints |
 | `showLiveIndicator` | `boolean` | `false` | Show pulsing dot for live modes |
 | `collapsible` | `boolean` | `false` | Allow banner to collapse |
@@ -79,3 +79,5 @@ Render `PolicyBanner` at the top of the supervision viewport. Using `mode="produ
 ## Design rationale
 
 **Why a persistent banner?** Agent oversight interfaces look identical whether running on test data or production servers. A persistent banner prevents operator error by anchoring the environment context at the top of the supervision viewport.
+
+`mode="disclosure"` is the neutral preset. It states that the person is the actor of record for what the agent does. Pass `description` to replace that sentence. The rule is in [Approval record](/docs/approval-record).
