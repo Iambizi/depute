@@ -113,6 +113,14 @@ function formatTime(seconds: number): string {
   return m > 0 ? `${m}:${s.toString().padStart(2, '0')}` : `${s}s`;
 }
 
+/** Staged payments keep Confirm off this long after the payee and amount paint. */
+const DEFAULT_MIN_REVIEW_MS = 1500;
+
+function resolveMinReviewMs(value: number | undefined): number {
+  if (value == null || !Number.isFinite(value) || value < 0) return DEFAULT_MIN_REVIEW_MS;
+  return value;
+}
+
 // ---------------------------------------------------------------------------
 // ApprovalGate Component
 // ---------------------------------------------------------------------------
@@ -126,6 +134,7 @@ export function ApprovalGate({
   blind = false,
   status = 'pending',
   mode = 'simple',
+  minReviewMs,
   confidence,
   timeoutSeconds,
   now,
@@ -190,6 +199,7 @@ export function ApprovalGate({
 
   const whyMinimum = requiredJustificationLength(triggers, minJustificationLength);
   const whyId = useId();
+  const reviewStatusId = useId();
   const [why, setWhy] = useState(justification ?? '');
   useEffect(() => {
     setWhy(justification ?? '');
@@ -199,6 +209,41 @@ export function ApprovalGate({
   const recordedWhy = whyMinimum > 0 ? (why.trim() || undefined) : justification;
 
   const shownAtRef = useRef(presentedAt ?? now ?? Date.now());
+  const paymentPaintedAtRef = useRef<number | null>(null);
+  const [reviewClock, setReviewClock] = useState<number | null>(null);
+  const paymentFields = presentedPayload?.payee != null && presentedPayload.amount != null;
+  if (paymentFields) {
+    if (paymentPaintedAtRef.current == null) {
+      paymentPaintedAtRef.current = now ?? Date.now();
+    }
+  } else {
+    paymentPaintedAtRef.current = null;
+  }
+  const paymentFloor = mode === 'staged' && paymentFields && isPending && !isHandoffPending;
+  const reviewWait = resolveMinReviewMs(minReviewMs);
+  const reviewElapsed = paymentPaintedAtRef.current == null
+    ? 0
+    : (now ?? reviewClock ?? paymentPaintedAtRef.current) - paymentPaintedAtRef.current;
+  const reviewReady = !paymentFloor || reviewElapsed >= reviewWait;
+  useEffect(() => {
+    if (!paymentFloor || now != null) return;
+    const painted = paymentPaintedAtRef.current;
+    if (painted == null) return;
+    const remaining = reviewWait - (Date.now() - painted);
+    if (remaining <= 0) {
+      setReviewClock(Date.now());
+      return;
+    }
+    const timer = setTimeout(() => setReviewClock(Date.now()), remaining);
+    return () => clearTimeout(timer);
+  }, [paymentFloor, now, reviewWait]);
+  const wasReviewReady = useRef(reviewReady);
+  useEffect(() => {
+    if (paymentFloor && stagedStep === 'confirming' && reviewReady && !wasReviewReady.current) {
+      announce('Payee and amount have been on screen. Confirm to proceed.');
+    }
+    wasReviewReady.current = reviewReady;
+  }, [paymentFloor, stagedStep, reviewReady, announce]);
   const emitReceiptRef = useRef<(outcome: ReceiptOutcome, method: ReceiptMethod) => void | Promise<void>>(() => {});
   const [signing, setSigning] = useState(false);
   const signingRef = useRef(false);
@@ -365,7 +410,9 @@ export function ApprovalGate({
       approver,
       outcome,
       method,
-      presentedAtMs: presentedAt ?? shownAtRef.current,
+      presentedAtMs: presentedPayload?.payee != null && presentedPayload.amount != null && paymentPaintedAtRef.current != null
+        ? paymentPaintedAtRef.current
+        : (presentedAt ?? shownAtRef.current),
       decidedAtMs: now ?? Date.now(),
       triggers,
       provenance: presentedPayload?.provenance,
@@ -430,11 +477,11 @@ export function ApprovalGate({
       announce('Confirm to proceed with approval');
       return;
     }
-    if (!whyReady) return;
+    if (!whyReady || !reviewReady) return;
     void decide('approved', 'click', () => {
       onApprove?.();
     });
-  }, [mode, stagedStep, onApprove, announce, decide, whyReady]);
+  }, [mode, stagedStep, onApprove, announce, decide, whyReady, reviewReady]);
 
   const handleReject = useCallback(() => {
     void decide('rejected', isHandoffPending ? 'handoff' : 'click', () => {
@@ -524,6 +571,32 @@ export function ApprovalGate({
 
       {/* Body */}
       <div className={styles.body}>
+        {(presentedPayload?.payee || presentedPayload?.amount) && (
+          <div className={styles.payment}>
+            {presentedPayload.payee && (
+              <div>
+                <div className={styles.scopeTitle}>Payee</div>
+                <p className={styles.paymentValue}>
+                  {presentedPayload.payee.displayName ?? presentedPayload.payee.identifier}
+                </p>
+                <p className={styles.paymentMeta}>
+                  {presentedPayload.payee.displayName
+                    ? `${presentedPayload.payee.rail} · ${presentedPayload.payee.identifier}`
+                    : presentedPayload.payee.rail}
+                </p>
+              </div>
+            )}
+            {presentedPayload.amount && (
+              <div>
+                <div className={styles.scopeTitle}>Amount</div>
+                <p className={styles.paymentValue}>
+                  {presentedPayload.amount.value} {presentedPayload.amount.currency}
+                </p>
+              </div>
+            )}
+          </div>
+        )}
+
         {/* Description */}
         {description && (
           <p className={styles.description}>{description}</p>
@@ -606,6 +679,11 @@ export function ApprovalGate({
       {/* Actions — only visible when pending */}
       {isPending && (
         <div className={styles.actions}>
+          {paymentFloor && !reviewReady && (
+            <p id={reviewStatusId} className={styles.reviewWait} role="status">
+              Confirm waits until the payee and the amount have been on screen.
+            </p>
+          )}
           {/* Staged: back button when confirming */}
           {mode === 'staged' && stagedStep === 'confirming' && (
             <button
@@ -633,8 +711,11 @@ export function ApprovalGate({
             className={`${styles.btn} ${styles.btnApprove}`}
             onClick={handleApprove}
             type="button"
-            disabled={signing || ((mode !== 'staged' || stagedStep === 'confirming') && !whyReady)}
-            aria-describedby={whyMinimum > 0 ? `${whyId}-count` : undefined}
+            disabled={signing || ((mode !== 'staged' || stagedStep === 'confirming') && !whyReady) || (paymentFloor && stagedStep === 'confirming' && !reviewReady)}
+            aria-describedby={[
+              whyMinimum > 0 ? `${whyId}-count` : null,
+              paymentFloor && !reviewReady ? reviewStatusId : null,
+            ].filter((id): id is string => id != null).join(' ') || undefined}
           >
             {mode === 'staged' && stagedStep === 'previewing'
               ? <>Preview and continue <IconArrowRight /></>

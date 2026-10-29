@@ -354,3 +354,20 @@ export const BlindRecommendation: Story = {
     blind: true,
   },
 };
+
+export const PaymentReview: Story = {
+  name: 'Payment review',
+  args: {
+    ...storyApproval({
+      mode: 'staged',
+      status: 'pending',
+      title: 'Pay a new vendor',
+      description: 'Confirm waits until the payee and the amount have been on screen.',
+    }),
+    presentedPayload: {
+      title: 'Pay a new vendor',
+      payee: { rail: 'ach', identifier: '021000021:9981', displayName: 'Northwind Supplies' },
+      amount: { value: '240.00', currency: 'USD' },
+    },
+  },
+};
