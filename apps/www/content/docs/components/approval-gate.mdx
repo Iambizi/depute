@@ -134,6 +134,22 @@ A payment trigger (`new-payee`, `purpose-change`, `untrusted-source`, `outside-g
 />
 ```
 
+## Time on screen
+
+A staged payment shows the payee and the amount, and Confirm stays off until they have been on screen. Preview and Reject stay available. Simple mode stays instant. The duration stored on the receipt starts when those fields paint. The rule is in [Approval record](/docs/approval-record).
+
+```tsx
+<ApprovalGate
+  title="Pay a new vendor"
+  mode="staged"
+  presentedPayload={{
+    title: 'Pay a new vendor',
+    payee: { rail: 'ach', identifier: '021000021:9981', displayName: 'Northwind Supplies' },
+    amount: { value: '240.00', currency: 'USD' },
+  }}
+/>
+```
+
 ## Props
 
 | Prop | Type | Default | Description |
@@ -144,6 +160,7 @@ A payment trigger (`new-payee`, `purpose-change`, `untrusted-source`, `outside-g
 | `agentRecommendation` | `'approved' \| 'rejected'` | — | The choice the agent recommends. Stored on the receipt with whether the person followed it. |
 | `blind` | `boolean` | `false` | Hide that recommendation until the person chooses. |
 | `mode` | `'simple' \| 'staged'` | `'simple'` | Staged adds Preview → Confirm → Execute steps |
+| `minReviewMs` | `number` | `1500` | Staged payment mode waits this long after the payee and the amount paint. `0` means paint is enough. Simple mode ignores it. |
 | `status` | `'pending' \| 'approved' \| 'rejected' \| 'handoff_pending' \| 'handoff_denied' \| 'handoff_expired'` | `'pending'` | Controls gate state |
 | `scope` | `ApprovalScope` | — | Optional scoped grant (target, resourceLimit, durationSeconds) |
 | `triggers` | `string[]` | — | Policy reasons that opened the gate. A payment trigger requires a why. |
@@ -187,7 +204,7 @@ It pauses execution until a person approves, rejects, or the handoff deadline pa
 
 ## Design rationale
 
-The durable reason for the payment rules on this gate is in [Approval record](/docs/approval-record). A prior grant covers one payee and one purpose. A new payee, a changed purpose, or an untrusted source is a new authorization. The why field exists so a payment the policy already flagged cannot be cleared with a bare click. The length is 100 characters because the field has to hold a reason, and it stays off for every gate that is not a payment trigger. An optional recommendation stays visible unless the host sets `blind`, which hides it until the person chooses.
+The durable reason for the payment rules on this gate is in [Approval record](/docs/approval-record). A prior grant covers one payee and one purpose. A new payee, a changed purpose, or an untrusted source is a new authorization. The why field exists so a payment the policy already flagged cannot be cleared with a bare click. The length is 100 characters because the field has to hold a reason, and it stays off for every gate that is not a payment trigger. An optional recommendation stays visible unless the host sets `blind`, which hides it until the person chooses. A staged payment keeps Confirm off until the payee and the amount have been on screen.
 
 **Why `scope`?** Binary approve/reject is the wrong mental model for agents. Stripe never approves an action with a simple yes/no — they issue capability grants scoped to a specific target, resource limit, and time window.
 
