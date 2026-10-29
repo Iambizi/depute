@@ -14,7 +14,7 @@ Source: depute Intel Report #1, Oct 26–28, 2026. Supervision has to be legible
 | R4 | Budget meter warning for a burst of small auto-approved payments | Merged in https://github.com/Iambizi/depute/pull/37 |
 | R5 | Log whether the human followed the agent's recommendation | In review: https://github.com/Iambizi/depute/pull/38 |
 | R6 | Payee and amount confirm step a fast biometric cannot skip | In review: https://github.com/Iambizi/depute/pull/39 |
-| R7 | Provenance on the gate and tool trace; untrusted source forces staged mode | Not started |
+| R7 | Provenance on the gate and tool trace; untrusted source forces staged mode | In review: https://github.com/Iambizi/depute/pull/40 |
 | R8 | Liability notice on binding approval and the policy banner | Not started |
 | R9 | One decision path for React and a chat surface | Not started |
 | R10 | Bank-scoped delegation: identity, scopes, expiry, revoke | Not started |
