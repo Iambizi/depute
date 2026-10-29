@@ -199,7 +199,7 @@ If you're not sure which applies, ask: "Is there one agent managing the others?"
 
 **Problem:** Multi-agent systems break when shared memory is invisible. It must be clear what agents believe is true and who wrote it.
 
-**Anatomy:** Scoped read+provenance panel (Global / Branch / Agent-local). Shows typed entries (facts, decisions, constraints) with conflict signals. Read-only in v1 — full write-control deferred to v2.
+**Anatomy:** Scoped read+provenance panel (Global / Branch / Agent-local). Shows typed entries (facts, decisions, constraints) with conflict signals. An entry can carry a trust tag on the provenance it already has. That rule is in `references/design-rationale.md`. Read-only in v1 — full write-control deferred to v2.
 
 ```tsx
 <SharedContextLedger

@@ -41,6 +41,13 @@ export interface PlanStep {
   timestamp?: string;
 }
 
+/** Where a tool call's instruction came from. */
+export interface ToolCallProvenance {
+  source: string;
+  url?: string;
+  trust: 'trusted' | 'untrusted' | 'unknown';
+}
+
 /** A single tool call entry */
 export interface ToolCall {
   id: string;
@@ -57,6 +64,8 @@ export interface ToolCall {
     writesState?: boolean;
     externalAction?: boolean;
   };
+  /** Source of this call. An untrusted value is marked on the row. */
+  provenance?: ToolCallProvenance;
 }
 
 /** An artifact produced by agent execution */

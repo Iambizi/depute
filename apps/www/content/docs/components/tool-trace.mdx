@@ -127,6 +127,8 @@ It updates asynchronously. As soon as the agent completes its final tool call, t
 
 ## Design rationale
 
+A call can carry `provenance` with a source, an optional url, and a trust value. An untrusted source is marked on that row. The rule is in [Approval record](/docs/approval-record).
+
 **Why comprehension over logging?** Standard terminal logs are unreadable for non-engineers. Tool Trace formats JSON inputs and outputs into a structured UI, translating machine process into human-readable proof of work.
 
 **What is policy flagging?** Not all tools are equal. A `read_file` is routine, but a `execute_payment` is critical. The `policyFlags` system allows specific tool calls to bear visual severity tokens (e.g., an amber badge for `writesState`), distinguishing high-risk calls from routine ones at a glance and directing human attention where it matters.

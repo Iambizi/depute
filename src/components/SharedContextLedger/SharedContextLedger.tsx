@@ -65,6 +65,11 @@ export const SharedContextLedger: React.FC<SharedContextLedgerProps> = ({
                     <span className={styles.source}>{entry.provenance.source}</span>
                   </>
                 )}
+                {entry.provenance.trust && (
+                  <span className={entry.provenance.trust === 'untrusted' ? `${styles.trustTag} ${styles.trustUntrusted}` : styles.trustTag}>
+                    {entry.provenance.trust === 'untrusted' ? 'Untrusted' : entry.provenance.trust === 'trusted' ? 'Trusted' : 'Unknown'}
+                  </span>
+                )}
                 <span className={styles.timestamp}>{entry.provenance.timestamp}</span>
               </div>
             </div>
