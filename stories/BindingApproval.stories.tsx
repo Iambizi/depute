@@ -122,3 +122,17 @@ export const AsyncHandoffFlow: Story = {
     );
   }
 };
+
+export const LiabilityNotice: Story = {
+  name: 'Liability notice',
+  args: {
+    title: 'Wire Transfer Authorization',
+    description: 'Agent requests authorization to execute a $5,000 wire transfer.',
+    impactStatement: '$5,000.00 will be transferred immediately. This action is irreversible.',
+    signerIdentity: 'alice@company.com',
+    liabilityNotice: 'You are the actor of record for what this agent does.',
+    terms: [
+      { id: 't1', text: 'I understand this action is irreversible', acknowledged: false },
+    ],
+  },
+};

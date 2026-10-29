@@ -18,12 +18,12 @@ const meta: Meta<PolicyBannerProps> = {
   argTypes: {
     mode: {
       control: 'select',
-      options: ['sandbox', 'staging', 'production', 'simulation', 'test', 'drafting', 'executing'],
+      options: ['sandbox', 'staging', 'production', 'simulation', 'test', 'drafting', 'executing', 'disclosure'],
       description: 'The current operating mode/environment',
     },
     severity: {
       control: 'select',
-      options: ['info', 'warning', 'critical'],
+      options: ['info', 'warning', 'critical', 'neutral'],
       description: 'Visual severity (auto-detected from mode if omitted)',
     },
     collapsible: {
@@ -233,6 +233,13 @@ export const DevOpsExample: Story = {
       { label: 'Writes', value: 'DB read-only' },
       { label: 'Deploy', value: 'Manual approval' },
     ],
+  },
+};
+
+export const Disclosure: Story = {
+  name: 'Disclosure',
+  args: {
+    mode: 'disclosure',
   },
 };
 
