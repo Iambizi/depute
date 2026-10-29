@@ -80,6 +80,7 @@ This primitive replaces `ApprovalGate` in high-stakes nodes. The internal state 
 | `impactStatement` | `string` | — | Estimated impact (e.g., "$5,000 will be transferred") |
 | `status` | `'reviewing' \| 'signing' \| 'signed' \| 'rejected' \| 'expired'` | `'reviewing'` | Current status |
 | `terms` | `BindingTerm[]` | — | Terms that must be acknowledged |
+| `liabilityNotice` | `string` | — | Extra term. Acknowledgement id is `liability-notice`. |
 | `requireAllTerms` | `boolean` | `true` | Require all terms acknowledged to sign |
 | `isSigning` | `boolean` | `false` | Toggles the active signing visual state |
 | `signerIdentity` | `string` | — | Identity of the approver |
@@ -110,3 +111,5 @@ Use `ApprovalGate` by default. Escalate to `BindingApproval` only when the actio
 **Why `isSigning`?** Normal approvals execute instantly. High-stakes approvals often wait on a backend round trip. `isSigning` freezes the component so the user cannot submit twice. The component still does not produce a signature.
 
 **Why explicit terms?** Click-fatigue trains users to blindly click "Approve." Forcing the user to manually acknowledge explicit terms (e.g. "This action cannot be undone") breaks automatic behavior and captures verifiable intent.
+
+`liabilityNotice` is one of those terms. It states that the person is the actor for the action. Sign stays off until it is checked, and Reject stays available. The receipt stores the acknowledgement. The rule is in [Approval record](/docs/approval-record).

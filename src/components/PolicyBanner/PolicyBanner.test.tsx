@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, it, expect, vi } from 'vitest';
-import { PolicyBanner } from './PolicyBanner';
+import { DISCLOSURE_DESCRIPTION, PolicyBanner } from './PolicyBanner';
 
 describe('PolicyBanner', () => {
   describe('rendering', () => {
@@ -14,6 +14,19 @@ describe('PolicyBanner', () => {
     it('renders with custom label', () => {
       render(<PolicyBanner mode="production" label="MainNet" />);
       expect(screen.getByText('MainNet')).toBeInTheDocument();
+    });
+
+    it('uses a neutral disclosure preset and lets the host replace the sentence', () => {
+      const { rerender } = render(<PolicyBanner mode="disclosure" />);
+      const banner = screen.getByRole('status');
+      expect(banner).toHaveAttribute('data-severity', 'neutral');
+      expect(screen.getByText('Disclosure')).toBeInTheDocument();
+      expect(screen.getByText(DISCLOSURE_DESCRIPTION)).toBeInTheDocument();
+      expect(banner.querySelector('[class*="liveIndicator"]')).toBeNull();
+
+      rerender(<PolicyBanner mode="disclosure" description="This payment is recorded as yours." />);
+      expect(screen.getByText('This payment is recorded as yours.')).toBeInTheDocument();
+      expect(screen.queryByText(DISCLOSURE_DESCRIPTION)).not.toBeInTheDocument();
     });
 
     it('renders description', () => {

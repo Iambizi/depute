@@ -15,7 +15,7 @@
 import { useState, useEffect, useMemo, useRef, useCallback, useId } from 'react';
 import { VisuallyHidden } from '../../utils/a11y';
 import { IconAlert, IconCheck, IconLock, IconX } from '../../utils/icons';
-import type { HandoffContext } from '../../types/core';
+import type { HandoffContext, PresentedPayload } from '../../types/core';
 import { buildDecisionReceipt, buildSignedDecisionReceipt } from '../../utils/receipt';
 import type { ReceiptMethod, ReceiptOutcome } from '../../utils/receipt';
 import { justificationLength, requiredJustificationLength } from '../../utils/triggers';
@@ -51,6 +51,22 @@ const STATUS_CLASSES: Record<BindingStatus, string> = {
   handoff_denied: styles.statusRejected,
 };
 
+/** Receipt id for the liability notice term. */
+export const LIABILITY_NOTICE_ID = 'liability-notice';
+
+function payloadWithNotice(
+  payload: PresentedPayload | undefined,
+  title: string,
+  description: string,
+  notice: string | undefined,
+): PresentedPayload | undefined {
+  if (!notice) return payload;
+  const base: PresentedPayload = payload ?? { title, description };
+  const items = base.lineItems ?? [];
+  if (items.some((item) => item.label === 'Liability notice' && item.value === notice)) return base;
+  return { ...base, lineItems: [...items, { label: 'Liability notice', value: notice }] };
+}
+
 /* ------------------------------------------------------------------ */
 /* Component                                                           */
 /* ------------------------------------------------------------------ */
@@ -62,6 +78,7 @@ export function BindingApproval({
   blind = false,
   status = 'reviewing',
   terms = [],
+  liabilityNotice,
   requireAllTerms = true,
   isSigning = false,
   signerIdentity,
@@ -175,11 +192,20 @@ export function BindingApproval({
     };
   }, [effectiveStatus, handoffDeadlineMs, onHandoffResolved, fallbackContext]);
 
+  const noticeText = liabilityNotice?.trim() || undefined;
+  const visibleTerms = useMemo(() => {
+    if (!noticeText) return terms;
+    return [
+      ...terms.filter((term) => term.id !== LIABILITY_NOTICE_ID),
+      { id: LIABILITY_NOTICE_ID, text: noticeText, acknowledged: false },
+    ];
+  }, [terms, noticeText]);
+
   // All terms acknowledged check
   const allTermsAcknowledged = useMemo(() => {
-    if (terms.length === 0) return true;
-    return terms.every((t) => checkedTerms.has(t.id));
-  }, [terms, checkedTerms]);
+    if (visibleTerms.length === 0) return true;
+    return visibleTerms.every((term) => checkedTerms.has(term.id));
+  }, [visibleTerms, checkedTerms]);
 
   const canSign =
     effectiveStatus === 'reviewing' &&
@@ -261,7 +287,7 @@ export function BindingApproval({
     const input = {
       id: receiptId,
       instruction,
-      payload: presentedPayload,
+      payload: payloadWithNotice(presentedPayload, title, description, noticeText),
       title,
       description,
       agentRecommendation,
@@ -290,6 +316,7 @@ export function BindingApproval({
     presentedPayload,
     title,
     description,
+    noticeText,
     agentRecommendation,
     recordedWhy,
     approver,
@@ -393,13 +420,13 @@ export function BindingApproval({
       )}
 
       {/* Terms */}
-      {terms.length > 0 && !isTerminal && !isHandoffPending && (
+      {visibleTerms.length > 0 && !isTerminal && !isHandoffPending && (
         <div className={styles.termsSection}>
           <span className={styles.termsLabel}>
-            Terms ({checkedTerms.size}/{terms.length} acknowledged)
+            Terms ({checkedTerms.size}/{visibleTerms.length} acknowledged)
           </span>
           <div className={styles.termsList} role="group" aria-label="Binding terms">
-            {terms.map((term) => (
+            {visibleTerms.map((term) => (
               <label key={term.id} className={styles.termRow}>
                 <input
                   type="checkbox"

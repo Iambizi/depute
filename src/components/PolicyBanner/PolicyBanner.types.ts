@@ -15,10 +15,11 @@ export type PolicyMode =
   | 'simulation'
   | 'test'
   | 'drafting'
-  | 'executing';
+  | 'executing'
+  | 'disclosure';
 
 /** Severity level determines visual treatment */
-export type PolicySeverity = 'info' | 'warning' | 'critical';
+export type PolicySeverity = 'info' | 'warning' | 'critical' | 'neutral';
 
 export interface PolicyConstraint {
   /** Human-readable label (e.g. "Max Spend", "Allowed Tools") */

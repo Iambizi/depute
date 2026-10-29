@@ -33,6 +33,7 @@ Every later control does this in the same change as the code:
 | A check that looks at one payment misses a run of small ones | Repeated payments under a per-payment threshold, reviewed 26–28 October 2026 | One warning on the budget meter when more than five auto-approved payments under 5 are not all the same payee and purpose, inside ten minutes. A second gate stays closed. |
 | The person agrees with the agent almost every time | A run of decisions that follow the recommendation, reviewed 26–28 October 2026 | Log the recommendation, the person's choice, and whether they agreed. Alert when agreement is over 80% across at least 5 decisions. Blind mode is opt-in and hides the recommendation until the person chooses. The streak, speed, and approval-rate checks stay. |
 | A fast biometric skips the payee and the amount | A confirm step that can be cleared before those fields have been read, reviewed 26–28 October 2026 | Staged payment mode shows the payee and the amount and keeps Confirm off for 1500ms after they paint. Preview and Reject stay available. Simple mode stays instant. The receipt review duration starts at that paint, so Confirm cannot record a longer look than the fields were on screen. A passkey cannot start before Confirm. |
+| The person does not know they are the actor for the agent's action | Consumer-bank terms for agents, reviewed 26–28 October 2026 | Binding Approval can require a liability notice. The person checks it before Sign. Reject stays available. The receipt stores the acknowledgement id `liability-notice` and the sentence that was shown. Policy Banner `disclosure` states the same fact in a neutral preset. The default sentence is that the person is the actor of record for what the agent does. |
 
 High-stakes, for the passkey, means a new payee, a purpose change, an untrusted source, an irreversible flag, or an amount above a cutoff the host sets. There is no universal dollar amount.
 
@@ -67,6 +68,10 @@ The row in the table is the rule. [Approval Gate](/docs/components/approval-gate
 ## Where the instruction came from
 
 The row in the table is the rule. [Approval Gate](/docs/components/approval-gate) reads `provenance`, or the same field on the presented payload when that payload has one. [Tool Trace](/docs/components/tool-trace) reads it on each call. [Shared Context Ledger](/docs/components/shared-context-ledger) reads `provenance.trust` on the entry it already shows.
+
+## Who is the actor
+
+The row in the table is the rule. [Binding Approval](/docs/components/binding-approval) reads `liabilityNotice`. [Policy Banner](/docs/components/policy-banner) uses `mode="disclosure"`. A host `description` replaces the banner's default sentence.
 
 ## What this page will not claim
 

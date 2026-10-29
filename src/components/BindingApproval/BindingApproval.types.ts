@@ -54,6 +54,12 @@ export interface BindingApprovalProps {
   /** Terms that must be acknowledged before signing */
   terms?: BindingTerm[];
 
+  /**
+   * Extra term stating that the person is the actor for this action.
+   * Shown with the other terms. Its acknowledgement id is `liability-notice`.
+   */
+  liabilityNotice?: string;
+
   /** Require all terms to be acknowledged before enabling sign button */
   requireAllTerms?: boolean;
 
