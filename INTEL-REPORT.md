@@ -13,7 +13,7 @@ Source: depute Intel Report #1, Oct 26–28, 2026. Supervision has to be legible
 | R3 | Required why, 100 characters when a payment trigger fired | Merged in https://github.com/Iambizi/depute/pull/35 |
 | R4 | Budget meter warning for a burst of small auto-approved payments | Merged in https://github.com/Iambizi/depute/pull/37 |
 | R5 | Log whether the human followed the agent's recommendation | In review: https://github.com/Iambizi/depute/pull/38 |
-| R6 | Payee and amount confirm step a fast biometric cannot skip | Not started |
+| R6 | Payee and amount confirm step a fast biometric cannot skip | In review: https://github.com/Iambizi/depute/pull/39 |
 | R7 | Provenance on the gate and tool trace; untrusted source forces staged mode | Not started |
 | R8 | Liability notice on binding approval and the policy banner | Not started |
 | R9 | One decision path for React and a chat surface | Not started |

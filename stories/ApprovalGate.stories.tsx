@@ -362,7 +362,7 @@ export const PaymentReview: Story = {
       mode: 'staged',
       status: 'pending',
       title: 'Pay a new vendor',
-      description: 'Confirm waits until the payee and the amount have been on screen.',
+      description: 'Invoice 1042 for office supplies.',
     }),
     presentedPayload: {
       title: 'Pay a new vendor',
