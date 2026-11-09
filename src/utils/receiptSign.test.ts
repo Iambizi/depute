@@ -62,7 +62,7 @@ describe('receipt signers', () => {
     const rpHash = new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(rpId)));
     const authenticatorData = new Uint8Array(37);
     authenticatorData.set(rpHash);
-    authenticatorData[32] = 0x01;
+    authenticatorData[32] = 0x05;
     const clientJson = JSON.stringify({
       type: 'webauthn.get',
       challenge: bytesToBase64Url(receiptDigest(receipt.receiptHash)),
@@ -89,6 +89,9 @@ describe('receipt signers', () => {
       rpId,
     };
     expect(await verifyPasskey(fields)).toBe(true);
+    const presentOnly = new Uint8Array(authenticatorData);
+    presentOnly[32] = 0x01;
+    expect(await verifyPasskey({ ...fields, authenticatorData: bytesToBase64(presentOnly) })).toBe(false);
     expect(await verifyPasskey({ ...fields, rpId: 'other.example' })).toBe(false);
     expect(await verifyPasskey({ ...fields, hash: sha256StandIn(receipt.receiptHash) })).toBe(false);
   });
