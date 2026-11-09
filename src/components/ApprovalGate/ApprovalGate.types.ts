@@ -9,7 +9,7 @@ import type { ApprovalStatus } from '../../types/common';
 import type { ApprovalHandoff, HandoffContext, PresentedPayload, PresentedProvenance } from '../../types/core';
 import type { ApprovalChannel } from '../../utils/channel';
 import type { ChangeRequest } from '../../utils/triggers';
-import type { ApprovalReceipt, DeclaredLimit, ReceiptActor, ReceiptAppSigner, ReceiptPasskeySigner } from '../../utils/receipt';
+import type { ApprovalReceipt, ApprovalRequirement, DeclaredLimit, ReceiptActor, ReceiptAppSigner, ReceiptPasskeySigner } from '../../utils/receipt';
 
 export type { ApprovalHandoff, HandoffContext };
 
@@ -170,6 +170,12 @@ export interface ApprovalGateProps {
 
   /** Who is acting, and whether they use the person's own login. No agent registry. */
   actor?: ReceiptActor;
+
+  /**
+   * What the agent treated as known. Assumed or unknown items need
+   * "I checked these" before Approve. Stored beside the why.
+   */
+  requirements?: ApprovalRequirement[];
 
   /** Fired with a hashed receipt when the person decides or the gate expires. */
   onReceipt?: (receipt: ApprovalReceipt) => void;

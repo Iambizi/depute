@@ -98,6 +98,32 @@ export function assertActor(actor: ReceiptActor): void {
   }
 }
 
+export type RequirementStatus = 'confirmed-with-user' | 'assumed' | 'unknown';
+
+/** Something the agent needed. `assumed` and `unknown` need the person to say they checked. */
+export interface ApprovalRequirement {
+  text: string;
+  status: RequirementStatus;
+}
+
+const REQUIREMENT_STATUSES = new Set<RequirementStatus>([
+  'confirmed-with-user',
+  'assumed',
+  'unknown',
+]);
+
+export function assertRequirements(requirements: readonly ApprovalRequirement[]): void {
+  for (const item of requirements) {
+    if (typeof item.text !== 'string' || item.text.trim() === '' || !REQUIREMENT_STATUSES.has(item.status)) {
+      throw new Error('Each requirement needs text and a status.');
+    }
+  }
+}
+
+export function requirementsNeedCheck(requirements: readonly ApprovalRequirement[] | undefined): boolean {
+  return requirements?.some((item) => item.status !== 'confirmed-with-user') ?? false;
+}
+
 export function actorWarning(actor: ReceiptActor): string | undefined {
   if (actor.credentialMode === 'shared-user-credentials' || actor.credentialMode === 'unknown') {
     return 'Acting as you (shared login)';
@@ -185,6 +211,7 @@ export interface ApprovalReceipt {
   /** Limits and who the integrator says enforces them, at approval time. */
   limits?: DeclaredLimit[];
   actor?: ReceiptActor;
+  requirements?: ApprovalRequirement[];
   attestations?: ReceiptAttestation[];
   previousReceiptHash?: string;
   signatures?: ReceiptSignature[];
@@ -204,6 +231,7 @@ export interface ReceiptDraft {
   changeRequest?: ChangeRequest;
   limits?: DeclaredLimit[];
   actor?: ReceiptActor;
+  requirements?: ApprovalRequirement[];
   attestations?: ReceiptAttestation[];
   previousReceiptHash?: string;
   signatures?: ReceiptSignature[];
@@ -234,6 +262,7 @@ export interface DecisionReceiptInput {
   changeRequest?: ChangeRequest;
   limits?: DeclaredLimit[];
   actor?: ReceiptActor;
+  requirements?: ApprovalRequirement[];
   previousReceiptHash?: string;
   fallbackId: string;
 }
@@ -420,6 +449,7 @@ export function buildReceipt(draft: ReceiptDraft): ApprovalReceipt {
   if (draft.changeRequest) assertChangeRequest(draft.changeRequest);
   if (draft.limits) assertDeclaredLimits(draft.limits);
   if (draft.actor) assertActor(draft.actor);
+  if (draft.requirements) assertRequirements(draft.requirements);
   const payloadHash = sha256(canonicalize(draft.payload));
   const unsigned = {
     version: '1' as const,
@@ -435,6 +465,7 @@ export function buildReceipt(draft: ReceiptDraft): ApprovalReceipt {
     changeRequest: draft.changeRequest,
     limits: draft.limits,
     actor: draft.actor,
+    requirements: draft.requirements,
     attestations: draft.attestations,
     previousReceiptHash: draft.previousReceiptHash,
   };
@@ -487,6 +518,7 @@ export function buildDecisionReceipt(input: DecisionReceiptInput): ApprovalRecei
     changeRequest: input.changeRequest,
     limits: input.limits,
     actor: input.actor,
+    requirements: input.requirements,
     previousReceiptHash: input.previousReceiptHash,
   });
 }

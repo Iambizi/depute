@@ -779,5 +779,25 @@ describe('ApprovalGate', () => {
       );
       expect(screen.queryByText('Acting as you (shared login)')).not.toBeInTheDocument();
     });
+
+    it('blocks approve until the person checks what the agent assumed', async () => {
+      const user = userEvent.setup();
+      const onReceipt = vi.fn();
+      const requirements = [
+        { text: 'Size large', status: 'assumed' as const },
+        { text: 'Color navy', status: 'confirmed-with-user' as const },
+        { text: 'Gift wrap', status: 'unknown' as const },
+      ];
+      render(<ApprovalGate title="Buy a shirt" requirements={requirements} onReceipt={onReceipt} />);
+      expect(screen.getByText('The agent assumed:')).toBeInTheDocument();
+      expect(screen.getByText('Size large')).toBeInTheDocument();
+      expect(screen.getByText('Gift wrap')).toBeInTheDocument();
+      expect(screen.queryByText('Color navy')).not.toBeInTheDocument();
+      expect(screen.getByRole('button', { name: 'Approve' })).toBeDisabled();
+      await user.click(screen.getByRole('checkbox', { name: 'I checked these' }));
+      await user.click(screen.getByRole('button', { name: 'Approve' }));
+      expect(onReceipt.mock.calls[0][0].requirements).toEqual(requirements);
+      expect(onReceipt.mock.calls[0][0].decision.justification).toBeUndefined();
+    });
   });
 });
