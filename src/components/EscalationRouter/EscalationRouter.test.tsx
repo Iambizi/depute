@@ -113,4 +113,60 @@ describe('EscalationRouter', () => {
       expect(screen.getByRole('alertdialog')).toHaveAttribute('aria-modal', 'true');
     });
   });
+
+  describe('emergency stop', () => {
+    it('shows stopped only after the host confirms and does not ask for a passkey', async () => {
+      const user = userEvent.setup();
+      const passkey = { sign: vi.fn() };
+      const onReceipt = vi.fn();
+      const onStop = vi.fn(async () => ({ confirmed: true }));
+      render(<EscalationRouter {...BASE_PROPS} onStop={onStop} onReceipt={onReceipt} passkey={passkey} />);
+      expect(screen.getByRole('status')).toHaveTextContent('Armed');
+      await user.click(screen.getByRole('button', { name: 'Stop' }));
+      expect(screen.getByRole('status')).toHaveTextContent('Stopped');
+      expect(onReceipt.mock.calls[0][0].kind).toBe('stop');
+      expect(passkey.sign).not.toHaveBeenCalled();
+    });
+
+    it('shows unknown when the host does not confirm', async () => {
+      const user = userEvent.setup();
+      const onReceipt = vi.fn();
+      render(<EscalationRouter {...BASE_PROPS} onStop={async () => ({ confirmed: false })} onReceipt={onReceipt} />);
+      await user.click(screen.getByRole('button', { name: 'Stop' }));
+      expect(screen.getByRole('status')).toHaveTextContent('Unknown');
+      expect(onReceipt).not.toHaveBeenCalled();
+    });
+
+    it('keeps resume off until a passkey is passed', async () => {
+      const user = userEvent.setup();
+      const { rerender } = render(
+        <EscalationRouter {...BASE_PROPS} onStop={async () => ({ confirmed: true })} />,
+      );
+      await user.click(screen.getByRole('button', { name: 'Stop' }));
+      expect(screen.getByRole('button', { name: 'Resume' })).toBeDisabled();
+      const passkey = {
+        sign: vi.fn(async () => ({
+          algorithm: 'ES256',
+          publicKey: 'pk',
+          signature: 'sig',
+          authenticatorData: 'aa',
+          clientDataJSON: 'bb',
+        })),
+      };
+      const onReceipt = vi.fn();
+      rerender(
+        <EscalationRouter
+          {...BASE_PROPS}
+          onStop={async () => ({ confirmed: true })}
+          passkey={passkey}
+          onReceipt={onReceipt}
+        />,
+      );
+      expect(screen.getByRole('button', { name: 'Resume' })).toBeEnabled();
+      await user.click(screen.getByRole('button', { name: 'Resume' }));
+      expect(passkey.sign).toHaveBeenCalledTimes(1);
+      expect(onReceipt.mock.calls[0][0].highStakes).toBe(true);
+      expect(onReceipt.mock.calls[0][0].kind).toBeUndefined();
+    });
+  });
 });

@@ -41,13 +41,18 @@ export type {
   LimitEnforcement,
   ReceiptActor,
   CredentialMode,
+  TermsShown,
+  PaymentFollowUp,
+  PaymentFollowUpState,
   ApprovalRequirement,
   RequirementStatus,
   ReceiptPasskeySigner,
+  ReceiptKind,
   ReceiptVerification,
 } from './utils/receipt';
 export {
   buildDecisionReceipt,
+  buildPaymentFollowUp,
   buildReceipt,
   buildSignedDecisionReceipt,
   actorWarning,

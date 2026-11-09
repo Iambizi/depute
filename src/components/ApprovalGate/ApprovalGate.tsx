@@ -191,6 +191,7 @@ export function ApprovalGate({
   limits,
   actor,
   requirements,
+  termsShown,
   onReceipt,
   appSigner,
   passkey,
@@ -475,6 +476,7 @@ export function ApprovalGate({
       limits,
       actor,
       requirements,
+      termsShown,
       previousReceiptHash,
       fallbackId: pendingApprovalId || 'local',
     };
@@ -507,6 +509,7 @@ export function ApprovalGate({
     limits,
     actor,
     requirements,
+    termsShown,
     previousReceiptHash,
     pendingApprovalId,
     appSigner,
@@ -662,6 +665,9 @@ export function ApprovalGate({
 
       {/* Body */}
       <div className={styles.body}>
+        {termsShown && (
+          <p className={styles.provenanceNote}>Terms version {termsShown.version}</p>
+        )}
         {isPending && (
           <p className={approvalExpired ? styles.channelWarning : styles.provenanceNote} role="status">
             {approvalExpired ? 'Expired' : `Expires in ${formatTime(Math.max(approvalLeft, 0))}`}
