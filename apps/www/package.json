@@ -12,7 +12,7 @@
     "lint": "eslint"
   },
   "dependencies": {
-    "framer-motion": "^12.35.0",
+    "framer-motion": "^14.1.0",
     "fumadocs-core": "^16.6.8",
     "fumadocs-mdx": "14.2.14",
     "fumadocs-typescript": "^5.2.0",
