@@ -98,9 +98,12 @@ Integrate `BudgetMeter` directly into a `DelegationGate` prior to spawning a new
 | `windowMs` | `number` | `600000` | A payment ages out when its age reaches this. |
 | `maxSmallTxCount` | `number` | `5` | The warning appears when the count is greater than this. |
 | `onSmallTxPattern` | `(pattern) => void` | — | Fires once per payee set, then again when that set changes or a new burst starts. |
+| `limits` | `DeclaredLimit[]` | — | Each limit's enforcement, declared by the integrator. Protected styling only for `server`. |
 
 ## Design rationale
 
 A limit on one payment does not show a run of small ones. This meter shows that run as one warning and does not open another approval. When the row appears, and when a repeated payment stays quiet, is the pattern in [Approval record](/docs/approval-record).
+
+`limits` says who the integrator claims enforces each limit. The chip says declared. A server limit can use the protected style. An instruction or an unknown enforcement uses a warning and words, not color alone. The meter does not check the claim.
 
 **Why proportional thresholds?** Raw numbers (e.g., "45,000 tokens") are meaningless without context. Auto-calculating elevated (>60%) and critical (>85%) severity colors translates abstract numbers into actionable visual urgency.

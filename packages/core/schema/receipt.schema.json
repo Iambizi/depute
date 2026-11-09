@@ -57,6 +57,13 @@
           "$ref": "#/definitions/ChangeRequest",
           "description": "Limit or permission change shown to the person."
         },
+        "limits": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/DeclaredLimit"
+          },
+          "description": "Limits and who the integrator says enforces them, at approval time."
+        },
         "attestations": {
           "type": "array",
           "items": {
@@ -427,6 +434,35 @@
         "agent",
         "user",
         "system"
+      ]
+    },
+    "DeclaredLimit": {
+      "type": "object",
+      "properties": {
+        "label": {
+          "type": "string"
+        },
+        "enforcement": {
+          "$ref": "#/definitions/LimitEnforcement"
+        },
+        "enforcedBy": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "label",
+        "enforcement"
+      ],
+      "additionalProperties": false,
+      "description": "A limit the integrator says someone enforces. depute does not check that claim."
+    },
+    "LimitEnforcement": {
+      "type": "string",
+      "enum": [
+        "server",
+        "client",
+        "agent-instruction",
+        "unknown"
       ]
     },
     "ReceiptAttestation": {

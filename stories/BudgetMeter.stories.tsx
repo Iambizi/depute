@@ -198,6 +198,21 @@ export const SmallPaymentBurst: Story = {
   },
 };
 
+export const DeclaredEnforcement: Story = {
+  name: 'Declared enforcement',
+  args: {
+    label: 'Session Spend',
+    spent: 40,
+    limit: 100,
+    unit: 'currency',
+    formatValue: currencyFormat,
+    limits: [
+      { label: 'Chat budget', enforcement: 'agent-instruction' },
+      { label: 'Order cap', enforcement: 'server', enforcedBy: 'the exchange' },
+    ],
+  },
+};
+
 export const WithCallbacks: Story = {
   name: 'With Exceeded Callback',
   args: {

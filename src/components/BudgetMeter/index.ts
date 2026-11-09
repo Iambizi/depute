@@ -3,6 +3,7 @@ export type {
   BudgetMeterProps,
   BudgetUnit,
   BudgetSeverity,
+  DeclaredLimit,
   SmallPayment,
   SmallPaymentBurst,
 } from './BudgetMeter.types';

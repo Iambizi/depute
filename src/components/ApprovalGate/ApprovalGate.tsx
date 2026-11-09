@@ -186,6 +186,7 @@ export function ApprovalGate({
   highStakes,
   approvalChannel,
   changeRequest,
+  limits,
   onReceipt,
   appSigner,
   passkey,
@@ -457,6 +458,7 @@ export function ApprovalGate({
       highStakes: Boolean(highStakes) || changeRequest?.initiator === 'agent',
       approvalChannel,
       changeRequest,
+      limits,
       previousReceiptHash,
       fallbackId: pendingApprovalId || 'local',
     };
@@ -484,6 +486,7 @@ export function ApprovalGate({
     highStakes,
     approvalChannel,
     changeRequest,
+    limits,
     previousReceiptHash,
     pendingApprovalId,
     appSigner,
