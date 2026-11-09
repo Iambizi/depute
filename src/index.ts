@@ -56,6 +56,9 @@ export {
 export type {
   ApprovalPolicy,
   ApprovalTrigger,
+  ChangeInitiator,
+  ChangeRequest,
+  ChangeRequestKind,
   PayeeGrant,
   SmallPayeeRef,
   SmallPayment,
@@ -66,6 +69,7 @@ export {
   DEFAULT_MAX_SMALL_TX_COUNT,
   DEFAULT_SMALL_TX_THRESHOLD,
   DEFAULT_SMALL_TX_WINDOW_MS,
+  changeKindLabel,
   justificationLength,
   requiredJustificationLength,
   requiresApproval,

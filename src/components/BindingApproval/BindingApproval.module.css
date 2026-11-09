@@ -279,6 +279,22 @@
 .channelNote {background: var(--ax-bg-subtle);
   color: var(--ax-fg-default);}
 
+.changeRequest {padding: var(--ax-space-3);
+  border-radius: var(--ax-radius-sm);
+  margin: 0 var(--ax-card-pad-x) var(--ax-space-3);
+  background: var(--ax-status-warning-bg);
+  color: var(--ax-status-warning-fg);
+  border: var(--ax-border-width) solid var(--ax-status-warning-border);
+  font-size: var(--ax-text-sm);
+  line-height: var(--ax-leading-lg);}
+
+.changeTitle {margin: 0 0 var(--ax-space-1);
+  font-weight: var(--ax-weight-semibold);}
+
+.changeRequest p {margin: 0;}
+
+.changeRequest p + p {margin-top: var(--ax-space-1);}
+
 .channelTitle {margin: 0 0 var(--ax-space-1);
   font-weight: var(--ax-weight-semibold);}
 
