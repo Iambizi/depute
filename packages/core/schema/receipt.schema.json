@@ -49,6 +49,30 @@
         "highStakes": {
           "type": "boolean"
         },
+        "approvalChannel": {
+          "$ref": "#/definitions/ApprovalChannel",
+          "description": "Integrator-declared channel. Reachability is not verified."
+        },
+        "changeRequest": {
+          "$ref": "#/definitions/ChangeRequest",
+          "description": "Limit or permission change shown to the person."
+        },
+        "limits": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/DeclaredLimit"
+          },
+          "description": "Limits and who the integrator says enforces them, at approval time."
+        },
+        "actor": {
+          "$ref": "#/definitions/ReceiptActor"
+        },
+        "requirements": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ApprovalRequirement"
+          }
+        },
         "attestations": {
           "type": "array",
           "items": {
@@ -334,6 +358,181 @@
         "pending",
         "reverted",
         "not-run"
+      ]
+    },
+    "ApprovalChannel": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "$ref": "#/definitions/ApprovalChannelKind"
+        },
+        "agentReachable": {
+          "$ref": "#/definitions/AgentReachability"
+        },
+        "declaredBy": {
+          "type": "string",
+          "const": "integrator",
+          "description": "Always the integrator. This library does not verify reachability."
+        }
+      },
+      "required": [
+        "kind",
+        "agentReachable",
+        "declaredBy"
+      ],
+      "additionalProperties": false
+    },
+    "ApprovalChannelKind": {
+      "type": "string",
+      "enum": [
+        "webauthn-platform",
+        "webauthn-security-key",
+        "otp-email",
+        "otp-sms",
+        "chat",
+        "in-agent-ui",
+        "other"
+      ],
+      "description": "Whether an approval channel is one the agent can read.\n\nThe integrator declares reachability. This module does not verify it, and it does not talk to an authenticator. The CLI copies this file. It imports nothing."
+    },
+    "AgentReachability": {
+      "type": "string",
+      "enum": [
+        "no",
+        "unknown",
+        "yes"
+      ]
+    },
+    "ChangeRequest": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "$ref": "#/definitions/ChangeRequestKind"
+        },
+        "initiator": {
+          "$ref": "#/definitions/ChangeInitiator"
+        },
+        "from": {
+          "type": "string"
+        },
+        "to": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "initiator",
+        "from",
+        "to"
+      ],
+      "additionalProperties": false,
+      "description": "A limit or permission change, and who asked for it. `from` and `to` are the values the person is shown."
+    },
+    "ChangeRequestKind": {
+      "type": "string",
+      "enum": [
+        "raise_limit",
+        "add_payee",
+        "widen_scope",
+        "extend_expiry"
+      ]
+    },
+    "ChangeInitiator": {
+      "type": "string",
+      "enum": [
+        "agent",
+        "user",
+        "system"
+      ]
+    },
+    "DeclaredLimit": {
+      "type": "object",
+      "properties": {
+        "label": {
+          "type": "string"
+        },
+        "enforcement": {
+          "$ref": "#/definitions/LimitEnforcement"
+        },
+        "enforcedBy": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "label",
+        "enforcement"
+      ],
+      "additionalProperties": false,
+      "description": "A limit the integrator says someone enforces. depute does not check that claim."
+    },
+    "LimitEnforcement": {
+      "type": "string",
+      "enum": [
+        "server",
+        "client",
+        "agent-instruction",
+        "unknown"
+      ]
+    },
+    "ReceiptActor": {
+      "type": "object",
+      "properties": {
+        "agentId": {
+          "type": "string"
+        },
+        "vendor": {
+          "type": "string"
+        },
+        "model": {
+          "type": "string"
+        },
+        "credentialMode": {
+          "$ref": "#/definitions/CredentialMode"
+        },
+        "onBehalfOf": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "agentId",
+        "credentialMode",
+        "onBehalfOf"
+      ],
+      "additionalProperties": false,
+      "description": "Who acted, and whether they used the person's own login. Declared by the host."
+    },
+    "CredentialMode": {
+      "type": "string",
+      "enum": [
+        "delegated-token",
+        "shared-user-credentials",
+        "own-identity",
+        "unknown"
+      ]
+    },
+    "ApprovalRequirement": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/definitions/RequirementStatus"
+        }
+      },
+      "required": [
+        "text",
+        "status"
+      ],
+      "additionalProperties": false,
+      "description": "Something the agent needed. `assumed` and `unknown` need the person to say they checked."
+    },
+    "RequirementStatus": {
+      "type": "string",
+      "enum": [
+        "confirmed-with-user",
+        "assumed",
+        "unknown"
       ]
     },
     "ReceiptAttestation": {

@@ -7,7 +7,9 @@
 import type React from 'react';
 import type { ApprovalStatus } from '../../types/common';
 import type { ApprovalHandoff, HandoffContext, PresentedPayload, PresentedProvenance } from '../../types/core';
-import type { ApprovalReceipt, ReceiptAppSigner, ReceiptPasskeySigner } from '../../utils/receipt';
+import type { ApprovalChannel } from '../../utils/channel';
+import type { ChangeRequest } from '../../utils/triggers';
+import type { ApprovalReceipt, ApprovalRequirement, DeclaredLimit, ReceiptActor, ReceiptAppSigner, ReceiptPasskeySigner } from '../../utils/receipt';
 
 export type { ApprovalHandoff, HandoffContext };
 
@@ -148,6 +150,32 @@ export interface ApprovalGateProps {
 
   /** User passkey. Used only when `highStakes` is set and the person decides. */
   passkey?: ReceiptPasskeySigner;
+
+  /**
+   * Integrator-declared approval channel. Stored on the receipt.
+   * Reachability is not verified. A high-stakes decision cannot complete
+   * when the integrator says the agent can read the channel, or has not said.
+   */
+  approvalChannel?: ApprovalChannel;
+
+  /**
+   * Limit or permission change the person is looking at.
+   * An agent-initiated change is high-stakes and shows the from and to values.
+   * There is no cooling period.
+   */
+  changeRequest?: ChangeRequest;
+
+  /** Limits to snapshot on the receipt. Enforcement is declared, not checked. */
+  limits?: DeclaredLimit[];
+
+  /** Who is acting, and whether they use the person's own login. No agent registry. */
+  actor?: ReceiptActor;
+
+  /**
+   * What the agent treated as known. Assumed or unknown items need
+   * "I checked these" before Approve. Stored beside the why.
+   */
+  requirements?: ApprovalRequirement[];
 
   /** Fired with a hashed receipt when the person decides or the gate expires. */
   onReceipt?: (receipt: ApprovalReceipt) => void;

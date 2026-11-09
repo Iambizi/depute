@@ -17,7 +17,52 @@ export type ApprovalTrigger =
   | 'purpose-change'
   | 'untrusted-source'
   | 'outside-grant'
-  | 'grant-expired';
+  | 'grant-expired'
+  | 'agent-requested-change';
+
+export type ChangeRequestKind = 'raise_limit' | 'add_payee' | 'widen_scope' | 'extend_expiry';
+
+export type ChangeInitiator = 'agent' | 'user' | 'system';
+
+/** A limit or permission change, and who asked for it. `from` and `to` are the values the person is shown. */
+export interface ChangeRequest {
+  kind: ChangeRequestKind;
+  initiator: ChangeInitiator;
+  from: string;
+  to: string;
+}
+
+const CHANGE_KINDS = new Set<ChangeRequestKind>([
+  'raise_limit',
+  'add_payee',
+  'widen_scope',
+  'extend_expiry',
+]);
+
+const CHANGE_INITIATORS = new Set<ChangeInitiator>(['agent', 'user', 'system']);
+
+export function isChangeRequest(value: ChangeRequest): boolean {
+  return CHANGE_KINDS.has(value.kind)
+    && CHANGE_INITIATORS.has(value.initiator)
+    && typeof value.from === 'string'
+    && typeof value.to === 'string';
+}
+
+export function assertChangeRequest(value: ChangeRequest): void {
+  if (!isChangeRequest(value)) {
+    throw new Error('changeRequest needs a known kind, an initiator, and the from and to values.');
+  }
+}
+
+export function changeKindLabel(kind: ChangeRequestKind): string {
+  switch (kind) {
+    case 'raise_limit': return 'Raise a limit';
+    case 'add_payee': return 'Add a payee';
+    case 'widen_scope': return 'Widen a scope';
+    case 'extend_expiry': return 'Extend an expiry';
+    default: return 'Change a permission';
+  }
+}
 
 export interface PayeeGrant {
   rail: string;
@@ -46,6 +91,8 @@ export interface ApprovalPolicyInput {
   nowMs: number;
   /** When omitted, durable grants are ignored. */
   allowDurable?: boolean;
+  /** A limit or permission change. An agent-initiated change always opens a high-stakes gate. */
+  changeRequest?: ChangeRequest;
 }
 
 export interface ApprovalPolicy {
@@ -127,6 +174,7 @@ export function requiresApproval(input: ApprovalPolicyInput): ApprovalPolicy {
   });
 
   if (input.provenance?.trust === 'untrusted') triggers.push('untrusted-source');
+  if (input.changeRequest?.initiator === 'agent') triggers.push('agent-requested-change');
 
   const payee = input.payee;
   if (payee) {
@@ -146,6 +194,7 @@ export function requiresApproval(input: ApprovalPolicyInput): ApprovalPolicy {
   const highStakes = triggers.includes('new-payee')
     || triggers.includes('purpose-change')
     || triggers.includes('untrusted-source')
+    || triggers.includes('agent-requested-change')
     || input.irreversible === true
     || aboveCutoff(input.amount, input.highStakesAmount);
 

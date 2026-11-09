@@ -699,4 +699,105 @@ describe('ApprovalGate', () => {
       expect(screen.getByRole('alertdialog')).toHaveAttribute('aria-modal', 'true');
     });
   });
+
+  describe('approval channel', () => {
+    it('keeps a high-stakes approve off when the integrator says the agent can read the channel', () => {
+      const onApprove = vi.fn();
+      const onReceipt = vi.fn();
+      render(
+        <ApprovalGate
+          title="Raise the cap"
+          highStakes
+          approvalChannel={{ kind: 'chat', agentReachable: 'unknown', declaredBy: 'integrator' }}
+          onApprove={onApprove}
+          onReceipt={onReceipt}
+        />,
+      );
+      expect(screen.getByText('This approval code could be read by the agent.')).toBeInTheDocument();
+      expect(screen.getByText('Declared by integrator.')).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: 'Approve' })).toBeDisabled();
+      expect(onApprove).not.toHaveBeenCalled();
+      expect(onReceipt).not.toHaveBeenCalled();
+    });
+
+    it('shows an agent-requested limit change and stores the old and new values', async () => {
+      const user = userEvent.setup();
+      const onReceipt = vi.fn();
+      render(
+        <ApprovalGate
+          title="Raise the cap"
+          changeRequest={{ kind: 'raise_limit', initiator: 'agent', from: '100 USD', to: '500 USD' }}
+          onReceipt={onReceipt}
+        />,
+      );
+      expect(screen.getByText('Requested by the agent')).toBeInTheDocument();
+      expect(screen.getByText('From 100 USD')).toBeInTheDocument();
+      expect(screen.getByText('To 500 USD')).toBeInTheDocument();
+      await user.click(screen.getByRole('button', { name: 'Approve' }));
+      const receipt = onReceipt.mock.calls[0][0];
+      expect(receipt.changeRequest).toEqual({
+        kind: 'raise_limit',
+        initiator: 'agent',
+        from: '100 USD',
+        to: '500 USD',
+      });
+      expect(receipt.highStakes).toBe(true);
+      expect(receipt.triggers).toContain('agent-requested-change');
+    });
+
+    it('does not complete an agent-requested raise on an emailed code', () => {
+      render(
+        <ApprovalGate
+          title="Raise the cap"
+          changeRequest={{ kind: 'raise_limit', initiator: 'agent', from: '100 USD', to: '500 USD' }}
+          approvalChannel={{ kind: 'otp-email', agentReachable: 'yes', declaredBy: 'integrator' }}
+        />,
+      );
+      expect(screen.getByRole('button', { name: 'Approve' })).toBeDisabled();
+    });
+
+    it('warns when the agent uses the person\'s own login and stores the actor', async () => {
+      const user = userEvent.setup();
+      const onReceipt = vi.fn();
+      const actor = {
+        agentId: 'claude',
+        credentialMode: 'shared-user-credentials' as const,
+        onBehalfOf: 'ada',
+      };
+      render(<ApprovalGate title="Pay salaries" actor={actor} onReceipt={onReceipt} />);
+      expect(screen.getByText('Acting as you (shared login)')).toBeInTheDocument();
+      await user.click(screen.getByRole('button', { name: 'Approve' }));
+      expect(onReceipt.mock.calls[0][0].actor).toEqual(actor);
+    });
+
+    it('stays quiet when the agent has its own delegated token', () => {
+      render(
+        <ApprovalGate
+          title="Pay salaries"
+          actor={{ agentId: 'pay-bot', credentialMode: 'delegated-token', onBehalfOf: 'ada' }}
+        />,
+      );
+      expect(screen.queryByText('Acting as you (shared login)')).not.toBeInTheDocument();
+    });
+
+    it('blocks approve until the person checks what the agent assumed', async () => {
+      const user = userEvent.setup();
+      const onReceipt = vi.fn();
+      const requirements = [
+        { text: 'Size large', status: 'assumed' as const },
+        { text: 'Color navy', status: 'confirmed-with-user' as const },
+        { text: 'Gift wrap', status: 'unknown' as const },
+      ];
+      render(<ApprovalGate title="Buy a shirt" requirements={requirements} onReceipt={onReceipt} />);
+      expect(screen.getByText('The agent assumed:')).toBeInTheDocument();
+      expect(screen.getByText('Size large')).toBeInTheDocument();
+      expect(screen.getByText('Gift wrap')).toBeInTheDocument();
+      expect(screen.queryByText('Color navy')).not.toBeInTheDocument();
+      expect(screen.getByRole('button', { name: 'Approve' })).toBeDisabled();
+      await user.click(screen.getByRole('checkbox', { name: 'I checked these' }));
+      await user.click(screen.getByRole('button', { name: 'Approve' }));
+      expect(onReceipt.mock.calls[0][0].requirements).toEqual(requirements);
+      expect(onReceipt.mock.calls[0][0].decision.justification).toBeUndefined();
+    });
+  });
 });

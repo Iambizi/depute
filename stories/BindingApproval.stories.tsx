@@ -123,6 +123,20 @@ export const AsyncHandoffFlow: Story = {
   }
 };
 
+export const AgentReadableChannel: Story = {
+  name: 'Channel the agent could read',
+  args: {
+    title: 'Raise the daily cap',
+    description: 'The agent asked to raise the cap after reading an emailed code.',
+    highStakes: true,
+    approvalChannel: {
+      kind: 'otp-email',
+      agentReachable: 'yes',
+      declaredBy: 'integrator',
+    },
+  },
+};
+
 export const LiabilityNotice: Story = {
   name: 'Liability notice',
   args: {

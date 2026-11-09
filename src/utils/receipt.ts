@@ -6,15 +6,145 @@
  * the approval machine stay caller-supplied. A signature, when present,
  * is checked by a verifier the host injects.
  *
- * The CLI copies this file. It imports only `./presented`.
+ * The CLI copies this file. It imports `./presented`, `./channel`, and `./triggers`.
  */
 
+import type { ApprovalChannel } from './channel';
+import { assertApprovalChannel } from './channel';
 import type { PresentedPayload, PresentedProvenance, PresentedScope } from '../types/core';
+import type { ChangeRequest } from './triggers';
+import { assertChangeRequest } from './triggers';
+
+export type {
+  AgentReachability,
+  ApprovalChannel,
+  ApprovalChannelKind,
+  ChannelRequirement,
+  ChannelRule,
+} from './channel';
+export {
+  CHANNEL_DECLARED_LABEL,
+  approvalSatisfiedByCode,
+  assertApprovalChannel,
+  channelAllows,
+  channelBlocksApproval,
+  channelKindLabel,
+  channelWarningText,
+  reachabilityLabel,
+  requiredChannelFor,
+} from './channel';
 
 export type ReceiptOutcome = 'approved' | 'rejected' | 'expired' | 'denied';
 export type ReceiptChoice = 'approved' | 'rejected';
 export type ReceiptMethod = 'click' | 'passkey' | 'handoff' | 'chat';
 export type ReceiptExecutionStatus = 'success' | 'failed' | 'pending' | 'reverted' | 'not-run';
+
+export type LimitEnforcement = 'server' | 'client' | 'agent-instruction' | 'unknown';
+
+/** A limit the integrator says someone enforces. depute does not check that claim. */
+export interface DeclaredLimit {
+  label: string;
+  enforcement: LimitEnforcement;
+  enforcedBy?: string;
+}
+
+const LIMIT_ENFORCEMENTS = new Set<LimitEnforcement>([
+  'server',
+  'client',
+  'agent-instruction',
+  'unknown',
+]);
+
+export function assertDeclaredLimits(limits: readonly DeclaredLimit[]): void {
+  for (const limit of limits) {
+    if (typeof limit.label !== 'string' || limit.label.trim() === '' || !LIMIT_ENFORCEMENTS.has(limit.enforcement)) {
+      throw new Error('Each limit needs a label and a declared enforcement.');
+    }
+    if (limit.enforcedBy !== undefined && typeof limit.enforcedBy !== 'string') {
+      throw new Error('enforcedBy must be a name.');
+    }
+  }
+}
+
+export type CredentialMode =
+  | 'delegated-token'
+  | 'shared-user-credentials'
+  | 'own-identity'
+  | 'unknown';
+
+/** Who acted, and whether they used the person's own login. Declared by the host. */
+export interface ReceiptActor {
+  agentId: string;
+  vendor?: string;
+  model?: string;
+  credentialMode: CredentialMode;
+  onBehalfOf: string;
+}
+
+const CREDENTIAL_MODES = new Set<CredentialMode>([
+  'delegated-token',
+  'shared-user-credentials',
+  'own-identity',
+  'unknown',
+]);
+
+export function assertActor(actor: ReceiptActor): void {
+  if (
+    typeof actor.agentId !== 'string' || actor.agentId.trim() === ''
+    || typeof actor.onBehalfOf !== 'string' || actor.onBehalfOf.trim() === ''
+    || !CREDENTIAL_MODES.has(actor.credentialMode)
+  ) {
+    throw new Error('actor needs an agent id, the person they act for, and a credential mode.');
+  }
+}
+
+export type RequirementStatus = 'confirmed-with-user' | 'assumed' | 'unknown';
+
+/** Something the agent needed. `assumed` and `unknown` need the person to say they checked. */
+export interface ApprovalRequirement {
+  text: string;
+  status: RequirementStatus;
+}
+
+const REQUIREMENT_STATUSES = new Set<RequirementStatus>([
+  'confirmed-with-user',
+  'assumed',
+  'unknown',
+]);
+
+export function assertRequirements(requirements: readonly ApprovalRequirement[]): void {
+  for (const item of requirements) {
+    if (typeof item.text !== 'string' || item.text.trim() === '' || !REQUIREMENT_STATUSES.has(item.status)) {
+      throw new Error('Each requirement needs text and a status.');
+    }
+  }
+}
+
+export function requirementsNeedCheck(requirements: readonly ApprovalRequirement[] | undefined): boolean {
+  return requirements?.some((item) => item.status !== 'confirmed-with-user') ?? false;
+}
+
+export function actorWarning(actor: ReceiptActor): string | undefined {
+  if (actor.credentialMode === 'shared-user-credentials' || actor.credentialMode === 'unknown') {
+    return 'Acting as you (shared login)';
+  }
+  return undefined;
+}
+
+export function limitDeclaration(limit: DeclaredLimit): string {
+  if (limit.enforcement === 'server') {
+    return limit.enforcedBy
+      ? `Enforced by ${limit.enforcedBy} (declared)`
+      : 'Enforced by the server (declared)';
+  }
+  if (limit.enforcement === 'client') {
+    return limit.enforcedBy
+      ? `Enforced in the client by ${limit.enforcedBy} (declared)`
+      : 'Enforced in the client (declared)';
+  }
+  if (limit.enforcement === 'agent-instruction') return 'Instruction only, not enforced.';
+  return 'Enforcement unknown. Declared by the integrator.';
+}
 
 export interface ReceiptApprover {
   id: string;
@@ -74,6 +204,14 @@ export interface ApprovalReceipt {
   triggers?: string[];
   provenance?: PresentedProvenance;
   highStakes?: boolean;
+  /** Integrator-declared channel. Reachability is not verified. */
+  approvalChannel?: ApprovalChannel;
+  /** Limit or permission change shown to the person. */
+  changeRequest?: ChangeRequest;
+  /** Limits and who the integrator says enforces them, at approval time. */
+  limits?: DeclaredLimit[];
+  actor?: ReceiptActor;
+  requirements?: ApprovalRequirement[];
   attestations?: ReceiptAttestation[];
   previousReceiptHash?: string;
   signatures?: ReceiptSignature[];
@@ -89,6 +227,11 @@ export interface ReceiptDraft {
   triggers?: string[];
   provenance?: PresentedProvenance;
   highStakes?: boolean;
+  approvalChannel?: ApprovalChannel;
+  changeRequest?: ChangeRequest;
+  limits?: DeclaredLimit[];
+  actor?: ReceiptActor;
+  requirements?: ApprovalRequirement[];
   attestations?: ReceiptAttestation[];
   previousReceiptHash?: string;
   signatures?: ReceiptSignature[];
@@ -115,6 +258,11 @@ export interface DecisionReceiptInput {
   triggers?: string[];
   provenance?: PresentedProvenance;
   highStakes?: boolean;
+  approvalChannel?: ApprovalChannel;
+  changeRequest?: ChangeRequest;
+  limits?: DeclaredLimit[];
+  actor?: ReceiptActor;
+  requirements?: ApprovalRequirement[];
   previousReceiptHash?: string;
   fallbackId: string;
 }
@@ -297,6 +445,11 @@ export function buildReceipt(draft: ReceiptDraft): ApprovalReceipt {
   if (draft.previousReceiptHash !== undefined && !isReceiptHash(draft.previousReceiptHash)) {
     throw new Error('previousReceiptHash must be a sha256 digest.');
   }
+  if (draft.approvalChannel) assertApprovalChannel(draft.approvalChannel);
+  if (draft.changeRequest) assertChangeRequest(draft.changeRequest);
+  if (draft.limits) assertDeclaredLimits(draft.limits);
+  if (draft.actor) assertActor(draft.actor);
+  if (draft.requirements) assertRequirements(draft.requirements);
   const payloadHash = sha256(canonicalize(draft.payload));
   const unsigned = {
     version: '1' as const,
@@ -308,6 +461,11 @@ export function buildReceipt(draft: ReceiptDraft): ApprovalReceipt {
     triggers: draft.triggers,
     provenance: draft.provenance,
     highStakes: draft.highStakes,
+    approvalChannel: draft.approvalChannel,
+    changeRequest: draft.changeRequest,
+    limits: draft.limits,
+    actor: draft.actor,
+    requirements: draft.requirements,
     attestations: draft.attestations,
     previousReceiptHash: draft.previousReceiptHash,
   };
@@ -356,6 +514,11 @@ export function buildDecisionReceipt(input: DecisionReceiptInput): ApprovalRecei
     triggers: input.triggers,
     provenance: input.provenance ?? payload.provenance,
     highStakes: input.highStakes,
+    approvalChannel: input.approvalChannel,
+    changeRequest: input.changeRequest,
+    limits: input.limits,
+    actor: input.actor,
+    requirements: input.requirements,
     previousReceiptHash: input.previousReceiptHash,
   });
 }

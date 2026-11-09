@@ -37,6 +37,12 @@ export type {
   ApprovalReceipt,
   ReceiptAppSigner,
   ReceiptDecision,
+  DeclaredLimit,
+  LimitEnforcement,
+  ReceiptActor,
+  CredentialMode,
+  ApprovalRequirement,
+  RequirementStatus,
   ReceiptPasskeySigner,
   ReceiptVerification,
 } from './utils/receipt';
@@ -44,6 +50,9 @@ export {
   buildDecisionReceipt,
   buildReceipt,
   buildSignedDecisionReceipt,
+  actorWarning,
+  requirementsNeedCheck,
+  limitDeclaration,
   receiptCheckLabel,
   verify,
 } from './utils/receipt';
@@ -56,6 +65,9 @@ export {
 export type {
   ApprovalPolicy,
   ApprovalTrigger,
+  ChangeInitiator,
+  ChangeRequest,
+  ChangeRequestKind,
   PayeeGrant,
   SmallPayeeRef,
   SmallPayment,
@@ -66,11 +78,24 @@ export {
   DEFAULT_MAX_SMALL_TX_COUNT,
   DEFAULT_SMALL_TX_THRESHOLD,
   DEFAULT_SMALL_TX_WINDOW_MS,
+  changeKindLabel,
   justificationLength,
   requiredJustificationLength,
   requiresApproval,
   smallPaymentBurst,
 } from './utils/triggers';
+export type {
+  AgentReachability,
+  ApprovalChannel,
+  ApprovalChannelKind,
+  ChannelRequirement,
+} from './utils/channel';
+export {
+  approvalSatisfiedByCode,
+  channelAllows,
+  channelBlocksApproval,
+  requiredChannelFor,
+} from './utils/channel';
 export type { AgreementChoice, AgreementDecision, AgreementRate, AgreementRateInput } from './utils/agreement';
 export {
   DEFAULT_AGREEMENT_THRESHOLD,

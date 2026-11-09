@@ -29,6 +29,11 @@ const pairs = [
     dest: path.join(root, 'src/utils/agreement.ts'),
     transform: (text) => text,
   },
+  {
+    source: path.join(root, 'packages/core/src/channel.ts'),
+    dest: path.join(root, 'src/utils/channel.ts'),
+    transform: (text) => text,
+  },
 ];
 
 let failed = false;

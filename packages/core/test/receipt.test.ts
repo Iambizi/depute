@@ -273,4 +273,24 @@ describe('signers', () => {
     const tampered = { ...signed, instruction: 'changed' };
     expect(receiptCheckLabel(await verify(tampered))).toBe('Hash does not match');
   });
+
+  it('covers a declared limit in the receipt hash', async () => {
+    const receipt = buildReceipt({
+      id: 'r-limit',
+      instruction: 'Stay inside the cap',
+      payload: { title: 'Stay inside the cap' },
+      decision: {
+        outcome: 'approved',
+        decidedAt: '2026-11-06T12:00:00.000Z',
+        presentedAt: '2026-11-06T12:00:00.000Z',
+      },
+      limits: [{ label: 'Session', enforcement: 'agent-instruction' }],
+    });
+    expect((await verify(receipt)).valid).toBe(true);
+    const edited = {
+      ...receipt,
+      limits: [{ label: 'Session', enforcement: 'server' as const }],
+    };
+    expect((await verify(edited)).receipt).toBe('mismatch');
+  });
 });

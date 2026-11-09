@@ -35,6 +35,7 @@ const MIRROR_FILES = [
   'packages/core/src/receipt.ts',
   'packages/core/src/triggers.ts',
   'packages/core/src/agreement.ts',
+  'packages/core/src/channel.ts',
   'src/utils/receiptDownload.ts',
   'src/utils/receiptSign.ts',
   'src/utils/a11y.tsx',
@@ -112,7 +113,11 @@ test('add approval-gate installs tokens and rewrites shared imports', () => {
   const installedReceipt = fs.readFileSync(path.join(cwd, 'src/utils/ax-receipt.ts'), 'utf8');
   assert.match(installedReceipt, /export async function verify/);
   assert.match(installedReceipt, /from ['"]\.\.\/types\/ax-core['"]/);
+  assert.match(installedReceipt, /from ['"]\.\/ax-channel['"]/);
+  assert.match(installedReceipt, /from ['"]\.\/ax-triggers['"]/);
   assert.doesNotMatch(installedReceipt, /from ['"]\.\/presented['"]/);
+  assert.doesNotMatch(installedReceipt, /from ['"]\.\/channel['"]/);
+  assert.equal(fs.existsSync(path.join(cwd, 'src/utils/ax-channel.ts')), true);
   assert.equal(fs.existsSync(path.join(cwd, 'src/utils/ax-receipt-download.ts')), true);
   const installedSign = fs.readFileSync(path.join(cwd, 'src/utils/ax-receipt-sign.ts'), 'utf8');
   assert.match(installedSign, /export function createEd25519AppSigner/);

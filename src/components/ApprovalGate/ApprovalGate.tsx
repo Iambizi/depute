@@ -18,9 +18,16 @@ import type React from 'react';
 import { getConfidenceLevel } from '../../types/common';
 import { IconArrowLeft, IconArrowRight } from '../../utils/icons';
 import { useAnnouncer, useFocusTrap, VisuallyHidden } from '../../utils/a11y';
-import { buildDecisionReceipt, buildSignedDecisionReceipt } from '../../utils/receipt';
+import {
+  CHANNEL_DECLARED_LABEL,
+  channelBlocksApproval,
+  channelKindLabel,
+  channelWarningText,
+  reachabilityLabel,
+} from '../../utils/channel';
+import { actorWarning, buildDecisionReceipt, buildSignedDecisionReceipt, requirementsNeedCheck } from '../../utils/receipt';
 import type { ReceiptMethod, ReceiptOutcome } from '../../utils/receipt';
-import { justificationLength, requiredJustificationLength } from '../../utils/triggers';
+import { changeKindLabel, justificationLength, requiredJustificationLength } from '../../utils/triggers';
 import type { ApprovalGateProps, HandoffContext, StagedStep } from './ApprovalGate.types';
 import styles from './ApprovalGate.module.css';
 
@@ -177,6 +184,11 @@ export function ApprovalGate({
   triggers,
   previousReceiptHash,
   highStakes,
+  approvalChannel,
+  changeRequest,
+  limits,
+  actor,
+  requirements,
   onReceipt,
   appSigner,
   passkey,
@@ -194,6 +206,9 @@ export function ApprovalGate({
 
   // Staged mode state
   const [stagedStep, setStagedStep] = useState<StagedStep>('previewing');
+  const [requirementsChecked, setRequirementsChecked] = useState(false);
+  const needsRequirementCheck = requirementsNeedCheck(requirements);
+  const requirementsReady = !needsRequirementCheck || requirementsChecked;
 
   // Countdown timer
   const [timeRemaining, setTimeRemaining] = useState<number | null>(
@@ -238,6 +253,12 @@ export function ApprovalGate({
     paymentPaintedAtRef.current = null;
   }
   const shownProvenance = presentedPayload?.provenance ?? provenance;
+  const agentChange = changeRequest?.initiator === 'agent';
+  const channelRequirement = changeRequest
+    ? 'limit-or-permission' as const
+    : highStakes ? 'high-stakes' as const : undefined;
+  const channelBlocked = channelBlocksApproval(approvalChannel, channelRequirement);
+  const channelWarning = approvalChannel ? channelWarningText(approvalChannel) : undefined;
   const untrustedSource = shownProvenance?.trust === 'untrusted';
   const effectiveMode = untrustedSource ? 'staged' : mode;
   const paymentFloor = effectiveMode === 'staged' && paymentFields && isPending && !isHandoffPending;
@@ -435,9 +456,16 @@ export function ApprovalGate({
         ? paymentPaintedAtRef.current
         : (presentedAt ?? shownAtRef.current),
       decidedAtMs: now ?? Date.now(),
-      triggers,
+      triggers: changeRequest?.initiator === 'agent'
+        ? [...new Set([...(triggers ?? []), 'agent-requested-change'])]
+        : triggers,
       provenance: shownProvenance,
-      highStakes,
+      highStakes: Boolean(highStakes) || changeRequest?.initiator === 'agent',
+      approvalChannel,
+      changeRequest,
+      limits,
+      actor,
+      requirements,
       previousReceiptHash,
       fallbackId: pendingApprovalId || 'local',
     };
@@ -463,6 +491,11 @@ export function ApprovalGate({
     now,
     triggers,
     highStakes,
+    approvalChannel,
+    changeRequest,
+    limits,
+    actor,
+    requirements,
     previousReceiptHash,
     pendingApprovalId,
     appSigner,
@@ -499,11 +532,11 @@ export function ApprovalGate({
       announce('Confirm to proceed with approval');
       return;
     }
-    if (!whyReady || !reviewReady) return;
+    if (!whyReady || !reviewReady || channelBlocked || !requirementsReady) return;
     void decide('approved', 'click', () => {
       onApprove?.();
     });
-  }, [effectiveMode, stagedStep, onApprove, announce, decide, whyReady, reviewReady]);
+  }, [effectiveMode, stagedStep, onApprove, announce, decide, whyReady, reviewReady, channelBlocked, requirementsReady]);
 
   const handleReject = useCallback(() => {
     void decide('rejected', isHandoffPending ? 'handoff' : 'click', () => {
@@ -615,6 +648,51 @@ export function ApprovalGate({
               )}
             </p>
             <p className={styles.sourceLine}>Trust: {trustLabel(shownProvenance.trust)}</p>
+          </div>
+        )}
+
+        {needsRequirementCheck && (
+          <div className={styles.assumed} role="group" aria-label="The agent assumed">
+            <p className={styles.channelTitle}>The agent assumed:</p>
+            <ul className={styles.assumedList}>
+              {requirements?.filter((item) => item.status !== 'confirmed-with-user').map((item) => (
+                <li key={`${item.status}:${item.text}`}>{item.text}</li>
+              ))}
+            </ul>
+            <label className={styles.assumedCheck}>
+              <input
+                type="checkbox"
+                checked={requirementsChecked}
+                onChange={(event) => setRequirementsChecked(event.target.checked)}
+              />
+              I checked these
+            </label>
+          </div>
+        )}
+
+        {actor && actorWarning(actor) && (
+          <p className={styles.actorWarning} role="status">{actorWarning(actor)}</p>
+        )}
+
+        {agentChange && changeRequest && (
+          <div className={styles.changeRequest} role="status">
+            <p className={styles.channelTitle}>Requested by the agent</p>
+            <p className={styles.sourceLine}>{changeKindLabel(changeRequest.kind)}</p>
+            <p className={styles.sourceLine}>From {changeRequest.from}</p>
+            <p className={styles.sourceLine}>To {changeRequest.to}</p>
+          </div>
+        )}
+
+        {approvalChannel && (
+          <div
+            className={channelWarning || channelBlocked ? styles.channelWarning : styles.channelNote}
+            role={channelWarning || channelBlocked ? 'status' : undefined}
+          >
+            <p className={styles.channelTitle}>{channelKindLabel(approvalChannel.kind)}</p>
+            <p className={styles.sourceLine}>{CHANNEL_DECLARED_LABEL}</p>
+            <p className={styles.sourceLine}>{reachabilityLabel(approvalChannel.agentReachable)}</p>
+            {channelWarning && <p className={styles.sourceLine}>{channelWarning}</p>}
+            {channelBlocked && <p className={styles.sourceLine}>This approval cannot be completed on this channel.</p>}
           </div>
         )}
 
@@ -758,7 +836,7 @@ export function ApprovalGate({
             className={`${styles.btn} ${styles.btnApprove}`}
             onClick={handleApprove}
             type="button"
-            disabled={signing || ((effectiveMode !== 'staged' || stagedStep === 'confirming') && !whyReady) || (paymentFloor && stagedStep === 'confirming' && !reviewReady)}
+            disabled={signing || ((effectiveMode !== 'staged' || stagedStep === 'confirming') && !whyReady) || (paymentFloor && stagedStep === 'confirming' && !reviewReady) || (channelBlocked && !(effectiveMode === 'staged' && stagedStep === 'previewing')) || (!requirementsReady && !(effectiveMode === 'staged' && stagedStep === 'previewing'))}
             aria-describedby={[
               whyMinimum > 0 ? `${whyId}-count` : null,
               paymentFloor && !reviewReady ? reviewStatusId : null,

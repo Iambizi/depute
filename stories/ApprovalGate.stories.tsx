@@ -388,3 +388,52 @@ export const UntrustedSource: Story = {
     },
   },
 };
+
+export const AssumedRequirements: Story = {
+  name: 'The agent assumed',
+  args: {
+    status: 'pending',
+    mode: 'simple',
+    title: 'Buy a shirt',
+    description: 'The agent filled in details the person did not confirm.',
+    now: STORY_NOW,
+    requirements: [
+      { text: 'Size large', status: 'assumed' },
+      { text: 'Color navy', status: 'confirmed-with-user' },
+      { text: 'Gift wrap', status: 'unknown' },
+    ],
+  },
+};
+
+export const SharedLogin: Story = {
+  name: 'Shared login',
+  args: {
+    status: 'pending',
+    mode: 'simple',
+    title: 'Pay salaries',
+    description: 'The agent is signed in as you.',
+    now: STORY_NOW,
+    actor: {
+      agentId: 'claude',
+      credentialMode: 'shared-user-credentials',
+      onBehalfOf: 'Ada',
+    },
+  },
+};
+
+export const AgentRequestedChange: Story = {
+  name: 'Requested by the agent',
+  args: {
+    status: 'pending',
+    mode: 'simple',
+    title: 'Raise the daily cap',
+    description: 'The agent asked to raise its own limit.',
+    now: STORY_NOW,
+    changeRequest: {
+      kind: 'raise_limit',
+      initiator: 'agent',
+      from: '100.00 USD',
+      to: '500.00 USD',
+    },
+  },
+};

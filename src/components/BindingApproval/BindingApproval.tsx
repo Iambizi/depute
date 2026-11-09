@@ -16,9 +16,16 @@ import { useState, useEffect, useMemo, useRef, useCallback, useId } from 'react'
 import { VisuallyHidden } from '../../utils/a11y';
 import { IconAlert, IconCheck, IconLock, IconX } from '../../utils/icons';
 import type { HandoffContext, PresentedPayload } from '../../types/core';
-import { buildDecisionReceipt, buildSignedDecisionReceipt } from '../../utils/receipt';
+import {
+  CHANNEL_DECLARED_LABEL,
+  channelBlocksApproval,
+  channelKindLabel,
+  channelWarningText,
+  reachabilityLabel,
+} from '../../utils/channel';
+import { actorWarning, buildDecisionReceipt, buildSignedDecisionReceipt } from '../../utils/receipt';
 import type { ReceiptMethod, ReceiptOutcome } from '../../utils/receipt';
-import { justificationLength, requiredJustificationLength } from '../../utils/triggers';
+import { changeKindLabel, justificationLength, requiredJustificationLength } from '../../utils/triggers';
 import type {
   BindingApprovalProps,
   BindingStatus,
@@ -106,6 +113,10 @@ export function BindingApproval({
   triggers,
   previousReceiptHash,
   highStakes,
+  approvalChannel,
+  changeRequest,
+  limits,
+  actor,
   onReceipt,
   appSigner,
   passkey,
@@ -207,9 +218,16 @@ export function BindingApproval({
     return visibleTerms.every((term) => checkedTerms.has(term.id));
   }, [visibleTerms, checkedTerms]);
 
+  const agentChange = changeRequest?.initiator === 'agent';
+  const channelRequirement = changeRequest
+    ? 'limit-or-permission' as const
+    : highStakes ? 'high-stakes' as const : undefined;
+  const channelBlocked = channelBlocksApproval(approvalChannel, channelRequirement);
+  const channelWarning = approvalChannel ? channelWarningText(approvalChannel) : undefined;
   const canSign =
     effectiveStatus === 'reviewing' &&
-    (!requireAllTerms || allTermsAcknowledged);
+    (!requireAllTerms || allTermsAcknowledged) &&
+    !channelBlocked;
 
   const clockActive = effectiveStatus === 'reviewing' || isHandoffPending;
   useEffect(() => {
@@ -298,9 +316,15 @@ export function BindingApproval({
       presentedAtMs: presentedAt ?? shownAtRef.current,
       decidedAtMs: Date.now(),
       acknowledgedTermIds: [...checkedTerms],
-      triggers,
+      triggers: changeRequest?.initiator === 'agent'
+        ? [...new Set([...(triggers ?? []), 'agent-requested-change'])]
+        : triggers,
       provenance: presentedPayload?.provenance,
-      highStakes,
+      highStakes: Boolean(highStakes) || changeRequest?.initiator === 'agent',
+      approvalChannel,
+      changeRequest,
+      limits,
+      actor,
       previousReceiptHash,
       fallbackId: pendingApprovalId || signerIdentity || 'local',
     };
@@ -324,6 +348,10 @@ export function BindingApproval({
     checkedTerms,
     triggers,
     highStakes,
+    approvalChannel,
+    changeRequest,
+    limits,
+    actor,
     previousReceiptHash,
     pendingApprovalId,
     signerIdentity,
@@ -403,6 +431,32 @@ export function BindingApproval({
 
       {/* Description */}
       <p className={styles.description}>{description}</p>
+
+      {actor && actorWarning(actor) && (
+        <p className={styles.actorWarning} role="status">{actorWarning(actor)}</p>
+      )}
+
+      {agentChange && changeRequest && (
+        <div className={styles.changeRequest} role="status">
+          <p className={styles.changeTitle}>Requested by the agent</p>
+          <p>{changeKindLabel(changeRequest.kind)}</p>
+          <p>From {changeRequest.from}</p>
+          <p>To {changeRequest.to}</p>
+        </div>
+      )}
+
+      {approvalChannel && (
+        <div
+          className={channelWarning || channelBlocked ? styles.channelWarning : styles.channelNote}
+          role={channelWarning || channelBlocked ? 'status' : undefined}
+        >
+          <p className={styles.channelTitle}>{channelKindLabel(approvalChannel.kind)}</p>
+          <p>{CHANNEL_DECLARED_LABEL}</p>
+          <p>{reachabilityLabel(approvalChannel.agentReachable)}</p>
+          {channelWarning && <p>{channelWarning}</p>}
+          {channelBlocked && <p>This approval cannot be completed on this channel.</p>}
+        </div>
+      )}
 
       {agentRecommendation && (!blind || (effectiveStatus !== 'reviewing' && effectiveStatus !== 'signing' && !isHandoffPending)) && (
         <p className={styles.recommendation}>
@@ -513,7 +567,7 @@ export function BindingApproval({
             type="button"
             className={`${styles.signBtn} ax-btn ax-btn-primary ax-btn-lg`}
             onClick={() => {
-              if (!whyReady) return;
+              if (!whyReady || channelBlocked) return;
               void decide('approved', 'click', () => {
                 onSign?.();
               });

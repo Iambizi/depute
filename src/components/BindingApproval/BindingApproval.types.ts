@@ -10,7 +10,9 @@
  */
 
 import type { ApprovalHandoff, HandoffContext, PresentedPayload } from '../../types/core';
-import type { ApprovalReceipt, ReceiptAppSigner, ReceiptPasskeySigner } from '../../utils/receipt';
+import type { ApprovalChannel } from '../../utils/channel';
+import type { ChangeRequest } from '../../utils/triggers';
+import type { ApprovalReceipt, DeclaredLimit, ReceiptActor, ReceiptAppSigner, ReceiptPasskeySigner } from '../../utils/receipt';
 
 /** Binding approval status */
 export type BindingStatus =
@@ -155,6 +157,26 @@ export interface BindingApprovalProps {
 
   /** User passkey. Used only when `highStakes` is set and the person decides. */
   passkey?: ReceiptPasskeySigner;
+
+  /**
+   * Integrator-declared approval channel. Stored on the receipt.
+   * Reachability is not verified. A high-stakes decision cannot complete
+   * when the integrator says the agent can read the channel, or has not said.
+   */
+  approvalChannel?: ApprovalChannel;
+
+  /**
+   * Limit or permission change the person is looking at.
+   * An agent-initiated change is high-stakes and shows the from and to values.
+   * There is no cooling period.
+   */
+  changeRequest?: ChangeRequest;
+
+  /** Limits to snapshot on the receipt. Enforcement is declared, not checked. */
+  limits?: DeclaredLimit[];
+
+  /** Who is acting, and whether they use the person's own login. No agent registry. */
+  actor?: ReceiptActor;
 
   /** Fired with a hashed receipt when the person decides or the gate expires. */
   onReceipt?: (receipt: ApprovalReceipt) => void;
