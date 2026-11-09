@@ -82,6 +82,9 @@ This primitive replaces `ApprovalGate` in high-stakes nodes. The internal state 
 | `terms` | `BindingTerm[]` | — | Terms that must be acknowledged |
 | `liabilityNotice` | `string` | — | Extra term. Acknowledgement id is `liability-notice`. |
 | `approvalChannel` | `ApprovalChannel` | — | Integrator-declared channel. Reachability is not checked. |
+| `changeRequest` | `ChangeRequest` | — | Limit or permission change. An agent initiator shows the old and new values. Covered on [Approval Gate](/docs/components/approval-gate) and the [approval record](/docs/approval-record). |
+| `actor` | `ReceiptActor` | — | Who is acting, and whether they use the person's own login. A shared login shows a warning. Covered on [Approval Gate](/docs/components/approval-gate) and the [approval record](/docs/approval-record). |
+| `limits` | `DeclaredLimit[]` | — | Limits snapshotted on the receipt. Enforcement is declared, not checked. Covered on [Budget Meter](/docs/components/budget-meter) and the [approval record](/docs/approval-record). |
 | `requireAllTerms` | `boolean` | `true` | Require all terms acknowledged to sign |
 | `isSigning` | `boolean` | `false` | Toggles the active signing visual state |
 | `signerIdentity` | `string` | — | Identity of the approver |
@@ -116,3 +119,5 @@ Use `ApprovalGate` by default. Escalate to `BindingApproval` only when the actio
 `liabilityNotice` is one of those terms. It states that the person is the actor for the action. Sign stays off until it is checked, and Reject stays available. The receipt stores the acknowledgement. The rule is in [Approval record](/docs/approval-record).
 
 `approvalChannel` names how the person is asked, and whether the integrator says the agent can read that channel. The label is "Declared by integrator." A high-stakes sign cannot complete when that declaration is `yes` or `unknown`. The pattern is in [Approval channels](/docs/approval-channels).
+
+`changeRequest`, `actor`, and `limits` are the same records Approval Gate and Budget Meter already keep. This page does not give them a second meaning. An agent-requested change shows the old and new values. A shared login shows "Acting as you (shared login)". A limit snapshot says who the integrator claims enforces it. The patterns are in the [approval record](/docs/approval-record).
