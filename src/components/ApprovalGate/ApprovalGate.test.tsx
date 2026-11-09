@@ -699,4 +699,25 @@ describe('ApprovalGate', () => {
       expect(screen.getByRole('alertdialog')).toHaveAttribute('aria-modal', 'true');
     });
   });
+
+  describe('approval channel', () => {
+    it('keeps a high-stakes approve off when the integrator says the agent can read the channel', () => {
+      const onApprove = vi.fn();
+      const onReceipt = vi.fn();
+      render(
+        <ApprovalGate
+          title="Raise the cap"
+          highStakes
+          approvalChannel={{ kind: 'chat', agentReachable: 'unknown', declaredBy: 'integrator' }}
+          onApprove={onApprove}
+          onReceipt={onReceipt}
+        />,
+      );
+      expect(screen.getByText('This approval code could be read by the agent.')).toBeInTheDocument();
+      expect(screen.getByText('Declared by integrator.')).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: 'Approve' })).toBeDisabled();
+      expect(onApprove).not.toHaveBeenCalled();
+      expect(onReceipt).not.toHaveBeenCalled();
+    });
+  });
 });

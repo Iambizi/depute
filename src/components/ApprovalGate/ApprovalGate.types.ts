@@ -7,6 +7,7 @@
 import type React from 'react';
 import type { ApprovalStatus } from '../../types/common';
 import type { ApprovalHandoff, HandoffContext, PresentedPayload, PresentedProvenance } from '../../types/core';
+import type { ApprovalChannel } from '../../utils/channel';
 import type { ApprovalReceipt, ReceiptAppSigner, ReceiptPasskeySigner } from '../../utils/receipt';
 
 export type { ApprovalHandoff, HandoffContext };
@@ -148,6 +149,13 @@ export interface ApprovalGateProps {
 
   /** User passkey. Used only when `highStakes` is set and the person decides. */
   passkey?: ReceiptPasskeySigner;
+
+  /**
+   * Integrator-declared approval channel. Stored on the receipt.
+   * Reachability is not verified. A high-stakes decision cannot complete
+   * when the integrator says the agent can read the channel, or has not said.
+   */
+  approvalChannel?: ApprovalChannel;
 
   /** Fired with a hashed receipt when the person decides or the gate expires. */
   onReceipt?: (receipt: ApprovalReceipt) => void;
