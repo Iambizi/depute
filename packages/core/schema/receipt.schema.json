@@ -53,6 +53,10 @@
           "$ref": "#/definitions/ApprovalChannel",
           "description": "Integrator-declared channel. Reachability is not verified."
         },
+        "changeRequest": {
+          "$ref": "#/definitions/ChangeRequest",
+          "description": "Limit or permission change shown to the person."
+        },
         "attestations": {
           "type": "array",
           "items": {
@@ -381,6 +385,48 @@
         "no",
         "unknown",
         "yes"
+      ]
+    },
+    "ChangeRequest": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "$ref": "#/definitions/ChangeRequestKind"
+        },
+        "initiator": {
+          "$ref": "#/definitions/ChangeInitiator"
+        },
+        "from": {
+          "type": "string"
+        },
+        "to": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "initiator",
+        "from",
+        "to"
+      ],
+      "additionalProperties": false,
+      "description": "A limit or permission change, and who asked for it. `from` and `to` are the values the person is shown."
+    },
+    "ChangeRequestKind": {
+      "type": "string",
+      "enum": [
+        "raise_limit",
+        "add_payee",
+        "widen_scope",
+        "extend_expiry"
+      ]
+    },
+    "ChangeInitiator": {
+      "type": "string",
+      "enum": [
+        "agent",
+        "user",
+        "system"
       ]
     },
     "ReceiptAttestation": {

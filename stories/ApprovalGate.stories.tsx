@@ -388,3 +388,20 @@ export const UntrustedSource: Story = {
     },
   },
 };
+
+export const AgentRequestedChange: Story = {
+  name: 'Requested by the agent',
+  args: {
+    status: 'pending',
+    mode: 'simple',
+    title: 'Raise the daily cap',
+    description: 'The agent asked to raise its own limit.',
+    now: STORY_NOW,
+    changeRequest: {
+      kind: 'raise_limit',
+      initiator: 'agent',
+      from: '100.00 USD',
+      to: '500.00 USD',
+    },
+  },
+};

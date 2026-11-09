@@ -25,7 +25,7 @@ import {
 } from '../../utils/channel';
 import { buildDecisionReceipt, buildSignedDecisionReceipt } from '../../utils/receipt';
 import type { ReceiptMethod, ReceiptOutcome } from '../../utils/receipt';
-import { justificationLength, requiredJustificationLength } from '../../utils/triggers';
+import { changeKindLabel, justificationLength, requiredJustificationLength } from '../../utils/triggers';
 import type {
   BindingApprovalProps,
   BindingStatus,
@@ -114,6 +114,7 @@ export function BindingApproval({
   previousReceiptHash,
   highStakes,
   approvalChannel,
+  changeRequest,
   onReceipt,
   appSigner,
   passkey,
@@ -215,7 +216,10 @@ export function BindingApproval({
     return visibleTerms.every((term) => checkedTerms.has(term.id));
   }, [visibleTerms, checkedTerms]);
 
-  const channelRequirement = highStakes ? 'high-stakes' as const : undefined;
+  const agentChange = changeRequest?.initiator === 'agent';
+  const channelRequirement = changeRequest
+    ? 'limit-or-permission' as const
+    : highStakes ? 'high-stakes' as const : undefined;
   const channelBlocked = channelBlocksApproval(approvalChannel, channelRequirement);
   const channelWarning = approvalChannel ? channelWarningText(approvalChannel) : undefined;
   const canSign =
@@ -310,10 +314,13 @@ export function BindingApproval({
       presentedAtMs: presentedAt ?? shownAtRef.current,
       decidedAtMs: Date.now(),
       acknowledgedTermIds: [...checkedTerms],
-      triggers,
+      triggers: changeRequest?.initiator === 'agent'
+        ? [...new Set([...(triggers ?? []), 'agent-requested-change'])]
+        : triggers,
       provenance: presentedPayload?.provenance,
-      highStakes,
+      highStakes: Boolean(highStakes) || changeRequest?.initiator === 'agent',
       approvalChannel,
+      changeRequest,
       previousReceiptHash,
       fallbackId: pendingApprovalId || signerIdentity || 'local',
     };
@@ -338,6 +345,7 @@ export function BindingApproval({
     triggers,
     highStakes,
     approvalChannel,
+    changeRequest,
     previousReceiptHash,
     pendingApprovalId,
     signerIdentity,
@@ -417,6 +425,15 @@ export function BindingApproval({
 
       {/* Description */}
       <p className={styles.description}>{description}</p>
+
+      {agentChange && changeRequest && (
+        <div className={styles.changeRequest} role="status">
+          <p className={styles.changeTitle}>Requested by the agent</p>
+          <p>{changeKindLabel(changeRequest.kind)}</p>
+          <p>From {changeRequest.from}</p>
+          <p>To {changeRequest.to}</p>
+        </div>
+      )}
 
       {approvalChannel && (
         <div
