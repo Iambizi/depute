@@ -52,6 +52,8 @@ export {
   buildSignedDecisionReceipt,
   actorWarning,
   requirementsNeedCheck,
+  DEFAULT_APPROVAL_EXPIRY_MS,
+  approvalDeadline,
   limitDeclaration,
   receiptCheckLabel,
   verify,

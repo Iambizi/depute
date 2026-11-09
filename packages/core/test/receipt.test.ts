@@ -1,5 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import {
+  DEFAULT_APPROVAL_EXPIRY_MS,
+  approvalDeadline,
   buildDecisionReceipt,
   buildReceipt,
   buildSignedDecisionReceipt,
@@ -292,5 +294,26 @@ describe('signers', () => {
       limits: [{ label: 'Session', enforcement: 'server' as const }],
     };
     expect((await verify(edited)).receipt).toBe('mismatch');
+  });
+});
+
+describe('approvalDeadline', () => {
+  it('defaults to 10 minutes and keeps a host override', () => {
+    const issuedAtMs = Date.parse('2026-11-09T12:00:00.000Z');
+    expect(approvalDeadline(issuedAtMs)).toEqual({
+      issuedAt: '2026-11-09T12:00:00.000Z',
+      expiresAt: new Date(issuedAtMs + DEFAULT_APPROVAL_EXPIRY_MS).toISOString(),
+    });
+    expect(DEFAULT_APPROVAL_EXPIRY_MS).toBe(10 * 60 * 1000);
+    const receipt = buildDecisionReceipt({
+      title: 'Pay vendor',
+      outcome: 'approved',
+      presentedAtMs: issuedAtMs,
+      decidedAtMs: issuedAtMs + 1000,
+      expiresAtMs: issuedAtMs + 60_000,
+      fallbackId: 'local',
+    });
+    expect(receipt.expiresAt).toBe('2026-11-09T12:01:00.000Z');
+    expect(receipt.issuedAt).toBe('2026-11-09T12:00:00.000Z');
   });
 });

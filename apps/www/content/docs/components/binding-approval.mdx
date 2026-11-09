@@ -88,7 +88,9 @@ This primitive replaces `ApprovalGate` in high-stakes nodes. The internal state 
 | `requireAllTerms` | `boolean` | `true` | Require all terms acknowledged to sign |
 | `isSigning` | `boolean` | `false` | Toggles the active signing visual state |
 | `signerIdentity` | `string` | — | Identity of the approver |
-| `timeoutSeconds` | `number` | — | Signing window timeout |
+| `timeoutSeconds` | `number` | — | Signing window timeout. Separate from `expiresAt`. |
+| `issuedAt` | `number` | `presentedAt` | Unix milliseconds the approval was issued. |
+| `expiresAt` | `number` | 10 minutes later | Display deadline. The backend enforces it. |
 | `triggers` | `string[]` | — | Policy reasons that opened the gate. A payment trigger requires a why of 100 characters. |
 | `minJustificationLength` | `number` | — | Overrides that length. `0` turns the field off. |
 | `onSign` | `() => void` | — | Called when the user confirms. Your backend records the intent. |
