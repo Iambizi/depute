@@ -8,6 +8,7 @@ import type React from 'react';
 import type { ApprovalStatus } from '../../types/common';
 import type { ApprovalHandoff, HandoffContext, PresentedPayload, PresentedProvenance } from '../../types/core';
 import type { ApprovalChannel } from '../../utils/channel';
+import type { ChangeRequest } from '../../utils/triggers';
 import type { ApprovalReceipt, ReceiptAppSigner, ReceiptPasskeySigner } from '../../utils/receipt';
 
 export type { ApprovalHandoff, HandoffContext };
@@ -156,6 +157,13 @@ export interface ApprovalGateProps {
    * when the integrator says the agent can read the channel, or has not said.
    */
   approvalChannel?: ApprovalChannel;
+
+  /**
+   * Limit or permission change the person is looking at.
+   * An agent-initiated change is high-stakes and shows the from and to values.
+   * There is no cooling period.
+   */
+  changeRequest?: ChangeRequest;
 
   /** Fired with a hashed receipt when the person decides or the gate expires. */
   onReceipt?: (receipt: ApprovalReceipt) => void;

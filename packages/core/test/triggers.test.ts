@@ -24,6 +24,49 @@ function grant(partial: Partial<PayeeGrant> = {}): PayeeGrant {
 }
 
 describe('requiresApproval', () => {
+  it('always gates an agent-initiated limit raise, whatever the amount', () => {
+    const policy = requiresApproval({
+      nowMs: now,
+      amount: { value: '0.01', currency: 'USD' },
+      changeRequest: {
+        kind: 'raise_limit',
+        initiator: 'agent',
+        from: '100.00 USD',
+        to: '500.00 USD',
+      },
+    });
+    expect(policy.required).toBe(true);
+    expect(policy.highStakes).toBe(true);
+    expect(policy.triggers).toEqual(['agent-requested-change']);
+  });
+
+  it.each(['raise_limit', 'add_payee', 'widen_scope', 'extend_expiry'] as const)(
+    'treats an agent-initiated %s as high-stakes',
+    (kind) => {
+      const policy = requiresApproval({
+        nowMs: now,
+        changeRequest: { kind, initiator: 'agent', from: 'old', to: 'new' },
+      });
+      expect(policy.highStakes).toBe(true);
+      expect(policy.triggers).toContain('agent-requested-change');
+    },
+  );
+
+  it('does not open a gate for a user-initiated change by itself', () => {
+    const policy = requiresApproval({
+      nowMs: now,
+      changeRequest: {
+        kind: 'widen_scope',
+        initiator: 'user',
+        from: 'read',
+        to: 'write',
+      },
+    });
+    expect(policy.required).toBe(false);
+    expect(policy.triggers).toEqual([]);
+    expect(policy.highStakes).toBe(false);
+  });
+
   it('gates a new payee even when the amount is under a spend cap', () => {
     const policy = requiresApproval({
       payee: { rail: 'usdc', identifier: '0xnew' },

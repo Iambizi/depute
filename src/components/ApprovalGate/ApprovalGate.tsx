@@ -27,7 +27,7 @@ import {
 } from '../../utils/channel';
 import { buildDecisionReceipt, buildSignedDecisionReceipt } from '../../utils/receipt';
 import type { ReceiptMethod, ReceiptOutcome } from '../../utils/receipt';
-import { justificationLength, requiredJustificationLength } from '../../utils/triggers';
+import { changeKindLabel, justificationLength, requiredJustificationLength } from '../../utils/triggers';
 import type { ApprovalGateProps, HandoffContext, StagedStep } from './ApprovalGate.types';
 import styles from './ApprovalGate.module.css';
 
@@ -185,6 +185,7 @@ export function ApprovalGate({
   previousReceiptHash,
   highStakes,
   approvalChannel,
+  changeRequest,
   onReceipt,
   appSigner,
   passkey,
@@ -246,7 +247,10 @@ export function ApprovalGate({
     paymentPaintedAtRef.current = null;
   }
   const shownProvenance = presentedPayload?.provenance ?? provenance;
-  const channelRequirement = highStakes ? 'high-stakes' as const : undefined;
+  const agentChange = changeRequest?.initiator === 'agent';
+  const channelRequirement = changeRequest
+    ? 'limit-or-permission' as const
+    : highStakes ? 'high-stakes' as const : undefined;
   const channelBlocked = channelBlocksApproval(approvalChannel, channelRequirement);
   const channelWarning = approvalChannel ? channelWarningText(approvalChannel) : undefined;
   const untrustedSource = shownProvenance?.trust === 'untrusted';
@@ -446,10 +450,13 @@ export function ApprovalGate({
         ? paymentPaintedAtRef.current
         : (presentedAt ?? shownAtRef.current),
       decidedAtMs: now ?? Date.now(),
-      triggers,
+      triggers: changeRequest?.initiator === 'agent'
+        ? [...new Set([...(triggers ?? []), 'agent-requested-change'])]
+        : triggers,
       provenance: shownProvenance,
-      highStakes,
+      highStakes: Boolean(highStakes) || changeRequest?.initiator === 'agent',
       approvalChannel,
+      changeRequest,
       previousReceiptHash,
       fallbackId: pendingApprovalId || 'local',
     };
@@ -476,6 +483,7 @@ export function ApprovalGate({
     triggers,
     highStakes,
     approvalChannel,
+    changeRequest,
     previousReceiptHash,
     pendingApprovalId,
     appSigner,
@@ -628,6 +636,15 @@ export function ApprovalGate({
               )}
             </p>
             <p className={styles.sourceLine}>Trust: {trustLabel(shownProvenance.trust)}</p>
+          </div>
+        )}
+
+        {agentChange && changeRequest && (
+          <div className={styles.changeRequest} role="status">
+            <p className={styles.channelTitle}>Requested by the agent</p>
+            <p className={styles.sourceLine}>{changeKindLabel(changeRequest.kind)}</p>
+            <p className={styles.sourceLine}>From {changeRequest.from}</p>
+            <p className={styles.sourceLine}>To {changeRequest.to}</p>
           </div>
         )}
 

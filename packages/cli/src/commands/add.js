@@ -212,7 +212,11 @@ export async function loadShared(sharedRoot) {
       dest: receiptDest,
       content: raw
         .replace(/from (['"])\.\/presented\1/g, (_, quote) => `from ${quote}${presentedImport}${quote}`)
-        .replace(/from (['"])\.\/channel\1/g, (_, quote) => `from ${quote}${channelImport}${quote}`),
+        .replace(/from (['"])\.\/channel\1/g, (_, quote) => `from ${quote}${channelImport}${quote}`)
+        .replace(/from (['"])\.\/triggers\1/g, (_, quote) => `from ${quote}${importSpecifier(
+          path.posix.join(sharedRoot, 'utils'),
+          path.posix.join(sharedRoot, 'utils/ax-triggers'),
+        )}${quote}`),
       note: 'receipt',
     });
   }

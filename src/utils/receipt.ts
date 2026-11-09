@@ -6,12 +6,14 @@
  * the approval machine stay caller-supplied. A signature, when present,
  * is checked by a verifier the host injects.
  *
- * The CLI copies this file. It imports `./presented` and `./channel`.
+ * The CLI copies this file. It imports `./presented`, `./channel`, and `./triggers`.
  */
 
 import type { ApprovalChannel } from './channel';
 import { assertApprovalChannel } from './channel';
 import type { PresentedPayload, PresentedProvenance, PresentedScope } from '../types/core';
+import type { ChangeRequest } from './triggers';
+import { assertChangeRequest } from './triggers';
 
 export type {
   AgentReachability,
@@ -97,6 +99,8 @@ export interface ApprovalReceipt {
   highStakes?: boolean;
   /** Integrator-declared channel. Reachability is not verified. */
   approvalChannel?: ApprovalChannel;
+  /** Limit or permission change shown to the person. */
+  changeRequest?: ChangeRequest;
   attestations?: ReceiptAttestation[];
   previousReceiptHash?: string;
   signatures?: ReceiptSignature[];
@@ -113,6 +117,7 @@ export interface ReceiptDraft {
   provenance?: PresentedProvenance;
   highStakes?: boolean;
   approvalChannel?: ApprovalChannel;
+  changeRequest?: ChangeRequest;
   attestations?: ReceiptAttestation[];
   previousReceiptHash?: string;
   signatures?: ReceiptSignature[];
@@ -140,6 +145,7 @@ export interface DecisionReceiptInput {
   provenance?: PresentedProvenance;
   highStakes?: boolean;
   approvalChannel?: ApprovalChannel;
+  changeRequest?: ChangeRequest;
   previousReceiptHash?: string;
   fallbackId: string;
 }
@@ -323,6 +329,7 @@ export function buildReceipt(draft: ReceiptDraft): ApprovalReceipt {
     throw new Error('previousReceiptHash must be a sha256 digest.');
   }
   if (draft.approvalChannel) assertApprovalChannel(draft.approvalChannel);
+  if (draft.changeRequest) assertChangeRequest(draft.changeRequest);
   const payloadHash = sha256(canonicalize(draft.payload));
   const unsigned = {
     version: '1' as const,
@@ -335,6 +342,7 @@ export function buildReceipt(draft: ReceiptDraft): ApprovalReceipt {
     provenance: draft.provenance,
     highStakes: draft.highStakes,
     approvalChannel: draft.approvalChannel,
+    changeRequest: draft.changeRequest,
     attestations: draft.attestations,
     previousReceiptHash: draft.previousReceiptHash,
   };
@@ -384,6 +392,7 @@ export function buildDecisionReceipt(input: DecisionReceiptInput): ApprovalRecei
     provenance: input.provenance ?? payload.provenance,
     highStakes: input.highStakes,
     approvalChannel: input.approvalChannel,
+    changeRequest: input.changeRequest,
     previousReceiptHash: input.previousReceiptHash,
   });
 }

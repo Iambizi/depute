@@ -719,5 +719,41 @@ describe('ApprovalGate', () => {
       expect(onApprove).not.toHaveBeenCalled();
       expect(onReceipt).not.toHaveBeenCalled();
     });
+
+    it('shows an agent-requested limit change and stores the old and new values', async () => {
+      const user = userEvent.setup();
+      const onReceipt = vi.fn();
+      render(
+        <ApprovalGate
+          title="Raise the cap"
+          changeRequest={{ kind: 'raise_limit', initiator: 'agent', from: '100 USD', to: '500 USD' }}
+          onReceipt={onReceipt}
+        />,
+      );
+      expect(screen.getByText('Requested by the agent')).toBeInTheDocument();
+      expect(screen.getByText('From 100 USD')).toBeInTheDocument();
+      expect(screen.getByText('To 500 USD')).toBeInTheDocument();
+      await user.click(screen.getByRole('button', { name: 'Approve' }));
+      const receipt = onReceipt.mock.calls[0][0];
+      expect(receipt.changeRequest).toEqual({
+        kind: 'raise_limit',
+        initiator: 'agent',
+        from: '100 USD',
+        to: '500 USD',
+      });
+      expect(receipt.highStakes).toBe(true);
+      expect(receipt.triggers).toContain('agent-requested-change');
+    });
+
+    it('does not complete an agent-requested raise on an emailed code', () => {
+      render(
+        <ApprovalGate
+          title="Raise the cap"
+          changeRequest={{ kind: 'raise_limit', initiator: 'agent', from: '100 USD', to: '500 USD' }}
+          approvalChannel={{ kind: 'otp-email', agentReachable: 'yes', declaredBy: 'integrator' }}
+        />,
+      );
+      expect(screen.getByRole('button', { name: 'Approve' })).toBeDisabled();
+    });
   });
 });
