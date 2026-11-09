@@ -6,7 +6,7 @@
   "packages/core/src/triggers.ts": "a3604d4ba5ec441acaeb9d6d785e93dcffab995344d06afc1aedeb851cd8b4bc",
   "registry/registry.json": "e668762f3fff76b66bb0a73cfa33aa83af940da2f8ad543bc2e1e8e120f461fa",
   "skills/depute/SKILL.md": "ab3a8a591c6b97e08094aa0d1133d07092801b5a4cdf1613ff8ab8548a5e742a",
-  "skills/depute/references/design-rationale.md": "ed15ed5cd890daa78b7e033f95293ea8ee83f924fbc5c4469b42c725ee60654f",
+  "skills/depute/references/design-rationale.md": "a436c09aa089918e14b1f4f5e5a1cb4f5a3e83c70db7717b1b8a284fc905a57a",
   "skills/depute/references/lexicon.md": "e0f72522cabad0c3cfaa0fe94391f47bdb200d29416550b5559f35346a052189",
   "skills/depute/references/v0-components.md": "eb0288f4cab5428d89184bd997b31f8013b50d8cc966a9aeb510faa2cd8d53d2",
   "skills/depute/references/v1-components.md": "7e84410963e89a4dfb1cd7d97de725014efe27054e21254d5e9ce6a341e7fa3b",
@@ -131,5 +131,5 @@
   "src/utils/icons.tsx": "68ec5675cce29839c3fe9944b7f8e50e060c7c05f3670d6b7fb568912942a82d",
   "src/utils/mockData.ts": "0179e6548ae32f2db3211ec3f4b794718ca9af6072f59d430ce942caa02ea093",
   "src/utils/receiptDownload.ts": "d7461703f8e965f120e09d164e820ed3559b01b59f4ef054ef2e41aec30e6bf4",
-  "src/utils/receiptSign.ts": "5e11f3c0b0d0f17967b7b72d3a8e7b7d520198ddb1cc093962d51234729fabb7"
+  "src/utils/receiptSign.ts": "96ea2b3f02cd5259eeddd46956d1edba24aa22c7ac5abbb60899c2994efbc0de"
 }
