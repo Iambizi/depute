@@ -28,6 +28,19 @@ export interface Capability {
   category?: string;
 }
 
+/** A standing grant. Revoke does not approve anything. The host opens Delegation Gate for that. */
+export interface LiveGrant {
+  id: string;
+  agentId: string;
+  onBehalfOf?: string;
+  scope: string;
+  limit?: string;
+  /** ISO-8601. Missing means the grant has no expiry. */
+  expiresAt?: string;
+  /** ISO-8601. */
+  lastUsedAt?: string;
+}
+
 export interface CapabilityMatrixProps {
   /** Title (e.g. "Agent Permissions", "Tool Access Matrix") */
   title: string;
@@ -49,6 +62,12 @@ export interface CapabilityMatrixProps {
 
   /** Called when user clicks on a capability for details */
   onCapabilityClick?: (capability: Capability) => void;
+
+  /** Standing grants. This list does not approve or revoke by itself. */
+  grants?: readonly LiveGrant[];
+
+  /** Tells the host the person asked to revoke. The host shows Delegation Gate. */
+  onRevoke?: (grant: LiveGrant) => void;
 
   /** Additional CSS class */
   className?: string;

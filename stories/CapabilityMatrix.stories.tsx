@@ -44,6 +44,21 @@ export const FintechAgent: Story = {
   },
 };
 
+export const LiveGrants: Story = {
+  name: 'Live grants',
+  args: {
+    title: 'Standing grants',
+    agentId: 'pay-bot',
+    capabilities: [
+      { name: 'usdc.transfer', permission: 'conditional', condition: 'under the grant' },
+    ],
+    grants: [
+      { id: 'g1', agentId: 'pay-bot', onBehalfOf: 'Ada', scope: 'USDC transfers', limit: '100 USD', expiresAt: '2026-11-09T18:00:00.000Z', lastUsedAt: '2026-11-09T12:00:00.000Z' },
+      { id: 'g2', agentId: 'pay-bot', onBehalfOf: 'Ada', scope: 'Read balances' },
+    ],
+  },
+};
+
 export const FlatList: Story = {
   name: 'Flat (No Groups)',
   args: {

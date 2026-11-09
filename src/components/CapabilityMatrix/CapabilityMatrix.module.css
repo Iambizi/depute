@@ -1,6 +1,26 @@
 /* CapabilityMatrix — CSS Module */
 /* v2 — Strict Compliance & Forensics */
 
+.grants {list-style: none;
+  margin: 0;
+  padding: 0 var(--ax-card-pad-x) var(--ax-space-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--ax-space-2);}
+
+.grant {padding: var(--ax-space-3);
+  border-radius: var(--ax-radius-sm);
+  background: var(--ax-bg-subtle);
+  color: var(--ax-fg-default);
+  font-size: var(--ax-text-sm);
+  line-height: var(--ax-leading-lg);}
+
+.grant p {margin: 0;}
+
+.grantTitle {font-weight: var(--ax-weight-semibold);}
+
+.revoke {margin-top: var(--ax-space-2);}
+
 .capabilityMatrix {
   font-family: var(--ax-font-sans);
   border: 0;

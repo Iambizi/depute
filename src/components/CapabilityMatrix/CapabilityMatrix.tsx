@@ -116,6 +116,8 @@ export function CapabilityMatrix({
   groupByCategory = true,
   highlightDenied = true,
   onCapabilityClick,
+  grants,
+  onRevoke,
   className,
 }: CapabilityMatrixProps) {
   const grouped = useMemo(
@@ -162,6 +164,24 @@ export function CapabilityMatrix({
 
       {description && (
         <p className={styles.description}>{description}</p>
+      )}
+
+      {grants && grants.length > 0 && (
+        <ul className={styles.grants} aria-label="Live grants">
+          {grants.map((grant) => (
+            <li key={grant.id} className={styles.grant}>
+              <p className={styles.grantTitle}>{grant.agentId}{grant.onBehalfOf ? ` for ${grant.onBehalfOf}` : ''}</p>
+              <p>{grant.scope}{grant.limit ? ` · ${grant.limit}` : ''}</p>
+              <p>{grant.expiresAt ? `Expires ${grant.expiresAt}` : 'No expiry'}</p>
+              {grant.lastUsedAt && <p>Last used {grant.lastUsedAt}</p>}
+              {onRevoke && (
+                <button type="button" className={styles.revoke} onClick={() => onRevoke(grant)}>
+                  Revoke
+                </button>
+              )}
+            </li>
+          ))}
+        </ul>
       )}
 
       {/* Matrix body */}

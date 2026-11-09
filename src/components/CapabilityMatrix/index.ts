@@ -1,2 +1,2 @@
 export { CapabilityMatrix } from './CapabilityMatrix';
-export type { CapabilityMatrixProps, Capability, PermissionLevel } from './CapabilityMatrix.types';
+export type { CapabilityMatrixProps, Capability, LiveGrant, PermissionLevel } from './CapabilityMatrix.types';
