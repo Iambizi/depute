@@ -39,6 +39,8 @@ export type {
   ReceiptDecision,
   DeclaredLimit,
   LimitEnforcement,
+  ReceiptActor,
+  CredentialMode,
   ReceiptPasskeySigner,
   ReceiptVerification,
 } from './utils/receipt';
@@ -46,6 +48,7 @@ export {
   buildDecisionReceipt,
   buildReceipt,
   buildSignedDecisionReceipt,
+  actorWarning,
   limitDeclaration,
   receiptCheckLabel,
   verify,

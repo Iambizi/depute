@@ -174,6 +174,7 @@ Pass `provenance` with a source and a trust value. An untrusted source shows a w
 | `provenance` | `PresentedProvenance` | — | Source, optional url, and trust. Untrusted forces staged mode. |
 | `approvalChannel` | `ApprovalChannel` | — | Integrator-declared channel. A high-stakes approve stays off when reachability is `yes` or `unknown`. |
 | `changeRequest` | `ChangeRequest` | — | Limit or permission change. An agent initiator shows the old and new values and is high-stakes. |
+| `actor` | `ReceiptActor` | — | Agent, credential mode, and who they act for. A shared login shows a warning. |
 | `minReviewMs` | `number` | `1500` | Staged payment mode waits this long after the payee and the amount paint. `0` means paint is enough. Simple mode ignores it. |
 | `status` | `'pending' \| 'approved' \| 'rejected' \| 'handoff_pending' \| 'handoff_denied' \| 'handoff_expired'` | `'pending'` | Controls gate state |
 | `scope` | `ApprovalScope` | — | Optional scoped grant (target, resourceLimit, durationSeconds) |

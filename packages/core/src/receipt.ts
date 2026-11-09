@@ -66,6 +66,45 @@ export function assertDeclaredLimits(limits: readonly DeclaredLimit[]): void {
   }
 }
 
+export type CredentialMode =
+  | 'delegated-token'
+  | 'shared-user-credentials'
+  | 'own-identity'
+  | 'unknown';
+
+/** Who acted, and whether they used the person's own login. Declared by the host. */
+export interface ReceiptActor {
+  agentId: string;
+  vendor?: string;
+  model?: string;
+  credentialMode: CredentialMode;
+  onBehalfOf: string;
+}
+
+const CREDENTIAL_MODES = new Set<CredentialMode>([
+  'delegated-token',
+  'shared-user-credentials',
+  'own-identity',
+  'unknown',
+]);
+
+export function assertActor(actor: ReceiptActor): void {
+  if (
+    typeof actor.agentId !== 'string' || actor.agentId.trim() === ''
+    || typeof actor.onBehalfOf !== 'string' || actor.onBehalfOf.trim() === ''
+    || !CREDENTIAL_MODES.has(actor.credentialMode)
+  ) {
+    throw new Error('actor needs an agent id, the person they act for, and a credential mode.');
+  }
+}
+
+export function actorWarning(actor: ReceiptActor): string | undefined {
+  if (actor.credentialMode === 'shared-user-credentials' || actor.credentialMode === 'unknown') {
+    return 'Acting as you (shared login)';
+  }
+  return undefined;
+}
+
 export function limitDeclaration(limit: DeclaredLimit): string {
   if (limit.enforcement === 'server') {
     return limit.enforcedBy
@@ -145,6 +184,7 @@ export interface ApprovalReceipt {
   changeRequest?: ChangeRequest;
   /** Limits and who the integrator says enforces them, at approval time. */
   limits?: DeclaredLimit[];
+  actor?: ReceiptActor;
   attestations?: ReceiptAttestation[];
   previousReceiptHash?: string;
   signatures?: ReceiptSignature[];
@@ -163,6 +203,7 @@ export interface ReceiptDraft {
   approvalChannel?: ApprovalChannel;
   changeRequest?: ChangeRequest;
   limits?: DeclaredLimit[];
+  actor?: ReceiptActor;
   attestations?: ReceiptAttestation[];
   previousReceiptHash?: string;
   signatures?: ReceiptSignature[];
@@ -192,6 +233,7 @@ export interface DecisionReceiptInput {
   approvalChannel?: ApprovalChannel;
   changeRequest?: ChangeRequest;
   limits?: DeclaredLimit[];
+  actor?: ReceiptActor;
   previousReceiptHash?: string;
   fallbackId: string;
 }
@@ -377,6 +419,7 @@ export function buildReceipt(draft: ReceiptDraft): ApprovalReceipt {
   if (draft.approvalChannel) assertApprovalChannel(draft.approvalChannel);
   if (draft.changeRequest) assertChangeRequest(draft.changeRequest);
   if (draft.limits) assertDeclaredLimits(draft.limits);
+  if (draft.actor) assertActor(draft.actor);
   const payloadHash = sha256(canonicalize(draft.payload));
   const unsigned = {
     version: '1' as const,
@@ -391,6 +434,7 @@ export function buildReceipt(draft: ReceiptDraft): ApprovalReceipt {
     approvalChannel: draft.approvalChannel,
     changeRequest: draft.changeRequest,
     limits: draft.limits,
+    actor: draft.actor,
     attestations: draft.attestations,
     previousReceiptHash: draft.previousReceiptHash,
   };
@@ -442,6 +486,7 @@ export function buildDecisionReceipt(input: DecisionReceiptInput): ApprovalRecei
     approvalChannel: input.approvalChannel,
     changeRequest: input.changeRequest,
     limits: input.limits,
+    actor: input.actor,
     previousReceiptHash: input.previousReceiptHash,
   });
 }
