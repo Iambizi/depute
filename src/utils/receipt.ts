@@ -121,6 +121,27 @@ export interface ApprovalRequirement {
   status: RequirementStatus;
 }
 
+/** Hash of the terms the person was shown. The integrator keeps the full text. */
+export interface TermsShown {
+  textHash: string;
+  sourceUrl: string;
+  version: string;
+  shownAt: string;
+}
+
+export function assertTermsShown(value: TermsShown): void {
+  if (!isReceiptHash(value.textHash)) throw new Error('termsShown.textHash must be a sha256 digest.');
+  if (typeof value.sourceUrl !== 'string' || value.sourceUrl.trim() === '') {
+    throw new Error('termsShown needs a source URL.');
+  }
+  if (typeof value.version !== 'string' || value.version.trim() === '') {
+    throw new Error('termsShown needs a version.');
+  }
+  if (typeof value.shownAt !== 'string' || Number.isNaN(Date.parse(value.shownAt))) {
+    throw new Error('termsShown.shownAt must be a time.');
+  }
+}
+
 const REQUIREMENT_STATUSES = new Set<RequirementStatus>([
   'confirmed-with-user',
   'assumed',
@@ -231,6 +252,8 @@ export interface ApprovalReceipt {
   issuedAt?: string;
   /** ISO-8601 time the approval display expires. The backend enforces this. */
   expiresAt?: string;
+  /** Hash of the terms shown. The full text stays with the integrator. */
+  termsShown?: TermsShown;
   attestations?: ReceiptAttestation[];
   previousReceiptHash?: string;
   signatures?: ReceiptSignature[];
@@ -253,6 +276,7 @@ export interface ReceiptDraft {
   requirements?: ApprovalRequirement[];
   issuedAt?: string;
   expiresAt?: string;
+  termsShown?: TermsShown;
   attestations?: ReceiptAttestation[];
   previousReceiptHash?: string;
   signatures?: ReceiptSignature[];
@@ -288,6 +312,7 @@ export interface DecisionReceiptInput {
   issuedAtMs?: number;
   /** Unix milliseconds. Defaults to issued time plus 10 minutes. */
   expiresAtMs?: number;
+  termsShown?: TermsShown;
   previousReceiptHash?: string;
   fallbackId: string;
 }
@@ -475,6 +500,7 @@ export function buildReceipt(draft: ReceiptDraft): ApprovalReceipt {
   if (draft.limits) assertDeclaredLimits(draft.limits);
   if (draft.actor) assertActor(draft.actor);
   if (draft.requirements) assertRequirements(draft.requirements);
+  if (draft.termsShown) assertTermsShown(draft.termsShown);
   const payloadHash = sha256(canonicalize(draft.payload));
   const unsigned = {
     version: '1' as const,
@@ -493,6 +519,7 @@ export function buildReceipt(draft: ReceiptDraft): ApprovalReceipt {
     requirements: draft.requirements,
     issuedAt: draft.issuedAt,
     expiresAt: draft.expiresAt,
+    termsShown: draft.termsShown,
     attestations: draft.attestations,
     previousReceiptHash: draft.previousReceiptHash,
   };
@@ -549,6 +576,7 @@ export function buildDecisionReceipt(input: DecisionReceiptInput): ApprovalRecei
     requirements: input.requirements,
     issuedAt: deadline.issuedAt,
     expiresAt: deadline.expiresAt,
+    termsShown: input.termsShown,
     previousReceiptHash: input.previousReceiptHash,
   });
 }

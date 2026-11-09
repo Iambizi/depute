@@ -41,6 +41,7 @@ export type {
   LimitEnforcement,
   ReceiptActor,
   CredentialMode,
+  TermsShown,
   ApprovalRequirement,
   RequirementStatus,
   ReceiptPasskeySigner,
