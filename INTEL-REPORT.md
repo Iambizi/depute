@@ -18,6 +18,7 @@ Source: depute Intel Report #1, Oct 26–28, 2026. Supervision has to be legible
 | R8 | Liability notice on binding approval and the policy banner | Restacked onto main. First merged only into its parent in https://github.com/Iambizi/depute/pull/41 |
 | R9 | One decision path for React and a chat surface | Not started. Waits on the channel rule. |
 | R10 | Bank-scoped delegation: identity, scopes, expiry, revoke | Not started. Component shape is still open. |
+| R15 | Classify approval channels by whether the agent can read them | In this change. Integrator-declared only. No hardware attestation. |
 
 Decided and not reopened: both keys, tiered (R1b); receipts are standalone with an optional `previousReceiptHash`; export JSON from day one; core stays copied, not published.
 

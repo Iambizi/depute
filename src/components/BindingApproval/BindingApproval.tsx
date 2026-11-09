@@ -16,6 +16,13 @@ import { useState, useEffect, useMemo, useRef, useCallback, useId } from 'react'
 import { VisuallyHidden } from '../../utils/a11y';
 import { IconAlert, IconCheck, IconLock, IconX } from '../../utils/icons';
 import type { HandoffContext, PresentedPayload } from '../../types/core';
+import {
+  CHANNEL_DECLARED_LABEL,
+  channelBlocksApproval,
+  channelKindLabel,
+  channelWarningText,
+  reachabilityLabel,
+} from '../../utils/channel';
 import { buildDecisionReceipt, buildSignedDecisionReceipt } from '../../utils/receipt';
 import type { ReceiptMethod, ReceiptOutcome } from '../../utils/receipt';
 import { justificationLength, requiredJustificationLength } from '../../utils/triggers';
@@ -106,6 +113,7 @@ export function BindingApproval({
   triggers,
   previousReceiptHash,
   highStakes,
+  approvalChannel,
   onReceipt,
   appSigner,
   passkey,
@@ -207,9 +215,13 @@ export function BindingApproval({
     return visibleTerms.every((term) => checkedTerms.has(term.id));
   }, [visibleTerms, checkedTerms]);
 
+  const channelRequirement = highStakes ? 'high-stakes' as const : undefined;
+  const channelBlocked = channelBlocksApproval(approvalChannel, channelRequirement);
+  const channelWarning = approvalChannel ? channelWarningText(approvalChannel) : undefined;
   const canSign =
     effectiveStatus === 'reviewing' &&
-    (!requireAllTerms || allTermsAcknowledged);
+    (!requireAllTerms || allTermsAcknowledged) &&
+    !channelBlocked;
 
   const clockActive = effectiveStatus === 'reviewing' || isHandoffPending;
   useEffect(() => {
@@ -301,6 +313,7 @@ export function BindingApproval({
       triggers,
       provenance: presentedPayload?.provenance,
       highStakes,
+      approvalChannel,
       previousReceiptHash,
       fallbackId: pendingApprovalId || signerIdentity || 'local',
     };
@@ -324,6 +337,7 @@ export function BindingApproval({
     checkedTerms,
     triggers,
     highStakes,
+    approvalChannel,
     previousReceiptHash,
     pendingApprovalId,
     signerIdentity,
@@ -403,6 +417,19 @@ export function BindingApproval({
 
       {/* Description */}
       <p className={styles.description}>{description}</p>
+
+      {approvalChannel && (
+        <div
+          className={channelWarning || channelBlocked ? styles.channelWarning : styles.channelNote}
+          role={channelWarning || channelBlocked ? 'status' : undefined}
+        >
+          <p className={styles.channelTitle}>{channelKindLabel(approvalChannel.kind)}</p>
+          <p>{CHANNEL_DECLARED_LABEL}</p>
+          <p>{reachabilityLabel(approvalChannel.agentReachable)}</p>
+          {channelWarning && <p>{channelWarning}</p>}
+          {channelBlocked && <p>This approval cannot be completed on this channel.</p>}
+        </div>
+      )}
 
       {agentRecommendation && (!blind || (effectiveStatus !== 'reviewing' && effectiveStatus !== 'signing' && !isHandoffPending)) && (
         <p className={styles.recommendation}>
@@ -513,7 +540,7 @@ export function BindingApproval({
             type="button"
             className={`${styles.signBtn} ax-btn ax-btn-primary ax-btn-lg`}
             onClick={() => {
-              if (!whyReady) return;
+              if (!whyReady || channelBlocked) return;
               void decide('approved', 'click', () => {
                 onSign?.();
               });

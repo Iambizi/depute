@@ -83,6 +83,7 @@ function rewriteComponentImports(content, componentDir, sharedRoot) {
   const iconsImport = importSpecifier(componentDir, path.posix.join(sharedRoot, 'utils/ax-icons'));
   const triggersImport = importSpecifier(componentDir, path.posix.join(sharedRoot, 'utils/ax-triggers'));
   const agreementImport = importSpecifier(componentDir, path.posix.join(sharedRoot, 'utils/ax-agreement'));
+  const channelImport = importSpecifier(componentDir, path.posix.join(sharedRoot, 'utils/ax-channel'));
   const receiptImport = importSpecifier(componentDir, path.posix.join(sharedRoot, 'utils/ax-receipt'));
   const signImport = importSpecifier(componentDir, path.posix.join(sharedRoot, 'utils/ax-receipt-sign'));
   const downloadImport = importSpecifier(componentDir, path.posix.join(sharedRoot, 'utils/ax-receipt-download'));
@@ -91,6 +92,7 @@ function rewriteComponentImports(content, componentDir, sharedRoot) {
     .replace(/from (['"])(?:\.\.\/)+types\/core\1/g, (_, quote) => `from ${quote}${coreImport}${quote}`)
     .replace(/from (['"])(?:\.\.\/)+utils\/triggers\1/g, (_, quote) => `from ${quote}${triggersImport}${quote}`)
     .replace(/from (['"])(?:\.\.\/)+utils\/agreement\1/g, (_, quote) => `from ${quote}${agreementImport}${quote}`)
+    .replace(/from (['"])(?:\.\.\/)+utils\/channel\1/g, (_, quote) => `from ${quote}${channelImport}${quote}`)
     .replace(/from (['"])(?:\.\.\/)+utils\/receiptDownload\1/g, (_, quote) => `from ${quote}${downloadImport}${quote}`)
     .replace(/from (['"])(?:\.\.\/)+utils\/receiptSign\1/g, (_, quote) => `from ${quote}${signImport}${quote}`)
     .replace(/from (['"])(?:\.\.\/)+utils\/receipt\1/g, (_, quote) => `from ${quote}${receiptImport}${quote}`)
@@ -201,10 +203,25 @@ export async function loadShared(sharedRoot) {
       path.posix.join(sharedRoot, 'utils'),
       path.posix.join(sharedRoot, 'types/ax-core'),
     );
+    const channelImport = importSpecifier(
+      path.posix.join(sharedRoot, 'utils'),
+      path.posix.join(sharedRoot, 'utils/ax-channel'),
+    );
     const raw = await loadFile('packages/core/src/receipt.ts');
     files.push({
       dest: receiptDest,
-      content: raw.replace(/from (['"])\.\/presented\1/g, (_, quote) => `from ${quote}${presentedImport}${quote}`),
+      content: raw
+        .replace(/from (['"])\.\/presented\1/g, (_, quote) => `from ${quote}${presentedImport}${quote}`)
+        .replace(/from (['"])\.\/channel\1/g, (_, quote) => `from ${quote}${channelImport}${quote}`),
+      note: 'receipt',
+    });
+  }
+
+  const channelDest = path.posix.join(sharedRoot, 'utils/ax-channel.ts');
+  if (!fileExists(channelDest)) {
+    files.push({
+      dest: channelDest,
+      content: await loadFile('packages/core/src/channel.ts'),
       note: 'receipt',
     });
   }

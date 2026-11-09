@@ -1,0 +1,36 @@
+---
+title: Approval channels
+description: Record the channel an approval used, and whether the integrator says the agent can read it.
+---
+
+An approval is weaker when the code, link, or prompt that completes it can be read by the agent. An emailed one-time code, a text message, a chat reply, and a screen drawn inside the agent are examples. A passkey prompt on a device the agent does not control is a different kind of channel.
+
+depute records the channel the integrator declares. It does not check that declaration. The receipt field is `declaredBy: "integrator"`. Copy in the interface says "Declared by integrator." It does not say the channel was checked.
+
+## What the host declares
+
+`approvalChannel` has three fields:
+
+| Field | Values |
+| --- | --- |
+| `kind` | `webauthn-platform`, `webauthn-security-key`, `otp-email`, `otp-sms`, `chat`, `in-agent-ui`, `other` |
+| `agentReachable` | `no`, `unknown`, `yes` |
+| `declaredBy` | `integrator` |
+
+`requiredChannelFor` returns `{ agentReachable: "no" }` for a high-stakes approval and for a limit or permission change. `channelAllows` is false when the declaration is `yes` or `unknown`, and when `declaredBy` is anything else. Holding the one-time code does not change that result. `approvalSatisfiedByCode` ignores the code.
+
+When the host omits `approvalChannel`, today's gate still completes. The declaration is optional so an existing integration keeps working.
+
+## What the person sees
+
+[Binding Approval](/docs/components/binding-approval) and [Approval Gate](/docs/components/approval-gate) show the kind and the reachability sentence. For `otp-email`, `otp-sms`, `chat`, and `in-agent-ui` they also show: "This approval code could be read by the agent."
+
+A high-stakes Sign or Approve stays off when the declaration is `yes` or `unknown`. Reject stays available. The same block applies when a later change marks the decision as a limit or permission change.
+
+The receipt stores the object inside the hash. Editing the declaration after the fact fails `verify()`.
+
+## An illustration
+
+A research review dated 6 November 2026 described a wallet whose daily-cap change was gated by an emailed one-time code. Models with access to that inbox read the code and raised the cap. That review is an illustration of the pattern above. It is not, by itself, the requirement, and depute does not claim to have reproduced the experiment.
+
+A device app that attests the approval from hardware is not part of this library. The host can still pass a passkey signer. The channel record says what the integrator declared. It does not replace that signer.

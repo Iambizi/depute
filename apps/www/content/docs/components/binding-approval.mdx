@@ -81,6 +81,7 @@ This primitive replaces `ApprovalGate` in high-stakes nodes. The internal state 
 | `status` | `'reviewing' \| 'signing' \| 'signed' \| 'rejected' \| 'expired'` | `'reviewing'` | Current status |
 | `terms` | `BindingTerm[]` | — | Terms that must be acknowledged |
 | `liabilityNotice` | `string` | — | Extra term. Acknowledgement id is `liability-notice`. |
+| `approvalChannel` | `ApprovalChannel` | — | Integrator-declared channel. Reachability is not checked. |
 | `requireAllTerms` | `boolean` | `true` | Require all terms acknowledged to sign |
 | `isSigning` | `boolean` | `false` | Toggles the active signing visual state |
 | `signerIdentity` | `string` | — | Identity of the approver |
@@ -113,3 +114,5 @@ Use `ApprovalGate` by default. Escalate to `BindingApproval` only when the actio
 **Why explicit terms?** Click-fatigue trains users to blindly click "Approve." Forcing the user to manually acknowledge explicit terms (e.g. "This action cannot be undone") breaks automatic behavior and captures verifiable intent.
 
 `liabilityNotice` is one of those terms. It states that the person is the actor for the action. Sign stays off until it is checked, and Reject stays available. The receipt stores the acknowledgement. The rule is in [Approval record](/docs/approval-record).
+
+`approvalChannel` names how the person is asked, and whether the integrator says the agent can read that channel. The label is "Declared by integrator." A high-stakes sign cannot complete when that declaration is `yes` or `unknown`. The pattern is in [Approval channels](/docs/approval-channels).

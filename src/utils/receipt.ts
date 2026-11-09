@@ -6,10 +6,31 @@
  * the approval machine stay caller-supplied. A signature, when present,
  * is checked by a verifier the host injects.
  *
- * The CLI copies this file. It imports only `./presented`.
+ * The CLI copies this file. It imports `./presented` and `./channel`.
  */
 
+import type { ApprovalChannel } from './channel';
+import { assertApprovalChannel } from './channel';
 import type { PresentedPayload, PresentedProvenance, PresentedScope } from '../types/core';
+
+export type {
+  AgentReachability,
+  ApprovalChannel,
+  ApprovalChannelKind,
+  ChannelRequirement,
+  ChannelRule,
+} from './channel';
+export {
+  CHANNEL_DECLARED_LABEL,
+  approvalSatisfiedByCode,
+  assertApprovalChannel,
+  channelAllows,
+  channelBlocksApproval,
+  channelKindLabel,
+  channelWarningText,
+  reachabilityLabel,
+  requiredChannelFor,
+} from './channel';
 
 export type ReceiptOutcome = 'approved' | 'rejected' | 'expired' | 'denied';
 export type ReceiptChoice = 'approved' | 'rejected';
@@ -74,6 +95,8 @@ export interface ApprovalReceipt {
   triggers?: string[];
   provenance?: PresentedProvenance;
   highStakes?: boolean;
+  /** Integrator-declared channel. Reachability is not verified. */
+  approvalChannel?: ApprovalChannel;
   attestations?: ReceiptAttestation[];
   previousReceiptHash?: string;
   signatures?: ReceiptSignature[];
@@ -89,6 +112,7 @@ export interface ReceiptDraft {
   triggers?: string[];
   provenance?: PresentedProvenance;
   highStakes?: boolean;
+  approvalChannel?: ApprovalChannel;
   attestations?: ReceiptAttestation[];
   previousReceiptHash?: string;
   signatures?: ReceiptSignature[];
@@ -115,6 +139,7 @@ export interface DecisionReceiptInput {
   triggers?: string[];
   provenance?: PresentedProvenance;
   highStakes?: boolean;
+  approvalChannel?: ApprovalChannel;
   previousReceiptHash?: string;
   fallbackId: string;
 }
@@ -297,6 +322,7 @@ export function buildReceipt(draft: ReceiptDraft): ApprovalReceipt {
   if (draft.previousReceiptHash !== undefined && !isReceiptHash(draft.previousReceiptHash)) {
     throw new Error('previousReceiptHash must be a sha256 digest.');
   }
+  if (draft.approvalChannel) assertApprovalChannel(draft.approvalChannel);
   const payloadHash = sha256(canonicalize(draft.payload));
   const unsigned = {
     version: '1' as const,
@@ -308,6 +334,7 @@ export function buildReceipt(draft: ReceiptDraft): ApprovalReceipt {
     triggers: draft.triggers,
     provenance: draft.provenance,
     highStakes: draft.highStakes,
+    approvalChannel: draft.approvalChannel,
     attestations: draft.attestations,
     previousReceiptHash: draft.previousReceiptHash,
   };
@@ -356,6 +383,7 @@ export function buildDecisionReceipt(input: DecisionReceiptInput): ApprovalRecei
     triggers: input.triggers,
     provenance: input.provenance ?? payload.provenance,
     highStakes: input.highStakes,
+    approvalChannel: input.approvalChannel,
     previousReceiptHash: input.previousReceiptHash,
   });
 }

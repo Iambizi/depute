@@ -241,4 +241,44 @@ describe('BindingApproval', () => {
       });
     });
   });
+
+  describe('approval channel', () => {
+    it('blocks a high-stakes sign on an emailed code and records a passkey channel', async () => {
+      const user = userEvent.setup();
+      const onSign = vi.fn();
+      const onReceipt = vi.fn();
+      const email = { kind: 'otp-email' as const, agentReachable: 'yes' as const, declaredBy: 'integrator' as const };
+      const { rerender } = render(
+        <BindingApproval
+          {...defaultProps}
+          highStakes
+          approvalChannel={email}
+          onSign={onSign}
+          onReceipt={onReceipt}
+        />,
+      );
+      expect(screen.getByText('This approval code could be read by the agent.')).toBeInTheDocument();
+      expect(screen.getByText('Declared by integrator.')).toBeInTheDocument();
+      expect(screen.queryByText(/verified/i)).not.toBeInTheDocument();
+      expect(screen.getByRole('button', { name: /sign and approve/i })).toBeDisabled();
+      expect(onReceipt).not.toHaveBeenCalled();
+
+      rerender(
+        <BindingApproval
+          {...defaultProps}
+          highStakes
+          approvalChannel={{ kind: 'webauthn-platform', agentReachable: 'no', declaredBy: 'integrator' }}
+          onSign={onSign}
+          onReceipt={onReceipt}
+        />,
+      );
+      await user.click(screen.getByRole('button', { name: /sign and approve/i }));
+      expect(onSign).toHaveBeenCalledTimes(1);
+      expect(onReceipt.mock.calls[0][0].approvalChannel).toEqual({
+        kind: 'webauthn-platform',
+        agentReachable: 'no',
+        declaredBy: 'integrator',
+      });
+    });
+  });
 });
