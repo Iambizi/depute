@@ -23,7 +23,7 @@ import {
   channelWarningText,
   reachabilityLabel,
 } from '../../utils/channel';
-import { actorWarning, buildDecisionReceipt, buildSignedDecisionReceipt } from '../../utils/receipt';
+import { DEFAULT_APPROVAL_EXPIRY_MS, actorWarning, buildDecisionReceipt, buildSignedDecisionReceipt } from '../../utils/receipt';
 import type { ReceiptMethod, ReceiptOutcome } from '../../utils/receipt';
 import { changeKindLabel, justificationLength, requiredJustificationLength } from '../../utils/triggers';
 import type {
@@ -108,6 +108,9 @@ export function BindingApproval({
   presentedPayload,
   approver,
   presentedAt,
+  now,
+  issuedAt,
+  expiresAt,
   justification,
   minJustificationLength,
   triggers,
@@ -141,7 +144,12 @@ export function BindingApproval({
   const whyReady = whyMinimum === 0 || whyCount >= whyMinimum;
   const recordedWhy = whyMinimum > 0 ? (why.trim() || undefined) : justification;
 
-  const shownAtRef = useRef(presentedAt ?? Date.now());
+  const shownAtRef = useRef(presentedAt ?? now ?? Date.now());
+  const issuedAtMs = issuedAt ?? presentedAt ?? shownAtRef.current;
+  const approvalDeadlineMs = expiresAt ?? issuedAtMs + DEFAULT_APPROVAL_EXPIRY_MS;
+  const approvalFiredRef = useRef(false);
+  const [approvalLeft, setApprovalLeft] = useState(() => Math.ceil((approvalDeadlineMs - (now ?? Date.now())) / 1000));
+  const approvalExpired = approvalLeft <= 0 && effectiveStatus === 'reviewing';
   const emitReceiptRef = useRef<(outcome: ReceiptOutcome, method: ReceiptMethod) => void | Promise<void>>(() => {});
   const [signingReceipt, setSigningReceipt] = useState(false);
   const signingRef = useRef(false);
@@ -227,7 +235,8 @@ export function BindingApproval({
   const canSign =
     effectiveStatus === 'reviewing' &&
     (!requireAllTerms || allTermsAcknowledged) &&
-    !channelBlocked;
+    !channelBlocked &&
+    !approvalExpired;
 
   const clockActive = effectiveStatus === 'reviewing' || isHandoffPending;
   useEffect(() => {
@@ -314,7 +323,9 @@ export function BindingApproval({
       outcome,
       method,
       presentedAtMs: presentedAt ?? shownAtRef.current,
-      decidedAtMs: Date.now(),
+      decidedAtMs: now ?? Date.now(),
+      issuedAtMs,
+      expiresAtMs: approvalDeadlineMs,
       acknowledgedTermIds: [...checkedTerms],
       triggers: changeRequest?.initiator === 'agent'
         ? [...new Set([...(triggers ?? []), 'agent-requested-change'])]
@@ -345,6 +356,9 @@ export function BindingApproval({
     recordedWhy,
     approver,
     presentedAt,
+    now,
+    issuedAtMs,
+    approvalDeadlineMs,
     checkedTerms,
     triggers,
     highStakes,
@@ -359,6 +373,30 @@ export function BindingApproval({
     passkey,
   ]);
   emitReceiptRef.current = emitReceipt;
+
+  useEffect(() => {
+    const clock = now ?? Date.now();
+    const remain = Math.ceil((approvalDeadlineMs - clock) / 1000);
+    const fire = () => {
+      if (approvalFiredRef.current || effectiveStatus !== 'reviewing') return;
+      approvalFiredRef.current = true;
+      void emitReceiptRef.current('expired', 'click');
+    };
+    if (now != null) {
+      setApprovalLeft(remain);
+      if (remain <= 0) fire();
+      return;
+    }
+    if (effectiveStatus !== 'reviewing') return;
+    const tick = () => {
+      const left = Math.ceil((approvalDeadlineMs - Date.now()) / 1000);
+      setApprovalLeft(left);
+      if (left <= 0) fire();
+    };
+    tick();
+    const interval = setInterval(tick, 1000);
+    return () => clearInterval(interval);
+  }, [approvalDeadlineMs, effectiveStatus, now]);
 
   const decide = useCallback(async (
     outcome: ReceiptOutcome,
@@ -431,6 +469,11 @@ export function BindingApproval({
 
       {/* Description */}
       <p className={styles.description}>{description}</p>
+      {effectiveStatus === 'reviewing' && (
+        <p className={approvalExpired ? styles.channelWarning : styles.channelNote} role="status">
+          {approvalExpired ? 'Expired' : `Expires in ${Math.floor(Math.max(approvalLeft, 0) / 60)}:${String(Math.max(approvalLeft, 0) % 60).padStart(2, '0')}`}
+        </p>
+      )}
 
       {actor && actorWarning(actor) && (
         <p className={styles.actorWarning} role="status">{actorWarning(actor)}</p>

@@ -800,4 +800,35 @@ describe('ApprovalGate', () => {
       expect(onReceipt.mock.calls[0][0].decision.justification).toBeUndefined();
     });
   });
+
+  describe('approval expiry', () => {
+    const issued = Date.parse('2026-11-09T12:00:00.000Z');
+
+    it('shows a 10 minute countdown and does not trip the signing timeout', () => {
+      const onTimeout = vi.fn();
+      render(<ApprovalGate title="Pay" now={issued} issuedAt={issued} timeoutSeconds={30} onTimeout={onTimeout} />);
+      expect(screen.getByText('Expires in 10:00')).toBeInTheDocument();
+      expect(onTimeout).not.toHaveBeenCalled();
+    });
+
+    it('shows expired when the host deadline has passed and records it', () => {
+      const onTimeout = vi.fn();
+      const onReceipt = vi.fn();
+      render(
+        <ApprovalGate
+          title="Pay"
+          now={issued + 1000}
+          issuedAt={issued}
+          expiresAt={issued}
+          onTimeout={onTimeout}
+          onReceipt={onReceipt}
+        />,
+      );
+      expect(screen.getByText('Expired')).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: 'Approve' })).toBeDisabled();
+      expect(onTimeout).not.toHaveBeenCalled();
+      expect(onReceipt.mock.calls[0][0].decision.outcome).toBe('expired');
+      expect(onReceipt.mock.calls[0][0].expiresAt).toBe('2026-11-09T12:00:00.000Z');
+    });
+  });
 });
