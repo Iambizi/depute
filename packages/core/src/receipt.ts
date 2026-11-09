@@ -39,6 +39,48 @@ export type ReceiptChoice = 'approved' | 'rejected';
 export type ReceiptMethod = 'click' | 'passkey' | 'handoff' | 'chat';
 export type ReceiptExecutionStatus = 'success' | 'failed' | 'pending' | 'reverted' | 'not-run';
 
+export type LimitEnforcement = 'server' | 'client' | 'agent-instruction' | 'unknown';
+
+/** A limit the integrator says someone enforces. depute does not check that claim. */
+export interface DeclaredLimit {
+  label: string;
+  enforcement: LimitEnforcement;
+  enforcedBy?: string;
+}
+
+const LIMIT_ENFORCEMENTS = new Set<LimitEnforcement>([
+  'server',
+  'client',
+  'agent-instruction',
+  'unknown',
+]);
+
+export function assertDeclaredLimits(limits: readonly DeclaredLimit[]): void {
+  for (const limit of limits) {
+    if (typeof limit.label !== 'string' || limit.label.trim() === '' || !LIMIT_ENFORCEMENTS.has(limit.enforcement)) {
+      throw new Error('Each limit needs a label and a declared enforcement.');
+    }
+    if (limit.enforcedBy !== undefined && typeof limit.enforcedBy !== 'string') {
+      throw new Error('enforcedBy must be a name.');
+    }
+  }
+}
+
+export function limitDeclaration(limit: DeclaredLimit): string {
+  if (limit.enforcement === 'server') {
+    return limit.enforcedBy
+      ? `Enforced by ${limit.enforcedBy} (declared)`
+      : 'Enforced by the server (declared)';
+  }
+  if (limit.enforcement === 'client') {
+    return limit.enforcedBy
+      ? `Enforced in the client by ${limit.enforcedBy} (declared)`
+      : 'Enforced in the client (declared)';
+  }
+  if (limit.enforcement === 'agent-instruction') return 'Instruction only, not enforced.';
+  return 'Enforcement unknown. Declared by the integrator.';
+}
+
 export interface ReceiptApprover {
   id: string;
   name?: string;
@@ -101,6 +143,8 @@ export interface ApprovalReceipt {
   approvalChannel?: ApprovalChannel;
   /** Limit or permission change shown to the person. */
   changeRequest?: ChangeRequest;
+  /** Limits and who the integrator says enforces them, at approval time. */
+  limits?: DeclaredLimit[];
   attestations?: ReceiptAttestation[];
   previousReceiptHash?: string;
   signatures?: ReceiptSignature[];
@@ -118,6 +162,7 @@ export interface ReceiptDraft {
   highStakes?: boolean;
   approvalChannel?: ApprovalChannel;
   changeRequest?: ChangeRequest;
+  limits?: DeclaredLimit[];
   attestations?: ReceiptAttestation[];
   previousReceiptHash?: string;
   signatures?: ReceiptSignature[];
@@ -146,6 +191,7 @@ export interface DecisionReceiptInput {
   highStakes?: boolean;
   approvalChannel?: ApprovalChannel;
   changeRequest?: ChangeRequest;
+  limits?: DeclaredLimit[];
   previousReceiptHash?: string;
   fallbackId: string;
 }
@@ -330,6 +376,7 @@ export function buildReceipt(draft: ReceiptDraft): ApprovalReceipt {
   }
   if (draft.approvalChannel) assertApprovalChannel(draft.approvalChannel);
   if (draft.changeRequest) assertChangeRequest(draft.changeRequest);
+  if (draft.limits) assertDeclaredLimits(draft.limits);
   const payloadHash = sha256(canonicalize(draft.payload));
   const unsigned = {
     version: '1' as const,
@@ -343,6 +390,7 @@ export function buildReceipt(draft: ReceiptDraft): ApprovalReceipt {
     highStakes: draft.highStakes,
     approvalChannel: draft.approvalChannel,
     changeRequest: draft.changeRequest,
+    limits: draft.limits,
     attestations: draft.attestations,
     previousReceiptHash: draft.previousReceiptHash,
   };
@@ -393,6 +441,7 @@ export function buildDecisionReceipt(input: DecisionReceiptInput): ApprovalRecei
     highStakes: input.highStakes,
     approvalChannel: input.approvalChannel,
     changeRequest: input.changeRequest,
+    limits: input.limits,
     previousReceiptHash: input.previousReceiptHash,
   });
 }

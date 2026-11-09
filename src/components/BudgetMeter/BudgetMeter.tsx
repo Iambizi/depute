@@ -11,6 +11,8 @@
 
 import { useMemo, useEffect, useRef } from 'react';
 import { VisuallyHidden } from '../../utils/a11y';
+import { limitDeclaration } from '../../utils/receipt';
+import type { DeclaredLimit } from '../../utils/receipt';
 import {
   DEFAULT_SMALL_TX_THRESHOLD,
   DEFAULT_SMALL_TX_WINDOW_MS,
@@ -86,6 +88,16 @@ function windowLabel(windowMs: number): string {
   return seconds === 1 ? '1 second' : `${seconds} seconds`;
 }
 
+function LimitRow({ limit }: { limit: DeclaredLimit }) {
+  const protectedLimit = limit.enforcement === 'server';
+  return (
+    <li className={protectedLimit ? styles.limitProtected : styles.limitWarning}>
+      <span className={styles.limitName}>{limit.label}</span>
+      <span>{limitDeclaration(limit)}</span>
+    </li>
+  );
+}
+
 function burstMessage(burst: SmallPaymentBurst, threshold: string, windowMs: number): string {
   const payments = burst.count === 1 ? 'payment' : 'payments';
   const payees = burst.payeeCount === 1 ? 'payee' : 'payees';
@@ -117,6 +129,7 @@ export function BudgetMeter({
   windowMs = DEFAULT_SMALL_TX_WINDOW_MS,
   maxSmallTxCount,
   onSmallTxPattern,
+  limits,
   className,
 }: BudgetMeterProps) {
   const resolvedSeverity =
@@ -164,11 +177,27 @@ export function BudgetMeter({
     onSmallTxPattern?.(burst);
   }, [burst, onSmallTxPattern]);
 
+  const limitList = limits && limits.length > 0 ? (
+    <ul className={styles.limits}>
+      {limits.map((limit) => (
+        <LimitRow key={`${limit.label}:${limit.enforcement}:${limit.enforcedBy ?? ''}`} limit={limit} />
+      ))}
+    </ul>
+  ) : null;
+
   const warning = burst?.warn ? (
     <p className={styles.burst} role="status">
       {burstMessage(burst, smallTxThreshold, windowMs)}
     </p>
   ) : null;
+
+  const protectShell = !limits || limits.every((limit) => limit.enforcement === 'server');
+  const shellSeverityClass = protectShell || resolvedSeverity !== 'normal'
+    ? SEVERITY_CLASSES[resolvedSeverity]
+    : '';
+  const badgeClass = protectShell || resolvedSeverity !== 'normal'
+    ? SEVERITY_BADGES[resolvedSeverity]
+    : styles.declaredBadge;
 
   const formattedSpent = formatValue(spent);
   const formattedLimit = formatValue(limit);
@@ -187,7 +216,7 @@ export function BudgetMeter({
     return (
       <div className={styles.stack}>
         <div
-          className={`${styles.budgetMeterCompact} ax-card ${SEVERITY_CLASSES[resolvedSeverity]} ${className ?? ''}`}
+          className={`${styles.budgetMeterCompact} ax-card ${shellSeverityClass} ${className ?? ''}`}
           data-ax=""
           role="meter"
           aria-label={ariaLabel}
@@ -204,11 +233,12 @@ export function BudgetMeter({
           </span>
           <div className={styles.compactBar}>
             <div
-              className={`${styles.compactBarFill} ${SEVERITY_CLASSES[resolvedSeverity]}`}
+              className={`${styles.compactBarFill} ${shellSeverityClass}`}
               style={{ width: `${percentage}%` }}
             />
           </div>
         </div>
+        {limitList}
         {warning}
       </div>
     );
@@ -217,7 +247,7 @@ export function BudgetMeter({
   return (
     <div className={styles.stack}>
       <div
-        className={`${styles.budgetMeter} ax-card ${SEVERITY_CLASSES[resolvedSeverity]} ${className ?? ''}`}
+        className={`${styles.budgetMeter} ax-card ${shellSeverityClass} ${className ?? ''}`}
         data-ax=""
         role="meter"
         aria-label={ariaLabel}
@@ -229,7 +259,7 @@ export function BudgetMeter({
       {/* Header */}
       <div className={styles.header}>
         <span className={styles.label}>{label}</span>
-        <span className={`${styles.severityBadge} ${SEVERITY_BADGES[resolvedSeverity]}`}>
+        <span className={`${styles.severityBadge} ${badgeClass}`}>
           {SEVERITY_LABELS[resolvedSeverity]}
         </span>
       </div>
@@ -237,7 +267,7 @@ export function BudgetMeter({
       {/* Progress bar */}
       <div className={styles.barContainer}>
         <div
-          className={`${styles.barFill} ${SEVERITY_CLASSES[resolvedSeverity]}`}
+          className={`${styles.barFill} ${shellSeverityClass}`}
           style={{ width: `${percentage}%` }}
           aria-hidden="true"
         />
@@ -271,6 +301,7 @@ export function BudgetMeter({
 
       <VisuallyHidden>{ariaLabel}</VisuallyHidden>
       </div>
+      {limitList}
       {warning}
     </div>
   );

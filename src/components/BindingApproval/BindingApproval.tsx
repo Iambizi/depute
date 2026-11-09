@@ -115,6 +115,7 @@ export function BindingApproval({
   highStakes,
   approvalChannel,
   changeRequest,
+  limits,
   onReceipt,
   appSigner,
   passkey,
@@ -321,6 +322,7 @@ export function BindingApproval({
       highStakes: Boolean(highStakes) || changeRequest?.initiator === 'agent',
       approvalChannel,
       changeRequest,
+      limits,
       previousReceiptHash,
       fallbackId: pendingApprovalId || signerIdentity || 'local',
     };
@@ -346,6 +348,7 @@ export function BindingApproval({
     highStakes,
     approvalChannel,
     changeRequest,
+    limits,
     previousReceiptHash,
     pendingApprovalId,
     signerIdentity,

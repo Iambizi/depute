@@ -192,6 +192,34 @@
   align-items: stretch;
   gap: var(--ax-space-2);}
 
+.limits {list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--ax-space-2);}
+
+.limitProtected,
+.limitWarning {display: flex;
+  flex-wrap: wrap;
+  gap: var(--ax-space-2);
+  padding: var(--ax-space-2) var(--ax-space-3);
+  border-radius: var(--ax-radius-md);
+  font-family: var(--ax-font-sans);
+  font-size: var(--ax-text-sm);
+  line-height: var(--ax-leading-sm);}
+
+.limitProtected {background: var(--ax-status-success-bg);
+  color: var(--ax-status-success-fg);}
+
+.limitWarning {background: var(--ax-status-warning-bg);
+  color: var(--ax-status-warning-fg);}
+
+.limitName {font-weight: var(--ax-weight-semibold);}
+
+.declaredBadge {background: var(--ax-bg-subtle);
+  color: var(--ax-fg-default);}
+
 .burst {margin: 0;
   padding: var(--ax-space-2) var(--ax-space-3);
   background: var(--ax-status-warning-bg);

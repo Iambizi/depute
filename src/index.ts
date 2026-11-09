@@ -37,6 +37,8 @@ export type {
   ApprovalReceipt,
   ReceiptAppSigner,
   ReceiptDecision,
+  DeclaredLimit,
+  LimitEnforcement,
   ReceiptPasskeySigner,
   ReceiptVerification,
 } from './utils/receipt';
@@ -44,6 +46,7 @@ export {
   buildDecisionReceipt,
   buildReceipt,
   buildSignedDecisionReceipt,
+  limitDeclaration,
   receiptCheckLabel,
   verify,
 } from './utils/receipt';

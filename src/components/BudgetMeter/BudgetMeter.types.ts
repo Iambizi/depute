@@ -7,9 +7,10 @@
  * @see docs/internal/research/catalog-versions/CATALOG-v2.md (Primitive 6)
  */
 
+import type { DeclaredLimit } from '../../utils/receipt';
 import type { SmallPayment, SmallPaymentBurst } from '../../utils/triggers';
 
-export type { SmallPayment, SmallPaymentBurst };
+export type { DeclaredLimit, SmallPayment, SmallPaymentBurst };
 
 /** Budget resource type — what is being metered */
 export type BudgetUnit = 'currency' | 'tokens' | 'api-calls' | 'compute' | 'custom';
@@ -56,6 +57,13 @@ export interface BudgetMeterProps {
 
   /** Called when budget crosses the critical threshold */
   onCriticalThreshold?: () => void;
+
+  /**
+   * Limits and who the integrator says enforces each one.
+   * Protected styling is used only when enforcement is `server`.
+   * The text says declared. This meter does not check enforcement.
+   */
+  limits?: readonly DeclaredLimit[];
 
   /** Whether to show a compact inline variant (default: false) */
   compact?: boolean;
