@@ -21,7 +21,8 @@ Source: depute Intel Report #1, Oct 26–28, 2026. Supervision has to be legible
 | R15 | Classify approval channels by whether the agent can read them | Recorded. Integrator-declared only. No hardware attestation. |
 | R16 | Mark limit or permission changes the agent asked for | Recorded. No cooling period and no allow-or-deny switch. |
 | R17 | Say who enforces each limit | Recorded. Declared only. |
-| R20 | Show when an agent acts under the person's own credentials | In this change. Warning on the gate. No delegation list. |
+| R20 | Show when an agent acts under the person's own credentials | Recorded. Warning on the gate. No delegation list. |
+| R13 | Show when automation silently stopped | In this change. Warning on Tool Trace. |
 
 Decided and not reopened: both keys, tiered (R1b); receipts are standalone with an optional `previousReceiptHash`; export JSON from day one; core stays copied, not published.
 

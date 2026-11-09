@@ -24,4 +24,16 @@ export interface ToolTraceProps {
 
   /** Additional CSS class */
   className?: string;
+
+  /** How long a quiet run may last before the trace warns. Unix milliseconds. */
+  expectedIntervalMs?: number;
+
+  /** Unix milliseconds of the last run the host observed. */
+  lastRunAt?: number;
+
+  /** Unix milliseconds. The stale warning stays off until this is set. */
+  nowMs?: number;
+
+  /** Fires when the last run is older than the expected interval. */
+  onStale?: () => void;
 }
