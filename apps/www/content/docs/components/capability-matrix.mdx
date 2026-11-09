@@ -73,7 +73,11 @@ Render `CapabilityMatrix` inside a `DelegationGate` when an agent is spawned, en
 | `capabilities` | `Capability[]` | — | List of defined permissions |
 | `groupByCategory` | `boolean` | `true` | Group capabilities by category |
 | `highlightDenied` | `boolean` | `true` | Emphasize denied/none permissions |
+| `grants` | `LiveGrant[]` | — | Standing grants: agent, scope, limit, expiry, last use. No expiry shows a warning. |
+| `onRevoke` | `(grant) => void` | — | Asks the host to revoke. Approval stays on Delegation Gate. |
 
 ## Design rationale
+
+`grants` lists what is still live. A grant with no `expiresAt` says "No expiry". Revoke calls the host. [Delegation Gate](/docs/components/delegation-gate) remains the approve or deny step for that change. This matrix does not approve it. The pattern is in the [approval record](/docs/approval-record).
 
 **Why `highlightDenied`?** In security, knowing what an agent *cannot* do is often more important than what it can. Visually elevating explicit denials (e.g., "Write to Production: Denied") builds trust that guardrails are actively in place.

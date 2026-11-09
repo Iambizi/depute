@@ -112,6 +112,23 @@ describe('CapabilityMatrix', () => {
       );
     });
 
+    it('lists a live grant, warns when it has no expiry, and asks the host to revoke', async () => {
+      const user = userEvent.setup();
+      const onRevoke = vi.fn();
+      render(
+        <CapabilityMatrix
+          title="Permissions"
+          capabilities={sampleCapabilities}
+          grants={[{ id: 'g1', agentId: 'pay-bot', onBehalfOf: 'Ada', scope: 'usdc transfers', limit: '100 USD' }]}
+          onRevoke={onRevoke}
+        />,
+      );
+      expect(screen.getByText('pay-bot for Ada')).toBeInTheDocument();
+      expect(screen.getByText('No expiry')).toBeInTheDocument();
+      await user.click(screen.getByRole('button', { name: 'Revoke' }));
+      expect(onRevoke).toHaveBeenCalledWith(expect.objectContaining({ id: 'g1' }));
+    });
+
     it('has table role for the body', () => {
       render(<CapabilityMatrix title="Permissions" capabilities={sampleCapabilities} />);
       expect(screen.getByRole('table')).toBeInTheDocument();
