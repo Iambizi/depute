@@ -2,6 +2,7 @@ import { StrictMode } from 'react';
 import { render, screen } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
 import { BudgetMeter } from './BudgetMeter';
+import styles from './BudgetMeter.module.css';
 import type { SmallPayment } from './BudgetMeter.types';
 
 describe('BudgetMeter', () => {
@@ -309,6 +310,28 @@ describe('BudgetMeter', () => {
         </StrictMode>,
       );
       expect(onSmallTxPattern).toHaveBeenCalledTimes(3);
+    });
+  });
+
+  describe('declared enforcement', () => {
+    it('uses protected styling only for a server-enforced limit', () => {
+      const { container } = render(
+        <BudgetMeter
+          {...defaultProps}
+          limits={[
+            { label: 'Chat budget', enforcement: 'agent-instruction' },
+            { label: 'Order cap', enforcement: 'server', enforcedBy: 'Coinbase' },
+          ]}
+        />,
+      );
+      expect(screen.getByText('Instruction only, not enforced.')).toBeInTheDocument();
+      expect(screen.getByText('Enforced by Coinbase (declared)')).toBeInTheDocument();
+      const warning = screen.getByText('Instruction only, not enforced.').closest('li');
+      const protectedRow = screen.getByText('Enforced by Coinbase (declared)').closest('li');
+      expect(warning).toHaveClass(styles.limitWarning);
+      expect(warning).not.toHaveClass(styles.limitProtected);
+      expect(protectedRow).toHaveClass(styles.limitProtected);
+      expect(container.querySelector(`.${styles.severityNormal}`)).toBeNull();
     });
   });
 });
