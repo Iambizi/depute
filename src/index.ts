@@ -42,6 +42,8 @@ export type {
   ReceiptActor,
   CredentialMode,
   TermsShown,
+  PaymentFollowUp,
+  PaymentFollowUpState,
   ApprovalRequirement,
   RequirementStatus,
   ReceiptPasskeySigner,
@@ -49,6 +51,7 @@ export type {
 } from './utils/receipt';
 export {
   buildDecisionReceipt,
+  buildPaymentFollowUp,
   buildReceipt,
   buildSignedDecisionReceipt,
   actorWarning,

@@ -39,6 +39,23 @@ export type ReceiptChoice = 'approved' | 'rejected';
 export type ReceiptMethod = 'click' | 'passkey' | 'handoff' | 'chat';
 export type ReceiptExecutionStatus = 'success' | 'failed' | 'pending' | 'reverted' | 'not-run';
 
+/** A later payment state. It lives on a new receipt, never on a signed one. */
+export type PaymentFollowUpState = 'held' | 'voided' | 'refunded';
+
+export interface PaymentFollowUp {
+  state: PaymentFollowUpState;
+  at: string;
+}
+
+const PAYMENT_FOLLOW_UPS = new Set<PaymentFollowUpState>(['held', 'voided', 'refunded']);
+
+export function assertPaymentFollowUp(value: PaymentFollowUp): void {
+  if (!PAYMENT_FOLLOW_UPS.has(value.state)) throw new Error('payment follow-up state is not recognized.');
+  if (typeof value.at !== 'string' || Number.isNaN(Date.parse(value.at))) {
+    throw new Error('payment follow-up needs a time.');
+  }
+}
+
 /** Shown deadline when the host does not pass one. The backend still enforces it. */
 export const DEFAULT_APPROVAL_EXPIRY_MS = 10 * 60 * 1000;
 
@@ -254,6 +271,8 @@ export interface ApprovalReceipt {
   expiresAt?: string;
   /** Hash of the terms shown. The full text stays with the integrator. */
   termsShown?: TermsShown;
+  /** Set only on a follow-up receipt. The earlier receipt is not rewritten. */
+  payment?: PaymentFollowUp;
   attestations?: ReceiptAttestation[];
   previousReceiptHash?: string;
   signatures?: ReceiptSignature[];
@@ -277,6 +296,7 @@ export interface ReceiptDraft {
   issuedAt?: string;
   expiresAt?: string;
   termsShown?: TermsShown;
+  payment?: PaymentFollowUp;
   attestations?: ReceiptAttestation[];
   previousReceiptHash?: string;
   signatures?: ReceiptSignature[];
@@ -501,6 +521,10 @@ export function buildReceipt(draft: ReceiptDraft): ApprovalReceipt {
   if (draft.actor) assertActor(draft.actor);
   if (draft.requirements) assertRequirements(draft.requirements);
   if (draft.termsShown) assertTermsShown(draft.termsShown);
+  if (draft.payment) {
+    assertPaymentFollowUp(draft.payment);
+    if (!draft.previousReceiptHash) throw new Error('A payment follow-up needs previousReceiptHash.');
+  }
   const payloadHash = sha256(canonicalize(draft.payload));
   const unsigned = {
     version: '1' as const,
@@ -520,6 +544,7 @@ export function buildReceipt(draft: ReceiptDraft): ApprovalReceipt {
     issuedAt: draft.issuedAt,
     expiresAt: draft.expiresAt,
     termsShown: draft.termsShown,
+    payment: draft.payment,
     attestations: draft.attestations,
     previousReceiptHash: draft.previousReceiptHash,
   };
@@ -528,6 +553,28 @@ export function buildReceipt(draft: ReceiptDraft): ApprovalReceipt {
     signatures: draft.signatures,
     receiptHash: hashBody(unsigned),
   };
+}
+
+/** A new receipt for a later payment state. The previous receipt is not changed. */
+export function buildPaymentFollowUp(input: {
+  previousReceiptHash: string;
+  state: PaymentFollowUpState;
+  atMs: number;
+  title: string;
+  id?: string;
+}): ApprovalReceipt {
+  return buildReceipt({
+    id: input.id ?? input.previousReceiptHash,
+    instruction: input.title,
+    payload: { title: input.title },
+    decision: {
+      outcome: 'approved',
+      decidedAt: new Date(input.atMs).toISOString(),
+      presentedAt: new Date(input.atMs).toISOString(),
+    },
+    payment: { state: input.state, at: new Date(input.atMs).toISOString() },
+    previousReceiptHash: input.previousReceiptHash,
+  });
 }
 
 export function buildDecisionReceipt(input: DecisionReceiptInput): ApprovalReceipt {

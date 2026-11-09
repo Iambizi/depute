@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import {
   DEFAULT_APPROVAL_EXPIRY_MS,
   approvalDeadline,
+  buildPaymentFollowUp,
   buildDecisionReceipt,
   buildReceipt,
   buildSignedDecisionReceipt,
@@ -294,6 +295,30 @@ describe('signers', () => {
       limits: [{ label: 'Session', enforcement: 'server' as const }],
     };
     expect((await verify(edited)).receipt).toBe('mismatch');
+  });
+});
+
+describe('buildPaymentFollowUp', () => {
+  it('builds a new receipt and leaves the earlier one unchanged', async () => {
+    const original = buildDecisionReceipt({
+      title: 'Pay vendor',
+      outcome: 'approved',
+      presentedAtMs: 1,
+      decidedAtMs: 2,
+      fallbackId: 'local',
+    });
+    const snapshot = JSON.stringify(original);
+    const followUp = buildPaymentFollowUp({
+      previousReceiptHash: original.receiptHash,
+      state: 'refunded',
+      atMs: Date.parse('2026-11-09T12:10:00.000Z'),
+      title: 'Refund',
+    });
+    expect(JSON.stringify(original)).toBe(snapshot);
+    expect(followUp.previousReceiptHash).toBe(original.receiptHash);
+    expect(followUp.payment).toEqual({ state: 'refunded', at: '2026-11-09T12:10:00.000Z' });
+    expect(followUp.receiptHash).not.toBe(original.receiptHash);
+    expect((await verify(followUp)).valid).toBe(true);
   });
 });
 
