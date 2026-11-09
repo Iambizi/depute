@@ -80,7 +80,8 @@ This primitive replaces `ApprovalGate` in high-stakes nodes. The internal state 
 | `impactStatement` | `string` | — | Estimated impact (e.g., "$5,000 will be transferred") |
 | `status` | `'reviewing' \| 'signing' \| 'signed' \| 'rejected' \| 'expired'` | `'reviewing'` | Current status |
 | `terms` | `BindingTerm[]` | — | Terms that must be acknowledged |
-| `liabilityNotice` | `string` | — | Extra term. Acknowledgement id is `liability-notice`. |
+| `liabilityNotice` | `string` | — | Extra term. Acknowledgement id is `liability-notice`. The sentence stays in the receipt in full. |
+| `termsShown` | `TermsShown` | — | Hash, source URL, version, and shownAt. The integrator keeps the full text. |
 | `approvalChannel` | `ApprovalChannel` | — | Integrator-declared channel. Reachability is not checked. |
 | `requireAllTerms` | `boolean` | `true` | Require all terms acknowledged to sign |
 | `isSigning` | `boolean` | `false` | Toggles the active signing visual state |
