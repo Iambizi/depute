@@ -184,4 +184,34 @@ describe('ToolTrace', () => {
       });
     });
   });
+
+  describe('stale automation', () => {
+    it('warns and fires when the last run is older than the expected interval', () => {
+      const onStale = vi.fn();
+      const lastRunAt = Date.parse('2026-10-21T00:00:00.000Z');
+      const { rerender } = render(
+        <ToolTrace
+          calls={[]}
+          expectedIntervalMs={60_000}
+          lastRunAt={lastRunAt}
+          nowMs={lastRunAt + 60_000}
+          onStale={onStale}
+        />,
+      );
+      expect(screen.queryByText(/No sweep since/)).not.toBeInTheDocument();
+      expect(onStale).not.toHaveBeenCalled();
+
+      rerender(
+        <ToolTrace
+          calls={[]}
+          expectedIntervalMs={60_000}
+          lastRunAt={lastRunAt}
+          nowMs={lastRunAt + 60_001}
+          onStale={onStale}
+        />,
+      );
+      expect(screen.getByText('No sweep since 2026-10-21T00:00:00.000Z.')).toBeInTheDocument();
+      expect(onStale).toHaveBeenCalledTimes(1);
+    });
+  });
 });

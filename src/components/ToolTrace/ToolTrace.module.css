@@ -200,3 +200,10 @@
   text-align: center;
   color: var(--ax-fg-muted);
   font-size: var(--ax-text-md);}
+
+.stale {margin: 0;
+  padding: var(--ax-space-2) var(--ax-space-3);
+  background: var(--ax-status-warning-bg);
+  color: var(--ax-status-warning-fg);
+  font-size: var(--ax-text-sm);
+  line-height: var(--ax-leading-lg);}

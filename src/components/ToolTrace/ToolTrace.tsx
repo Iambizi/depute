@@ -78,6 +78,10 @@ export function ToolTrace({
   onEntryClick,
   expandable = true,
   className,
+  expectedIntervalMs,
+  lastRunAt,
+  nowMs,
+  onStale,
 }: ToolTraceProps) {
   const [expandedIds, setExpandedIds] = useState<Set<string>>(() => new Set());
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -107,6 +111,24 @@ export function ToolTrace({
     }
   }, [calls, announce]);
 
+  const stale = expectedIntervalMs != null
+    && lastRunAt != null
+    && nowMs != null
+    && Number.isFinite(expectedIntervalMs)
+    && Number.isFinite(lastRunAt)
+    && Number.isFinite(nowMs)
+    && nowMs - lastRunAt > expectedIntervalMs;
+
+  useEffect(() => {
+    if (stale) onStale?.();
+  }, [stale, onStale]);
+
+  const staleRow = stale && lastRunAt != null ? (
+    <p className={styles.stale} role="status">
+      No sweep since {new Date(lastRunAt).toISOString()}.
+    </p>
+  ) : null;
+
   const toggleExpand = useCallback((id: string) => {
     setExpandedIds((prev) => {
       const next = new Set(prev);
@@ -128,6 +150,7 @@ export function ToolTrace({
         aria-label="Tool trace"
       >
         <div className={styles.emptyState}>No tool calls yet</div>
+        {staleRow}
         <AnnouncerRegion />
       </div>
     );
@@ -139,6 +162,7 @@ export function ToolTrace({
       role="log"
       aria-label="Tool trace"
     >
+      {staleRow}
       <div
         ref={scrollRef}
         className={styles.scrollContainer}
