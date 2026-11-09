@@ -253,3 +253,13 @@ export const UntrustedSource: Story = {
     expandable: false,
   },
 };
+
+export const StaleSweep: Story = {
+  name: 'No sweep since',
+  args: {
+    calls: [],
+    expectedIntervalMs: 60 * 60 * 1000,
+    lastRunAt: Date.parse('2026-10-21T00:00:00.000Z'),
+    nowMs: Date.parse('2026-10-27T00:00:00.000Z'),
+  },
+};

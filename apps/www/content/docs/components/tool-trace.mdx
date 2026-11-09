@@ -95,6 +95,10 @@ export function App() {
 | `maxHeight` | `string` | `undefined` | Maximum height of the container before an internal scrollbar appears (e.g., `'400px'`). |
 | `onEntryClick` | `(call: ToolCall) => void` | `undefined` | Callback fired when a user clicks on a tool call entry. |
 | `expandable` | `boolean` | `false` | If true, entries can be clicked to expand and reveal their raw JSON input and output. |
+| `expectedIntervalMs` | `number` | — | How long a quiet run may last before the trace warns. |
+| `lastRunAt` | `number` | — | Unix milliseconds of the last run the host observed. |
+| `nowMs` | `number` | — | Unix milliseconds. The stale warning stays off until this is set. |
+| `onStale` | `() => void` | — | Fires when the last run is older than the expected interval. |
 
 ## When to use
 
