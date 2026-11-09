@@ -80,6 +80,9 @@ export function App() {
 | `errorTrace` | `string` | `undefined` | The raw system error, API response, or stack trace (rendered in a dark-themed code block). |
 | `recommendation` | `'retry' \| 'reassign' \| 'cancel'` | `undefined` | The orchestrator's suggestion for how the human should resolve the issue (highlights the primary button). |
 | `className` | `string` | `undefined` | Additional CSS class for the root element. |
+| `onStop` | `() => Promise<{ confirmed } \| void>` | — | Asks the host to stop. Stopped only after `confirmed`. Otherwise Unknown. No passkey. |
+| `passkey` | `ReceiptPasskeySigner` | — | Required before Resume. Not used for stop. |
+| `onResume` | `() => void` | — | Called after the high-stakes resume receipt is signed. |
 
 ## Solution Patterns
 
@@ -87,6 +90,8 @@ export function App() {
 
 ```text
 Failed Subagent → [Escalation Router] → Human Override
+
+Stop does not ask for a passkey. The label is Stopped only after the host confirms. Otherwise it is Unknown. Resume is a high-stakes approval and needs the passkey. The stop receipt has `kind: "stop"`. Older receipts omit `kind`. The rule is in the [approval record](/docs/approval-record).
 ```
 It allows the user to re-route or manually resolve the blocker.
 

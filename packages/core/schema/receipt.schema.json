@@ -12,6 +12,9 @@
         "id": {
           "type": "string"
         },
+        "kind": {
+          "$ref": "#/definitions/ReceiptKind"
+        },
         "instruction": {
           "type": "string"
         },
@@ -117,6 +120,11 @@
         "receiptHash"
       ],
       "additionalProperties": false
+    },
+    "ReceiptKind": {
+      "type": "string",
+      "const": "stop",
+      "description": "Present only when the receipt is an emergency stop. Approval receipts omit it."
     },
     "PresentedPayload": {
       "type": "object",

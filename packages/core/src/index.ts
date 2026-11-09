@@ -41,6 +41,7 @@ export type {
   ReceiptDraft,
   ReceiptExecution,
   ReceiptExecutionStatus,
+  ReceiptKind,
   ReceiptMethod,
   ReceiptAppSigner,
   ReceiptOutcome,

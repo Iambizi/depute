@@ -39,6 +39,9 @@ export type ReceiptChoice = 'approved' | 'rejected';
 export type ReceiptMethod = 'click' | 'passkey' | 'handoff' | 'chat';
 export type ReceiptExecutionStatus = 'success' | 'failed' | 'pending' | 'reverted' | 'not-run';
 
+/** Present only when the receipt is an emergency stop. Approval receipts omit it. */
+export type ReceiptKind = 'stop';
+
 /** A later payment state. It lives on a new receipt, never on a signed one. */
 export type PaymentFollowUpState = 'held' | 'voided' | 'refunded';
 
@@ -247,6 +250,7 @@ export interface ReceiptSignature {
 export interface ApprovalReceipt {
   version: '1';
   id: string;
+  kind?: ReceiptKind;
   instruction: string;
   presented: {
     payload: PresentedPayload;
@@ -281,6 +285,7 @@ export interface ApprovalReceipt {
 
 export interface ReceiptDraft {
   id: string;
+  kind?: ReceiptKind;
   instruction: string;
   payload: PresentedPayload;
   decision: ReceiptDecision;
@@ -305,6 +310,7 @@ export interface ReceiptDraft {
 /** Fields a gate already has. `buildDecisionReceipt` fills the hashes. */
 export interface DecisionReceiptInput {
   id?: string;
+  kind?: ReceiptKind;
   instruction?: string;
   payload?: PresentedPayload;
   title: string;
@@ -521,6 +527,9 @@ export function buildReceipt(draft: ReceiptDraft): ApprovalReceipt {
   if (draft.actor) assertActor(draft.actor);
   if (draft.requirements) assertRequirements(draft.requirements);
   if (draft.termsShown) assertTermsShown(draft.termsShown);
+  if (draft.kind !== undefined && draft.kind !== 'stop') {
+    throw new Error('receipt kind must be stop when set.');
+  }
   if (draft.payment) {
     assertPaymentFollowUp(draft.payment);
     if (!draft.previousReceiptHash) throw new Error('A payment follow-up needs previousReceiptHash.');
@@ -529,6 +538,7 @@ export function buildReceipt(draft: ReceiptDraft): ApprovalReceipt {
   const unsigned = {
     version: '1' as const,
     id: draft.id,
+    kind: draft.kind,
     instruction: draft.instruction,
     presented: { payload: draft.payload, payloadHash },
     decision: draft.decision,
@@ -610,6 +620,7 @@ export function buildDecisionReceipt(input: DecisionReceiptInput): ApprovalRecei
   }
   return buildReceipt({
     id: input.id ?? input.fallbackId,
+    kind: input.kind,
     instruction: input.instruction ?? input.title,
     payload,
     decision,

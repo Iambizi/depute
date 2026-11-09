@@ -47,6 +47,7 @@ export type {
   ApprovalRequirement,
   RequirementStatus,
   ReceiptPasskeySigner,
+  ReceiptKind,
   ReceiptVerification,
 } from './utils/receipt';
 export {

@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import type React from 'react';
 import { IconChevron } from '../../utils/icons';
+import { buildDecisionReceipt, buildSignedDecisionReceipt } from '../../utils/receipt';
 import styles from './EscalationRouter.module.css';
-import type { EscalationRouterProps } from './EscalationRouter.types';
+import type { EscalationRouterProps, StopState } from './EscalationRouter.types';
 
 /**
  * EscalationRouter surfaces a leaf-agent failure to the human, with the failure trace
@@ -18,8 +19,58 @@ export const EscalationRouter: React.FC<EscalationRouterProps> = ({
   onRetry,
   onReassign,
   onCancelBranch,
+  onStop,
+  onResume,
+  passkey,
+  onReceipt,
 }) => {
   const [traceExpanded, setTraceExpanded] = useState(false);
+  const [stopPhase, setStopPhase] = useState<StopState>('armed');
+  const [stopError, setStopError] = useState<string | null>(null);
+
+  const stop = async () => {
+    if (!onStop || stopPhase === 'stopping') return;
+    setStopPhase('stopping');
+    setStopError(null);
+    try {
+      const result = await onStop();
+      if (result?.confirmed) {
+        setStopPhase('stopped');
+        onReceipt?.(buildDecisionReceipt({
+          title: `Stop ${failedAgent}`,
+          outcome: 'approved',
+          kind: 'stop',
+          presentedAtMs: Date.now(),
+          decidedAtMs: Date.now(),
+          fallbackId: failedAgent,
+        }));
+        return;
+      }
+      setStopPhase('unknown');
+    } catch {
+      setStopPhase('unknown');
+      setStopError('The stop was not confirmed.');
+    }
+  };
+
+  const resume = async () => {
+    if (!passkey || stopPhase !== 'stopped') return;
+    try {
+      const receipt = await buildSignedDecisionReceipt({
+        title: `Resume ${failedAgent}`,
+        outcome: 'approved',
+        highStakes: true,
+        presentedAtMs: Date.now(),
+        decidedAtMs: Date.now(),
+        fallbackId: failedAgent,
+      }, { passkey });
+      onReceipt?.(receipt);
+      onResume?.();
+      setStopPhase('armed');
+    } catch {
+      setStopError('Resume was not signed.');
+    }
+  };
 
   return (
     <div
@@ -90,7 +141,27 @@ export const EscalationRouter: React.FC<EscalationRouterProps> = ({
         <button className={styles.btnCancel} onClick={onCancelBranch}>
           Cancel Branch
         </button>
+        {onStop && stopPhase !== 'stopped' && (
+          <button type="button" className={styles.btnCancel} onClick={() => { void stop(); }} disabled={stopPhase === 'stopping'}>
+            {stopPhase === 'stopping' ? 'Stopping' : 'Stop'}
+          </button>
+        )}
+        {onStop && stopPhase === 'stopped' && (
+          <button type="button" className={styles.btnRetry} onClick={() => { void resume(); }} disabled={!passkey}>
+            Resume
+          </button>
+        )}
       </div>
+      {onStop && (
+        <p role="status">
+          {stopPhase === 'armed' && 'Armed'}
+          {stopPhase === 'stopping' && 'Stopping'}
+          {stopPhase === 'stopped' && 'Stopped'}
+          {stopPhase === 'failed' && 'Failed'}
+          {stopPhase === 'unknown' && 'Unknown'}
+        </p>
+      )}
+      {stopError && <p role="alert">{stopError}</p>}
     </div>
   );
 };
