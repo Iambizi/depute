@@ -97,6 +97,14 @@ export const PrototypeInteractive: Story = {
 // PRODUCTION
 // ============================================================
 
+export const EmergencyStop: Story = {
+  name: 'Emergency stop',
+  args: {
+    ...generateMockEscalation(),
+    onStop: async () => ({ confirmed: true }),
+  },
+};
+
 export const BasicUsage: Story = {
   name: 'Basic Usage',
   args: {

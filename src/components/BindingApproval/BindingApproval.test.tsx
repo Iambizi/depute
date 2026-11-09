@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, it, expect, vi } from 'vitest';
+import { sha256 } from '../../utils/receipt';
 import { BindingApproval, LIABILITY_NOTICE_ID } from './BindingApproval';
 
 const defaultProps = {
@@ -239,6 +240,36 @@ describe('BindingApproval', () => {
         signature: 'sig-from-backend',
         hash: 'hash-from-backend',
       });
+    });
+  });
+
+  describe('terms hash', () => {
+    it('stores the hash and keeps the liability sentence in full', async () => {
+      const user = userEvent.setup();
+      const onReceipt = vi.fn();
+      const sentence = 'You are the actor of record for what this agent does.';
+      const termsShown = {
+        textHash: sha256('full terms live with the integrator'),
+        sourceUrl: 'https://example.com/terms',
+        version: '2026-11-04',
+        shownAt: '2026-11-09T12:00:00.000Z',
+      };
+      render(
+        <BindingApproval
+          {...defaultProps}
+          liabilityNotice={sentence}
+          termsShown={termsShown}
+          onReceipt={onReceipt}
+        />,
+      );
+      expect(screen.getByText('Terms version 2026-11-04')).toBeInTheDocument();
+      expect(screen.queryByText('full terms live with the integrator')).not.toBeInTheDocument();
+      await user.click(screen.getByRole('checkbox', { name: new RegExp(sentence) }));
+      await user.click(screen.getByRole('button', { name: /sign and approve/i }));
+      const receipt = onReceipt.mock.calls[0][0];
+      expect(receipt.termsShown).toEqual(termsShown);
+      expect(receipt.presented.payload.lineItems).toEqual([{ label: 'Liability notice', value: sentence }]);
+      expect(JSON.stringify(receipt)).not.toContain('full terms live with the integrator');
     });
   });
 

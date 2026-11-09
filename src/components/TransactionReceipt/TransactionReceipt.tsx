@@ -73,6 +73,7 @@ export function TransactionReceipt({
   onCopyHash,
   onViewAuditTrail,
   approvalReceipt,
+  followUps,
   className,
 }: TransactionReceiptProps) {
   const [copied, setCopied] = useState(false);
@@ -151,6 +152,17 @@ export function TransactionReceipt({
           </div>
         ))}
       </div>
+
+      {followUps && followUps.length > 0 && (
+        <ol className={styles.lineItems} aria-label="Later payment states">
+          {followUps.map((item) => (
+            <li key={`${item.state}:${item.at}`} className={styles.lineItem}>
+              <span className={styles.lineLabel}>{item.state === 'held' ? 'Held' : item.state === 'voided' ? 'Voided' : 'Refunded'}</span>
+              <span className={styles.lineValue}>{formatStamp(item.at)}</span>
+            </li>
+          ))}
+        </ol>
+      )}
 
       {/* Footer: hash + actions */}
       {(hash || signature || onViewAuditTrail || onVerify || approvalReceipt) && (

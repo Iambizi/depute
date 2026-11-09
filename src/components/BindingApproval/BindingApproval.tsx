@@ -120,6 +120,7 @@ export function BindingApproval({
   changeRequest,
   limits,
   actor,
+  termsShown,
   onReceipt,
   appSigner,
   passkey,
@@ -336,6 +337,7 @@ export function BindingApproval({
       changeRequest,
       limits,
       actor,
+      termsShown,
       previousReceiptHash,
       fallbackId: pendingApprovalId || signerIdentity || 'local',
     };
@@ -366,6 +368,7 @@ export function BindingApproval({
     changeRequest,
     limits,
     actor,
+    termsShown,
     previousReceiptHash,
     pendingApprovalId,
     signerIdentity,
@@ -469,6 +472,7 @@ export function BindingApproval({
 
       {/* Description */}
       <p className={styles.description}>{description}</p>
+      {termsShown && <p className={styles.channelNote}>Terms version {termsShown.version}</p>}
       {effectiveStatus === 'reviewing' && (
         <p className={approvalExpired ? styles.channelWarning : styles.channelNote} role="status">
           {approvalExpired ? 'Expired' : `Expires in ${Math.floor(Math.max(approvalLeft, 0) / 60)}:${String(Math.max(approvalLeft, 0) % 60).padStart(2, '0')}`}

@@ -123,6 +123,20 @@ export const AsyncHandoffFlow: Story = {
   }
 };
 
+export const TermsHash: Story = {
+  name: 'Terms version',
+  args: {
+    title: 'Wire Transfer Authorization',
+    description: 'The full terms stay with the integrator.',
+    termsShown: {
+      textHash: 'sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
+      sourceUrl: 'https://example.com/terms',
+      version: '2026-11-04',
+      shownAt: '2026-11-09T12:00:00.000Z',
+    },
+  },
+};
+
 export const AgentReadableChannel: Story = {
   name: 'Channel the agent could read',
   args: {
