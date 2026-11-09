@@ -71,6 +71,18 @@ export {
   requiresApproval,
   smallPaymentBurst,
 } from './utils/triggers';
+export type {
+  AgentReachability,
+  ApprovalChannel,
+  ApprovalChannelKind,
+  ChannelRequirement,
+} from './utils/channel';
+export {
+  approvalSatisfiedByCode,
+  channelAllows,
+  channelBlocksApproval,
+  requiredChannelFor,
+} from './utils/channel';
 export type { AgreementChoice, AgreementDecision, AgreementRate, AgreementRateInput } from './utils/agreement';
 export {
   DEFAULT_AGREEMENT_THRESHOLD,

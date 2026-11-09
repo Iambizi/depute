@@ -165,9 +165,23 @@
   font-size: var(--ax-text-sm);
   line-height: var(--ax-leading-lg);}
 
-.sourceWarning {background: var(--ax-status-warning-bg);
+.sourceWarning,
+.channelWarning {background: var(--ax-status-warning-bg);
   color: var(--ax-status-warning-fg);
   border: var(--ax-border-width) solid var(--ax-status-warning-border);}
+
+.channelWarning,
+.channelNote {padding: var(--ax-space-3);
+  border-radius: var(--ax-radius-sm);
+  margin-bottom: var(--ax-space-3);
+  font-size: var(--ax-text-sm);
+  line-height: var(--ax-leading-lg);}
+
+.channelNote {background: var(--ax-bg-subtle);
+  color: var(--ax-fg-default);}
+
+.channelTitle {margin: 0 0 var(--ax-space-1);
+  font-weight: var(--ax-weight-semibold);}
 
 .provenanceNote {background: var(--ax-bg-subtle);
   color: var(--ax-fg-default);}

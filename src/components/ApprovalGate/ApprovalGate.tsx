@@ -18,6 +18,13 @@ import type React from 'react';
 import { getConfidenceLevel } from '../../types/common';
 import { IconArrowLeft, IconArrowRight } from '../../utils/icons';
 import { useAnnouncer, useFocusTrap, VisuallyHidden } from '../../utils/a11y';
+import {
+  CHANNEL_DECLARED_LABEL,
+  channelBlocksApproval,
+  channelKindLabel,
+  channelWarningText,
+  reachabilityLabel,
+} from '../../utils/channel';
 import { buildDecisionReceipt, buildSignedDecisionReceipt } from '../../utils/receipt';
 import type { ReceiptMethod, ReceiptOutcome } from '../../utils/receipt';
 import { justificationLength, requiredJustificationLength } from '../../utils/triggers';
@@ -177,6 +184,7 @@ export function ApprovalGate({
   triggers,
   previousReceiptHash,
   highStakes,
+  approvalChannel,
   onReceipt,
   appSigner,
   passkey,
@@ -238,6 +246,9 @@ export function ApprovalGate({
     paymentPaintedAtRef.current = null;
   }
   const shownProvenance = presentedPayload?.provenance ?? provenance;
+  const channelRequirement = highStakes ? 'high-stakes' as const : undefined;
+  const channelBlocked = channelBlocksApproval(approvalChannel, channelRequirement);
+  const channelWarning = approvalChannel ? channelWarningText(approvalChannel) : undefined;
   const untrustedSource = shownProvenance?.trust === 'untrusted';
   const effectiveMode = untrustedSource ? 'staged' : mode;
   const paymentFloor = effectiveMode === 'staged' && paymentFields && isPending && !isHandoffPending;
@@ -438,6 +449,7 @@ export function ApprovalGate({
       triggers,
       provenance: shownProvenance,
       highStakes,
+      approvalChannel,
       previousReceiptHash,
       fallbackId: pendingApprovalId || 'local',
     };
@@ -463,6 +475,7 @@ export function ApprovalGate({
     now,
     triggers,
     highStakes,
+    approvalChannel,
     previousReceiptHash,
     pendingApprovalId,
     appSigner,
@@ -499,11 +512,11 @@ export function ApprovalGate({
       announce('Confirm to proceed with approval');
       return;
     }
-    if (!whyReady || !reviewReady) return;
+    if (!whyReady || !reviewReady || channelBlocked) return;
     void decide('approved', 'click', () => {
       onApprove?.();
     });
-  }, [effectiveMode, stagedStep, onApprove, announce, decide, whyReady, reviewReady]);
+  }, [effectiveMode, stagedStep, onApprove, announce, decide, whyReady, reviewReady, channelBlocked]);
 
   const handleReject = useCallback(() => {
     void decide('rejected', isHandoffPending ? 'handoff' : 'click', () => {
@@ -615,6 +628,19 @@ export function ApprovalGate({
               )}
             </p>
             <p className={styles.sourceLine}>Trust: {trustLabel(shownProvenance.trust)}</p>
+          </div>
+        )}
+
+        {approvalChannel && (
+          <div
+            className={channelWarning || channelBlocked ? styles.channelWarning : styles.channelNote}
+            role={channelWarning || channelBlocked ? 'status' : undefined}
+          >
+            <p className={styles.channelTitle}>{channelKindLabel(approvalChannel.kind)}</p>
+            <p className={styles.sourceLine}>{CHANNEL_DECLARED_LABEL}</p>
+            <p className={styles.sourceLine}>{reachabilityLabel(approvalChannel.agentReachable)}</p>
+            {channelWarning && <p className={styles.sourceLine}>{channelWarning}</p>}
+            {channelBlocked && <p className={styles.sourceLine}>This approval cannot be completed on this channel.</p>}
           </div>
         )}
 
@@ -758,7 +784,7 @@ export function ApprovalGate({
             className={`${styles.btn} ${styles.btnApprove}`}
             onClick={handleApprove}
             type="button"
-            disabled={signing || ((effectiveMode !== 'staged' || stagedStep === 'confirming') && !whyReady) || (paymentFloor && stagedStep === 'confirming' && !reviewReady)}
+            disabled={signing || ((effectiveMode !== 'staged' || stagedStep === 'confirming') && !whyReady) || (paymentFloor && stagedStep === 'confirming' && !reviewReady) || (channelBlocked && !(effectiveMode === 'staged' && stagedStep === 'previewing'))}
             aria-describedby={[
               whyMinimum > 0 ? `${whyId}-count` : null,
               paymentFloor && !reviewReady ? reviewStatusId : null,

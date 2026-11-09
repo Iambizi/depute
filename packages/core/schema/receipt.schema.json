@@ -49,6 +49,10 @@
         "highStakes": {
           "type": "boolean"
         },
+        "approvalChannel": {
+          "$ref": "#/definitions/ApprovalChannel",
+          "description": "Integrator-declared channel. Reachability is not verified."
+        },
         "attestations": {
           "type": "array",
           "items": {
@@ -334,6 +338,49 @@
         "pending",
         "reverted",
         "not-run"
+      ]
+    },
+    "ApprovalChannel": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "$ref": "#/definitions/ApprovalChannelKind"
+        },
+        "agentReachable": {
+          "$ref": "#/definitions/AgentReachability"
+        },
+        "declaredBy": {
+          "type": "string",
+          "const": "integrator",
+          "description": "Always the integrator. This library does not verify reachability."
+        }
+      },
+      "required": [
+        "kind",
+        "agentReachable",
+        "declaredBy"
+      ],
+      "additionalProperties": false
+    },
+    "ApprovalChannelKind": {
+      "type": "string",
+      "enum": [
+        "webauthn-platform",
+        "webauthn-security-key",
+        "otp-email",
+        "otp-sms",
+        "chat",
+        "in-agent-ui",
+        "other"
+      ],
+      "description": "Whether an approval channel is one the agent can read.\n\nThe integrator declares reachability. This module does not verify it, and it does not talk to an authenticator. The CLI copies this file. It imports nothing."
+    },
+    "AgentReachability": {
+      "type": "string",
+      "enum": [
+        "no",
+        "unknown",
+        "yes"
       ]
     },
     "ReceiptAttestation": {
