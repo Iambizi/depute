@@ -23,7 +23,7 @@ import {
   channelWarningText,
   reachabilityLabel,
 } from '../../utils/channel';
-import { buildDecisionReceipt, buildSignedDecisionReceipt } from '../../utils/receipt';
+import { actorWarning, buildDecisionReceipt, buildSignedDecisionReceipt } from '../../utils/receipt';
 import type { ReceiptMethod, ReceiptOutcome } from '../../utils/receipt';
 import { changeKindLabel, justificationLength, requiredJustificationLength } from '../../utils/triggers';
 import type {
@@ -116,6 +116,7 @@ export function BindingApproval({
   approvalChannel,
   changeRequest,
   limits,
+  actor,
   onReceipt,
   appSigner,
   passkey,
@@ -323,6 +324,7 @@ export function BindingApproval({
       approvalChannel,
       changeRequest,
       limits,
+      actor,
       previousReceiptHash,
       fallbackId: pendingApprovalId || signerIdentity || 'local',
     };
@@ -349,6 +351,7 @@ export function BindingApproval({
     approvalChannel,
     changeRequest,
     limits,
+    actor,
     previousReceiptHash,
     pendingApprovalId,
     signerIdentity,
@@ -428,6 +431,10 @@ export function BindingApproval({
 
       {/* Description */}
       <p className={styles.description}>{description}</p>
+
+      {actor && actorWarning(actor) && (
+        <p className={styles.actorWarning} role="status">{actorWarning(actor)}</p>
+      )}
 
       {agentChange && changeRequest && (
         <div className={styles.changeRequest} role="status">

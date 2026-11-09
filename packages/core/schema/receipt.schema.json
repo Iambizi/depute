@@ -64,6 +64,9 @@
           },
           "description": "Limits and who the integrator says enforces them, at approval time."
         },
+        "actor": {
+          "$ref": "#/definitions/ReceiptActor"
+        },
         "attestations": {
           "type": "array",
           "items": {
@@ -462,6 +465,42 @@
         "server",
         "client",
         "agent-instruction",
+        "unknown"
+      ]
+    },
+    "ReceiptActor": {
+      "type": "object",
+      "properties": {
+        "agentId": {
+          "type": "string"
+        },
+        "vendor": {
+          "type": "string"
+        },
+        "model": {
+          "type": "string"
+        },
+        "credentialMode": {
+          "$ref": "#/definitions/CredentialMode"
+        },
+        "onBehalfOf": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "agentId",
+        "credentialMode",
+        "onBehalfOf"
+      ],
+      "additionalProperties": false,
+      "description": "Who acted, and whether they used the person's own login. Declared by the host."
+    },
+    "CredentialMode": {
+      "type": "string",
+      "enum": [
+        "delegated-token",
+        "shared-user-credentials",
+        "own-identity",
         "unknown"
       ]
     },
