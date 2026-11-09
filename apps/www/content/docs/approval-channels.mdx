@@ -29,6 +29,8 @@ A high-stakes Sign or Approve stays off when the declaration is `yes` or `unknow
 
 The receipt stores the object inside the hash. Editing the declaration after the fact fails `verify()`.
 
+A high-stakes passkey asks for user verification, a biometric or a PIN. The verifier rejects the assertion when that flag is unset. Being present is not enough. The parsed flag is not copied into the receipt hash. The authenticator data already sits on the signature, outside the hash.
+
 ## An illustration
 
 A research review dated 6 November 2026 described a wallet whose daily-cap change was gated by an emailed one-time code. Models with access to that inbox read the code and raised the cap. That review is an illustration of the pattern above. It is not, by itself, the requirement, and depute does not claim to have reproduced the experiment.
