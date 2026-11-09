@@ -164,7 +164,9 @@ export async function verifyPasskey(input: {
     const client = JSON.parse(new TextDecoder().decode(clientBytes)) as { type?: string; challenge?: string };
     if (client.type !== 'webauthn.get') return false;
     if (client.challenge !== bytesToBase64Url(receiptDigest(input.hash))) return false;
-    if (authBytes.length < 37 || (authBytes[32] & 0x01) === 0) return false;
+    const flags = authBytes[32] ?? 0;
+    if (authBytes.length < 37 || (flags & 0x01) === 0) return false;
+    if ((flags & 0x04) === 0) return false;
     if (input.rpId) {
       const expected = await sha256Bytes(new TextEncoder().encode(input.rpId));
       for (let i = 0; i < 32; i += 1) {
