@@ -12,7 +12,7 @@
 import type { ApprovalHandoff, HandoffContext, PresentedPayload } from '../../types/core';
 import type { ApprovalChannel } from '../../utils/channel';
 import type { ChangeRequest } from '../../utils/triggers';
-import type { ApprovalReceipt, DeclaredLimit, ReceiptAppSigner, ReceiptPasskeySigner } from '../../utils/receipt';
+import type { ApprovalReceipt, DeclaredLimit, ReceiptActor, ReceiptAppSigner, ReceiptPasskeySigner } from '../../utils/receipt';
 
 /** Binding approval status */
 export type BindingStatus =
@@ -174,6 +174,9 @@ export interface BindingApprovalProps {
 
   /** Limits to snapshot on the receipt. Enforcement is declared, not checked. */
   limits?: DeclaredLimit[];
+
+  /** Who is acting, and whether they use the person's own login. No agent registry. */
+  actor?: ReceiptActor;
 
   /** Fired with a hashed receipt when the person decides or the gate expires. */
   onReceipt?: (receipt: ApprovalReceipt) => void;

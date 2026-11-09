@@ -755,5 +755,29 @@ describe('ApprovalGate', () => {
       );
       expect(screen.getByRole('button', { name: 'Approve' })).toBeDisabled();
     });
+
+    it('warns when the agent uses the person\'s own login and stores the actor', async () => {
+      const user = userEvent.setup();
+      const onReceipt = vi.fn();
+      const actor = {
+        agentId: 'claude',
+        credentialMode: 'shared-user-credentials' as const,
+        onBehalfOf: 'ada',
+      };
+      render(<ApprovalGate title="Pay salaries" actor={actor} onReceipt={onReceipt} />);
+      expect(screen.getByText('Acting as you (shared login)')).toBeInTheDocument();
+      await user.click(screen.getByRole('button', { name: 'Approve' }));
+      expect(onReceipt.mock.calls[0][0].actor).toEqual(actor);
+    });
+
+    it('stays quiet when the agent has its own delegated token', () => {
+      render(
+        <ApprovalGate
+          title="Pay salaries"
+          actor={{ agentId: 'pay-bot', credentialMode: 'delegated-token', onBehalfOf: 'ada' }}
+        />,
+      );
+      expect(screen.queryByText('Acting as you (shared login)')).not.toBeInTheDocument();
+    });
   });
 });

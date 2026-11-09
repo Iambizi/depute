@@ -389,6 +389,22 @@ export const UntrustedSource: Story = {
   },
 };
 
+export const SharedLogin: Story = {
+  name: 'Shared login',
+  args: {
+    status: 'pending',
+    mode: 'simple',
+    title: 'Pay salaries',
+    description: 'The agent is signed in as you.',
+    now: STORY_NOW,
+    actor: {
+      agentId: 'claude',
+      credentialMode: 'shared-user-credentials',
+      onBehalfOf: 'Ada',
+    },
+  },
+};
+
 export const AgentRequestedChange: Story = {
   name: 'Requested by the agent',
   args: {
