@@ -131,6 +131,19 @@ export interface BindingApprovalProps {
   /** Unix milliseconds when the payload was first shown. */
   presentedAt?: number;
 
+  /** Frozen clock for tests and stories. The receipt uses it when set. */
+  now?: number;
+
+  /** Unix milliseconds the approval was issued. Defaults to `presentedAt`. */
+  issuedAt?: number;
+
+  /**
+   * Unix milliseconds the approval display expires. Defaults to 10 minutes
+   * after it was issued. The backend enforces the deadline. This clock is
+   * not `timeoutSeconds`.
+   */
+  expiresAt?: number;
+
   /** Why the person signed. A payment trigger asks them to write it here. */
   justification?: string;
 

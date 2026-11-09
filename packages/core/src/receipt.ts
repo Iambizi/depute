@@ -39,6 +39,21 @@ export type ReceiptChoice = 'approved' | 'rejected';
 export type ReceiptMethod = 'click' | 'passkey' | 'handoff' | 'chat';
 export type ReceiptExecutionStatus = 'success' | 'failed' | 'pending' | 'reverted' | 'not-run';
 
+/** Shown deadline when the host does not pass one. The backend still enforces it. */
+export const DEFAULT_APPROVAL_EXPIRY_MS = 10 * 60 * 1000;
+
+export function approvalDeadline(issuedAtMs: number, expiresAtMs?: number): { issuedAt: string; expiresAt: string } {
+  if (!Number.isFinite(issuedAtMs)) throw new Error('issuedAt must be a time.');
+  const expires = expiresAtMs ?? issuedAtMs + DEFAULT_APPROVAL_EXPIRY_MS;
+  if (!Number.isFinite(expires) || expires < issuedAtMs) {
+    throw new Error('expiresAt must be at or after issuedAt.');
+  }
+  return {
+    issuedAt: new Date(issuedAtMs).toISOString(),
+    expiresAt: new Date(expires).toISOString(),
+  };
+}
+
 export type LimitEnforcement = 'server' | 'client' | 'agent-instruction' | 'unknown';
 
 /** A limit the integrator says someone enforces. depute does not check that claim. */
@@ -212,6 +227,10 @@ export interface ApprovalReceipt {
   limits?: DeclaredLimit[];
   actor?: ReceiptActor;
   requirements?: ApprovalRequirement[];
+  /** ISO-8601 time the approval was issued. */
+  issuedAt?: string;
+  /** ISO-8601 time the approval display expires. The backend enforces this. */
+  expiresAt?: string;
   attestations?: ReceiptAttestation[];
   previousReceiptHash?: string;
   signatures?: ReceiptSignature[];
@@ -232,6 +251,8 @@ export interface ReceiptDraft {
   limits?: DeclaredLimit[];
   actor?: ReceiptActor;
   requirements?: ApprovalRequirement[];
+  issuedAt?: string;
+  expiresAt?: string;
   attestations?: ReceiptAttestation[];
   previousReceiptHash?: string;
   signatures?: ReceiptSignature[];
@@ -263,6 +284,10 @@ export interface DecisionReceiptInput {
   limits?: DeclaredLimit[];
   actor?: ReceiptActor;
   requirements?: ApprovalRequirement[];
+  /** Unix milliseconds. Defaults to `presentedAtMs`. */
+  issuedAtMs?: number;
+  /** Unix milliseconds. Defaults to issued time plus 10 minutes. */
+  expiresAtMs?: number;
   previousReceiptHash?: string;
   fallbackId: string;
 }
@@ -466,6 +491,8 @@ export function buildReceipt(draft: ReceiptDraft): ApprovalReceipt {
     limits: draft.limits,
     actor: draft.actor,
     requirements: draft.requirements,
+    issuedAt: draft.issuedAt,
+    expiresAt: draft.expiresAt,
     attestations: draft.attestations,
     previousReceiptHash: draft.previousReceiptHash,
   };
@@ -485,6 +512,7 @@ export function buildDecisionReceipt(input: DecisionReceiptInput): ApprovalRecei
     justification: input.justification,
     provenance: input.provenance,
   };
+  const deadline = approvalDeadline(input.issuedAtMs ?? input.presentedAtMs, input.expiresAtMs);
   const reviewDurationMs = Math.max(0, input.decidedAtMs - input.presentedAtMs);
   const method = input.method ?? 'click';
   const decision: ReceiptDecision = {
@@ -519,6 +547,8 @@ export function buildDecisionReceipt(input: DecisionReceiptInput): ApprovalRecei
     limits: input.limits,
     actor: input.actor,
     requirements: input.requirements,
+    issuedAt: deadline.issuedAt,
+    expiresAt: deadline.expiresAt,
     previousReceiptHash: input.previousReceiptHash,
   });
 }

@@ -55,6 +55,8 @@ export {
   isReceiptHash,
   actorWarning,
   requirementsNeedCheck,
+  DEFAULT_APPROVAL_EXPIRY_MS,
+  approvalDeadline,
   limitDeclaration,
   receiptCheckLabel,
   sha256,

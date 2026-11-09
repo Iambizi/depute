@@ -172,6 +172,8 @@ Pass `provenance` with a source and a trust value. An untrusted source shows a w
 | `blind` | `boolean` | `false` | Hide that recommendation until the person chooses. |
 | `mode` | `'simple' \| 'staged'` | `'simple'` | Staged adds Preview → Confirm → Execute steps |
 | `provenance` | `PresentedProvenance` | — | Source, optional url, and trust. Untrusted forces staged mode. |
+| `issuedAt` | `number` | `presentedAt` | Unix milliseconds the approval was issued. |
+| `expiresAt` | `number` | 10 minutes later | Unix milliseconds the display expires. The backend enforces it. Not `timeoutSeconds`. |
 | `approvalChannel` | `ApprovalChannel` | — | Integrator-declared channel. A high-stakes approve stays off when reachability is `yes` or `unknown`. |
 | `changeRequest` | `ChangeRequest` | — | Limit or permission change. An agent initiator shows the old and new values and is high-stakes. |
 | `actor` | `ReceiptActor` | — | Agent, credential mode, and who they act for. A shared login shows a warning. |

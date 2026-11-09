@@ -73,6 +73,14 @@
             "$ref": "#/definitions/ApprovalRequirement"
           }
         },
+        "issuedAt": {
+          "type": "string",
+          "description": "ISO-8601 time the approval was issued."
+        },
+        "expiresAt": {
+          "type": "string",
+          "description": "ISO-8601 time the approval display expires. The backend enforces this."
+        },
         "attestations": {
           "type": "array",
           "items": {

@@ -124,6 +124,16 @@ export interface ApprovalGateProps {
   /** Unix milliseconds when the payload was first shown. A payment receipt starts when the payee and the amount paint. */
   presentedAt?: number;
 
+  /** Unix milliseconds the approval was issued. Defaults to `presentedAt`. */
+  issuedAt?: number;
+
+  /**
+   * Unix milliseconds the approval display expires. Defaults to 10 minutes
+   * after it was issued. The backend enforces the deadline. This clock is
+   * not `timeoutSeconds`.
+   */
+  expiresAt?: number;
+
   /** Why the person approved. A payment trigger asks them to write it in the gate. */
   justification?: string;
 

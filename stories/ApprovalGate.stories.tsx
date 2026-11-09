@@ -389,6 +389,19 @@ export const UntrustedSource: Story = {
   },
 };
 
+export const ApprovalExpired: Story = {
+  name: 'Approval expired',
+  args: {
+    status: 'pending',
+    mode: 'simple',
+    title: 'Pay a vendor',
+    description: 'The display deadline has passed. The backend still decides.',
+    now: STORY_NOW,
+    issuedAt: STORY_NOW - 60_000,
+    expiresAt: STORY_NOW - 1000,
+  },
+};
+
 export const AssumedRequirements: Story = {
   name: 'The agent assumed',
   args: {
