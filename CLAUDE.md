@@ -124,7 +124,7 @@ depute/
 
 - **CLI:** `npx ax-depute@latest add <component>` — installs the sources for the CLI's own version tag (not `main`), checks them against `packages/cli/src/checksums.json`, and copies them into the user's project
 - **Registry:** `registry/registry.json` — manifest of all 27 components with file lists and metadata
-- **Shared Files:** The CLI copies `src/types/common.ts` into the user's project as `src/types/ax-common.ts`, copies `packages/core/src/presented.ts` as `src/types/ax-core.ts`, copies `packages/core/src/receipt.ts` as `src/utils/ax-receipt.ts`, copies `src/utils/a11y.tsx` as `src/utils/ax-a11y.tsx`, and installs `src/styles/index.css` as `depute.css` once beside the component directory. `add mock-data` copies the generators separately.
+- **Shared Files:** The CLI copies `src/types/common.ts` into the user's project as `src/types/ax-common.ts`, copies `packages/core/src/presented.ts` as `src/types/ax-core.ts`, copies `packages/core/src/receipt.ts` as `src/utils/ax-receipt.ts`, copies `packages/core/src/triggers.ts` as `src/utils/ax-triggers.ts`, copies `packages/core/src/agreement.ts` as `src/utils/ax-agreement.ts`, copies `src/utils/receiptSign.ts` as `src/utils/ax-receipt-sign.ts`, copies `src/utils/a11y.tsx` as `src/utils/ax-a11y.tsx`, and installs `src/styles/index.css` as `depute.css` once beside the component directory. `add mock-data` copies the generators separately.
 - **Config:** Repo and version pin live in `packages/cli/src/config.js`
 
 ## AI Skill Layer
@@ -193,6 +193,7 @@ cd apps/www && npm run build  # Production build (23 static pages)
 - CSS Modules preferred over Tailwind to avoid external dependencies
 - Components should never be tied to specific AI backends
 - Approvals should be scoped, bounded, and revocable — not binary yes/no (Stripe SPT pattern)
+- A new approval control ships with its rationale in the same change. The pattern is the requirement. A report is a dated illustration. An unconfirmed report is not a requirement. Update `apps/www/content/docs/approval-record.mdx`, the component page, and `skills/depute/references/design-rationale.md` together. The component page states the pattern and links to the approval record. It does not retell a headline as the reason.
 - `docs/` is gitignored — internal docs are local-only, not tracked in git
 - `RELEASES.md` is at repo root (tracked in git)
 - If GitHub username changes: edit `REPO` in `packages/cli/src/config.js` only

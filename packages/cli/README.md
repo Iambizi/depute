@@ -41,6 +41,8 @@ src/
     ax-core.ts       ← handoff and presented-payload types (added once)
   utils/
     ax-receipt.ts    ← approval receipt hash and verify (added once)
+    ax-receipt-sign.ts ← app key and passkey signers (added once)
+    ax-triggers.ts   ← payee and purpose approval policy (added once)
     ax-a11y.tsx      ← accessibility utilities (added once)
   styles/
     depute.css       ← tokens + motion (import once)

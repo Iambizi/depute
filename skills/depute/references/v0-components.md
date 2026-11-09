@@ -55,7 +55,7 @@ Agent proposes ──► PlanCard
 />
 ```
 
-**Important:** `ApprovalGate` supports scoped, time-bounded, and resource-capped grants — not just binary approve/reject. Use the `scope` prop for Stripe-style SPT patterns. For long-running background workflows where the human may step away, use the `approvalHandoff={{ timeoutMs: 30000, fallbackBehavior: 'block' }}` and `onHandoff` props to delegate to asynchronous channels (like SMS or Slack) while updating the `status` prop to `'handoff_pending'`, removing the blocking modal UI constraint.
+**Important:** `ApprovalGate` supports scoped, time-bounded, and resource-capped grants — not just binary approve/reject. Use the `scope` prop for Stripe-style SPT patterns. For long-running background workflows where the human may step away, use the `approvalHandoff={{ timeoutMs: 30000, fallbackBehavior: 'block' }}` and `onHandoff` props to delegate to asynchronous channels (like SMS or Slack) while updating the `status` prop to `'handoff_pending'`, removing the blocking modal UI constraint. A staged payment that shows a payee and an amount waits before Confirm. Pass `provenance` when the instruction came from somewhere else. That rule is in `references/design-rationale.md`.
 
 ### ConfidenceMeter
 
@@ -88,6 +88,8 @@ Agent proposes ──► PlanCard
 />
 ```
 
+A call can include `provenance`. An untrusted source is marked on the row. That rule is in `references/design-rationale.md`.
+
 ### ArtifactCard
 
 ```tsx
@@ -115,7 +117,7 @@ A highly specialized wrapper designed to enforce a specific behavioral policy.
 </AutomationBiasAlert>
 ```
 
-**Important:** Use the bundled `useAutomationBias()` hook to track consecutive approvals and time-between-approvals. It fires `isActive` when passive oversight is detected. Wrap any `ApprovalGate` or `DelegationGate` that sees repeat automatic approvals.
+**Important:** Use the bundled `useAutomationBias()` hook to track consecutive approvals, time-between-approvals, and, when you pass the agent's recommendation, whether the person followed it. The agreement rule is in `references/design-rationale.md`. It fires `isActive` when passive oversight is detected. Wrap any `ApprovalGate` or `DelegationGate` that sees repeat automatic approvals. Pass `cause` through so an agreement alert does not use the speed copy.
 
 ```tsx
 const { isAlertTriggered, recordAction, dismissAlert } = useAutomationBias({

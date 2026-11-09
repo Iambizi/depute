@@ -7,6 +7,10 @@
  * @see docs/internal/research/catalog-versions/CATALOG-v2.md (Primitive 6)
  */
 
+import type { SmallPayment, SmallPaymentBurst } from '../../utils/triggers';
+
+export type { SmallPayment, SmallPaymentBurst };
+
 /** Budget resource type — what is being metered */
 export type BudgetUnit = 'currency' | 'tokens' | 'api-calls' | 'compute' | 'custom';
 
@@ -55,6 +59,30 @@ export interface BudgetMeterProps {
 
   /** Whether to show a compact inline variant (default: false) */
   compact?: boolean;
+
+  /**
+   * Auto-approved payments, in this meter's unit.
+   * Leave gated payments out. The list does not open a second gate.
+   */
+  transactions?: readonly SmallPayment[];
+
+  /** Unix milliseconds. The burst warning stays off until this is set. */
+  nowMs?: number;
+
+  /** Decimal string. Payments strictly under this count. Default "5". */
+  smallTxThreshold?: string;
+
+  /** A payment ages out when its age reaches this. Default ten minutes. */
+  windowMs?: number;
+
+  /** The warning row appears when the small-payment count is greater than this. Default 5. */
+  maxSmallTxCount?: number;
+
+  /**
+   * Fires once for a payee set. Fires again when that set changes,
+   * or after the payments age out and a new burst starts.
+   */
+  onSmallTxPattern?: (pattern: SmallPaymentBurst) => void;
 
   /** Additional CSS class */
   className?: string;

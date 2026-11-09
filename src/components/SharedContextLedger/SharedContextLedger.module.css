@@ -148,6 +148,18 @@
   text-decoration: underline;
   text-decoration-color: var(--ax-border-default);}
 
+.trustTag {font-size: var(--ax-text-2xs);
+  font-weight: var(--ax-weight-medium);
+  padding: 0 var(--ax-space-1);
+  border-radius: var(--ax-radius-xs);
+  background: var(--ax-status-neutral-bg);
+  color: var(--ax-status-neutral-fg);
+  border: var(--ax-border-width) solid var(--ax-status-neutral-border);}
+
+.trustUntrusted {background: var(--ax-status-warning-bg);
+  color: var(--ax-status-warning-fg);
+  border-color: var(--ax-status-warning-border);}
+
 .timestamp {margin-left: auto;}
 
 .base :focus-visible {

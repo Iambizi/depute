@@ -8,6 +8,8 @@ export interface ContextLedgerEntry {
     authorAgent: string;
     source?: string;
     timestamp: string;
+    /** Trust of the source this entry already records. */
+    trust?: 'trusted' | 'untrusted' | 'unknown';
   };
   conflict?: boolean;
 }

@@ -12,7 +12,7 @@ Reference guide for the 9 Compliance and Forensics components designed for high-
 ## 2. Policy Banner (`<PolicyBanner />`)
 **Problem:** Oversight panels look identical whether the agent is connected to a production database or a sandbox.
 **Usage:** Persistent environment labeling to prevent "live fire" mistakes.
-- `mode`: `'sandbox' | 'staging' | 'production' | 'simulation'` (determines visual severity).
+- `mode`: `'sandbox' | 'staging' | 'production' | 'simulation' | 'disclosure'`. `disclosure` is the neutral preset. That rule is in `references/design-rationale.md`.
 - `constraints`: Read-only list of the active policies the agent is constrained by.
 - **When to use:** Pin to the top of the supervision viewport.
 
@@ -34,13 +34,14 @@ Reference guide for the 9 Compliance and Forensics components designed for high-
 **Usage:** Visual governor on resource limits.
 - `spent`, `limit`, `unit`, `burnRate`.
 - Auto-calculates `elevated` vs `critical` severities as the budget drains.
+- `transactions` and `nowMs` add one warning for a run of small auto-approved payments. The rule is in `references/design-rationale.md`.
 - **When to use:** Embedded into `RunControls` or displayed stat-bar style for the active session.
 
 ## 6. Binding Approval (`<BindingApproval />`)
 **Problem:** Native `ApprovalGate` is too frictionless for truly irreversible actions (money, core system destruction).
 **Usage:** The heaviest friction boundary. Multi-phase state machine that displays a signature while it is in flight.
 - `isSigning`: Replaces the `pending` state with a deterministic lock-out while a signature flows.
-- `terms`: Requires explicit visual acknowledgment.
+- `terms`: Requires explicit visual acknowledgment. `liabilityNotice` is one of those terms. That rule is in `references/design-rationale.md`.
 - `BindingApproval` does not sign, hash, or talk to a ledger. Pass `signature` and `hash` when your backend has already produced them. The component only displays those values.
 - **When to use:** Replaces `ApprovalGate` ONLY for critical, legally binding, or destructive terminal actions.
 

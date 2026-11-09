@@ -33,7 +33,10 @@ const MIRROR_FILES = [
   'src/types/common.ts',
   'packages/core/src/presented.ts',
   'packages/core/src/receipt.ts',
+  'packages/core/src/triggers.ts',
+  'packages/core/src/agreement.ts',
   'src/utils/receiptDownload.ts',
+  'src/utils/receiptSign.ts',
   'src/utils/a11y.tsx',
   'src/utils/icons.tsx',
   'src/utils/mockData.ts',
@@ -111,6 +114,20 @@ test('add approval-gate installs tokens and rewrites shared imports', () => {
   assert.match(installedReceipt, /from ['"]\.\.\/types\/ax-core['"]/);
   assert.doesNotMatch(installedReceipt, /from ['"]\.\/presented['"]/);
   assert.equal(fs.existsSync(path.join(cwd, 'src/utils/ax-receipt-download.ts')), true);
+  const installedSign = fs.readFileSync(path.join(cwd, 'src/utils/ax-receipt-sign.ts'), 'utf8');
+  assert.match(installedSign, /export function createEd25519AppSigner/);
+  assert.match(installedSign, /from ['"]\.\/ax-receipt['"]/);
+  const installedTriggers = fs.readFileSync(path.join(cwd, 'src/utils/ax-triggers.ts'), 'utf8');
+  assert.match(installedTriggers, /export function requiresApproval/);
+  assert.match(installedTriggers, /export function smallPaymentBurst/);
+  const installedAgreement = fs.readFileSync(path.join(cwd, 'src/utils/ax-agreement.ts'), 'utf8');
+  assert.match(installedAgreement, /export function agreementRate/);
+  assert.match(installedTriggers, /from ['"]\.\.\/types\/ax-core['"]/);
+  assert.doesNotMatch(installedTriggers, /from ['"]\.\/presented['"]/);
+  assert.doesNotMatch(installedSign, /from ['"]\.\/receipt['"]/);
+  assert.match(component, /from ['"]\.\.\/\.\.\/utils\/ax-receipt['"]/);
+  assert.match(component, /from ['"]\.\.\/\.\.\/utils\/ax-triggers['"]/);
+  assert.doesNotMatch(component, /from ['"][^'"]*utils\/triggers['"]/);
   assert.match(fs.readFileSync(path.join(cwd, 'src/index.css'), 'utf8'), /@import "\.\/styles\/depute\.css"/);
 });
 
@@ -336,4 +353,34 @@ test('init copies the skill and design tokens', () => {
   assert.equal(fs.existsSync(path.join(cwd, 'src/types/ax-common.ts')), true);
   assert.equal(fs.existsSync(path.join(cwd, 'src/types/ax-core.ts')), true);
   assert.match(fs.readFileSync(path.join(cwd, 'src/index.css'), 'utf8'), /@import "\.\/styles\/depute\.css"/);
+});
+
+test('add budget-meter rewrites the small-payment import', () => {
+  const cwd = fs.mkdtempSync(path.join(os.tmpdir(), 'depute-budget-'));
+  const result = runAdd(cwd, ['budget-meter', '--no-css']);
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+  const component = fs.readFileSync(
+    path.join(cwd, 'src/components/BudgetMeter/BudgetMeter.tsx'),
+    'utf8',
+  );
+  const types = fs.readFileSync(
+    path.join(cwd, 'src/components/BudgetMeter/BudgetMeter.types.ts'),
+    'utf8',
+  );
+  assert.match(component, /from ['"]\.\.\/\.\.\/utils\/ax-triggers['"]/);
+  assert.match(types, /from ['"]\.\.\/\.\.\/utils\/ax-triggers['"]/);
+  assert.doesNotMatch(component, /from ['"][^'"]*utils\/triggers['"]/);
+  assert.doesNotMatch(types, /from ['"][^'"]*utils\/triggers['"]/);
+});
+
+test('add automation-bias-alert rewrites the agreement import', () => {
+  const cwd = fs.mkdtempSync(path.join(os.tmpdir(), 'depute-bias-'));
+  const result = runAdd(cwd, ['automation-bias-alert', '--no-css']);
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+  const hook = fs.readFileSync(
+    path.join(cwd, 'src/components/AutomationBiasAlert/useAutomationBias.ts'),
+    'utf8',
+  );
+  assert.match(hook, /from ['"]\.\.\/\.\.\/utils\/ax-agreement['"]/);
+  assert.doesNotMatch(hook, /from ['"][^'"]*utils\/agreement['"]/);
 });

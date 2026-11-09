@@ -35,10 +35,48 @@ export type {
 
 export type {
   ApprovalReceipt,
+  ReceiptAppSigner,
   ReceiptDecision,
+  ReceiptPasskeySigner,
   ReceiptVerification,
 } from './utils/receipt';
-export { buildDecisionReceipt, buildReceipt, verify } from './utils/receipt';
+export {
+  buildDecisionReceipt,
+  buildReceipt,
+  buildSignedDecisionReceipt,
+  receiptCheckLabel,
+  verify,
+} from './utils/receipt';
+export {
+  createEd25519AppSigner,
+  createPasskeySigner,
+  createReceiptVerifier,
+  generateEd25519KeyPair,
+} from './utils/receiptSign';
+export type {
+  ApprovalPolicy,
+  ApprovalTrigger,
+  PayeeGrant,
+  SmallPayeeRef,
+  SmallPayment,
+  SmallPaymentBurst,
+  SmallPaymentBurstInput,
+} from './utils/triggers';
+export {
+  DEFAULT_MAX_SMALL_TX_COUNT,
+  DEFAULT_SMALL_TX_THRESHOLD,
+  DEFAULT_SMALL_TX_WINDOW_MS,
+  justificationLength,
+  requiredJustificationLength,
+  requiresApproval,
+  smallPaymentBurst,
+} from './utils/triggers';
+export type { AgreementChoice, AgreementDecision, AgreementRate, AgreementRateInput } from './utils/agreement';
+export {
+  DEFAULT_AGREEMENT_THRESHOLD,
+  DEFAULT_MINIMUM_AGREEMENT_DECISIONS,
+  agreementRate,
+} from './utils/agreement';
 
 // A11y utilities
 export { VisuallyHidden, useAnnouncer, useFocusTrap } from './utils/a11y';

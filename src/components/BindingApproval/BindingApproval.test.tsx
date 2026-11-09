@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, it, expect, vi } from 'vitest';
-import { BindingApproval } from './BindingApproval';
+import { BindingApproval, LIABILITY_NOTICE_ID } from './BindingApproval';
 
 const defaultProps = {
   title: 'Wire Transfer Authorization',
@@ -35,6 +35,17 @@ describe('BindingApproval', () => {
     it('shows signer identity', () => {
       render(<BindingApproval {...defaultProps} signerIdentity="alice@company.com" />);
       expect(screen.getByText('alice@company.com')).toBeInTheDocument();
+    });
+
+    it('hides a blind recommendation until the decision is closed', () => {
+      const { rerender } = render(
+        <BindingApproval {...defaultProps} agentRecommendation="approved" blind />,
+      );
+      expect(screen.queryByText('Agent recommends')).not.toBeInTheDocument();
+      rerender(
+        <BindingApproval {...defaultProps} agentRecommendation="approved" blind status="signed" />,
+      );
+      expect(screen.getByText('Approve')).toBeInTheDocument();
     });
 
     it('applies custom className', () => {
@@ -100,9 +111,70 @@ describe('BindingApproval', () => {
 
       expect(screen.getByRole('button', { name: /sign and approve/i })).not.toBeDisabled();
     });
+
+    it('requires the liability notice before sign and records the acknowledgement', async () => {
+      const user = userEvent.setup();
+      const onSign = vi.fn();
+      const onReject = vi.fn();
+      const onReceipt = vi.fn();
+      const notice = 'You are the actor of record for what this agent does.';
+      render(
+        <BindingApproval
+          {...defaultProps}
+          terms={sampleTerms}
+          liabilityNotice={notice}
+          onSign={onSign}
+          onReject={onReject}
+          onReceipt={onReceipt}
+        />,
+      );
+      expect(screen.getByText(notice)).toBeInTheDocument();
+      expect(screen.getAllByRole('checkbox')).toHaveLength(4);
+      expect(screen.getByRole('button', { name: /sign and approve/i })).toBeDisabled();
+      expect(screen.getByRole('button', { name: /reject/i })).toBeEnabled();
+
+      const boxes = screen.getAllByRole('checkbox');
+      for (const box of boxes.slice(0, 3)) await user.click(box);
+      expect(screen.getByRole('button', { name: /sign and approve/i })).toBeDisabled();
+      await user.click(boxes[3]);
+      await user.click(screen.getByRole('button', { name: /sign and approve/i }));
+      expect(onSign).toHaveBeenCalledTimes(1);
+      expect(onReject).not.toHaveBeenCalled();
+      const receipt = onReceipt.mock.calls[0][0];
+      expect(receipt.decision.acknowledgedTermIds).toContain(LIABILITY_NOTICE_ID);
+      expect(receipt.presented.payload.lineItems).toEqual([
+        { label: 'Liability notice', value: notice },
+      ]);
+    });
+
+    it('does not add a second checkbox when the host already used the notice id', () => {
+      render(
+        <BindingApproval
+          {...defaultProps}
+          terms={[{ id: LIABILITY_NOTICE_ID, text: 'Host copy', acknowledged: false }]}
+          liabilityNotice="Shown copy"
+        />,
+      );
+      expect(screen.getAllByRole('checkbox')).toHaveLength(1);
+      expect(screen.getByText('Shown copy')).toBeInTheDocument();
+      expect(screen.queryByText('Host copy')).not.toBeInTheDocument();
+    });
   });
 
   describe('interactions', () => {
+    it('requires a why before sign when a payment trigger fired', async () => {
+      const user = userEvent.setup();
+      const onSign = vi.fn();
+      render(<BindingApproval {...defaultProps} triggers={['purpose-change']} onSign={onSign} />);
+      const sign = screen.getByRole('button', { name: /sign and approve/i });
+      expect(sign).toBeDisabled();
+      await user.click(screen.getByRole('textbox', { name: 'Why are you approving this?' }));
+      await user.paste('x'.repeat(100));
+      expect(sign).toBeEnabled();
+      await user.click(sign);
+      expect(onSign).toHaveBeenCalledTimes(1);
+    });
+
     it('calls onSign when sign button is clicked', async () => {
       const user = userEvent.setup();
       const onSign = vi.fn();

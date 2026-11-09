@@ -153,3 +153,25 @@ Agents (and the developers building with them) need to **read and edit the UI co
 - Updates become breaking changes, not choices
 
 The copy-paste model (like shadcn/ui) means the source lives in your repo. You own it. The agent can read it. You can modify it. The CLI (`npx ax-depute@latest add`) delivers it, but you keep it.
+
+---
+
+## Why an approval keeps a portable record
+
+The dispute after an agent payment is what the person was shown, what they approved, and whether that was the action that ran. Institutions increasingly leave the person as the actor of record for an agent they did not drive step by step. A vendor-only log answers that for the vendor. The person needs the payload and the decision in a form a third party can check.
+
+The specification is that pattern. Public reporting from 26–28 October 2026 illustrated it: consumer-bank terms for agents, a payee or purpose that changed after a grant, an untrusted instruction on a payment, and supervision notes on agent payments. An illustration can be revised. An unconfirmed report is not a requirement. The human-facing writeup is `apps/www/content/docs/approval-record.mdx`.
+
+Apply it as follows:
+
+- Emit an `ApprovalReceipt` when the host passes `onReceipt`. The host stores the JSON. Do not add a receipt log component.
+- Call `requiresApproval` before showing a gate. A new payee always gates. Identity is rail plus identifier. The same purpose inside the granted limit and duration does not re-gate. An untrusted source gates again and is high-stakes.
+- When one of those payment triggers fired, leave Approve disabled until the why reaches 100 characters, unless the host set `minJustificationLength`. Reject stays immediate. Gates with no payment trigger stay one click.
+- Sign with the host's Ed25519 app key when the host supplies one. Ask for a passkey only when the decision is high-stakes: new payee, purpose change, untrusted source, irreversible flag, or an amount above the host's cutoff. There is no universal dollar cutoff.
+- Pass auto-approved payments to Budget Meter with `nowMs`. `smallPaymentBurst` warns when more than five payments under 5, in the last ten minutes, are not all the same payee and purpose. Show one row. Do not open a second gate. The same payee and purpose can repeat without that row.
+- When the host passes the agent's recommendation to `recordAction`, record whether the person followed it. Alert when agreement is over 80% across at least 5 decisions. Leave blind mode off unless the host sets `blind` on the gate. Keep the streak, speed, and approval-rate checks.
+- In staged mode, when the payload has a payee and an amount, keep Confirm off until `minReviewMs` (default 1500) after those fields paint. Leave Preview and Reject available. Leave simple mode instant. Start the receipt review duration when those fields paint, so Confirm cannot record a longer look than they were on screen. Do not start a passkey before Confirm.
+- Show provenance, with source, optional url, and trust, on the approval gate and on each tool-trace step. When trust is untrusted, show a warning and force staged mode even if the host asked for simple mode. Let the presented payload's provenance win when both are set, and store that value on the receipt. A shared-context entry can carry the same trust on the provenance it already has.
+- When the host sets `liabilityNotice` on Binding Approval, render it as a term and keep Sign off until it is checked. Leave Reject available. Record `liability-notice` on the receipt, and include the sentence that was shown. Use Policy Banner `mode="disclosure"` for the same fact in the viewport. It is neutral. Its default sentence is that the person is the actor of record for what the agent does. The host's `description` replaces that sentence.
+
+When you add the next control, update this section in the same change. State the pattern it answers. Date any report you cite and treat it as an illustration. Leave an unconfirmed report out of the requirement. The component page states the same pattern in a few sentences and links to `apps/www/content/docs/approval-record.mdx`.

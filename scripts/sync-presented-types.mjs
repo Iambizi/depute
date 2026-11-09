@@ -19,6 +19,16 @@ const pairs = [
     dest: path.join(root, 'src/utils/receipt.ts'),
     transform: (text) => text.replaceAll("from './presented'", "from '../types/core'"),
   },
+  {
+    source: path.join(root, 'packages/core/src/triggers.ts'),
+    dest: path.join(root, 'src/utils/triggers.ts'),
+    transform: (text) => text.replaceAll("from './presented'", "from '../types/core'"),
+  },
+  {
+    source: path.join(root, 'packages/core/src/agreement.ts'),
+    dest: path.join(root, 'src/utils/agreement.ts'),
+    transform: (text) => text,
+  },
 ];
 
 let failed = false;

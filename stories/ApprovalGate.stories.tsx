@@ -304,3 +304,87 @@ export const WithAutomationBiasAlert: Story = {
     );
   }
 };
+
+export const RequiredWhy: Story = {
+  name: 'Required why',
+  args: {
+    ...storyApproval({
+      status: 'pending',
+      title: 'Pay a new vendor',
+      description: 'Approve stays off until the why reaches 100 characters. Reject stays available.',
+    }),
+    triggers: ['new-payee'],
+  },
+};
+
+export const SignedReceipt: Story = {
+  name: 'Signed receipt',
+  args: {
+    ...storyApproval({
+      status: 'pending',
+      title: 'Pay a new vendor',
+      description: 'The app key signs the receipt. A passkey is asked only when highStakes is set.',
+    }),
+    highStakes: true,
+    appSigner: {
+      sign: async () => ({ publicKey: 'app-public-key', signature: 'app-signature' }),
+    },
+    passkey: {
+      sign: async () => ({
+        algorithm: 'ES256',
+        publicKey: 'user-public-key',
+        signature: 'user-signature',
+        authenticatorData: 'authenticator-data',
+        clientDataJSON: 'client-data',
+      }),
+    },
+  },
+};
+
+export const BlindRecommendation: Story = {
+  name: 'Blind recommendation',
+  args: {
+    ...storyApproval({
+      status: 'pending',
+      title: 'Pay vendor',
+      description: 'Invoice 104 matches the grant.',
+      agentReasoning: 'The payee and the purpose are already covered.',
+    }),
+    agentRecommendation: 'approved',
+    blind: true,
+  },
+};
+
+export const PaymentReview: Story = {
+  name: 'Payment review',
+  args: {
+    ...storyApproval({
+      mode: 'staged',
+      status: 'pending',
+      title: 'Pay a new vendor',
+      description: 'Invoice 1042 for office supplies.',
+    }),
+    presentedPayload: {
+      title: 'Pay a new vendor',
+      payee: { rail: 'ach', identifier: '021000021:9981', displayName: 'Northwind Supplies' },
+      amount: { value: '240.00', currency: 'USD' },
+    },
+  },
+};
+
+export const UntrustedSource: Story = {
+  name: 'Untrusted source',
+  args: {
+    ...storyApproval({
+      mode: 'simple',
+      status: 'pending',
+      title: 'Pay a forwarded invoice',
+      description: 'The host asked for one click. The source keeps this gate in two steps.',
+    }),
+    provenance: {
+      source: 'forwarded email',
+      url: 'https://example.com/invoice',
+      trust: 'untrusted',
+    },
+  },
+};

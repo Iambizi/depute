@@ -1,5 +1,5 @@
 import { StrictMode } from 'react';
-import { render, screen, waitFor, act } from '@testing-library/react';
+import { render, screen, waitFor, act, fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { ApprovalGate } from './ApprovalGate';
@@ -97,6 +97,165 @@ describe('ApprovalGate', () => {
       expect(receipt.presented.payload.title).toBe('Pay vendor');
     });
 
+    it('records agreement on the receipt and hides the recommendation while blind', async () => {
+      const user = userEvent.setup();
+      const onReceipt = vi.fn();
+      const { rerender } = render(
+        <ApprovalGate
+          title="Pay vendor"
+          agentReasoning="The invoice matches the grant."
+          agentRecommendation="approved"
+          blind
+          now={Date.parse('2026-10-28T16:00:00.000Z')}
+          presentedAt={Date.parse('2026-10-28T16:00:00.000Z')}
+          onReceipt={onReceipt}
+        />,
+      );
+      expect(screen.getByText('The invoice matches the grant.')).toBeInTheDocument();
+      expect(screen.queryByText('Agent recommends')).not.toBeInTheDocument();
+      await user.click(screen.getByRole('button', { name: 'Approve' }));
+      expect(onReceipt.mock.calls[0][0].decision.agreed).toBe(true);
+      expect(onReceipt.mock.calls[0][0].decision.humanChoice).toBe('approved');
+
+      rerender(
+        <ApprovalGate
+          title="Pay vendor"
+          agentRecommendation="rejected"
+          status="approved"
+        />,
+      );
+      expect(screen.getByText('Reject')).toBeInTheDocument();
+    });
+
+    it('keeps approve on one click when no payment trigger fired', () => {
+      render(<ApprovalGate title="Send email" />);
+      expect(screen.queryByRole('textbox', { name: 'Why are you approving this?' })).not.toBeInTheDocument();
+      expect(screen.getByRole('button', { name: 'Approve' })).toBeEnabled();
+    });
+
+    it('requires 100 characters before approve when a payment trigger fired', async () => {
+      const user = userEvent.setup();
+      const onApprove = vi.fn();
+      const onReject = vi.fn();
+      const onReceipt = vi.fn();
+      render(
+        <ApprovalGate
+          title="Pay vendor"
+          triggers={['new-payee']}
+          now={2_000}
+          presentedAt={1_000}
+          onApprove={onApprove}
+          onReject={onReject}
+          onReceipt={onReceipt}
+        />,
+      );
+      const approve = screen.getByRole('button', { name: 'Approve' });
+      const why = screen.getByRole('textbox', { name: 'Why are you approving this?' });
+      expect(approve).toBeDisabled();
+      expect(screen.getByText('0 of 100 characters')).toBeInTheDocument();
+
+      await user.click(screen.getByRole('button', { name: 'Reject' }));
+      expect(onReject).toHaveBeenCalledTimes(1);
+      expect(onApprove).not.toHaveBeenCalled();
+
+      await user.click(why);
+      await user.paste('x'.repeat(99));
+      expect(approve).toBeDisabled();
+      await user.paste('y');
+      expect(approve).toBeEnabled();
+      await user.click(approve);
+      expect(onApprove).toHaveBeenCalledTimes(1);
+      expect(onReceipt.mock.calls[1][0].decision.justification).toHaveLength(100);
+    });
+
+    it('uses the host minimum when that prop is set', async () => {
+      const user = userEvent.setup();
+      const onApprove = vi.fn();
+      render(
+        <ApprovalGate
+          title="Pay vendor"
+          minJustificationLength={4}
+          onApprove={onApprove}
+        />,
+      );
+      const approve = screen.getByRole('button', { name: 'Approve' });
+      expect(approve).toBeDisabled();
+      await user.click(screen.getByRole('textbox', { name: 'Why are you approving this?' }));
+      await user.paste('paid');
+      expect(approve).toBeEnabled();
+      await user.click(approve);
+      expect(onApprove).toHaveBeenCalledTimes(1);
+    });
+
+    it('signs with the app key, and with a passkey only when the approval is high-stakes', async () => {
+      const user = userEvent.setup();
+      const onReceipt = vi.fn();
+      const onApprove = vi.fn();
+      const appSigner = { sign: vi.fn(async () => ({ publicKey: 'app-key', signature: 'app-sig' })) };
+      const passkey = {
+        sign: vi.fn(async () => ({
+          algorithm: 'ES256',
+          publicKey: 'user-key',
+          signature: 'user-sig',
+          authenticatorData: 'auth',
+          clientDataJSON: 'client',
+        })),
+      };
+      const { rerender } = render(
+        <ApprovalGate
+          title="Pay vendor"
+          now={1_700_000_002_000}
+          presentedAt={1_700_000_000_000}
+          approver={{ id: 'alice' }}
+          onReceipt={onReceipt}
+          onApprove={onApprove}
+          appSigner={appSigner}
+          passkey={passkey}
+        />,
+      );
+      await user.click(screen.getByRole('button', { name: 'Approve' }));
+      expect(passkey.sign).not.toHaveBeenCalled();
+      expect(onReceipt.mock.calls[0][0].signatures).toEqual([
+        { signerType: 'app', algorithm: 'Ed25519', publicKey: 'app-key', signature: 'app-sig' },
+      ]);
+      expect(onReceipt.mock.calls[0][0].decision.approver.method).toBe('click');
+      expect(onApprove).toHaveBeenCalledTimes(1);
+
+      rerender(
+        <ApprovalGate
+          title="Pay vendor"
+          now={1_700_000_002_000}
+          presentedAt={1_700_000_000_000}
+          approver={{ id: 'alice' }}
+          onReceipt={onReceipt}
+          onApprove={onApprove}
+          appSigner={appSigner}
+          passkey={passkey}
+          highStakes
+        />,
+      );
+      await user.click(screen.getByRole('button', { name: 'Approve' }));
+      expect(passkey.sign).toHaveBeenCalledTimes(1);
+      expect(onReceipt.mock.calls[1][0].decision.approver.method).toBe('passkey');
+      expect(onReceipt.mock.calls[1][0].signatures.map((entry: { signerType: string }) => entry.signerType)).toEqual(['app', 'user']);
+    });
+
+    it('does not approve when the app signer fails', async () => {
+      const user = userEvent.setup();
+      const onApprove = vi.fn();
+      render(
+        <ApprovalGate
+          title="Pay vendor"
+          onReceipt={vi.fn()}
+          onApprove={onApprove}
+          appSigner={{ sign: async () => { throw new Error('App key refused the receipt.'); } }}
+        />,
+      );
+      await user.click(screen.getByRole('button', { name: 'Approve' }));
+      expect(onApprove).not.toHaveBeenCalled();
+      expect(screen.getByRole('alert')).toHaveTextContent('App key refused the receipt.');
+    });
+
     it('calls onApprove when Approve is clicked in simple mode', async () => {
       const user = userEvent.setup();
       const handleApprove = vi.fn();
@@ -135,6 +294,225 @@ describe('ApprovalGate', () => {
       await user.click(screen.getByRole('button', { name: 'Confirm and execute' }));
       
       expect(handleApprove).toHaveBeenCalledTimes(1);
+    });
+
+    const paymentPayload = {
+      title: 'Pay a new vendor',
+      payee: { rail: 'ach', identifier: '021000021:9981', displayName: 'Northwind Supplies' },
+      amount: { value: '240.00', currency: 'USD' },
+    };
+
+    it('approves a simple payment immediately and records review time from paint', async () => {
+      const user = userEvent.setup();
+      const onApprove = vi.fn();
+      const onReceipt = vi.fn();
+      render(
+        <ApprovalGate
+          title="Pay a new vendor"
+          now={5_000}
+          presentedAt={0}
+          presentedPayload={paymentPayload}
+          onApprove={onApprove}
+          onReceipt={onReceipt}
+        />,
+      );
+      expect(screen.getByText('Northwind Supplies')).toBeInTheDocument();
+      expect(screen.getByText('ach · 021000021:9981')).toBeInTheDocument();
+      expect(screen.getByText('240.00 USD')).toBeInTheDocument();
+      expect(screen.queryByText(/Confirm waits until the payee/)).not.toBeInTheDocument();
+      await user.click(screen.getByRole('button', { name: 'Approve' }));
+      expect(onApprove).toHaveBeenCalledTimes(1);
+      expect(onReceipt.mock.calls[0][0].decision.reviewDurationMs).toBe(0);
+    });
+
+    it('keeps confirm off until a staged payment has shown the payee and the amount', async () => {
+      const user = userEvent.setup();
+      const onApprove = vi.fn();
+      const onReject = vi.fn();
+      const onReceipt = vi.fn();
+      const start = 1_700_000_000_000;
+      const gate = (now: number) => (
+        <ApprovalGate
+          title="Pay a new vendor"
+          mode="staged"
+          now={now}
+          presentedAt={start - 60_000}
+          presentedPayload={paymentPayload}
+          onApprove={onApprove}
+          onReject={onReject}
+          onReceipt={onReceipt}
+        />
+      );
+      const { rerender } = render(gate(start));
+      expect(screen.getByText('Northwind Supplies')).toBeInTheDocument();
+      expect(screen.getByText('240.00 USD')).toBeInTheDocument();
+      expect(screen.getByText('Confirm waits until the payee and the amount have been on screen.')).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: 'Preview and continue' })).toBeEnabled();
+      expect(screen.getByRole('button', { name: 'Reject' })).toBeEnabled();
+
+      await user.click(screen.getByRole('button', { name: 'Preview and continue' }));
+      const confirm = screen.getByRole('button', { name: 'Confirm and execute' });
+      expect(confirm).toBeDisabled();
+      fireEvent.click(confirm);
+      expect(onApprove).not.toHaveBeenCalled();
+
+      rerender(gate(start + 1499));
+      expect(screen.getByRole('button', { name: 'Confirm and execute' })).toBeDisabled();
+
+      rerender(gate(start + 1500));
+      const ready = screen.getByRole('button', { name: 'Confirm and execute' });
+      expect(ready).toBeEnabled();
+      expect(screen.queryByText('Confirm waits until the payee and the amount have been on screen.')).not.toBeInTheDocument();
+      await user.click(ready);
+      expect(onApprove).toHaveBeenCalledTimes(1);
+      expect(onReceipt.mock.calls[0][0].decision.reviewDurationMs).toBe(1500);
+    });
+
+    it('lets confirm proceed once a staged payment has painted when minReviewMs is 0', async () => {
+      const user = userEvent.setup();
+      const onApprove = vi.fn();
+      render(
+        <ApprovalGate
+          title="Pay a new vendor"
+          mode="staged"
+          minReviewMs={0}
+          now={1_700_000_000_000}
+          presentedPayload={paymentPayload}
+          onApprove={onApprove}
+        />,
+      );
+      await user.click(screen.getByRole('button', { name: 'Preview and continue' }));
+      const confirm = screen.getByRole('button', { name: 'Confirm and execute' });
+      expect(confirm).toBeEnabled();
+      await user.click(confirm);
+      expect(onApprove).toHaveBeenCalledTimes(1);
+    });
+
+    it('does not ask for a passkey before the staged payment review floor', async () => {
+      const user = userEvent.setup();
+      const passkey = {
+        sign: vi.fn(async () => ({
+          algorithm: 'ES256',
+          publicKey: 'user-key',
+          signature: 'user-sig',
+          authenticatorData: 'auth',
+          clientDataJSON: 'client',
+        })),
+      };
+      const start = 1_700_000_000_000;
+      const gate = (now: number) => (
+        <ApprovalGate
+          title="Pay a new vendor"
+          mode="staged"
+          highStakes
+          now={now}
+          presentedPayload={paymentPayload}
+          onReceipt={vi.fn()}
+          appSigner={{ sign: async () => ({ publicKey: 'app-key', signature: 'app-sig' }) }}
+          passkey={passkey}
+        />
+      );
+      const { rerender } = render(gate(start));
+      await user.click(screen.getByRole('button', { name: 'Preview and continue' }));
+      fireEvent.click(screen.getByRole('button', { name: 'Confirm and execute' }));
+      expect(passkey.sign).not.toHaveBeenCalled();
+      rerender(gate(start + 1500));
+      await user.click(screen.getByRole('button', { name: 'Confirm and execute' }));
+      expect(passkey.sign).toHaveBeenCalledTimes(1);
+    });
+
+    it('enables confirm after the review floor when the host does not pass now', async () => {
+      vi.useFakeTimers();
+      const onApprove = vi.fn();
+      try {
+        render(
+          <ApprovalGate
+            title="Pay a new vendor"
+            mode="staged"
+            presentedPayload={paymentPayload}
+            onApprove={onApprove}
+          />,
+        );
+        fireEvent.click(screen.getByRole('button', { name: 'Preview and continue' }));
+        expect(screen.getByRole('button', { name: 'Confirm and execute' })).toBeDisabled();
+        await act(async () => {
+          await vi.advanceTimersByTimeAsync(1499);
+        });
+        expect(screen.getByRole('button', { name: 'Confirm and execute' })).toBeDisabled();
+        await act(async () => {
+          await vi.advanceTimersByTimeAsync(1);
+        });
+        const confirm = screen.getByRole('button', { name: 'Confirm and execute' });
+        expect(confirm).toBeEnabled();
+        fireEvent.click(confirm);
+        await act(async () => {
+          await Promise.resolve();
+        });
+        expect(onApprove).toHaveBeenCalledTimes(1);
+      } finally {
+        vi.useRealTimers();
+      }
+    });
+
+    it('shows an untrusted source, forces staged mode, and stores provenance on the receipt', async () => {
+      const user = userEvent.setup();
+      const onApprove = vi.fn();
+      const onReceipt = vi.fn();
+      const provenance = { source: 'forwarded email', url: 'https://example.com/invoice', trust: 'untrusted' as const };
+      render(
+        <ApprovalGate
+          title="Pay a forwarded invoice"
+          mode="simple"
+          provenance={provenance}
+          now={1_700_000_000_000}
+          onApprove={onApprove}
+          onReceipt={onReceipt}
+        />,
+      );
+      expect(screen.getByText('This instruction came from an untrusted source.')).toBeInTheDocument();
+      expect(screen.getByText('forwarded email', { exact: false })).toBeInTheDocument();
+      expect(screen.getByRole('link', { name: 'https://example.com/invoice' })).toHaveAttribute('href', 'https://example.com/invoice');
+      expect(screen.queryByRole('button', { name: 'Approve' })).not.toBeInTheDocument();
+      await user.click(screen.getByRole('button', { name: 'Preview and continue' }));
+      expect(onApprove).not.toHaveBeenCalled();
+      await user.click(screen.getByRole('button', { name: 'Confirm and execute' }));
+      expect(onApprove).toHaveBeenCalledTimes(1);
+      expect(onReceipt.mock.calls[0][0].provenance).toEqual(provenance);
+    });
+
+    it('keeps a trusted source on one click and lets the presented payload win', async () => {
+      const user = userEvent.setup();
+      const onReceipt = vi.fn();
+      const payloadProvenance = { source: 'customer session', trust: 'trusted' as const };
+      render(
+        <ApprovalGate
+          title="Pay vendor"
+          mode="simple"
+          now={1_700_000_000_000}
+          presentedPayload={{ title: 'Pay vendor', provenance: payloadProvenance }}
+          provenance={{ source: 'forwarded email', url: 'javascript:alert(1)', trust: 'untrusted' }}
+          onReceipt={onReceipt}
+        />,
+      );
+      expect(screen.getByText('customer session', { exact: false })).toBeInTheDocument();
+      expect(screen.getByText('Trust: Trusted')).toBeInTheDocument();
+      expect(screen.queryByText('This instruction came from an untrusted source.')).not.toBeInTheDocument();
+      expect(screen.queryByRole('link')).not.toBeInTheDocument();
+      await user.click(screen.getByRole('button', { name: 'Approve' }));
+      expect(onReceipt.mock.calls[0][0].provenance).toEqual(payloadProvenance);
+    });
+
+    it('shows an unsafe source url as text', () => {
+      render(
+        <ApprovalGate
+          title="Pay vendor"
+          provenance={{ source: 'pasted note', url: 'javascript:alert(1)', trust: 'unknown' }}
+        />,
+      );
+      expect(screen.getByText('javascript:alert(1)', { exact: false })).toBeInTheDocument();
+      expect(screen.getByText('Trust: Unknown')).toBeInTheDocument();
+      expect(screen.queryByRole('link')).not.toBeInTheDocument();
+      expect(screen.getByRole('button', { name: 'Approve' })).toBeEnabled();
     });
   });
 

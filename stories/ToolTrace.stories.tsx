@@ -228,3 +228,28 @@ export const ErrorHandling: Story = {
     expandable: true,
   },
 };
+
+export const UntrustedSource: Story = {
+  name: 'Untrusted source',
+  args: {
+    calls: [
+      {
+        id: '1',
+        name: 'read_invoice',
+        status: 'completed',
+        duration: 80,
+        timestamp: '2026-10-28T16:00:00.000Z',
+        provenance: { source: 'customer session', trust: 'trusted' },
+      },
+      {
+        id: '2',
+        name: 'send_payment',
+        status: 'completed',
+        duration: 240,
+        timestamp: '2026-10-28T16:00:02.000Z',
+        provenance: { source: 'forwarded email', url: 'https://example.com/invoice', trust: 'untrusted' },
+      },
+    ],
+    expandable: false,
+  },
+};

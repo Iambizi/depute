@@ -58,6 +58,23 @@ Delegation requires guardrails. Instead of blocking every action, `Budget Meter`
 />
 ```
 
+## Small payments
+
+Pass auto-approved payments and `nowMs`. The props below set the count, the amount, and the time span. The story shows the warning row.
+
+```tsx
+<BudgetMeter
+  label="Session Spend"
+  spent={14}
+  limit={100}
+  unit="currency"
+  nowMs={Date.now()}
+  transactions={autoApprovedPayments}
+/>
+```
+
+<StorybookEmbed story="v2-compliance-forensics-budgetmeter--small-payment-burst" />
+
 ## Solution Patterns
 
 Integrate `BudgetMeter` directly into a `DelegationGate` prior to spawning a new agent to enforce explicit limits, or embed it persistently within `RunControls` alongside pause/stop actions to maintain situational awareness of a running swarm.
@@ -75,7 +92,15 @@ Integrate `BudgetMeter` directly into a `DelegationGate` prior to spawning a new
 | `elevatedThreshold` | `number` | `60` | Percentage to trigger elevated state |
 | `criticalThreshold` | `number` | `85` | Percentage to trigger critical state |
 | `compact` | `boolean` | `false` | Render inline variant |
+| `transactions` | `SmallPayment[]` | — | Auto-approved payments in this meter's unit. Leave gated payments out. |
+| `nowMs` | `number` | — | Unix milliseconds. The burst warning stays off until this is set. |
+| `smallTxThreshold` | `string` | `"5"` | Payments strictly under this decimal count. |
+| `windowMs` | `number` | `600000` | A payment ages out when its age reaches this. |
+| `maxSmallTxCount` | `number` | `5` | The warning appears when the count is greater than this. |
+| `onSmallTxPattern` | `(pattern) => void` | — | Fires once per payee set, then again when that set changes or a new burst starts. |
 
 ## Design rationale
+
+A limit on one payment does not show a run of small ones. This meter shows that run as one warning and does not open another approval. When the row appears, and when a repeated payment stays quiet, is the pattern in [Approval record](/docs/approval-record).
 
 **Why proportional thresholds?** Raw numbers (e.g., "45,000 tokens") are meaningless without context. Auto-calculating elevated (>60%) and critical (>85%) severity colors translates abstract numbers into actionable visual urgency.

@@ -1,10 +1,10 @@
 /**
  * Portable approval receipt.
  *
- * This module hashes the receipt. It does not generate keys,
- * store keys, or sign. Program hashes on the approval machine stay
- * caller-supplied. A signature, when present, is checked by a verifier
- * the host injects.
+ * This module hashes the receipt and attaches signatures a host signer
+ * returns. It does not generate keys or store keys. Program hashes on
+ * the approval machine stay caller-supplied. A signature, when present,
+ * is checked by a verifier the host injects.
  *
  * The CLI copies this file. It imports only `./presented`.
  */
@@ -12,6 +12,7 @@
 import type { PresentedPayload, PresentedProvenance, PresentedScope } from './presented';
 
 export type ReceiptOutcome = 'approved' | 'rejected' | 'expired' | 'denied';
+export type ReceiptChoice = 'approved' | 'rejected';
 export type ReceiptMethod = 'click' | 'passkey' | 'handoff' | 'chat';
 export type ReceiptExecutionStatus = 'success' | 'failed' | 'pending' | 'reverted' | 'not-run';
 
@@ -31,6 +32,12 @@ export interface ReceiptDecision {
   reviewDurationMs?: number;
   justification?: string;
   acknowledgedTermIds?: string[];
+  /** The choice the agent recommended, when the host supplied one. */
+  agentRecommendation?: ReceiptChoice;
+  /** The choice the person made. Set only for an approve or a reject. */
+  humanChoice?: ReceiptChoice;
+  /** True when the person's choice matched the recommendation. */
+  agreed?: boolean;
 }
 
 export interface ReceiptExecution {
@@ -103,6 +110,8 @@ export interface DecisionReceiptInput {
   presentedAtMs: number;
   decidedAtMs: number;
   acknowledgedTermIds?: string[];
+  /** When set on an approve or reject, the receipt records whether the person followed it. */
+  agentRecommendation?: ReceiptChoice;
   triggers?: string[];
   provenance?: PresentedProvenance;
   highStakes?: boolean;
@@ -120,6 +129,20 @@ export interface ReceiptVerifier {
     clientDataJSON?: string;
     signerType: 'app' | 'user';
   }): Promise<boolean> | boolean;
+}
+
+/** App key. Signs the receipt hash string, prefixed `sha256:`. */
+export interface ReceiptAppSigner {
+  sign(receiptHash: string): Promise<Pick<ReceiptSignature, 'publicKey' | 'signature'>>;
+}
+
+/**
+ * User passkey. The challenge is the raw 32-byte digest inside `receiptHash`.
+ * The relying-party id stays with the host that built this signer.
+ */
+export interface ReceiptPasskeySigner {
+  sign(receiptHash: string): Promise<Required<Pick<ReceiptSignature,
+    'algorithm' | 'publicKey' | 'signature' | 'authenticatorData' | 'clientDataJSON'>>>;
 }
 
 export interface SignatureCheck {
@@ -317,6 +340,14 @@ export function buildDecisionReceipt(input: DecisionReceiptInput): ApprovalRecei
   if (input.approver && input.outcome !== 'expired') {
     decision.approver = { ...input.approver, method };
   }
+  if (
+    input.agentRecommendation
+    && (input.outcome === 'approved' || input.outcome === 'rejected')
+  ) {
+    decision.agentRecommendation = input.agentRecommendation;
+    decision.humanChoice = input.outcome;
+    decision.agreed = input.agentRecommendation === input.outcome;
+  }
   return buildReceipt({
     id: input.id ?? input.fallbackId,
     instruction: input.instruction ?? input.title,
@@ -381,4 +412,85 @@ export async function verify(
     previousReceiptHash,
     signatures,
   };
+}
+
+/** Short status for a verify button. Hash and signature failures stay distinct. */
+export function receiptCheckLabel(result: ReceiptVerification): string {
+  const hashOk = result.payload === 'match'
+    && result.receipt === 'match'
+    && result.previousReceiptHash !== 'malformed';
+  if (!hashOk) return 'Hash does not match';
+  if (result.signatures.some((entry) => entry.status === 'invalid')) {
+    return 'Hash matches. Signature does not.';
+  }
+  if (result.signatures.some((entry) => entry.status === 'unverified')) {
+    return 'Hash matches. Signature was not checked.';
+  }
+  return 'Hash matches';
+}
+
+/** Append signatures. They are outside the hash, so the digest stays put. */
+export function withSignatures(
+  receipt: ApprovalReceipt,
+  signatures: ReceiptSignature[],
+): ApprovalReceipt {
+  if (signatures.length === 0) return receipt;
+  return {
+    ...receipt,
+    signatures: [...(receipt.signatures ?? []), ...signatures],
+  };
+}
+
+function wantsPasskey(
+  outcome: ReceiptOutcome,
+  highStakes: boolean | undefined,
+  passkey: ReceiptPasskeySigner | undefined,
+): boolean {
+  const human = outcome === 'approved' || outcome === 'rejected';
+  return Boolean(highStakes) && passkey !== undefined && human;
+}
+
+/**
+ * Ask the host signers for signatures. The app signer runs for every
+ * outcome. The passkey runs only for a high-stakes approval or rejection.
+ */
+export async function signApprovalReceipt(
+  receipt: ApprovalReceipt,
+  signers: { app?: ReceiptAppSigner; passkey?: ReceiptPasskeySigner },
+): Promise<ApprovalReceipt> {
+  const jobs: Promise<ReceiptSignature>[] = [];
+  if (signers.app) {
+    const app = signers.app;
+    jobs.push(app.sign(receipt.receiptHash).then((signed) => ({
+      signerType: 'app' as const,
+      algorithm: 'Ed25519',
+      publicKey: signed.publicKey,
+      signature: signed.signature,
+    })));
+  }
+  if (wantsPasskey(receipt.decision.outcome, receipt.highStakes, signers.passkey) && signers.passkey) {
+    const passkey = signers.passkey;
+    jobs.push(passkey.sign(receipt.receiptHash).then((signed) => ({
+      signerType: 'user' as const,
+      algorithm: signed.algorithm,
+      publicKey: signed.publicKey,
+      signature: signed.signature,
+      authenticatorData: signed.authenticatorData,
+      clientDataJSON: signed.clientDataJSON,
+    })));
+  }
+  return withSignatures(receipt, await Promise.all(jobs));
+}
+
+/** Build the receipt, then attach host signatures when signers are set. */
+export async function buildSignedDecisionReceipt(
+  input: DecisionReceiptInput,
+  signers: { app?: ReceiptAppSigner; passkey?: ReceiptPasskeySigner } = {},
+): Promise<ApprovalReceipt> {
+  const method = wantsPasskey(input.outcome, input.highStakes, signers.passkey)
+    ? 'passkey'
+    : input.method;
+  const receipt = buildDecisionReceipt({ ...input, method });
+  if (!signers.app && !signers.passkey) return receipt;
+  return signApprovalReceipt(receipt, signers);
 }

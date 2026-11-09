@@ -37,6 +37,23 @@ describe('ToolTrace', () => {
       expect(screen.queryByRole('button', { name: /Details/i })).not.toBeInTheDocument();
     });
 
+    it('shows where a call came from and marks an untrusted source', () => {
+      render(
+        <ToolTrace
+          calls={[{
+            id: 'pay',
+            name: 'send_payment',
+            status: 'completed',
+            timestamp: new Date().toISOString(),
+            provenance: { source: 'forwarded email', url: 'https://example.com/invoice', trust: 'untrusted' },
+          }]}
+        />,
+      );
+      expect(screen.getByText('Untrusted')).toBeInTheDocument();
+      expect(screen.getByText('forwarded email')).toBeInTheDocument();
+      expect(screen.getByRole('link', { name: 'https://example.com/invoice' })).toBeInTheDocument();
+    });
+
     it('renders empty state', () => {
       render(<ToolTrace calls={[]} />);
       expect(screen.getByText('No tool calls yet')).toBeInTheDocument();

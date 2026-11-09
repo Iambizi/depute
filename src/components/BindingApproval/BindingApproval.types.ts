@@ -10,7 +10,7 @@
  */
 
 import type { ApprovalHandoff, HandoffContext, PresentedPayload } from '../../types/core';
-import type { ApprovalReceipt } from '../../utils/receipt';
+import type { ApprovalReceipt, ReceiptAppSigner, ReceiptPasskeySigner } from '../../utils/receipt';
 
 /** Binding approval status */
 export type BindingStatus =
@@ -42,11 +42,23 @@ export interface BindingApprovalProps {
   /** Detailed description of the binding action */
   description: string;
 
+  /** The choice the agent recommends. Recorded on the receipt when the person signs or rejects. */
+  agentRecommendation?: 'approved' | 'rejected';
+
+  /** Hide the recommendation until the person chooses. Off unless the host sets it. */
+  blind?: boolean;
+
   /** Current status */
   status?: BindingStatus;
 
   /** Terms that must be acknowledged before signing */
   terms?: BindingTerm[];
+
+  /**
+   * Extra term stating that the person is the actor for this action.
+   * Shown with the other terms. Its acknowledgement id is `liability-notice`.
+   */
+  liabilityNotice?: string;
 
   /** Require all terms to be acknowledged before enabling sign button */
   requireAllTerms?: boolean;
@@ -117,8 +129,14 @@ export interface BindingApprovalProps {
   /** Unix milliseconds when the payload was first shown. */
   presentedAt?: number;
 
-  /** Why the person signed. Optional until a later rule requires it. */
+  /** Why the person signed. A payment trigger asks them to write it here. */
   justification?: string;
+
+  /**
+   * Minimum why length. When omitted, a payment trigger requires 100 characters
+   * and any other gate leaves the why optional. Zero turns the field off.
+   */
+  minJustificationLength?: number;
 
   /** Policy reasons that opened the gate. */
   triggers?: string[];
@@ -126,8 +144,17 @@ export interface BindingApprovalProps {
   /** Hash of the previous receipt in this session, when the host has one. */
   previousReceiptHash?: string;
 
-  /** Recorded on the receipt. A passkey is required for this flag in a later change. */
+  /**
+   * Recorded on the receipt. When this is set and `passkey` is set, a
+   * signature or rejection asks for that passkey before the receipt is emitted.
+   */
   highStakes?: boolean;
+
+  /** Ed25519 app signer. When set, it signs every receipt this gate emits. */
+  appSigner?: ReceiptAppSigner;
+
+  /** User passkey. Used only when `highStakes` is set and the person decides. */
+  passkey?: ReceiptPasskeySigner;
 
   /** Fired with a hashed receipt when the person decides or the gate expires. */
   onReceipt?: (receipt: ApprovalReceipt) => void;

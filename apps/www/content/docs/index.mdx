@@ -28,6 +28,8 @@ Most UI libraries build for CRUD apps. Depute builds for the moment *after* you 
 For Product Engineers, Depute provides the UI to stop users from feeling anxious and losing context during long autonomous runs. 
 For Security & Risk Teams, Depute is compliance infrastructure. Under emerging governance standards—like the **Singapore IMDA Agentic AI Governance Framework (Jan 2026)**—providing escalation paths, defining UI checkpoints for high-stakes actions, and making humans "meaningfully accountable" is a primary regulatory expectation. Depute helps you operationalize those governance requirements in code.
 
+When an agent pays or takes an irreversible action, keep a portable record of what the person was shown and what they approved. The pattern, and the October 2026 illustrations it was checked against, are in [Approval record](/docs/approval-record). A single headline is an illustration. The pattern is the requirement.
+
 ## Defeating Cognitive Failures
 
 Human-automation research shows that humans are terrible at passively monitoring highly autonomous systems. When working with AI agents, users fall into predictable cognitive traps. Depute maps its primitives directly against these known failures:
@@ -55,6 +57,7 @@ Or start here:
 - *"I need to show the user what the agent is thinking"* → Use a [**Plan Card**](/docs/components/plan-card) + [**Confidence Meter**](/docs/components/confidence-meter)
 - *"I need to prevent users from blindly rubber-stamping approvals"* → Use an [**Automation Bias Alert**](/docs/components/automation-bias-alert) wrapping an [**Approval Gate**](/docs/components/approval-gate)
 - *"I need a person to confirm an irreversible action, then show the backend's receipt"* → Use a [**Binding Approval**](/docs/components/binding-approval) + [**Transaction Receipt**](/docs/components/transaction-receipt). Those components display a signature or hash your backend produced. They do not sign.
+- *"I need a record of what the person was shown and what they approved"* → Read [**Approval record**](/docs/approval-record), then keep the `ApprovalReceipt` your gate emits.
 - *"I need to roll back a sequence of 40 API calls"* → Use a [**Rollback Timeline**](/docs/components/rollback-timeline) + [**State Diff**](/docs/components/state-diff)
 
 ## Distribution model

@@ -99,6 +99,8 @@ This closes the "Execution Amnesia" loop by confirming to the user that their id
 
 ## Design rationale
 
+A decision record is the human half of the [approval record](/docs/approval-record): who approved, the why they wrote, and the hash of the payload they were shown. The transaction receipt remains the machine half, the action that ran.
+
 **Why not just use `TransactionReceipt`?**
 A `TransactionReceipt` logs what the *machine* did (e.g., "Deployed smart contract `0x123` at block `8841`"). A `DecisionRecord` logs what the *human* did (e.g., "Alice approved the contract deployment because the Q/A tests passed"). 
 
