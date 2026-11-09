@@ -180,6 +180,23 @@
 .channelNote {background: var(--ax-bg-subtle);
   color: var(--ax-fg-default);}
 
+.assumed {margin: 0 0 var(--ax-space-3);
+  padding: var(--ax-space-3);
+  border-radius: var(--ax-radius-sm);
+  background: var(--ax-status-warning-bg);
+  color: var(--ax-status-warning-fg);
+  border: var(--ax-border-width) solid var(--ax-status-warning-border);
+  font-size: var(--ax-text-sm);
+  line-height: var(--ax-leading-lg);}
+
+.assumedList {margin: var(--ax-space-2) 0;
+  padding-left: var(--ax-space-4);}
+
+.assumedCheck {display: flex;
+  align-items: center;
+  gap: var(--ax-space-2);
+  font-weight: var(--ax-weight-semibold);}
+
 .actorWarning {margin: 0 0 var(--ax-space-3);
   padding: var(--ax-space-3);
   border-radius: var(--ax-radius-sm);

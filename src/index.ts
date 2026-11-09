@@ -41,6 +41,8 @@ export type {
   LimitEnforcement,
   ReceiptActor,
   CredentialMode,
+  ApprovalRequirement,
+  RequirementStatus,
   ReceiptPasskeySigner,
   ReceiptVerification,
 } from './utils/receipt';
@@ -49,6 +51,7 @@ export {
   buildReceipt,
   buildSignedDecisionReceipt,
   actorWarning,
+  requirementsNeedCheck,
   limitDeclaration,
   receiptCheckLabel,
   verify,
