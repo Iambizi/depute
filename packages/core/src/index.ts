@@ -34,6 +34,8 @@ export type {
   ReceiptActor,
   CredentialMode,
   TermsShown,
+  PaymentFollowUp,
+  PaymentFollowUpState,
   ApprovalRequirement,
   RequirementStatus,
   ReceiptDraft,
@@ -50,6 +52,7 @@ export type {
 } from './receipt';
 export {
   buildDecisionReceipt,
+  buildPaymentFollowUp,
   buildReceipt,
   buildSignedDecisionReceipt,
   canonicalize,

@@ -181,5 +181,22 @@ describe('TransactionReceipt', () => {
       expect(createObjectURL).toHaveBeenCalledTimes(1);
       vi.unstubAllGlobals();
     });
+
+    it('lists later payment states without changing the displayed status', () => {
+      render(
+        <TransactionReceipt
+          {...defaultProps}
+          followUps={[
+            { state: 'held', at: '2026-11-09T12:00:00.000Z' },
+            { state: 'voided', at: '2026-11-09T12:05:00.000Z' },
+            { state: 'refunded', at: '2026-11-09T12:10:00.000Z' },
+          ]}
+        />,
+      );
+      expect(screen.getByText('Held')).toBeInTheDocument();
+      expect(screen.getByText('Voided')).toBeInTheDocument();
+      expect(screen.getByText('Refunded')).toBeInTheDocument();
+      expect(screen.getByText('Success')).toBeInTheDocument();
+    });
   });
 });

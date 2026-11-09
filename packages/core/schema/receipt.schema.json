@@ -85,6 +85,10 @@
           "$ref": "#/definitions/TermsShown",
           "description": "Hash of the terms shown. The full text stays with the integrator."
         },
+        "payment": {
+          "$ref": "#/definitions/PaymentFollowUp",
+          "description": "Set only on a follow-up receipt. The earlier receipt is not rewritten."
+        },
         "attestations": {
           "type": "array",
           "items": {
@@ -571,6 +575,31 @@
       ],
       "additionalProperties": false,
       "description": "Hash of the terms the person was shown. The integrator keeps the full text."
+    },
+    "PaymentFollowUp": {
+      "type": "object",
+      "properties": {
+        "state": {
+          "$ref": "#/definitions/PaymentFollowUpState"
+        },
+        "at": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "state",
+        "at"
+      ],
+      "additionalProperties": false
+    },
+    "PaymentFollowUpState": {
+      "type": "string",
+      "enum": [
+        "held",
+        "voided",
+        "refunded"
+      ],
+      "description": "A later payment state. It lives on a new receipt, never on a signed one."
     },
     "ReceiptAttestation": {
       "type": "object",
