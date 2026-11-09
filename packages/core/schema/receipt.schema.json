@@ -67,6 +67,12 @@
         "actor": {
           "$ref": "#/definitions/ReceiptActor"
         },
+        "requirements": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ApprovalRequirement"
+          }
+        },
         "attestations": {
           "type": "array",
           "items": {
@@ -501,6 +507,31 @@
         "delegated-token",
         "shared-user-credentials",
         "own-identity",
+        "unknown"
+      ]
+    },
+    "ApprovalRequirement": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/definitions/RequirementStatus"
+        }
+      },
+      "required": [
+        "text",
+        "status"
+      ],
+      "additionalProperties": false,
+      "description": "Something the agent needed. `assumed` and `unknown` need the person to say they checked."
+    },
+    "RequirementStatus": {
+      "type": "string",
+      "enum": [
+        "confirmed-with-user",
+        "assumed",
         "unknown"
       ]
     },

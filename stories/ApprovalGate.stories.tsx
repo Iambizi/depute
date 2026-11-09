@@ -389,6 +389,22 @@ export const UntrustedSource: Story = {
   },
 };
 
+export const AssumedRequirements: Story = {
+  name: 'The agent assumed',
+  args: {
+    status: 'pending',
+    mode: 'simple',
+    title: 'Buy a shirt',
+    description: 'The agent filled in details the person did not confirm.',
+    now: STORY_NOW,
+    requirements: [
+      { text: 'Size large', status: 'assumed' },
+      { text: 'Color navy', status: 'confirmed-with-user' },
+      { text: 'Gift wrap', status: 'unknown' },
+    ],
+  },
+};
+
 export const SharedLogin: Story = {
   name: 'Shared login',
   args: {

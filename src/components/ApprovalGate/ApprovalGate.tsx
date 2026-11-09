@@ -25,7 +25,7 @@ import {
   channelWarningText,
   reachabilityLabel,
 } from '../../utils/channel';
-import { actorWarning, buildDecisionReceipt, buildSignedDecisionReceipt } from '../../utils/receipt';
+import { actorWarning, buildDecisionReceipt, buildSignedDecisionReceipt, requirementsNeedCheck } from '../../utils/receipt';
 import type { ReceiptMethod, ReceiptOutcome } from '../../utils/receipt';
 import { changeKindLabel, justificationLength, requiredJustificationLength } from '../../utils/triggers';
 import type { ApprovalGateProps, HandoffContext, StagedStep } from './ApprovalGate.types';
@@ -188,6 +188,7 @@ export function ApprovalGate({
   changeRequest,
   limits,
   actor,
+  requirements,
   onReceipt,
   appSigner,
   passkey,
@@ -205,6 +206,9 @@ export function ApprovalGate({
 
   // Staged mode state
   const [stagedStep, setStagedStep] = useState<StagedStep>('previewing');
+  const [requirementsChecked, setRequirementsChecked] = useState(false);
+  const needsRequirementCheck = requirementsNeedCheck(requirements);
+  const requirementsReady = !needsRequirementCheck || requirementsChecked;
 
   // Countdown timer
   const [timeRemaining, setTimeRemaining] = useState<number | null>(
@@ -461,6 +465,7 @@ export function ApprovalGate({
       changeRequest,
       limits,
       actor,
+      requirements,
       previousReceiptHash,
       fallbackId: pendingApprovalId || 'local',
     };
@@ -490,6 +495,7 @@ export function ApprovalGate({
     changeRequest,
     limits,
     actor,
+    requirements,
     previousReceiptHash,
     pendingApprovalId,
     appSigner,
@@ -526,11 +532,11 @@ export function ApprovalGate({
       announce('Confirm to proceed with approval');
       return;
     }
-    if (!whyReady || !reviewReady || channelBlocked) return;
+    if (!whyReady || !reviewReady || channelBlocked || !requirementsReady) return;
     void decide('approved', 'click', () => {
       onApprove?.();
     });
-  }, [effectiveMode, stagedStep, onApprove, announce, decide, whyReady, reviewReady, channelBlocked]);
+  }, [effectiveMode, stagedStep, onApprove, announce, decide, whyReady, reviewReady, channelBlocked, requirementsReady]);
 
   const handleReject = useCallback(() => {
     void decide('rejected', isHandoffPending ? 'handoff' : 'click', () => {
@@ -642,6 +648,25 @@ export function ApprovalGate({
               )}
             </p>
             <p className={styles.sourceLine}>Trust: {trustLabel(shownProvenance.trust)}</p>
+          </div>
+        )}
+
+        {needsRequirementCheck && (
+          <div className={styles.assumed} role="group" aria-label="The agent assumed">
+            <p className={styles.channelTitle}>The agent assumed:</p>
+            <ul className={styles.assumedList}>
+              {requirements?.filter((item) => item.status !== 'confirmed-with-user').map((item) => (
+                <li key={`${item.status}:${item.text}`}>{item.text}</li>
+              ))}
+            </ul>
+            <label className={styles.assumedCheck}>
+              <input
+                type="checkbox"
+                checked={requirementsChecked}
+                onChange={(event) => setRequirementsChecked(event.target.checked)}
+              />
+              I checked these
+            </label>
           </div>
         )}
 
@@ -811,7 +836,7 @@ export function ApprovalGate({
             className={`${styles.btn} ${styles.btnApprove}`}
             onClick={handleApprove}
             type="button"
-            disabled={signing || ((effectiveMode !== 'staged' || stagedStep === 'confirming') && !whyReady) || (paymentFloor && stagedStep === 'confirming' && !reviewReady) || (channelBlocked && !(effectiveMode === 'staged' && stagedStep === 'previewing'))}
+            disabled={signing || ((effectiveMode !== 'staged' || stagedStep === 'confirming') && !whyReady) || (paymentFloor && stagedStep === 'confirming' && !reviewReady) || (channelBlocked && !(effectiveMode === 'staged' && stagedStep === 'previewing')) || (!requirementsReady && !(effectiveMode === 'staged' && stagedStep === 'previewing'))}
             aria-describedby={[
               whyMinimum > 0 ? `${whyId}-count` : null,
               paymentFloor && !reviewReady ? reviewStatusId : null,
