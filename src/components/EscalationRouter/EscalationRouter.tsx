@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import type React from 'react';
 import { IconChevron } from '../../utils/icons';
-import { buildDecisionReceipt, buildSignedDecisionReceipt } from '../../utils/receipt';
+import { buildDecisionReceipt, buildSignedDecisionReceipt, type StopReport } from '../../utils/receipt';
 import styles from './EscalationRouter.module.css';
 import type { EscalationRouterProps, StopState } from './EscalationRouter.types';
 
@@ -26,6 +26,7 @@ export const EscalationRouter: React.FC<EscalationRouterProps> = ({
 }) => {
   const [traceExpanded, setTraceExpanded] = useState(false);
   const [stopPhase, setStopPhase] = useState<StopState>('armed');
+  const [stopReport, setStopReport] = useState<StopReport | null>(null);
   const [stopError, setStopError] = useState<string | null>(null);
 
   const stop = async () => {
@@ -35,7 +36,13 @@ export const EscalationRouter: React.FC<EscalationRouterProps> = ({
     try {
       const result = await onStop();
       if (result?.confirmed) {
+        const stop: StopReport = {};
+        if (result.pending) stop.pending = result.pending;
+        if (result.completedFinal) stop.completedFinal = result.completedFinal;
+        if (result.mayHaveRun) stop.mayHaveRun = result.mayHaveRun;
+        const hasLists = stop.pending || stop.completedFinal || stop.mayHaveRun;
         setStopPhase('stopped');
+        setStopReport(hasLists ? stop : null);
         onReceipt?.(buildDecisionReceipt({
           title: `Stop ${failedAgent}`,
           outcome: 'approved',
@@ -43,6 +50,7 @@ export const EscalationRouter: React.FC<EscalationRouterProps> = ({
           presentedAtMs: Date.now(),
           decidedAtMs: Date.now(),
           fallbackId: failedAgent,
+          stop: hasLists ? stop : undefined,
         }));
         return;
       }
@@ -162,6 +170,24 @@ export const EscalationRouter: React.FC<EscalationRouterProps> = ({
         </p>
       )}
       {stopError && <p role="alert">{stopError}</p>}
+      {stopReport?.pending && stopReport.pending.length > 0 && (
+        <section className={styles.stopLists} aria-label="Still pending">
+          <h4 className={styles.stopHeading}>Still pending</h4>
+          <ul>{stopReport.pending.map((item) => <li key={item.id}>{item.label}</li>)}</ul>
+        </section>
+      )}
+      {stopReport?.completedFinal && stopReport.completedFinal.length > 0 && (
+        <section className={styles.stopLists} aria-label="Already final">
+          <h4 className={styles.stopHeading}>Already final</h4>
+          <ul>{stopReport.completedFinal.map((item) => <li key={item.id}>{item.label}</li>)}</ul>
+        </section>
+      )}
+      {stopReport?.mayHaveRun && stopReport.mayHaveRun.length > 0 && (
+        <section className={styles.stopLists} aria-label="May have run">
+          <h4 className={styles.stopHeading}>May have run</h4>
+          <ul>{stopReport.mayHaveRun.map((item) => <li key={item.id}>{item.label}</li>)}</ul>
+        </section>
+      )}
     </div>
   );
 };

@@ -71,6 +71,17 @@ export const Failed: Story = {
   },
 };
 
+export const UnknownFollowUp: Story = {
+  name: 'Unknown payment follow-up',
+  args: {
+    transactionId: 'TX-44110',
+    title: 'Card charge',
+    status: 'pending',
+    timestamp: '2026-11-16T16:00:00Z',
+    followUps: [{ state: 'unknown', at: '2026-11-16T16:05:00.000Z' }],
+  },
+};
+
 export const Reverted: Story = {
   args: {
     transactionId: 'TX-98767',

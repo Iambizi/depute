@@ -326,6 +326,35 @@ describe('buildPaymentFollowUp', () => {
   });
 });
 
+describe('stop reports and unknown payments', () => {
+  it('hashes stop lists and an unknown payment follow-up', async () => {
+    const stop = buildDecisionReceipt({
+      title: 'Stop pay-bot',
+      outcome: 'approved',
+      kind: 'stop',
+      presentedAtMs: 1,
+      decidedAtMs: 2,
+      fallbackId: 'pay-bot',
+      stop: {
+        pending: [{ id: 'p1', label: 'Open order' }],
+        completedFinal: [{ id: 'c1', label: 'Settled transfer' }],
+        mayHaveRun: [{ id: 'm1', label: 'Card charge' }],
+      },
+    });
+    expect((await verify(stop)).valid).toBe(true);
+    const edited = { ...stop, stop: { ...stop.stop, mayHaveRun: [{ id: 'm1', label: 'Cancelled' }] } };
+    expect((await verify(edited)).receipt).toBe('mismatch');
+    const followUp = buildPaymentFollowUp({
+      previousReceiptHash: stop.receiptHash,
+      state: 'unknown',
+      atMs: Date.parse('2026-11-16T16:00:00.000Z'),
+      title: 'May have run',
+    });
+    expect(followUp.payment?.state).toBe('unknown');
+    expect((await verify(followUp)).valid).toBe(true);
+  });
+});
+
 describe('payload binding', () => {
   it('matches only the exact presented payload and treats a second use as declared', async () => {
     const receipt = buildDecisionReceipt({

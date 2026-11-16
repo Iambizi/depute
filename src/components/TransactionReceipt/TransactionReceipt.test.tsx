@@ -196,7 +196,20 @@ describe('TransactionReceipt', () => {
       expect(screen.getByText('Held')).toBeInTheDocument();
       expect(screen.getByText('Voided')).toBeInTheDocument();
       expect(screen.getByText('Refunded')).toBeInTheDocument();
+      expect(screen.queryByText('Unknown')).not.toBeInTheDocument();
       expect(screen.getByText('Success')).toBeInTheDocument();
+    });
+
+    it('labels an unknown payment follow-up as Unknown', () => {
+      render(
+        <TransactionReceipt
+          {...defaultProps}
+          followUps={[{ state: 'unknown', at: '2026-11-16T12:00:00.000Z' }]}
+        />,
+      );
+      expect(screen.getByText('Unknown')).toBeInTheDocument();
+      expect(screen.queryByText('Voided')).not.toBeInTheDocument();
+      expect(screen.queryByText('Refunded')).not.toBeInTheDocument();
     });
   });
 });

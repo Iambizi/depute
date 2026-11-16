@@ -128,6 +128,32 @@ describe('EscalationRouter', () => {
       expect(passkey.sign).not.toHaveBeenCalled();
     });
 
+    it('lists pending, final, and may-have-run outcomes without calling them cancelled', async () => {
+      const user = userEvent.setup();
+      const onReceipt = vi.fn();
+      render(
+        <EscalationRouter
+          {...BASE_PROPS}
+          onReceipt={onReceipt}
+          onStop={async () => ({
+            confirmed: true,
+            pending: [{ id: 'p1', label: 'Open order' }],
+            completedFinal: [{ id: 'c1', label: 'Settled transfer' }],
+            mayHaveRun: [{ id: 'm1', label: 'Card charge' }],
+          })}
+        />,
+      );
+      await user.click(screen.getByRole('button', { name: 'Stop' }));
+      expect(screen.getByRole('region', { name: 'Still pending' })).toHaveTextContent('Open order');
+      expect(screen.getByRole('region', { name: 'Already final' })).toHaveTextContent('Settled transfer');
+      expect(screen.getByRole('region', { name: 'May have run' })).toHaveTextContent('Card charge');
+      expect(screen.queryByText(/cancelled/i)).not.toBeInTheDocument();
+      const receipt = onReceipt.mock.calls[0][0];
+      expect(receipt.kind).toBe('stop');
+      expect(receipt.stop.mayHaveRun).toEqual([{ id: 'm1', label: 'Card charge' }]);
+      expect(receipt.receiptHash.startsWith('sha256:')).toBe(true);
+    });
+
     it('shows unknown when the host does not confirm', async () => {
       const user = userEvent.setup();
       const onReceipt = vi.fn();

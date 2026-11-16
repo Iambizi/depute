@@ -157,7 +157,7 @@ export function TransactionReceipt({
         <ol className={styles.lineItems} aria-label="Later payment states">
           {followUps.map((item) => (
             <li key={`${item.state}:${item.at}`} className={styles.lineItem}>
-              <span className={styles.lineLabel}>{item.state === 'held' ? 'Held' : item.state === 'voided' ? 'Voided' : 'Refunded'}</span>
+              <span className={styles.lineLabel}>{item.state === 'held' ? 'Held' : item.state === 'voided' ? 'Voided' : item.state === 'refunded' ? 'Refunded' : 'Unknown'}</span>
               <span className={styles.lineValue}>{formatStamp(item.at)}</span>
             </li>
           ))}

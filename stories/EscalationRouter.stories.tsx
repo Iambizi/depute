@@ -105,6 +105,19 @@ export const EmergencyStop: Story = {
   },
 };
 
+export const StopAlreadyFinal: Story = {
+  name: 'Stop shows what is already final',
+  args: {
+    ...generateMockEscalation(),
+    onStop: async () => ({
+      confirmed: true,
+      pending: [{ id: 'p1', label: 'Open order' }],
+      completedFinal: [{ id: 'c1', label: 'Settled transfer' }],
+      mayHaveRun: [{ id: 'm1', label: 'Card charge' }],
+    }),
+  },
+};
+
 export const BasicUsage: Story = {
   name: 'Basic Usage',
   args: {

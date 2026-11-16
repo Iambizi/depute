@@ -44,6 +44,8 @@ export type {
   TermsShown,
   PaymentFollowUp,
   PaymentFollowUpState,
+  StopOutcomeItem,
+  StopReport,
   RevokeMethod,
   RevokeNotice,
   RevokeRecord,
