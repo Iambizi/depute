@@ -451,6 +451,22 @@ export const AgentRequestedChange: Story = {
   },
 };
 
+export const ProhibitsAgents: Story = {
+  name: 'Counterparty prohibits agents',
+  args: {
+    status: 'pending',
+    mode: 'simple',
+    title: 'Book a flight',
+    description: 'The integrator says this merchant does not allow agents.',
+    now: STORY_NOW,
+    counterpartyPolicy: {
+      stance: 'prohibits-agents',
+      sourceUrl: 'https://example.invalid/contract',
+      checkedAt: '2026-11-16T12:00:00.000Z',
+    },
+  },
+};
+
 export const OversightProfile: Story = {
   name: 'Oversight profile',
   args: {

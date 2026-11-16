@@ -116,6 +116,10 @@
           "$ref": "#/definitions/OversightProfile",
           "description": "Derived labels. Not a supervisory determination."
         },
+        "counterpartyPolicy": {
+          "$ref": "#/definitions/CounterpartyPolicy",
+          "description": "Integrator-declared rule for agents at this counterparty."
+        },
         "attestations": {
           "type": "array",
           "items": {
@@ -885,6 +889,35 @@
         "staged",
         "simple",
         "instruction-only",
+        "unknown"
+      ]
+    },
+    "CounterpartyPolicy": {
+      "type": "object",
+      "properties": {
+        "stance": {
+          "$ref": "#/definitions/CounterpartyStance"
+        },
+        "sourceUrl": {
+          "type": "string"
+        },
+        "checkedAt": {
+          "type": "string",
+          "description": "ISO-8601."
+        }
+      },
+      "required": [
+        "stance"
+      ],
+      "additionalProperties": false,
+      "description": "Integrator-declared. depute does not check the merchant's rule."
+    },
+    "CounterpartyStance": {
+      "type": "string",
+      "enum": [
+        "prohibits-agents",
+        "permits-at-user-risk",
+        "requires-registration",
         "unknown"
       ]
     },

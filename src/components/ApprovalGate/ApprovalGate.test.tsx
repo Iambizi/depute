@@ -801,6 +801,26 @@ describe('ApprovalGate', () => {
     });
   });
 
+  describe('counterparty policy', () => {
+    it('shows the prohibition banner and stores the declared stance', async () => {
+      const user = userEvent.setup();
+      const onReceipt = vi.fn();
+      const { rerender } = render(
+        <ApprovalGate
+          title="Book a flight"
+          onReceipt={onReceipt}
+          counterpartyPolicy={{ stance: 'prohibits-agents', checkedAt: '2026-11-16T12:00:00.000Z' }}
+        />,
+      );
+      expect(screen.getByText(/doesn't allow agents to act here/)).toBeInTheDocument();
+      expect(screen.getByText(/Declared by the integrator/)).toBeInTheDocument();
+      await user.click(screen.getByRole('button', { name: 'Approve' }));
+      expect(onReceipt.mock.calls[0][0].counterpartyPolicy.stance).toBe('prohibits-agents');
+      rerender(<ApprovalGate title="Book a flight" counterpartyPolicy={{ stance: 'permits-at-user-risk' }} />);
+      expect(screen.queryByText(/doesn't allow agents to act here/)).not.toBeInTheDocument();
+    });
+  });
+
   describe('oversight profile', () => {
     it('shows depute labels and stores them on the receipt', async () => {
       const user = userEvent.setup();
