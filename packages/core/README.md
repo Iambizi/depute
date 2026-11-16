@@ -6,4 +6,4 @@ This package is not published. The approval machine stays here. `ax-depute add` 
 
 Recording a transition here makes the decision legible. It does not make the action safe, and it does not absorb liability. The caller's server decides.
 
-Code Mode sandboxes (a V8 isolate, or another edge runtime) are a live place to run an approved program. The example server in `examples/server-enforcement` stays on Node. Which runtime the example should target (epic Q3) is still open.
+Code Mode sandboxes (a V8 isolate, or another edge runtime) are a live place to run an approved program. Dispatch checks for that program live in `src/machine.ts`. `test/machine.test.ts` covers them. This package compares a caller-supplied program hash and does not run the program. There is no example server in this repo. Which runtime an example should target (epic Q3) is still open.
