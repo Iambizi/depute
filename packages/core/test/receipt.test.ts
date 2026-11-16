@@ -5,6 +5,7 @@ import {
   approvalUsable,
   executionMatches,
   describeOversight,
+  counterpartyBannerCopy,
   buildPaymentFollowUp,
   buildRevokeNotice,
   buildRevokeReceipt,
@@ -325,6 +326,31 @@ describe('buildPaymentFollowUp', () => {
     expect(followUp.payment).toEqual({ state: 'refunded', at: '2026-11-09T12:10:00.000Z' });
     expect(followUp.receiptHash).not.toBe(original.receiptHash);
     expect((await verify(followUp)).valid).toBe(true);
+  });
+});
+
+describe('counterparty policy', () => {
+  it('hashes a declared prohibition and banners only that stance', async () => {
+    expect(counterpartyBannerCopy('prohibits-agents')?.description).toMatch(/doesn't allow agents/);
+    expect(counterpartyBannerCopy('permits-at-user-risk')).toBeUndefined();
+    const receipt = buildDecisionReceipt({
+      title: 'Book a flight',
+      outcome: 'approved',
+      presentedAtMs: 1,
+      decidedAtMs: 2,
+      fallbackId: 'local',
+      counterpartyPolicy: {
+        stance: 'prohibits-agents',
+        sourceUrl: 'https://example.invalid/policy',
+        checkedAt: '2026-11-16T12:00:00.000Z',
+      },
+    });
+    expect((await verify(receipt)).valid).toBe(true);
+    const edited = {
+      ...receipt,
+      counterpartyPolicy: { ...receipt.counterpartyPolicy!, stance: 'unknown' as const },
+    };
+    expect((await verify(edited)).receipt).toBe('mismatch');
   });
 });
 

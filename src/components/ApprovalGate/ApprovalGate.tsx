@@ -25,7 +25,7 @@ import {
   channelWarningText,
   reachabilityLabel,
 } from '../../utils/channel';
-import { DEFAULT_APPROVAL_EXPIRY_MS, actorWarning, bindingStatusText, buildDecisionReceipt, buildMandateReceipt, buildSignedDecisionReceipt, requirementsNeedCheck, type AutonomyMode } from '../../utils/receipt';
+import { DEFAULT_APPROVAL_EXPIRY_MS, actorWarning, bindingStatusText, buildDecisionReceipt, buildMandateReceipt, buildSignedDecisionReceipt, counterpartyBannerCopy, requirementsNeedCheck, type AutonomyMode } from '../../utils/receipt';
 import type { ReceiptMethod, ReceiptOutcome } from '../../utils/receipt';
 import { changeKindLabel, justificationLength, requiredJustificationLength } from '../../utils/triggers';
 import type { ApprovalGateProps, HandoffContext, StagedStep } from './ApprovalGate.types';
@@ -236,6 +236,7 @@ export function ApprovalGate({
   firstUse = true,
   onAutonomyChoice,
   oversight,
+  counterpartyPolicy,
   onReceipt,
   appSigner,
   passkey,
@@ -295,6 +296,7 @@ export function ApprovalGate({
   const [approvalLeft, setApprovalLeft] = useState(() => Math.ceil((approvalDeadlineMs - (now ?? Date.now())) / 1000));
   const approvalExpired = approvalLeft <= 0;
   const bindingBlocked = bindingStatus === 'voided' || bindingStatus === 'used';
+  const counterpartyCopy = counterpartyPolicy ? counterpartyBannerCopy(counterpartyPolicy.stance) : undefined;
   const paymentPaintedAtRef = useRef<number | null>(null);
   const [reviewClock, setReviewClock] = useState<number | null>(null);
   const paymentFields = presentedPayload?.payee != null && presentedPayload.amount != null;
@@ -523,6 +525,7 @@ export function ApprovalGate({
       requirements,
       termsShown,
       oversight,
+      counterpartyPolicy,
       previousReceiptHash,
       fallbackId: pendingApprovalId || 'local',
     };
@@ -557,6 +560,7 @@ export function ApprovalGate({
     requirements,
     termsShown,
     oversight,
+    counterpartyPolicy,
     previousReceiptHash,
     pendingApprovalId,
     appSigner,
@@ -727,6 +731,11 @@ export function ApprovalGate({
               }));
             }}
           />
+        )}
+        {counterpartyCopy && (
+          <p className={styles.channelWarning} role="status">
+            <strong>{counterpartyCopy.label}.</strong> {counterpartyCopy.description}
+          </p>
         )}
         {oversight && (
           <p className={styles.provenanceNote} role="status">

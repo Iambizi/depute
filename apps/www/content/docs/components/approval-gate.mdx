@@ -178,6 +178,7 @@ Pass `provenance` with a source and a trust value. An untrusted source shows a w
 | `autonomyChoice` | `boolean` | `false` | Asks for a standing choice. Nothing is preselected. See [Autonomy choice](/docs/autonomy-choice). |
 | `allowConfirmNone` | `boolean` | `false` | Offers confirm none. Off unless the host sets it. |
 | `oversight` | `OversightProfile` | — | Labels from `describeOversight`. Stored on the receipt. Not a compliance claim. |
+| `counterpartyPolicy` | `CounterpartyPolicy` | — | Integrator-declared stance. `prohibits-agents` shows the prohibition sentence. The field is stored on the receipt. |
 | `approvalChannel` | `ApprovalChannel` | — | Integrator-declared channel. A high-stakes approve stays off when reachability is `yes` or `unknown`. |
 | `changeRequest` | `ChangeRequest` | — | Limit or permission change. An agent initiator shows the old and new values and is high-stakes. |
 | `actor` | `ReceiptActor` | — | Agent, credential mode, and who they act for. A shared login shows a warning. |

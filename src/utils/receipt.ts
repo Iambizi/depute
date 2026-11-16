@@ -431,6 +431,46 @@ export function describeOversight(input: {
   return { consequence, agency, oversight };
 }
 
+export type CounterpartyStance =
+  | 'prohibits-agents'
+  | 'permits-at-user-risk'
+  | 'requires-registration'
+  | 'unknown';
+
+/** Integrator-declared. depute does not check the merchant's rule. */
+export interface CounterpartyPolicy {
+  stance: CounterpartyStance;
+  sourceUrl?: string;
+  /** ISO-8601. */
+  checkedAt?: string;
+}
+
+const COUNTERPARTY_STANCES = new Set<CounterpartyStance>([
+  'prohibits-agents',
+  'permits-at-user-risk',
+  'requires-registration',
+  'unknown',
+]);
+
+export function assertCounterpartyPolicy(value: CounterpartyPolicy): void {
+  if (!COUNTERPARTY_STANCES.has(value.stance)) throw new Error('counterparty stance is not recognized.');
+  if (value.sourceUrl !== undefined && (typeof value.sourceUrl !== 'string' || value.sourceUrl.trim() === '')) {
+    throw new Error('counterparty sourceUrl must be a URL.');
+  }
+  if (value.checkedAt !== undefined && !isTime(value.checkedAt)) {
+    throw new Error('counterparty checkedAt must be a time.');
+  }
+}
+
+/** Copy for a merchant that declares it does not allow agents. Other stances have no banner. */
+export function counterpartyBannerCopy(stance: CounterpartyStance): { label: string; description: string } | undefined {
+  if (stance !== 'prohibits-agents') return undefined;
+  return {
+    label: 'Agents not allowed',
+    description: "This merchant doesn't allow agents to act here; the booking may be cancelled. Declared by the integrator.",
+  };
+}
+
 export function limitDeclaration(limit: DeclaredLimit): string {
   if (limit.enforcement === 'server') {
     return limit.enforcedBy
@@ -536,6 +576,8 @@ export interface ApprovalReceipt {
   authorizedBy?: AuthorizedBy;
   /** Derived labels. Not a supervisory determination. */
   oversight?: OversightProfile;
+  /** Integrator-declared rule for agents at this counterparty. */
+  counterpartyPolicy?: CounterpartyPolicy;
   attestations?: ReceiptAttestation[];
   previousReceiptHash?: string;
   signatures?: ReceiptSignature[];
@@ -567,6 +609,7 @@ export interface ReceiptDraft {
   mandate?: MandateRecord;
   authorizedBy?: AuthorizedBy;
   oversight?: OversightProfile;
+  counterpartyPolicy?: CounterpartyPolicy;
   attestations?: ReceiptAttestation[];
   previousReceiptHash?: string;
   signatures?: ReceiptSignature[];
@@ -608,6 +651,7 @@ export interface DecisionReceiptInput {
   stop?: StopReport;
   authorizedBy?: AuthorizedBy;
   oversight?: OversightProfile;
+  counterpartyPolicy?: CounterpartyPolicy;
   fallbackId: string;
 }
 
@@ -827,6 +871,7 @@ export function buildReceipt(draft: ReceiptDraft): ApprovalReceipt {
   }
   if (draft.authorizedBy) assertAuthorizedBy(draft.authorizedBy);
   if (draft.oversight) assertOversightProfile(draft.oversight);
+  if (draft.counterpartyPolicy) assertCounterpartyPolicy(draft.counterpartyPolicy);
   const payloadHash = sha256(canonicalize(draft.payload));
   const unsigned = {
     version: '1' as const,
@@ -854,6 +899,7 @@ export function buildReceipt(draft: ReceiptDraft): ApprovalReceipt {
     mandate: draft.mandate,
     authorizedBy: draft.authorizedBy,
     oversight: draft.oversight,
+    counterpartyPolicy: draft.counterpartyPolicy,
     attestations: draft.attestations,
     previousReceiptHash: draft.previousReceiptHash,
   };
@@ -1040,6 +1086,7 @@ export function buildDecisionReceipt(input: DecisionReceiptInput): ApprovalRecei
     stop: input.stop,
     authorizedBy: input.authorizedBy,
     oversight: input.oversight,
+    counterpartyPolicy: input.counterpartyPolicy,
   });
 }
 

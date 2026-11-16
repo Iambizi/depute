@@ -76,6 +76,10 @@ Render `PolicyBanner` at the top of the supervision viewport. Using `mode="produ
 | `showLiveIndicator` | `boolean` | `false` | Show pulsing dot for live modes |
 | `collapsible` | `boolean` | `false` | Allow banner to collapse |
 
+## A merchant that does not allow agents
+
+Pass `counterpartyPolicy` to [Approval Gate](/docs/components/approval-gate). When the stance is `prohibits-agents`, the gate shows "This merchant doesn't allow agents to act here; the booking may be cancelled." The copy says the stance is declared. Other stances do not use that sentence. `counterpartyBannerCopy` returns the same label and description for a host that wants them on this banner. No new banner mode is added. The gate does not import this component.
+
 ## Design rationale
 
 **Why a persistent banner?** Agent oversight interfaces look identical whether running on test data or production servers. A persistent banner prevents operator error by anchoring the environment context at the top of the supervision viewport.
