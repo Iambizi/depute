@@ -327,6 +327,54 @@ describe('buildPaymentFollowUp', () => {
   });
 });
 
+describe('authorizedBy', () => {
+  it('verifies only when the mandate hash is present and well formed', async () => {
+    const mandateHash = sha256('mandate');
+    const receipt = buildReceipt({
+      id: 'covered',
+      instruction: 'Buy 40 USD of ETH',
+      payload: { title: 'Buy 40 USD of ETH' },
+      decision: {
+        outcome: 'approved',
+        decidedAt: '2026-11-16T12:00:00.000Z',
+        presentedAt: '2026-11-16T12:00:00.000Z',
+      },
+      authorizedBy: {
+        mandateReceiptHash: mandateHash,
+        coveredBy: 'under max 100 USD, before Dec 1',
+        checkedAt: '2026-11-16T12:00:00.000Z',
+      },
+    });
+    expect((await verify(receipt)).valid).toBe(true);
+    expect(() => buildReceipt({
+      id: 'covered',
+      instruction: 'Buy 40 USD of ETH',
+      payload: { title: 'Buy 40 USD of ETH' },
+      decision: {
+        outcome: 'approved',
+        decidedAt: '2026-11-16T12:00:00.000Z',
+        presentedAt: '2026-11-16T12:00:00.000Z',
+      },
+      authorizedBy: {
+        mandateReceiptHash: 'not-a-hash',
+        coveredBy: 'under max 100 USD, before Dec 1',
+        checkedAt: '2026-11-16T12:00:00.000Z',
+      },
+    })).toThrow(/mandateReceiptHash/);
+
+    const tampered = {
+      ...receipt,
+      authorizedBy: { ...receipt.authorizedBy!, mandateReceiptHash: 'nope' },
+    };
+    const body: Record<string, unknown> = { ...tampered };
+    delete body.receiptHash;
+    delete body.signatures;
+    tampered.receiptHash = sha256(canonicalize(body));
+    expect((await verify(tampered)).valid).toBe(false);
+    expect((await verify(tampered)).receipt).toBe('match');
+  });
+});
+
 describe('mandate receipts', () => {
   it('hashes a first choice and a later choice linked to it', async () => {
     const first = buildMandateReceipt({

@@ -108,6 +108,10 @@
           "$ref": "#/definitions/MandateRecord",
           "description": "Set only when `kind` is `mandate`."
         },
+        "authorizedBy": {
+          "$ref": "#/definitions/AuthorizedBy",
+          "description": "An action the host says was covered by a mandate. The match is declared."
+        },
         "attestations": {
           "type": "array",
           "items": {
@@ -808,6 +812,31 @@
         }
       },
       "additionalProperties": false
+    },
+    "AuthorizedBy": {
+      "type": "object",
+      "properties": {
+        "mandateReceiptHash": {
+          "type": "string"
+        },
+        "coveredBy": {
+          "type": "string"
+        },
+        "quote": {
+          "type": "string"
+        },
+        "checkedAt": {
+          "type": "string",
+          "description": "ISO-8601. When the host says it checked the match."
+        }
+      },
+      "required": [
+        "mandateReceiptHash",
+        "coveredBy",
+        "checkedAt"
+      ],
+      "additionalProperties": false,
+      "description": "An action the host says ran under a mandate, with no live gate. The criteria and the quote are declared. depute does not open the mandate receipt."
     },
     "ReceiptAttestation": {
       "type": "object",

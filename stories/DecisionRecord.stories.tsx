@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { DecisionRecord } from '../src/components/DecisionRecord';
+import { buildReceipt, sha256 } from '../src/utils/receipt';
 
 const meta = {
   title: 'ax-components-v2/DecisionRecord',
@@ -75,5 +76,34 @@ export const MinimalContext: Story = {
     agentContext: {
       intent: 'Generate weekly team summary report',
     },
+  },
+};
+
+export const StandingApproval: Story = {
+  name: 'Standing approval',
+  args: {
+    decision: 'approved',
+    approver: {
+      name: 'Ada',
+      timestamp: '2026-11-16T12:00:00.000Z',
+    },
+    agentContext: {
+      intent: 'Buy 40 USD of ETH',
+    },
+    approvalReceipt: buildReceipt({
+      id: 'covered',
+      instruction: 'Buy 40 USD of ETH',
+      payload: { title: 'Buy 40 USD of ETH' },
+      decision: {
+        outcome: 'approved',
+        decidedAt: '2026-11-16T12:00:00.000Z',
+        presentedAt: '2026-11-16T12:00:00.000Z',
+      },
+      authorizedBy: {
+        mandateReceiptHash: sha256('mandate'),
+        coveredBy: 'under max 100 USD, before Dec 1',
+        checkedAt: '2026-11-01T12:00:00.000Z',
+      },
+    }),
   },
 };

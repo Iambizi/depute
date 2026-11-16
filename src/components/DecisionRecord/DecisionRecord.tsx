@@ -100,6 +100,19 @@ export function DecisionRecord({
           </div>
         )}
 
+        {approvalReceipt?.authorizedBy && (
+          <div className={styles.section}>
+            <span className={styles.label}>Standing approval</span>
+            <p className={styles.value}>
+              Ran under your standing approval from {approvalReceipt.authorizedBy.checkedAt.slice(0, 10)}.
+            </p>
+            <p className={styles.value}>{approvalReceipt.authorizedBy.coveredBy} Declared by the host.</p>
+            {approvalReceipt.authorizedBy.quote && (
+              <p className={styles.value}>Declared quote: {approvalReceipt.authorizedBy.quote}</p>
+            )}
+          </div>
+        )}
+
         {approvalReceipt && (
           <div className={styles.section}>
             <span className={styles.label}>Receipt hash</span>
