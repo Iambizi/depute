@@ -25,7 +25,6 @@ import {
   channelWarningText,
   reachabilityLabel,
 } from '../../utils/channel';
-import { PolicyBanner } from '../PolicyBanner';
 import { DEFAULT_APPROVAL_EXPIRY_MS, actorWarning, bindingStatusText, buildDecisionReceipt, buildMandateReceipt, buildSignedDecisionReceipt, counterpartyBannerCopy, requirementsNeedCheck, type AutonomyMode } from '../../utils/receipt';
 import type { ReceiptMethod, ReceiptOutcome } from '../../utils/receipt';
 import { changeKindLabel, justificationLength, requiredJustificationLength } from '../../utils/triggers';
@@ -734,12 +733,9 @@ export function ApprovalGate({
           />
         )}
         {counterpartyCopy && (
-          <PolicyBanner
-            mode="disclosure"
-            severity="critical"
-            label={counterpartyCopy.label}
-            description={counterpartyCopy.description}
-          />
+          <p className={styles.channelWarning} role="status">
+            <strong>{counterpartyCopy.label}.</strong> {counterpartyCopy.description}
+          </p>
         )}
         {oversight && (
           <p className={styles.provenanceNote} role="status">
