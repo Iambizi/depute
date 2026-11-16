@@ -451,6 +451,18 @@ export const AgentRequestedChange: Story = {
   },
 };
 
+export const OversightProfile: Story = {
+  name: 'Oversight profile',
+  args: {
+    status: 'pending',
+    mode: 'staged',
+    title: 'Pay vendor',
+    description: 'Labels derived from the gate settings.',
+    now: STORY_NOW,
+    oversight: { consequence: 'high-stakes', agency: 'person-channel', oversight: 'staged' },
+  },
+};
+
 export const AutonomyChoice: Story = {
   name: 'Autonomy choice',
   args: {

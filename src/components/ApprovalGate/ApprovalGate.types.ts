@@ -9,7 +9,7 @@ import type { ApprovalStatus } from '../../types/common';
 import type { ApprovalHandoff, HandoffContext, PresentedPayload, PresentedProvenance } from '../../types/core';
 import type { ApprovalChannel } from '../../utils/channel';
 import type { ChangeRequest } from '../../utils/triggers';
-import type { ApprovalReceipt, ApprovalRequirement, AutonomyMode, BindingDisplay, DeclaredLimit, MandateCriteria, ReceiptActor, ReceiptAppSigner, ReceiptPasskeySigner, TermsShown } from '../../utils/receipt';
+import type { ApprovalReceipt, ApprovalRequirement, AutonomyMode, BindingDisplay, DeclaredLimit, MandateCriteria, OversightProfile, ReceiptActor, ReceiptAppSigner, ReceiptPasskeySigner, TermsShown } from '../../utils/receipt';
 
 export type { ApprovalHandoff, HandoffContext };
 
@@ -210,6 +210,9 @@ export interface ApprovalGateProps {
   firstUse?: boolean;
 
   onAutonomyChoice?: (mode: AutonomyMode) => void;
+
+  /** Profile from `describeOversight`. Stored on the receipt. Not a compliance claim. */
+  oversight?: OversightProfile;
 
   /** Fired with a hashed receipt when the person decides or the gate expires. */
   onReceipt?: (receipt: ApprovalReceipt) => void;
