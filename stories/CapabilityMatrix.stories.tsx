@@ -59,6 +59,25 @@ export const LiveGrants: Story = {
   },
 };
 
+export const RevokeReceipt: Story = {
+  name: 'Revoke receipt',
+  render: () => (
+    <CapabilityMatrix
+      title="Standing grants"
+      agentId="pay-bot"
+      capabilities={[{ name: 'usdc.transfer', permission: 'conditional', condition: 'under the grant' }]}
+      revokeMethod="provider-ui"
+      grants={[
+        { id: 'g1', agentId: 'pay-bot', onBehalfOf: 'Ada', scope: 'USDC transfers', limit: '100 USD', counterparty: 'Example Bank' },
+        { id: 'g2', agentId: 'pay-bot', onBehalfOf: 'Ada', scope: 'Read balances', counterparty: 'Example Bank' },
+      ]}
+      onRevoke={async (grant) => (
+        grant.id === 'g2' ? { state: 'unknown' } : { state: 'confirmed', method: 'provider-ui' }
+      )}
+    />
+  ),
+};
+
 export const FlatList: Story = {
   name: 'Flat (No Groups)',
   args: {

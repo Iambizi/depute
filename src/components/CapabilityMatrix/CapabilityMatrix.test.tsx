@@ -129,6 +129,95 @@ describe('CapabilityMatrix', () => {
       expect(onRevoke).toHaveBeenCalledWith(expect.objectContaining({ id: 'g1' }));
     });
 
+    it('records a confirmed revoke only after the host confirms', async () => {
+      const user = userEvent.setup();
+      const onReceipt = vi.fn();
+      render(
+        <CapabilityMatrix
+          title="Permissions"
+          capabilities={sampleCapabilities}
+          grants={[{
+            id: 'g1',
+            agentId: 'pay-bot',
+            scope: 'usdc transfers',
+            counterparty: 'Example Bank',
+            approvalReceiptHash: `sha256:${'ab'.repeat(32)}`,
+          }]}
+          onRevoke={async () => ({ state: 'confirmed', method: 'provider-ui' })}
+          onReceipt={onReceipt}
+        />,
+      );
+      await user.click(screen.getByRole('button', { name: 'Revoke' }));
+      expect(await screen.findByText('Revoked (confirmed by host)')).toBeInTheDocument();
+      expect(screen.queryByText('Revoked (confirmed by host)')).toBeInTheDocument();
+      const receipt = onReceipt.mock.calls[0][0];
+      expect(receipt.kind).toBe('revoke');
+      expect(receipt.revoke.state).toBe('confirmed');
+      expect(receipt.revoke.method).toBe('provider-ui');
+      expect(receipt.revoke.counterparty).toBe('Example Bank');
+      expect(receipt.previousReceiptHash).toBe(`sha256:${'ab'.repeat(32)}`);
+      expect(receipt.receiptHash.startsWith('sha256:')).toBe(true);
+      expect(screen.getByRole('button', { name: 'Export JSON' })).toBeInTheDocument();
+    });
+
+    it('keeps a void host callback at Revoke requested', async () => {
+      const user = userEvent.setup();
+      render(
+        <CapabilityMatrix
+          title="Permissions"
+          capabilities={sampleCapabilities}
+          grants={[{ id: 'g1', agentId: 'pay-bot', scope: 'usdc transfers' }]}
+          onRevoke={() => undefined}
+        />,
+      );
+      await user.click(screen.getByRole('button', { name: 'Revoke' }));
+      expect(await screen.findByText('Revoke requested')).toBeInTheDocument();
+      expect(screen.queryByText('Revoked (confirmed by host)')).not.toBeInTheDocument();
+    });
+
+    it('shows unknown and retry when the host does not confirm before the timeout', async () => {
+      const user = userEvent.setup();
+      const onReceipt = vi.fn();
+      render(
+        <CapabilityMatrix
+          title="Permissions"
+          capabilities={sampleCapabilities}
+          grants={[{ id: 'g1', agentId: 'pay-bot', scope: 'usdc transfers' }]}
+          onRevoke={() => new Promise(() => undefined)}
+          revokeTimeoutMs={30}
+          onReceipt={onReceipt}
+        />,
+      );
+      await user.click(screen.getByRole('button', { name: 'Revoke' }));
+      expect(screen.getByText('Revoke requested')).toBeInTheDocument();
+      expect(await screen.findByText('Unknown')).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: 'Retry' })).toBeInTheDocument();
+      expect(screen.queryByText('Revoked (confirmed by host)')).not.toBeInTheDocument();
+      expect(onReceipt.mock.calls[0][0].revoke.state).toBe('unknown');
+    });
+
+    it('writes one receipt per grant when revoking all', async () => {
+      const user = userEvent.setup();
+      const onReceipt = vi.fn();
+      render(
+        <CapabilityMatrix
+          title="Permissions"
+          capabilities={sampleCapabilities}
+          grants={[
+            { id: 'g1', agentId: 'pay-bot', scope: 'usdc transfers', counterparty: 'Example Bank' },
+            { id: 'g2', agentId: 'pay-bot', scope: 'read balances', counterparty: 'Example Bank' },
+          ]}
+          onRevoke={async () => ({ state: 'confirmed' })}
+          onReceipt={onReceipt}
+        />,
+      );
+      await user.click(screen.getByRole('button', { name: 'Revoke all' }));
+      expect(await screen.findAllByText('Revoked (confirmed by host)')).toHaveLength(2);
+      expect(onReceipt).toHaveBeenCalledTimes(2);
+      const ids = onReceipt.mock.calls.map((call) => call[0].revoke.grantId).sort();
+      expect(ids).toEqual(['g1', 'g2']);
+    });
+
     it('has table role for the body', () => {
       render(<CapabilityMatrix title="Permissions" capabilities={sampleCapabilities} />);
       expect(screen.getByRole('table')).toBeInTheDocument();

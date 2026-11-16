@@ -3,6 +3,8 @@ import {
   DEFAULT_APPROVAL_EXPIRY_MS,
   approvalDeadline,
   buildPaymentFollowUp,
+  buildRevokeNotice,
+  buildRevokeReceipt,
   buildDecisionReceipt,
   buildReceipt,
   buildSignedDecisionReceipt,
@@ -319,6 +321,59 @@ describe('buildPaymentFollowUp', () => {
     expect(followUp.payment).toEqual({ state: 'refunded', at: '2026-11-09T12:10:00.000Z' });
     expect(followUp.receiptHash).not.toBe(original.receiptHash);
     expect((await verify(followUp)).valid).toBe(true);
+  });
+});
+
+describe('revoke receipts', () => {
+  it('hashes a confirmed revoke and leaves an older receipt without kind valid', async () => {
+    const approvalHash = sha256('grant');
+    const revoke = buildRevokeReceipt({
+      grantId: 'g1',
+      scope: 'usdc transfers',
+      counterparty: 'Example Bank',
+      method: 'provider-ui',
+      state: 'confirmed',
+      requestedAtMs: Date.parse('2026-11-16T15:00:00.000Z'),
+      confirmedAtMs: Date.parse('2026-11-16T15:01:00.000Z'),
+      previousReceiptHash: approvalHash,
+    });
+    expect(revoke.kind).toBe('revoke');
+    expect(revoke.revoke?.state).toBe('confirmed');
+    expect((await verify(revoke)).valid).toBe(true);
+    const edited = {
+      ...revoke,
+      revoke: { ...revoke.revoke!, state: 'unknown' as const, confirmedAt: undefined },
+    };
+    expect((await verify(edited)).receipt).toBe('mismatch');
+
+    const notice = buildRevokeNotice({
+      previousReceiptHash: revoke.receiptHash,
+      to: 'Example Bank',
+      channel: 'secure-message',
+      atMs: Date.parse('2026-11-16T15:02:00.000Z'),
+    });
+    expect(notice.notice).toEqual({
+      to: 'Example Bank',
+      channel: 'secure-message',
+      at: '2026-11-16T15:02:00.000Z',
+    });
+    expect((await verify(notice)).valid).toBe(true);
+    expect(() => buildRevokeNotice({
+      previousReceiptHash: 'not-a-hash',
+      to: 'Example Bank',
+      channel: 'secure-message',
+      atMs: Date.parse('2026-11-16T15:02:00.000Z'),
+    })).toThrow(/previousReceiptHash/);
+
+    const older = buildDecisionReceipt({
+      title: 'Pay vendor',
+      outcome: 'approved',
+      presentedAtMs: 1,
+      decidedAtMs: 2,
+      fallbackId: 'local',
+    });
+    expect(older.kind).toBeUndefined();
+    expect((await verify(older)).valid).toBe(true);
   });
 });
 
