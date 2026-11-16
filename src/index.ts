@@ -52,6 +52,8 @@ export type {
   RequirementStatus,
   ReceiptPasskeySigner,
   ReceiptKind,
+  ApprovalUseReason,
+  BindingDisplay,
   ReceiptVerification,
 } from './utils/receipt';
 export {
@@ -65,6 +67,9 @@ export {
   requirementsNeedCheck,
   DEFAULT_APPROVAL_EXPIRY_MS,
   approvalDeadline,
+  approvalUsable,
+  bindingStatusText,
+  executionMatches,
   limitDeclaration,
   receiptCheckLabel,
   verify,

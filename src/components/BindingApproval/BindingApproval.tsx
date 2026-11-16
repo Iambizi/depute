@@ -23,7 +23,7 @@ import {
   channelWarningText,
   reachabilityLabel,
 } from '../../utils/channel';
-import { DEFAULT_APPROVAL_EXPIRY_MS, actorWarning, buildDecisionReceipt, buildSignedDecisionReceipt } from '../../utils/receipt';
+import { DEFAULT_APPROVAL_EXPIRY_MS, actorWarning, bindingStatusText, buildDecisionReceipt, buildSignedDecisionReceipt } from '../../utils/receipt';
 import type { ReceiptMethod, ReceiptOutcome } from '../../utils/receipt';
 import { changeKindLabel, justificationLength, requiredJustificationLength } from '../../utils/triggers';
 import type {
@@ -111,6 +111,7 @@ export function BindingApproval({
   now,
   issuedAt,
   expiresAt,
+  bindingStatus,
   justification,
   minJustificationLength,
   triggers,
@@ -233,11 +234,13 @@ export function BindingApproval({
     : highStakes ? 'high-stakes' as const : undefined;
   const channelBlocked = channelBlocksApproval(approvalChannel, channelRequirement);
   const channelWarning = approvalChannel ? channelWarningText(approvalChannel) : undefined;
+  const bindingBlocked = bindingStatus === 'voided' || bindingStatus === 'used';
   const canSign =
     effectiveStatus === 'reviewing' &&
     (!requireAllTerms || allTermsAcknowledged) &&
     !channelBlocked &&
-    !approvalExpired;
+    !approvalExpired &&
+    !bindingBlocked;
 
   const clockActive = effectiveStatus === 'reviewing' || isHandoffPending;
   useEffect(() => {
@@ -477,6 +480,9 @@ export function BindingApproval({
         <p className={approvalExpired ? styles.channelWarning : styles.channelNote} role="status">
           {approvalExpired ? 'Expired' : `Expires in ${Math.floor(Math.max(approvalLeft, 0) / 60)}:${String(Math.max(approvalLeft, 0) % 60).padStart(2, '0')}`}
         </p>
+      )}
+      {effectiveStatus === 'reviewing' && bindingBlocked && bindingStatus && (
+        <p className={styles.channelWarning} role="status">{bindingStatusText(bindingStatus)}</p>
       )}
 
       {actor && actorWarning(actor) && (

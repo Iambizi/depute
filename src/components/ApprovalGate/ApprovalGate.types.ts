@@ -9,7 +9,7 @@ import type { ApprovalStatus } from '../../types/common';
 import type { ApprovalHandoff, HandoffContext, PresentedPayload, PresentedProvenance } from '../../types/core';
 import type { ApprovalChannel } from '../../utils/channel';
 import type { ChangeRequest } from '../../utils/triggers';
-import type { ApprovalReceipt, ApprovalRequirement, DeclaredLimit, ReceiptActor, ReceiptAppSigner, ReceiptPasskeySigner, TermsShown } from '../../utils/receipt';
+import type { ApprovalReceipt, ApprovalRequirement, BindingDisplay, DeclaredLimit, ReceiptActor, ReceiptAppSigner, ReceiptPasskeySigner, TermsShown } from '../../utils/receipt';
 
 export type { ApprovalHandoff, HandoffContext };
 
@@ -189,6 +189,13 @@ export interface ApprovalGateProps {
 
   /** Hash of the terms shown, plus where the integrator keeps the full text. */
   termsShown?: TermsShown;
+
+  /**
+   * Host-supplied result of checking this approval against the action about to run.
+   * `voided` means the arguments differ from the presented payload.
+   * `used` means the host says this approval was already consumed. That flag is declared.
+   */
+  bindingStatus?: BindingDisplay;
 
   /** Fired with a hashed receipt when the person decides or the gate expires. */
   onReceipt?: (receipt: ApprovalReceipt) => void;

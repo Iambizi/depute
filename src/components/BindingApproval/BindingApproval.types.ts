@@ -12,7 +12,7 @@
 import type { ApprovalHandoff, HandoffContext, PresentedPayload } from '../../types/core';
 import type { ApprovalChannel } from '../../utils/channel';
 import type { ChangeRequest } from '../../utils/triggers';
-import type { ApprovalReceipt, DeclaredLimit, ReceiptActor, ReceiptAppSigner, ReceiptPasskeySigner, TermsShown } from '../../utils/receipt';
+import type { ApprovalReceipt, BindingDisplay, DeclaredLimit, ReceiptActor, ReceiptAppSigner, ReceiptPasskeySigner, TermsShown } from '../../utils/receipt';
 
 /** Binding approval status */
 export type BindingStatus =
@@ -143,6 +143,13 @@ export interface BindingApprovalProps {
    * not `timeoutSeconds`.
    */
   expiresAt?: number;
+
+  /**
+   * Host-supplied result of checking this approval against the action about to run.
+   * `voided` means the arguments differ from the presented payload.
+   * `used` means the host says this approval was already consumed. That flag is declared.
+   */
+  bindingStatus?: BindingDisplay;
 
   /** Why the person signed. A payment trigger asks them to write it here. */
   justification?: string;

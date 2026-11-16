@@ -312,4 +312,19 @@ describe('BindingApproval', () => {
       });
     });
   });
+
+  describe('payload binding', () => {
+    it('keeps Sign off when the host says the arguments changed', () => {
+      render(<BindingApproval {...defaultProps} bindingStatus="voided" />);
+      expect(screen.getByText('Voided. The arguments changed. Ask again.')).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: /sign and approve/i })).toBeDisabled();
+      expect(screen.getByRole('button', { name: 'Reject' })).toBeEnabled();
+    });
+
+    it('keeps Sign off when the host says the approval was used', () => {
+      render(<BindingApproval {...defaultProps} bindingStatus="used" />);
+      expect(screen.getByText('Already used.')).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: /sign and approve/i })).toBeDisabled();
+    });
+  });
 });
