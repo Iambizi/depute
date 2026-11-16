@@ -51,6 +51,7 @@ export type {
   AutonomyMode,
   MandateCriteria,
   MandateRecord,
+  AuthorizedBy,
   ApprovalUseReason,
   BindingDisplay,
   ReceiptMethod,

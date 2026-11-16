@@ -18,6 +18,28 @@ describe('DecisionRecord', () => {
     },
   };
 
+  it('says a mandate-covered action ran under a standing approval', () => {
+    const receipt = buildReceipt({
+      id: 'covered',
+      instruction: 'Buy 40 USD of ETH',
+      payload: { title: 'Buy 40 USD of ETH' },
+      decision: {
+        outcome: 'approved',
+        decidedAt: '2026-11-16T12:00:00.000Z',
+        presentedAt: '2026-11-16T12:00:00.000Z',
+      },
+      authorizedBy: {
+        mandateReceiptHash: 'sha256:' + 'cd'.repeat(32),
+        coveredBy: 'under max 100 USD, before Dec 1',
+        checkedAt: '2026-11-01T12:00:00.000Z',
+      },
+    });
+    render(<DecisionRecord {...defaultProps} approvalReceipt={receipt} />);
+    expect(screen.getByText('Ran under your standing approval from 2026-11-01.')).toBeInTheDocument();
+    expect(screen.getByText(/under max 100 USD, before Dec 1/)).toBeInTheDocument();
+    expect(screen.queryByText(/approved by you/i)).not.toBeInTheDocument();
+  });
+
   it('renders the core decision data correctly', () => {
     render(<DecisionRecord {...defaultProps} />);
     

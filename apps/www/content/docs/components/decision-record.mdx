@@ -83,6 +83,7 @@ export function AuditLog() {
 | `approver` | `{ name: string, role?: string, timestamp: Date \| string }` | — | The human who made the decision |
 | `agentContext` | `{ intent: string, policyInvoked?: string }` | — | The agent intent and policy at the time |
 | `humanReasoning` | `string` | — | Optional human reasoning for the decision |
+| `approvalReceipt` | `ApprovalReceipt` | — | When `authorizedBy` is set, the record says the action ran under a standing approval. It does not say "approved by you". The criteria are declared. |
 
 The component intentionally requires strict object shapes to ensure the audit log is semantically complete for role-based access control (RBAC) environments.
 
@@ -99,7 +100,7 @@ This closes the "Execution Amnesia" loop by confirming to the user that their id
 
 ## Design rationale
 
-A decision record is the human half of the [approval record](/docs/approval-record): who approved, the why they wrote, and the hash of the payload they were shown. The transaction receipt remains the machine half, the action that ran.
+A decision record is the human half of the [approval record](/docs/approval-record): who approved, the why they wrote, and the hash of the payload they were shown. The transaction receipt remains the machine half, the action that ran. When the receipt has `authorizedBy`, the record says it ran under the standing approval and shows the host's criteria. It does not say "approved by you" for that action. depute does not open the mandate receipt. The match is declared.
 
 **Why not just use `TransactionReceipt`?**
 A `TransactionReceipt` logs what the *machine* did (e.g., "Deployed smart contract `0x123` at block `8841`"). A `DecisionRecord` logs what the *human* did (e.g., "Alice approved the contract deployment because the Q/A tests passed"). 

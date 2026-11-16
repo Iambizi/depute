@@ -55,6 +55,30 @@ export interface MandateCriteria {
   categories?: string[];
 }
 
+/**
+ * An action the host says ran under a mandate, with no live gate.
+ * The criteria and the quote are declared. depute does not open the mandate receipt.
+ */
+export interface AuthorizedBy {
+  mandateReceiptHash: string;
+  coveredBy: string;
+  quote?: string;
+  /** ISO-8601. When the host says it checked the match. */
+  checkedAt: string;
+}
+
+export function assertAuthorizedBy(value: AuthorizedBy): void {
+  if (!isReceiptHash(value.mandateReceiptHash)) {
+    throw new Error('authorizedBy.mandateReceiptHash must be a sha256 digest.');
+  }
+  if (typeof value.coveredBy !== 'string' || value.coveredBy.trim() === '' || !isTime(value.checkedAt)) {
+    throw new Error('authorizedBy needs the criteria and a check time.');
+  }
+  if (value.quote !== undefined && typeof value.quote !== 'string') {
+    throw new Error('authorizedBy.quote must be text.');
+  }
+}
+
 /** The standing choice. `confirm-none` is recorded only when the host offered it. */
 export interface MandateRecord {
   mode: AutonomyMode;
@@ -464,6 +488,8 @@ export interface ApprovalReceipt {
   notice?: RevokeNotice;
   /** Set only when `kind` is `mandate`. */
   mandate?: MandateRecord;
+  /** An action the host says was covered by a mandate. The match is declared. */
+  authorizedBy?: AuthorizedBy;
   attestations?: ReceiptAttestation[];
   previousReceiptHash?: string;
   signatures?: ReceiptSignature[];
@@ -493,6 +519,7 @@ export interface ReceiptDraft {
   revoke?: RevokeRecord;
   notice?: RevokeNotice;
   mandate?: MandateRecord;
+  authorizedBy?: AuthorizedBy;
   attestations?: ReceiptAttestation[];
   previousReceiptHash?: string;
   signatures?: ReceiptSignature[];
@@ -532,6 +559,7 @@ export interface DecisionReceiptInput {
   termsShown?: TermsShown;
   previousReceiptHash?: string;
   stop?: StopReport;
+  authorizedBy?: AuthorizedBy;
   fallbackId: string;
 }
 
@@ -749,6 +777,7 @@ export function buildReceipt(draft: ReceiptDraft): ApprovalReceipt {
   if (draft.kind === 'mandate' && !draft.mandate) {
     throw new Error('A mandate receipt needs a mandate.');
   }
+  if (draft.authorizedBy) assertAuthorizedBy(draft.authorizedBy);
   const payloadHash = sha256(canonicalize(draft.payload));
   const unsigned = {
     version: '1' as const,
@@ -774,6 +803,7 @@ export function buildReceipt(draft: ReceiptDraft): ApprovalReceipt {
     revoke: draft.revoke,
     notice: draft.notice,
     mandate: draft.mandate,
+    authorizedBy: draft.authorizedBy,
     attestations: draft.attestations,
     previousReceiptHash: draft.previousReceiptHash,
   };
@@ -958,6 +988,7 @@ export function buildDecisionReceipt(input: DecisionReceiptInput): ApprovalRecei
     termsShown: input.termsShown,
     previousReceiptHash: input.previousReceiptHash,
     stop: input.stop,
+    authorizedBy: input.authorizedBy,
   });
 }
 
@@ -1003,10 +1034,13 @@ export async function verify(
   }
 
   const signaturesOk = signatures.every((entry) => entry.status === 'valid');
+  const authorizedByOk = receipt.authorizedBy === undefined
+    || isReceiptHash(receipt.authorizedBy.mandateReceiptHash);
   return {
     valid: payload === 'match'
       && receiptStatus === 'match'
       && previousReceiptHash !== 'malformed'
+      && authorizedByOk
       && signaturesOk,
     payload,
     receipt: receiptStatus,
