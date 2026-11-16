@@ -24,6 +24,13 @@ function grant(partial: Partial<PayeeGrant> = {}): PayeeGrant {
 }
 
 describe('requiresApproval', () => {
+  it('always gates a declared sponsored or conflicted action', () => {
+    const policy = requiresApproval({ nowMs: now, sponsoredOrConflict: true });
+    expect(policy.required).toBe(true);
+    expect(policy.highStakes).toBe(true);
+    expect(policy.triggers).toEqual(['sponsored-or-conflict']);
+  });
+
   it('always gates an agent-initiated limit raise, whatever the amount', () => {
     const policy = requiresApproval({
       nowMs: now,

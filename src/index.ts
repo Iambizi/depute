@@ -54,11 +54,15 @@ export type {
   RequirementStatus,
   ReceiptPasskeySigner,
   ReceiptKind,
+  AutonomyMode,
+  MandateCriteria,
+  MandateRecord,
   ApprovalUseReason,
   BindingDisplay,
   ReceiptVerification,
 } from './utils/receipt';
 export {
+  buildMandateReceipt,
   buildDecisionReceipt,
   buildPaymentFollowUp,
   buildRevokeNotice,

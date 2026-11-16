@@ -48,6 +48,9 @@ export type {
   ReceiptExecution,
   ReceiptExecutionStatus,
   ReceiptKind,
+  AutonomyMode,
+  MandateCriteria,
+  MandateRecord,
   ApprovalUseReason,
   BindingDisplay,
   ReceiptMethod,
@@ -60,6 +63,7 @@ export type {
   SignatureCheck,
 } from './receipt';
 export {
+  buildMandateReceipt,
   buildDecisionReceipt,
   buildPaymentFollowUp,
   buildRevokeNotice,

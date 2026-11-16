@@ -9,7 +9,7 @@ import type { ApprovalStatus } from '../../types/common';
 import type { ApprovalHandoff, HandoffContext, PresentedPayload, PresentedProvenance } from '../../types/core';
 import type { ApprovalChannel } from '../../utils/channel';
 import type { ChangeRequest } from '../../utils/triggers';
-import type { ApprovalReceipt, ApprovalRequirement, BindingDisplay, DeclaredLimit, ReceiptActor, ReceiptAppSigner, ReceiptPasskeySigner, TermsShown } from '../../utils/receipt';
+import type { ApprovalReceipt, ApprovalRequirement, AutonomyMode, BindingDisplay, DeclaredLimit, MandateCriteria, ReceiptActor, ReceiptAppSigner, ReceiptPasskeySigner, TermsShown } from '../../utils/receipt';
 
 export type { ApprovalHandoff, HandoffContext };
 
@@ -196,6 +196,20 @@ export interface ApprovalGateProps {
    * `used` means the host says this approval was already consumed. That flag is declared.
    */
   bindingStatus?: BindingDisplay;
+
+  /** Ask for an explicit autonomy choice. Nothing is preselected. */
+  autonomyChoice?: boolean;
+
+  /** Offer confirm-none. Off unless the host sets this. */
+  allowConfirmNone?: boolean;
+
+  /** Stored on a confirm-some mandate. Declared by the host. */
+  mandateCriteria?: MandateCriteria;
+
+  /** True for the first choice. A later change sets this false and passes previousReceiptHash. */
+  firstUse?: boolean;
+
+  onAutonomyChoice?: (mode: AutonomyMode) => void;
 
   /** Fired with a hashed receipt when the person decides or the gate expires. */
   onReceipt?: (receipt: ApprovalReceipt) => void;

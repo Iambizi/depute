@@ -7,6 +7,7 @@ import {
   buildPaymentFollowUp,
   buildRevokeNotice,
   buildRevokeReceipt,
+  buildMandateReceipt,
   buildDecisionReceipt,
   buildReceipt,
   buildSignedDecisionReceipt,
@@ -323,6 +324,30 @@ describe('buildPaymentFollowUp', () => {
     expect(followUp.payment).toEqual({ state: 'refunded', at: '2026-11-09T12:10:00.000Z' });
     expect(followUp.receiptHash).not.toBe(original.receiptHash);
     expect((await verify(followUp)).valid).toBe(true);
+  });
+});
+
+describe('mandate receipts', () => {
+  it('hashes a first choice and a later choice linked to it', async () => {
+    const first = buildMandateReceipt({
+      mode: 'confirm-all',
+      chosenAtMs: Date.parse('2026-11-16T16:00:00.000Z'),
+      firstUse: true,
+    });
+    expect(first.kind).toBe('mandate');
+    expect(first.mandate?.chosenBy).toBe('user');
+    expect((await verify(first)).valid).toBe(true);
+    const next = buildMandateReceipt({
+      mode: 'confirm-some',
+      chosenAtMs: Date.parse('2026-11-16T17:00:00.000Z'),
+      firstUse: false,
+      criteria: { maxAmount: '100.00', currency: 'USD', until: '2026-12-01T00:00:00.000Z' },
+      previousReceiptHash: first.receiptHash,
+      changeRequest: { kind: 'widen_scope', initiator: 'user', from: 'confirm-all', to: 'confirm-some' },
+    });
+    expect(next.previousReceiptHash).toBe(first.receiptHash);
+    expect(next.mandate?.criteria?.maxAmount).toBe('100.00');
+    expect((await verify(next)).valid).toBe(true);
   });
 });
 

@@ -18,7 +18,8 @@ export type ApprovalTrigger =
   | 'untrusted-source'
   | 'outside-grant'
   | 'grant-expired'
-  | 'agent-requested-change';
+  | 'agent-requested-change'
+  | 'sponsored-or-conflict';
 
 export type ChangeRequestKind = 'raise_limit' | 'add_payee' | 'widen_scope' | 'extend_expiry';
 
@@ -93,6 +94,11 @@ export interface ApprovalPolicyInput {
   allowDurable?: boolean;
   /** A limit or permission change. An agent-initiated change always opens a high-stakes gate. */
   changeRequest?: ChangeRequest;
+  /**
+   * Integrator-declared paid placement or conflict of interest.
+   * Always opens a high-stakes gate. depute does not detect it.
+   */
+  sponsoredOrConflict?: boolean;
 }
 
 export interface ApprovalPolicy {
@@ -175,6 +181,7 @@ export function requiresApproval(input: ApprovalPolicyInput): ApprovalPolicy {
 
   if (input.provenance?.trust === 'untrusted') triggers.push('untrusted-source');
   if (input.changeRequest?.initiator === 'agent') triggers.push('agent-requested-change');
+  if (input.sponsoredOrConflict === true) triggers.push('sponsored-or-conflict');
 
   const payee = input.payee;
   if (payee) {
@@ -195,6 +202,7 @@ export function requiresApproval(input: ApprovalPolicyInput): ApprovalPolicy {
     || triggers.includes('purpose-change')
     || triggers.includes('untrusted-source')
     || triggers.includes('agent-requested-change')
+    || triggers.includes('sponsored-or-conflict')
     || input.irreversible === true
     || aboveCutoff(input.amount, input.highStakesAmount);
 
