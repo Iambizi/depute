@@ -801,6 +801,24 @@ describe('ApprovalGate', () => {
     });
   });
 
+  describe('oversight profile', () => {
+    it('shows depute labels and stores them on the receipt', async () => {
+      const user = userEvent.setup();
+      const onReceipt = vi.fn();
+      render(
+        <ApprovalGate
+          title="Pay"
+          onReceipt={onReceipt}
+          oversight={{ consequence: 'high-stakes', agency: 'person-channel', oversight: 'staged' }}
+        />,
+      );
+      expect(screen.getByText(/Oversight profile: high-stakes, person-channel, staged/)).toBeInTheDocument();
+      expect(screen.getByText(/Not a compliance claim/)).toBeInTheDocument();
+      await user.click(screen.getByRole('button', { name: 'Approve' }));
+      expect(onReceipt.mock.calls[0][0].oversight.agency).toBe('person-channel');
+    });
+  });
+
   describe('autonomy choice', () => {
     it('offers no preselected mode and hides confirm-none until the host opts in', async () => {
       const user = userEvent.setup();

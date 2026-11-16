@@ -4,6 +4,7 @@ import {
   approvalDeadline,
   approvalUsable,
   executionMatches,
+  describeOversight,
   buildPaymentFollowUp,
   buildRevokeNotice,
   buildRevokeReceipt,
@@ -324,6 +325,35 @@ describe('buildPaymentFollowUp', () => {
     expect(followUp.payment).toEqual({ state: 'refunded', at: '2026-11-09T12:10:00.000Z' });
     expect(followUp.receiptHash).not.toBe(original.receiptHash);
     expect((await verify(followUp)).valid).toBe(true);
+  });
+});
+
+describe('describeOversight', () => {
+  it('uses depute labels and covers them in the receipt hash', async () => {
+    const profile = describeOversight({
+      highStakes: true,
+      agentReachable: 'no',
+      mode: 'staged',
+      enforcement: 'server',
+    });
+    expect(profile).toEqual({
+      consequence: 'high-stakes',
+      agency: 'person-channel',
+      oversight: 'staged',
+    });
+    expect(describeOversight({ enforcement: 'agent-instruction', mode: 'staged' }).oversight).toBe('instruction-only');
+    expect(describeOversight({}).consequence).toBe('unknown');
+    const receipt = buildDecisionReceipt({
+      title: 'Pay vendor',
+      outcome: 'approved',
+      presentedAtMs: 1,
+      decidedAtMs: 2,
+      fallbackId: 'local',
+      oversight: profile,
+    });
+    expect((await verify(receipt)).valid).toBe(true);
+    const edited = { ...receipt, oversight: { ...profile, agency: 'agent-readable' as const } };
+    expect((await verify(edited)).receipt).toBe('mismatch');
   });
 });
 

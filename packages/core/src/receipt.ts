@@ -387,6 +387,50 @@ export function actorWarning(actor: ReceiptActor): string | undefined {
   return undefined;
 }
 
+export type OversightConsequence = 'high-stakes' | 'ordinary' | 'unknown';
+export type OversightAgency = 'person-channel' | 'agent-readable' | 'unknown';
+export type OversightLevel = 'staged' | 'simple' | 'instruction-only' | 'unknown';
+
+/** Readings of settings this library already has. Not a compliance claim. */
+export interface OversightProfile {
+  consequence: OversightConsequence;
+  agency: OversightAgency;
+  oversight: OversightLevel;
+}
+
+const OVERSIGHT_CONSEQUENCE = new Set<OversightConsequence>(['high-stakes', 'ordinary', 'unknown']);
+const OVERSIGHT_AGENCY = new Set<OversightAgency>(['person-channel', 'agent-readable', 'unknown']);
+const OVERSIGHT_LEVEL = new Set<OversightLevel>(['staged', 'simple', 'instruction-only', 'unknown']);
+
+export function assertOversightProfile(value: OversightProfile): void {
+  if (!OVERSIGHT_CONSEQUENCE.has(value.consequence) || !OVERSIGHT_AGENCY.has(value.agency) || !OVERSIGHT_LEVEL.has(value.oversight)) {
+    throw new Error('oversight profile uses depute labels only.');
+  }
+}
+
+/**
+ * Derive a profile from gate mode, whether the decision is high-stakes,
+ * the integrator's channel reachability, and limit enforcement.
+ */
+export function describeOversight(input: {
+  highStakes?: boolean;
+  agentReachable?: 'no' | 'unknown' | 'yes';
+  mode?: 'simple' | 'staged';
+  enforcement?: LimitEnforcement;
+}): OversightProfile {
+  const consequence: OversightConsequence = input.highStakes === undefined
+    ? 'unknown'
+    : input.highStakes ? 'high-stakes' : 'ordinary';
+  const agency: OversightAgency = input.agentReachable === 'no'
+    ? 'person-channel'
+    : input.agentReachable === 'yes' ? 'agent-readable' : 'unknown';
+  let oversight: OversightLevel = 'unknown';
+  if (input.enforcement === 'agent-instruction') oversight = 'instruction-only';
+  else if (input.mode === 'staged') oversight = 'staged';
+  else if (input.mode === 'simple') oversight = 'simple';
+  return { consequence, agency, oversight };
+}
+
 export function limitDeclaration(limit: DeclaredLimit): string {
   if (limit.enforcement === 'server') {
     return limit.enforcedBy
@@ -490,6 +534,8 @@ export interface ApprovalReceipt {
   mandate?: MandateRecord;
   /** An action the host says was covered by a mandate. The match is declared. */
   authorizedBy?: AuthorizedBy;
+  /** Derived labels. Not a supervisory determination. */
+  oversight?: OversightProfile;
   attestations?: ReceiptAttestation[];
   previousReceiptHash?: string;
   signatures?: ReceiptSignature[];
@@ -520,6 +566,7 @@ export interface ReceiptDraft {
   notice?: RevokeNotice;
   mandate?: MandateRecord;
   authorizedBy?: AuthorizedBy;
+  oversight?: OversightProfile;
   attestations?: ReceiptAttestation[];
   previousReceiptHash?: string;
   signatures?: ReceiptSignature[];
@@ -560,6 +607,7 @@ export interface DecisionReceiptInput {
   previousReceiptHash?: string;
   stop?: StopReport;
   authorizedBy?: AuthorizedBy;
+  oversight?: OversightProfile;
   fallbackId: string;
 }
 
@@ -778,6 +826,7 @@ export function buildReceipt(draft: ReceiptDraft): ApprovalReceipt {
     throw new Error('A mandate receipt needs a mandate.');
   }
   if (draft.authorizedBy) assertAuthorizedBy(draft.authorizedBy);
+  if (draft.oversight) assertOversightProfile(draft.oversight);
   const payloadHash = sha256(canonicalize(draft.payload));
   const unsigned = {
     version: '1' as const,
@@ -804,6 +853,7 @@ export function buildReceipt(draft: ReceiptDraft): ApprovalReceipt {
     notice: draft.notice,
     mandate: draft.mandate,
     authorizedBy: draft.authorizedBy,
+    oversight: draft.oversight,
     attestations: draft.attestations,
     previousReceiptHash: draft.previousReceiptHash,
   };
@@ -989,6 +1039,7 @@ export function buildDecisionReceipt(input: DecisionReceiptInput): ApprovalRecei
     previousReceiptHash: input.previousReceiptHash,
     stop: input.stop,
     authorizedBy: input.authorizedBy,
+    oversight: input.oversight,
   });
 }
 

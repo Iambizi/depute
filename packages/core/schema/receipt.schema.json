@@ -112,6 +112,10 @@
           "$ref": "#/definitions/AuthorizedBy",
           "description": "An action the host says was covered by a mandate. The match is declared."
         },
+        "oversight": {
+          "$ref": "#/definitions/OversightProfile",
+          "description": "Derived labels. Not a supervisory determination."
+        },
         "attestations": {
           "type": "array",
           "items": {
@@ -837,6 +841,52 @@
       ],
       "additionalProperties": false,
       "description": "An action the host says ran under a mandate, with no live gate. The criteria and the quote are declared. depute does not open the mandate receipt."
+    },
+    "OversightProfile": {
+      "type": "object",
+      "properties": {
+        "consequence": {
+          "$ref": "#/definitions/OversightConsequence"
+        },
+        "agency": {
+          "$ref": "#/definitions/OversightAgency"
+        },
+        "oversight": {
+          "$ref": "#/definitions/OversightLevel"
+        }
+      },
+      "required": [
+        "consequence",
+        "agency",
+        "oversight"
+      ],
+      "additionalProperties": false,
+      "description": "Readings of settings this library already has. Not a compliance claim."
+    },
+    "OversightConsequence": {
+      "type": "string",
+      "enum": [
+        "high-stakes",
+        "ordinary",
+        "unknown"
+      ]
+    },
+    "OversightAgency": {
+      "type": "string",
+      "enum": [
+        "person-channel",
+        "agent-readable",
+        "unknown"
+      ]
+    },
+    "OversightLevel": {
+      "type": "string",
+      "enum": [
+        "staged",
+        "simple",
+        "instruction-only",
+        "unknown"
+      ]
     },
     "ReceiptAttestation": {
       "type": "object",

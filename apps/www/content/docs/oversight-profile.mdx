@@ -1,0 +1,22 @@
+---
+title: Oversight profile
+description: Labels derived from depute settings. Not a compliance claim.
+---
+
+`describeOversight` reads settings the library already has and returns three labels:
+
+| Label | Comes from | Values |
+| --- | --- | --- |
+| `consequence` | `highStakes` | `high-stakes`, `ordinary`, or `unknown` when the flag is omitted |
+| `agency` | the integrator's `agentReachable` | `person-channel` when `no`, `agent-readable` when `yes`, otherwise `unknown` |
+| `oversight` | gate mode and limit enforcement | `instruction-only` when enforcement is `agent-instruction`, otherwise `staged` or `simple`, or `unknown` |
+
+The profile is stored on the receipt when the host passes it, and the hash covers it. [Approval Gate](/docs/components/approval-gate) prints the three words and says they are derived from settings.
+
+## Not a compliance claim
+
+These are depute's labels. They are not the words of a supervisory framework, and they are not a determination that a deployment meets one.
+
+The Office of the Comptroller of the Currency has described examiner attention in terms of consequence, transfer of agency, and human oversight. That framing is non-binding examiner guidance. A reader can line it up beside this profile: `consequence` beside consequence, `agency` beside transfer of agency, and `oversight` beside human oversight. The receipt does not store those framework sentences.
+
+Article 26's confirm-all, confirm-some, and confirm-none modes are a different record. They live on the [autonomy choice](/docs/autonomy-choice).

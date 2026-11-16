@@ -235,6 +235,7 @@ export function ApprovalGate({
   mandateCriteria,
   firstUse = true,
   onAutonomyChoice,
+  oversight,
   onReceipt,
   appSigner,
   passkey,
@@ -521,6 +522,7 @@ export function ApprovalGate({
       actor,
       requirements,
       termsShown,
+      oversight,
       previousReceiptHash,
       fallbackId: pendingApprovalId || 'local',
     };
@@ -554,6 +556,7 @@ export function ApprovalGate({
     actor,
     requirements,
     termsShown,
+    oversight,
     previousReceiptHash,
     pendingApprovalId,
     appSigner,
@@ -724,6 +727,11 @@ export function ApprovalGate({
               }));
             }}
           />
+        )}
+        {oversight && (
+          <p className={styles.provenanceNote} role="status">
+            Oversight profile: {oversight.consequence}, {oversight.agency}, {oversight.oversight}. Derived from settings. Not a compliance claim.
+          </p>
         )}
         {triggers?.includes('sponsored-or-conflict') && (
           <p className={styles.channelWarning} role="status">This action needs confirmation. Declared by the integrator.</p>
