@@ -166,6 +166,18 @@
   line-height: var(--ax-leading-lg);}
 
 .sourceWarning,
+.autonomy {margin: 0 0 var(--ax-space-3);
+  padding: 0;
+  border: 0;
+  color: var(--ax-fg-default);}
+
+.autonomyOption {display: flex;
+  align-items: center;
+  gap: var(--ax-space-2);
+  margin-top: var(--ax-space-2);
+  font-size: var(--ax-text-sm);
+  line-height: var(--ax-leading-lg);}
+
 .channelWarning {background: var(--ax-status-warning-bg);
   color: var(--ax-status-warning-fg);
   border: var(--ax-border-width) solid var(--ax-status-warning-border);}

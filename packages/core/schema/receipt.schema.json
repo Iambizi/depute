@@ -104,6 +104,10 @@
           "$ref": "#/definitions/RevokeNotice",
           "description": "A later notice that the host says it sent. Requires `previousReceiptHash`. Delivery is declared."
         },
+        "mandate": {
+          "$ref": "#/definitions/MandateRecord",
+          "description": "Set only when `kind` is `mandate`."
+        },
         "attestations": {
           "type": "array",
           "items": {
@@ -137,7 +141,8 @@
       "type": "string",
       "enum": [
         "stop",
-        "revoke"
+        "revoke",
+        "mandate"
       ],
       "description": "Present on an emergency stop or a revocation. Approval receipts omit it. Older receipts that omit `kind` still verify."
     },
@@ -743,6 +748,66 @@
       ],
       "additionalProperties": false,
       "description": "Who the host says it told. Declared. depute does not check delivery."
+    },
+    "MandateRecord": {
+      "type": "object",
+      "properties": {
+        "mode": {
+          "$ref": "#/definitions/AutonomyMode"
+        },
+        "criteria": {
+          "$ref": "#/definitions/MandateCriteria"
+        },
+        "chosenAt": {
+          "type": "string",
+          "description": "ISO-8601."
+        },
+        "chosenBy": {
+          "type": "string",
+          "const": "user"
+        },
+        "firstUse": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "mode",
+        "chosenAt",
+        "chosenBy",
+        "firstUse"
+      ],
+      "additionalProperties": false,
+      "description": "The standing choice. `confirm-none` is recorded only when the host offered it."
+    },
+    "AutonomyMode": {
+      "type": "string",
+      "enum": [
+        "confirm-all",
+        "confirm-some",
+        "confirm-none"
+      ]
+    },
+    "MandateCriteria": {
+      "type": "object",
+      "properties": {
+        "maxAmount": {
+          "type": "string"
+        },
+        "currency": {
+          "type": "string"
+        },
+        "until": {
+          "type": "string",
+          "description": "ISO-8601."
+        },
+        "categories": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false
     },
     "ReceiptAttestation": {
       "type": "object",

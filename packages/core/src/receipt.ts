@@ -43,7 +43,49 @@ export type ReceiptExecutionStatus = 'success' | 'failed' | 'pending' | 'reverte
  * Present on an emergency stop or a revocation. Approval receipts omit it.
  * Older receipts that omit `kind` still verify.
  */
-export type ReceiptKind = 'stop' | 'revoke';
+export type ReceiptKind = 'stop' | 'revoke' | 'mandate';
+
+export type AutonomyMode = 'confirm-all' | 'confirm-some' | 'confirm-none';
+
+export interface MandateCriteria {
+  maxAmount?: string;
+  currency?: string;
+  /** ISO-8601. */
+  until?: string;
+  categories?: string[];
+}
+
+/** The standing choice. `confirm-none` is recorded only when the host offered it. */
+export interface MandateRecord {
+  mode: AutonomyMode;
+  criteria?: MandateCriteria;
+  /** ISO-8601. */
+  chosenAt: string;
+  chosenBy: 'user';
+  firstUse: boolean;
+}
+
+const AUTONOMY_MODES = new Set<AutonomyMode>(['confirm-all', 'confirm-some', 'confirm-none']);
+
+export function assertMandate(value: MandateRecord): void {
+  if (!AUTONOMY_MODES.has(value.mode) || value.chosenBy !== 'user' || !isTime(value.chosenAt) || typeof value.firstUse !== 'boolean') {
+    throw new Error('A mandate needs a mode, a time, and chosenBy user.');
+  }
+  const criteria = value.criteria;
+  if (!criteria) return;
+  if (criteria.maxAmount !== undefined && typeof criteria.maxAmount !== 'string') {
+    throw new Error('Mandate maxAmount must be a decimal string.');
+  }
+  if (criteria.currency !== undefined && typeof criteria.currency !== 'string') {
+    throw new Error('Mandate currency must be a string.');
+  }
+  if (criteria.until !== undefined && !isTime(criteria.until)) {
+    throw new Error('Mandate until must be a time.');
+  }
+  if (criteria.categories !== undefined && criteria.categories.some((item) => typeof item !== 'string' || item.trim() === '')) {
+    throw new Error('Mandate categories must be names.');
+  }
+}
 
 export type RevokeMethod = 'provider-ui' | 'api' | 'credential-rotation' | 'other';
 
@@ -420,6 +462,8 @@ export interface ApprovalReceipt {
    * Delivery is declared.
    */
   notice?: RevokeNotice;
+  /** Set only when `kind` is `mandate`. */
+  mandate?: MandateRecord;
   attestations?: ReceiptAttestation[];
   previousReceiptHash?: string;
   signatures?: ReceiptSignature[];
@@ -448,6 +492,7 @@ export interface ReceiptDraft {
   stop?: StopReport;
   revoke?: RevokeRecord;
   notice?: RevokeNotice;
+  mandate?: MandateRecord;
   attestations?: ReceiptAttestation[];
   previousReceiptHash?: string;
   signatures?: ReceiptSignature[];
@@ -674,8 +719,8 @@ export function buildReceipt(draft: ReceiptDraft): ApprovalReceipt {
   if (draft.actor) assertActor(draft.actor);
   if (draft.requirements) assertRequirements(draft.requirements);
   if (draft.termsShown) assertTermsShown(draft.termsShown);
-  if (draft.kind !== undefined && draft.kind !== 'stop' && draft.kind !== 'revoke') {
-    throw new Error('receipt kind must be stop or revoke when set.');
+  if (draft.kind !== undefined && draft.kind !== 'stop' && draft.kind !== 'revoke' && draft.kind !== 'mandate') {
+    throw new Error('receipt kind must be stop, revoke, or mandate when set.');
   }
   if (draft.payment) {
     assertPaymentFollowUp(draft.payment);
@@ -696,6 +741,13 @@ export function buildReceipt(draft: ReceiptDraft): ApprovalReceipt {
   if (draft.stop) {
     if (draft.kind !== 'stop') throw new Error('A stop report needs kind stop.');
     assertStopReport(draft.stop);
+  }
+  if (draft.mandate) {
+    if (draft.kind !== 'mandate') throw new Error('A mandate needs kind mandate.');
+    assertMandate(draft.mandate);
+  }
+  if (draft.kind === 'mandate' && !draft.mandate) {
+    throw new Error('A mandate receipt needs a mandate.');
   }
   const payloadHash = sha256(canonicalize(draft.payload));
   const unsigned = {
@@ -721,6 +773,7 @@ export function buildReceipt(draft: ReceiptDraft): ApprovalReceipt {
     stop: draft.stop,
     revoke: draft.revoke,
     notice: draft.notice,
+    mandate: draft.mandate,
     attestations: draft.attestations,
     previousReceiptHash: draft.previousReceiptHash,
   };
@@ -729,6 +782,40 @@ export function buildReceipt(draft: ReceiptDraft): ApprovalReceipt {
     signatures: draft.signatures,
     receiptHash: hashBody(unsigned),
   };
+}
+
+/** The standing autonomy choice. A later choice is a new receipt. */
+export function buildMandateReceipt(input: {
+  mode: AutonomyMode;
+  chosenAtMs: number;
+  firstUse: boolean;
+  criteria?: MandateCriteria;
+  previousReceiptHash?: string;
+  changeRequest?: ChangeRequest;
+  id?: string;
+}): ApprovalReceipt {
+  const chosenAt = new Date(input.chosenAtMs).toISOString();
+  const title = `Autonomy choice ${input.mode}`;
+  return buildReceipt({
+    id: input.id ?? `mandate:${input.chosenAtMs}`,
+    kind: 'mandate',
+    instruction: title,
+    payload: { title },
+    decision: {
+      outcome: 'approved',
+      decidedAt: chosenAt,
+      presentedAt: chosenAt,
+    },
+    mandate: {
+      mode: input.mode,
+      criteria: input.mode === 'confirm-some' ? input.criteria : undefined,
+      chosenAt,
+      chosenBy: 'user',
+      firstUse: input.firstUse,
+    },
+    changeRequest: input.changeRequest,
+    previousReceiptHash: input.previousReceiptHash,
+  });
 }
 
 /** A revoke receipt. `confirmed` is recorded only when the caller passes that state and a time. */

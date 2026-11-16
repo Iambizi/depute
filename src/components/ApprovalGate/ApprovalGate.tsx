@@ -25,7 +25,7 @@ import {
   channelWarningText,
   reachabilityLabel,
 } from '../../utils/channel';
-import { DEFAULT_APPROVAL_EXPIRY_MS, actorWarning, bindingStatusText, buildDecisionReceipt, buildSignedDecisionReceipt, requirementsNeedCheck } from '../../utils/receipt';
+import { DEFAULT_APPROVAL_EXPIRY_MS, actorWarning, bindingStatusText, buildDecisionReceipt, buildMandateReceipt, buildSignedDecisionReceipt, requirementsNeedCheck, type AutonomyMode } from '../../utils/receipt';
 import type { ReceiptMethod, ReceiptOutcome } from '../../utils/receipt';
 import { changeKindLabel, justificationLength, requiredJustificationLength } from '../../utils/triggers';
 import type { ApprovalGateProps, HandoffContext, StagedStep } from './ApprovalGate.types';
@@ -149,6 +149,43 @@ function resolveMinReviewMs(value: number | undefined): number {
 // ApprovalGate Component
 // ---------------------------------------------------------------------------
 
+function AutonomyChoice({
+  allowConfirmNone,
+  onChoose,
+}: {
+  allowConfirmNone: boolean;
+  onChoose: (mode: AutonomyMode) => void;
+}) {
+  const [selected, setSelected] = useState<AutonomyMode | ''>('');
+  const group = useId();
+  const options: { mode: AutonomyMode; label: string }[] = [
+    { mode: 'confirm-all', label: 'Confirm every action' },
+    { mode: 'confirm-some', label: 'Confirm some' },
+  ];
+  if (allowConfirmNone) options.push({ mode: 'confirm-none', label: 'Confirm none' });
+  return (
+    <fieldset className={styles.autonomy}>
+      <legend className={styles.scopeTitle}>How much may this agent do without asking?</legend>
+      <p className={styles.provenanceNote}>Nothing is selected.</p>
+      {options.map((option) => (
+        <label key={option.mode} className={styles.autonomyOption}>
+          <input
+            type="radio"
+            name={group}
+            value={option.mode}
+            checked={selected === option.mode}
+            onChange={() => {
+              setSelected(option.mode);
+              onChoose(option.mode);
+            }}
+          />
+          {option.label}
+        </label>
+      ))}
+    </fieldset>
+  );
+}
+
 export function ApprovalGate({
   icon,
   title,
@@ -193,6 +230,11 @@ export function ApprovalGate({
   requirements,
   termsShown,
   bindingStatus,
+  autonomyChoice = false,
+  allowConfirmNone = false,
+  mandateCriteria,
+  firstUse = true,
+  onAutonomyChoice,
   onReceipt,
   appSigner,
   passkey,
@@ -667,6 +709,25 @@ export function ApprovalGate({
 
       {/* Body */}
       <div className={styles.body}>
+        {autonomyChoice && (
+          <AutonomyChoice
+            allowConfirmNone={allowConfirmNone}
+            onChoose={(mode) => {
+              onAutonomyChoice?.(mode);
+              onReceipt?.(buildMandateReceipt({
+                mode,
+                chosenAtMs: Date.now(),
+                firstUse,
+                criteria: mandateCriteria,
+                previousReceiptHash,
+                changeRequest,
+              }));
+            }}
+          />
+        )}
+        {triggers?.includes('sponsored-or-conflict') && (
+          <p className={styles.channelWarning} role="status">This action needs confirmation. Declared by the integrator.</p>
+        )}
         {termsShown && (
           <p className={styles.provenanceNote}>Terms version {termsShown.version}</p>
         )}

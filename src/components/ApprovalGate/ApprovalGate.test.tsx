@@ -801,6 +801,32 @@ describe('ApprovalGate', () => {
     });
   });
 
+  describe('autonomy choice', () => {
+    it('offers no preselected mode and hides confirm-none until the host opts in', async () => {
+      const user = userEvent.setup();
+      const onReceipt = vi.fn();
+      const { rerender } = render(<ApprovalGate title="Choose" autonomyChoice onReceipt={onReceipt} />);
+      expect(screen.getByRole('radio', { name: 'Confirm every action' })).not.toBeChecked();
+      expect(screen.getByRole('radio', { name: 'Confirm some' })).not.toBeChecked();
+      expect(screen.queryByRole('radio', { name: 'Confirm none' })).not.toBeInTheDocument();
+      await user.click(screen.getByRole('radio', { name: 'Confirm every action' }));
+      expect(onReceipt.mock.calls[0][0].kind).toBe('mandate');
+      expect(onReceipt.mock.calls[0][0].mandate).toMatchObject({
+        mode: 'confirm-all',
+        chosenBy: 'user',
+        firstUse: true,
+      });
+      rerender(<ApprovalGate title="Choose" autonomyChoice allowConfirmNone />);
+      expect(screen.getByRole('radio', { name: 'Confirm none' })).not.toBeChecked();
+    });
+
+    it('still asks for confirmation when the host declares a sponsored or conflicted action', () => {
+      render(<ApprovalGate title="Sponsored offer" triggers={['sponsored-or-conflict']} />);
+      expect(screen.getByText('This action needs confirmation. Declared by the integrator.')).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: 'Approve' })).toBeEnabled();
+    });
+  });
+
   describe('payload binding', () => {
     it('disables approve when the host says the arguments changed or the approval was used', () => {
       const { rerender } = render(<ApprovalGate title="Pay" bindingStatus="voided" />);

@@ -1,0 +1,18 @@
+---
+title: Autonomy choice
+description: Record how much an agent may do without asking. This is not a compliance claim.
+---
+
+The standing choice is its own receipt, with `kind: "mandate"`. It is not a block on the approval of one action. A later change is a new mandate receipt linked by `previousReceiptHash`.
+
+[Approval Gate](/docs/components/approval-gate) can ask for the choice. Nothing is preselected. The choices are confirm every action, confirm some, and, only when the host sets `allowConfirmNone`, confirm none.
+
+`confirm-some` stores the criteria the host passes: a maximum amount, a currency, an until time, and optional categories. Those criteria are declared. depute does not decide that a `confirm-none` mandate skips later gates. The host does.
+
+## A declared conflict still asks
+
+`sponsoredOrConflict` on `requiresApproval` always opens a high-stakes gate, including when the host's mandate is `confirm-none`. The integrator declares the paid placement or the conflict of interest. depute does not detect it. The gate says the action needs confirmation and that the declaration is the integrator's.
+
+## Not a compliance claim
+
+Article 26 of the European Commission's Digital Fairness Act proposal, dated 11 November 2026, describes a first-use choice among confirming all contracts, confirming some, or confirming none, recorded on a durable medium. That article is a proposal, not law. Financial services are excluded from it. This control is not a claim that a product complies with that proposal. The vocabulary is useful. The legal effect is not decided here.

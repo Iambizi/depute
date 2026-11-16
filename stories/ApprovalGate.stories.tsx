@@ -451,6 +451,33 @@ export const AgentRequestedChange: Story = {
   },
 };
 
+export const AutonomyChoice: Story = {
+  name: 'Autonomy choice',
+  args: {
+    status: 'pending',
+    mode: 'simple',
+    title: 'Choose how much this agent may do',
+    description: 'Nothing is selected. Confirm none is hidden until the host allows it.',
+    now: STORY_NOW,
+    autonomyChoice: true,
+    mandateCriteria: { maxAmount: '100.00', currency: 'USD', until: '2026-12-01T00:00:00.000Z' },
+  },
+};
+
+export const SponsoredAction: Story = {
+  name: 'Sponsored or conflict',
+  args: {
+    status: 'pending',
+    mode: 'simple',
+    title: 'Sponsored offer',
+    description: 'The integrator declared a paid placement or a conflict of interest.',
+    now: STORY_NOW,
+    triggers: ['sponsored-or-conflict'],
+    autonomyChoice: true,
+    allowConfirmNone: true,
+  },
+};
+
 export const VoidedPayload: Story = {
   name: 'Voided payload',
   args: {
