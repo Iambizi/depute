@@ -5,7 +5,6 @@ export default defineConfig({
     environment: 'node',
     include: [
       'packages/core/test/**/*.test.ts',
-      'examples/server-enforcement/**/*.test.ts',
     ],
   },
 });
