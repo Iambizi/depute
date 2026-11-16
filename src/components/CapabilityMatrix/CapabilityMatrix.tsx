@@ -9,13 +9,17 @@
  * @see docs/internal/research/catalog-versions/CATALOG-v2.md (Primitive 3)
  */
 
-import { useMemo, type ReactNode } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { IconCheck, IconCircle, IconDot, IconX } from '../../utils/icons';
 import { VisuallyHidden } from '../../utils/a11y';
+import { buildRevokeReceipt, isReceiptHash, type ApprovalReceipt, type RevokeMethod } from '../../utils/receipt';
+import { downloadApprovalReceipt } from '../../utils/receiptDownload';
 import type {
   CapabilityMatrixProps,
   Capability,
+  LiveGrant,
   PermissionLevel,
+  RevokeHostResult,
 } from './CapabilityMatrix.types';
 import styles from './CapabilityMatrix.module.css';
 
@@ -68,6 +72,131 @@ function groupCapabilities(
 /* Sub-component                                                       */
 /* ------------------------------------------------------------------ */
 
+type GrantPhase = 'live' | 'requested' | 'confirmed' | 'unknown';
+
+function GrantRow({
+  grant,
+  onRevoke,
+  onReceipt,
+  revokeTimeoutMs,
+  method,
+  register,
+}: {
+  grant: LiveGrant;
+  onRevoke?: (grant: LiveGrant) => void | Promise<RevokeHostResult | void>;
+  onReceipt?: (receipt: ApprovalReceipt) => void;
+  revokeTimeoutMs?: number;
+  method: RevokeMethod;
+  register: (id: string, run: () => void) => () => void;
+}) {
+  const [phase, setPhase] = useState<GrantPhase>('live');
+  const [receipt, setReceipt] = useState<ApprovalReceipt | null>(null);
+  const phaseRef = useRef(phase);
+  phaseRef.current = phase;
+
+  const run = useCallback(async () => {
+    if (!onRevoke) return;
+    if (phaseRef.current === 'requested' || phaseRef.current === 'confirmed') return;
+    phaseRef.current = 'requested';
+    setPhase('requested');
+    const requestedAtMs = Date.now();
+    let settled = false;
+    const finish = (state: 'requested' | 'confirmed' | 'unknown', confirmedAtMs?: number, reported?: RevokeMethod) => {
+      if (settled) return;
+      settled = true;
+      phaseRef.current = state;
+      setPhase(state);
+      const next = buildRevokeReceipt({
+        grantId: grant.id,
+        scope: grant.scope,
+        counterparty: grant.counterparty?.trim() || 'unknown',
+        method: reported ?? method,
+        state,
+        requestedAtMs,
+        confirmedAtMs,
+        previousReceiptHash: grant.approvalReceiptHash && isReceiptHash(grant.approvalReceiptHash)
+          ? grant.approvalReceiptHash
+          : undefined,
+      });
+      setReceipt(next);
+      onReceipt?.(next);
+    };
+    let timer: number | undefined;
+    try {
+      const pending = Promise.resolve(onRevoke(grant));
+      const result = await new Promise<
+        | { kind: 'result'; value: RevokeHostResult | void }
+        | { kind: 'timeout' }
+        | { kind: 'error' }
+      >((resolve) => {
+        if (revokeTimeoutMs !== undefined) {
+          timer = window.setTimeout(() => resolve({ kind: 'timeout' }), revokeTimeoutMs);
+        }
+        pending.then(
+          (value) => {
+            if (timer !== undefined) window.clearTimeout(timer);
+            resolve({ kind: 'result', value });
+          },
+          () => {
+            if (timer !== undefined) window.clearTimeout(timer);
+            resolve({ kind: 'error' });
+          },
+        );
+      });
+      if (result.kind === 'timeout' || result.kind === 'error') {
+        finish('unknown');
+        return;
+      }
+      if (result.value?.state === 'confirmed') {
+        finish('confirmed', Date.now(), result.value.method);
+        return;
+      }
+      if (result.value?.state === 'unknown') {
+        finish('unknown', undefined, result.value.method);
+        return;
+      }
+      finish('requested');
+    } catch {
+      if (timer !== undefined) window.clearTimeout(timer);
+      finish('unknown');
+    }
+  }, [grant, method, onReceipt, onRevoke, revokeTimeoutMs]);
+
+  useEffect(() => register(grant.id, () => { void run(); }), [grant.id, register, run]);
+
+  const status = phase === 'requested'
+    ? 'Revoke requested'
+    : phase === 'confirmed'
+      ? 'Revoked (confirmed by host)'
+      : phase === 'unknown'
+        ? 'Unknown'
+        : null;
+
+  return (
+    <li className={styles.grant}>
+      <p className={styles.grantTitle}>{grant.agentId}{grant.onBehalfOf ? ` for ${grant.onBehalfOf}` : ''}</p>
+      <p>{grant.scope}{grant.limit ? ` · ${grant.limit}` : ''}</p>
+      {grant.counterparty && <p>Counterparty {grant.counterparty}</p>}
+      <p>{grant.expiresAt ? `Expires ${grant.expiresAt}` : 'No expiry'}</p>
+      {grant.lastUsedAt && <p>Last used {grant.lastUsedAt}</p>}
+      {status && <p role="status">{status}</p>}
+      {phase === 'unknown' && (
+        <p>The host did not confirm this revoke. Declared.</p>
+      )}
+      {onRevoke && phase !== 'confirmed' && phase !== 'requested' && (
+        <button type="button" className={styles.revoke} onClick={() => { void run(); }}>
+          {phase === 'unknown' ? 'Retry' : 'Revoke'}
+        </button>
+      )}
+      {receipt && (
+        <button type="button" className={styles.revoke} onClick={() => downloadApprovalReceipt(receipt)}>
+          Export JSON
+        </button>
+      )}
+    </li>
+  );
+}
+
 function CapabilityRow({
   capability,
   highlightDenied,
@@ -118,6 +247,9 @@ export function CapabilityMatrix({
   onCapabilityClick,
   grants,
   onRevoke,
+  revokeMethod = 'other',
+  revokeTimeoutMs,
+  onReceipt,
   className,
 }: CapabilityMatrixProps) {
   const grouped = useMemo(
@@ -130,6 +262,14 @@ export function CapabilityMatrix({
     const denied = capabilities.filter((c) => c.permission === 'none').length;
     return { allowed, denied, total: capabilities.length };
   }, [capabilities]);
+
+  const runners = useRef(new Map<string, () => void>());
+  const register = useCallback((id: string, run: () => void): (() => void) => {
+    runners.current.set(id, run);
+    return () => {
+      if (runners.current.get(id) === run) runners.current.delete(id);
+    };
+  }, []);
 
   const ariaLabel = useMemo(
     () =>
@@ -167,21 +307,39 @@ export function CapabilityMatrix({
       )}
 
       {grants && grants.length > 0 && (
-        <ul className={styles.grants} aria-label="Live grants">
-          {grants.map((grant) => (
-            <li key={grant.id} className={styles.grant}>
-              <p className={styles.grantTitle}>{grant.agentId}{grant.onBehalfOf ? ` for ${grant.onBehalfOf}` : ''}</p>
-              <p>{grant.scope}{grant.limit ? ` · ${grant.limit}` : ''}</p>
-              <p>{grant.expiresAt ? `Expires ${grant.expiresAt}` : 'No expiry'}</p>
-              {grant.lastUsedAt && <p>Last used {grant.lastUsedAt}</p>}
-              {onRevoke && (
-                <button type="button" className={styles.revoke} onClick={() => onRevoke(grant)}>
-                  Revoke
-                </button>
-              )}
-            </li>
-          ))}
-        </ul>
+        <div className={styles.grantBlock}>
+          {onRevoke && (
+            <p className={styles.grantNote}>
+              Declared by the host. A confirmed row is the host's report, not the counterparty's acceptance.
+            </p>
+          )}
+          {onRevoke && grants.length > 1 && (
+            <div className={styles.grantActions}>
+              <button
+                type="button"
+                className={styles.revoke}
+                onClick={() => {
+                  runners.current.forEach((run) => run());
+                }}
+              >
+                Revoke all
+              </button>
+            </div>
+          )}
+          <ul className={styles.grants} aria-label="Live grants">
+            {grants.map((grant) => (
+              <GrantRow
+                key={grant.id}
+                grant={grant}
+                onRevoke={onRevoke}
+                onReceipt={onReceipt}
+                revokeTimeoutMs={revokeTimeoutMs}
+                method={revokeMethod}
+                register={register}
+              />
+            ))}
+          </ul>
+        </div>
       )}
 
       {/* Matrix body */}

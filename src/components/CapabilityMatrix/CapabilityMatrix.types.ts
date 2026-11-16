@@ -1,3 +1,5 @@
+import type { ApprovalReceipt, RevokeMethod } from '../../utils/receipt';
+
 /**
  * CapabilityMatrix — Type Definitions
  *
@@ -28,7 +30,7 @@ export interface Capability {
   category?: string;
 }
 
-/** A standing grant. Revoke does not approve anything. The host opens Delegation Gate for that. */
+/** A standing grant. Revoke records a receipt. It does not approve a new grant. */
 export interface LiveGrant {
   id: string;
   agentId: string;
@@ -39,6 +41,16 @@ export interface LiveGrant {
   expiresAt?: string;
   /** ISO-8601. */
   lastUsedAt?: string;
+  /** Who holds the grant, as the host names them. Declared. */
+  counterparty?: string;
+  /** Approval receipt this grant came from, when the host still has the hash. */
+  approvalReceiptHash?: string;
+}
+
+/** What the host reports after a revoke. A missing result stays "Revoke requested". */
+export interface RevokeHostResult {
+  state: 'confirmed' | 'unknown';
+  method?: RevokeMethod;
 }
 
 export interface CapabilityMatrixProps {
@@ -63,11 +75,28 @@ export interface CapabilityMatrixProps {
   /** Called when user clicks on a capability for details */
   onCapabilityClick?: (capability: Capability) => void;
 
-  /** Standing grants. This list does not approve or revoke by itself. */
+  /** Standing grants. This list does not approve a new grant. */
   grants?: readonly LiveGrant[];
 
-  /** Tells the host the person asked to revoke. The host shows Delegation Gate. */
-  onRevoke?: (grant: LiveGrant) => void;
+  /**
+   * Tells the host the person asked to revoke. "Revoked" is shown only when
+   * the promise resolves `{ state: 'confirmed' }`. A void return stays
+   * "Revoke requested". Delegation Gate remains the approve or deny step
+   * for a new or changed grant.
+   */
+  onRevoke?: (grant: LiveGrant) => void | Promise<RevokeHostResult | void>;
+
+  /** How the host says the revoke is sent, when the callback does not say. Declared. */
+  revokeMethod?: RevokeMethod;
+
+  /**
+   * When set, a revoke that is still pending after this many milliseconds
+   * becomes Unknown, with retry. There is no default.
+   */
+  revokeTimeoutMs?: number;
+
+  /** Revoke receipt. The host stores it. */
+  onReceipt?: (receipt: ApprovalReceipt) => void;
 
   /** Additional CSS class */
   className?: string;

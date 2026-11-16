@@ -1,0 +1,30 @@
+---
+title: Proving you revoked an agent
+description: A revoke receipt records what the host reports. It does not record what the counterparty accepted.
+---
+
+Taking a grant back has to leave a record the person can keep. [Capability Matrix](/docs/components/capability-matrix) already lists standing grants. Revoke on that list now writes an `ApprovalReceipt` with `kind: "revoke"`.
+
+depute records what the host reports. It does not call the bank, the exchange, or the provider, and it does not decide that the counterparty accepted the revocation.
+
+## What the row shows
+
+| Host result | Row | Receipt `revoke.state` |
+| --- | --- | --- |
+| Still waiting, or the callback returns nothing | Revoke requested | `requested` |
+| `{ state: "confirmed" }` | Revoked (confirmed by host) | `confirmed` |
+| `{ state: "unknown" }`, a thrown error, or `revokeTimeoutMs` elapses | Unknown, with Retry | `unknown` |
+
+"Revoked" is not shown before the host confirms. There is no default timeout. Stopping and revoking do not ask for a passkey. [Delegation Gate](/docs/components/delegation-gate) stays the approve or deny step for a new or changed grant.
+
+A bulk revoke writes one receipt per grant. When the grant carries `approvalReceiptHash`, that hash is `previousReceiptHash` on the revoke receipt. The signed approval is not rewritten.
+
+The receipt stores `grantId`, `scope`, `counterparty`, `requestedAt`, `method` (`provider-ui`, `api`, `credential-rotation`, or `other`), and `state`. `confirmedAt` is set only for `confirmed`. Counterparty and method are declared by the host. Export JSON uses the same receipt download as the other records.
+
+## Notice is a later receipt
+
+Telling the counterparty can happen after the revoke, and the notice can be corrected. That later fact is a new receipt from `buildRevokeNotice`, with `notice.to`, `notice.channel`, `notice.at`, and `previousReceiptHash` pointing at the revoke receipt. It is not a field on the first revoke receipt. Delivery is declared.
+
+## An illustration
+
+Wells Fargo's Online Access Agreement, section 15(f), as published for an effective date of 24 November 2026, asks the customer to revoke an agent properly and timely, to retain evidence of that revocation, and to provide that evidence on request, and it leaves the customer responsible until the bank is notified. That clause is an illustration of the pattern above, reviewed 13 November 2026. It is not, by itself, the requirement. depute does not claim that a revoke receipt satisfies a bank's process.

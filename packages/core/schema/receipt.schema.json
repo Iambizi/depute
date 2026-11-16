@@ -92,6 +92,14 @@
           "$ref": "#/definitions/PaymentFollowUp",
           "description": "Set only on a follow-up receipt. The earlier receipt is not rewritten."
         },
+        "revoke": {
+          "$ref": "#/definitions/RevokeRecord",
+          "description": "Set only when `kind` is `revoke`. Confirmation is what the host reported."
+        },
+        "notice": {
+          "$ref": "#/definitions/RevokeNotice",
+          "description": "A later notice that the host says it sent. Requires `previousReceiptHash`. Delivery is declared."
+        },
         "attestations": {
           "type": "array",
           "items": {
@@ -123,8 +131,11 @@
     },
     "ReceiptKind": {
       "type": "string",
-      "const": "stop",
-      "description": "Present only when the receipt is an emergency stop. Approval receipts omit it."
+      "enum": [
+        "stop",
+        "revoke"
+      ],
+      "description": "Present on an emergency stop or a revocation. Approval receipts omit it. Older receipts that omit `kind` still verify."
     },
     "PresentedPayload": {
       "type": "object",
@@ -608,6 +619,83 @@
         "refunded"
       ],
       "description": "A later payment state. It lives on a new receipt, never on a signed one."
+    },
+    "RevokeRecord": {
+      "type": "object",
+      "properties": {
+        "grantId": {
+          "type": "string"
+        },
+        "scope": {
+          "type": "string"
+        },
+        "counterparty": {
+          "type": "string"
+        },
+        "requestedAt": {
+          "type": "string",
+          "description": "ISO-8601."
+        },
+        "confirmedAt": {
+          "type": "string",
+          "description": "ISO-8601. Present only when `state` is `confirmed`."
+        },
+        "method": {
+          "$ref": "#/definitions/RevokeMethod"
+        },
+        "state": {
+          "$ref": "#/definitions/RevokeState"
+        }
+      },
+      "required": [
+        "grantId",
+        "scope",
+        "counterparty",
+        "requestedAt",
+        "method",
+        "state"
+      ],
+      "additionalProperties": false,
+      "description": "A request to take a grant back. `confirmed` is set only when the host says so. The counterparty and the method are declared."
+    },
+    "RevokeMethod": {
+      "type": "string",
+      "enum": [
+        "provider-ui",
+        "api",
+        "credential-rotation",
+        "other"
+      ]
+    },
+    "RevokeState": {
+      "type": "string",
+      "enum": [
+        "requested",
+        "confirmed",
+        "unknown"
+      ]
+    },
+    "RevokeNotice": {
+      "type": "object",
+      "properties": {
+        "to": {
+          "type": "string"
+        },
+        "at": {
+          "type": "string",
+          "description": "ISO-8601."
+        },
+        "channel": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "to",
+        "at",
+        "channel"
+      ],
+      "additionalProperties": false,
+      "description": "Who the host says it told. Declared. depute does not check delivery."
     },
     "ReceiptAttestation": {
       "type": "object",

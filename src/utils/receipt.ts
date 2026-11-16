@@ -39,8 +39,76 @@ export type ReceiptChoice = 'approved' | 'rejected';
 export type ReceiptMethod = 'click' | 'passkey' | 'handoff' | 'chat';
 export type ReceiptExecutionStatus = 'success' | 'failed' | 'pending' | 'reverted' | 'not-run';
 
-/** Present only when the receipt is an emergency stop. Approval receipts omit it. */
-export type ReceiptKind = 'stop';
+/**
+ * Present on an emergency stop or a revocation. Approval receipts omit it.
+ * Older receipts that omit `kind` still verify.
+ */
+export type ReceiptKind = 'stop' | 'revoke';
+
+export type RevokeMethod = 'provider-ui' | 'api' | 'credential-rotation' | 'other';
+
+export type RevokeState = 'requested' | 'confirmed' | 'unknown';
+
+/** Who the host says it told. Declared. depute does not check delivery. */
+export interface RevokeNotice {
+  to: string;
+  /** ISO-8601. */
+  at: string;
+  channel: string;
+}
+
+/**
+ * A request to take a grant back. `confirmed` is set only when the host says so.
+ * The counterparty and the method are declared.
+ */
+export interface RevokeRecord {
+  grantId: string;
+  scope: string;
+  counterparty: string;
+  /** ISO-8601. */
+  requestedAt: string;
+  /** ISO-8601. Present only when `state` is `confirmed`. */
+  confirmedAt?: string;
+  method: RevokeMethod;
+  state: RevokeState;
+}
+
+const REVOKE_METHODS = new Set<RevokeMethod>(['provider-ui', 'api', 'credential-rotation', 'other']);
+const REVOKE_STATES = new Set<RevokeState>(['requested', 'confirmed', 'unknown']);
+
+function isTime(value: string): boolean {
+  return typeof value === 'string' && !Number.isNaN(Date.parse(value));
+}
+
+export function assertRevokeRecord(value: RevokeRecord): void {
+  if (
+    typeof value.grantId !== 'string' || value.grantId.trim() === ''
+    || typeof value.scope !== 'string' || value.scope.trim() === ''
+    || typeof value.counterparty !== 'string' || value.counterparty.trim() === ''
+    || !REVOKE_METHODS.has(value.method)
+    || !REVOKE_STATES.has(value.state)
+    || !isTime(value.requestedAt)
+  ) {
+    throw new Error('A revoke record needs a grant, a scope, a counterparty, a method, and a time.');
+  }
+  if (value.state === 'confirmed') {
+    if (!value.confirmedAt || !isTime(value.confirmedAt)) {
+      throw new Error('A confirmed revoke needs confirmedAt.');
+    }
+  } else if (value.confirmedAt !== undefined) {
+    throw new Error('confirmedAt is only set when the host confirmed the revoke.');
+  }
+}
+
+export function assertRevokeNotice(value: RevokeNotice): void {
+  if (
+    typeof value.to !== 'string' || value.to.trim() === ''
+    || typeof value.channel !== 'string' || value.channel.trim() === ''
+    || !isTime(value.at)
+  ) {
+    throw new Error('A revoke notice needs who was told, a channel, and a time.');
+  }
+}
 
 /** A later payment state. It lives on a new receipt, never on a signed one. */
 export type PaymentFollowUpState = 'held' | 'voided' | 'refunded';
@@ -277,6 +345,13 @@ export interface ApprovalReceipt {
   termsShown?: TermsShown;
   /** Set only on a follow-up receipt. The earlier receipt is not rewritten. */
   payment?: PaymentFollowUp;
+  /** Set only when `kind` is `revoke`. Confirmation is what the host reported. */
+  revoke?: RevokeRecord;
+  /**
+   * A later notice that the host says it sent. Requires `previousReceiptHash`.
+   * Delivery is declared.
+   */
+  notice?: RevokeNotice;
   attestations?: ReceiptAttestation[];
   previousReceiptHash?: string;
   signatures?: ReceiptSignature[];
@@ -302,6 +377,8 @@ export interface ReceiptDraft {
   expiresAt?: string;
   termsShown?: TermsShown;
   payment?: PaymentFollowUp;
+  revoke?: RevokeRecord;
+  notice?: RevokeNotice;
   attestations?: ReceiptAttestation[];
   previousReceiptHash?: string;
   signatures?: ReceiptSignature[];
@@ -527,12 +604,24 @@ export function buildReceipt(draft: ReceiptDraft): ApprovalReceipt {
   if (draft.actor) assertActor(draft.actor);
   if (draft.requirements) assertRequirements(draft.requirements);
   if (draft.termsShown) assertTermsShown(draft.termsShown);
-  if (draft.kind !== undefined && draft.kind !== 'stop') {
-    throw new Error('receipt kind must be stop when set.');
+  if (draft.kind !== undefined && draft.kind !== 'stop' && draft.kind !== 'revoke') {
+    throw new Error('receipt kind must be stop or revoke when set.');
   }
   if (draft.payment) {
     assertPaymentFollowUp(draft.payment);
     if (!draft.previousReceiptHash) throw new Error('A payment follow-up needs previousReceiptHash.');
+  }
+  if (draft.revoke) {
+    if (draft.kind !== 'revoke') throw new Error('A revoke record needs kind revoke.');
+    assertRevokeRecord(draft.revoke);
+  }
+  if (draft.notice) {
+    if (draft.kind !== 'revoke') throw new Error('A revoke notice needs kind revoke.');
+    if (!draft.previousReceiptHash) throw new Error('A revoke notice needs previousReceiptHash.');
+    assertRevokeNotice(draft.notice);
+  }
+  if (draft.kind === 'revoke' && !draft.revoke && !draft.notice) {
+    throw new Error('A revoke receipt needs a revoke record or a notice.');
   }
   const payloadHash = sha256(canonicalize(draft.payload));
   const unsigned = {
@@ -555,6 +644,8 @@ export function buildReceipt(draft: ReceiptDraft): ApprovalReceipt {
     expiresAt: draft.expiresAt,
     termsShown: draft.termsShown,
     payment: draft.payment,
+    revoke: draft.revoke,
+    notice: draft.notice,
     attestations: draft.attestations,
     previousReceiptHash: draft.previousReceiptHash,
   };
@@ -563,6 +654,74 @@ export function buildReceipt(draft: ReceiptDraft): ApprovalReceipt {
     signatures: draft.signatures,
     receiptHash: hashBody(unsigned),
   };
+}
+
+/** A revoke receipt. `confirmed` is recorded only when the caller passes that state and a time. */
+export function buildRevokeReceipt(input: {
+  grantId: string;
+  scope: string;
+  counterparty: string;
+  method: RevokeMethod;
+  state: RevokeState;
+  requestedAtMs: number;
+  confirmedAtMs?: number;
+  previousReceiptHash?: string;
+  id?: string;
+}): ApprovalReceipt {
+  const requestedAt = new Date(input.requestedAtMs).toISOString();
+  const confirmedAt = input.state === 'confirmed' && input.confirmedAtMs !== undefined
+    ? new Date(input.confirmedAtMs).toISOString()
+    : undefined;
+  const title = `Revoke ${input.scope}`;
+  return buildReceipt({
+    id: input.id ?? `revoke:${input.grantId}:${input.requestedAtMs}`,
+    kind: 'revoke',
+    instruction: title,
+    payload: { title },
+    decision: {
+      outcome: 'approved',
+      decidedAt: confirmedAt ?? requestedAt,
+      presentedAt: requestedAt,
+    },
+    revoke: {
+      grantId: input.grantId,
+      scope: input.scope,
+      counterparty: input.counterparty,
+      requestedAt,
+      confirmedAt,
+      method: input.method,
+      state: input.state,
+    },
+    previousReceiptHash: input.previousReceiptHash,
+  });
+}
+
+/**
+ * A later receipt that the host says notice was sent. The revoke receipt is not rewritten.
+ * `to`, `channel`, and the time are declared.
+ */
+export function buildRevokeNotice(input: {
+  previousReceiptHash: string;
+  to: string;
+  channel: string;
+  atMs: number;
+  id?: string;
+}): ApprovalReceipt {
+  const at = new Date(input.atMs).toISOString();
+  const title = `Notice of revocation to ${input.to}`;
+  return buildReceipt({
+    id: input.id ?? `notice:${input.atMs}`,
+    kind: 'revoke',
+    instruction: title,
+    payload: { title },
+    decision: {
+      outcome: 'approved',
+      decidedAt: at,
+      presentedAt: at,
+    },
+    notice: { to: input.to, at, channel: input.channel },
+    previousReceiptHash: input.previousReceiptHash,
+  });
 }
 
 /** A new receipt for a later payment state. The previous receipt is not changed. */

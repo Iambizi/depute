@@ -1,6 +1,16 @@
 /* CapabilityMatrix — CSS Module */
 /* v2 — Strict Compliance & Forensics */
 
+.grantBlock {padding-top: var(--ax-space-3);}
+
+.grantNote {margin: 0;
+  padding: 0 var(--ax-card-pad-x) var(--ax-space-2);
+  color: var(--ax-fg-muted);
+  font-size: var(--ax-text-sm);
+  line-height: var(--ax-leading-lg);}
+
+.grantActions {padding: 0 var(--ax-card-pad-x) var(--ax-space-2);}
+
 .grants {list-style: none;
   margin: 0;
   padding: 0 var(--ax-card-pad-x) var(--ax-space-3);
