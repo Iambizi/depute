@@ -1,5 +1,18 @@
 /* EscalationRouter — failure escalation alert */
 
+.stopLists {margin: 0;
+  padding: var(--ax-space-3) var(--ax-card-pad-x);
+  color: var(--ax-fg-default);
+  font-size: var(--ax-text-sm);
+  line-height: var(--ax-leading-lg);}
+
+.stopHeading {margin: 0 0 var(--ax-space-1);
+  font-size: var(--ax-text-sm);
+  font-weight: var(--ax-weight-semibold);}
+
+.stopLists ul {margin: 0;
+  padding-left: var(--ax-space-4);}
+
 .base {display: flex;
   flex-direction: column;
   border-radius: var(--ax-card-radius);

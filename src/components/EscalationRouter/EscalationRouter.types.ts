@@ -1,4 +1,10 @@
-import type { ApprovalReceipt, ReceiptPasskeySigner } from '../../utils/receipt';
+import type { ApprovalReceipt, ReceiptPasskeySigner, StopOutcomeItem, StopReport } from '../../utils/receipt';
+
+export type { StopOutcomeItem, StopReport };
+
+export interface StopHostResult extends StopReport {
+  confirmed: boolean;
+}
 
 export type EscalationResolution = 'retry' | 'reassign' | 'cancel';
 
@@ -25,7 +31,7 @@ export interface EscalationRouterProps {
    * Asks the host to stop. Stopped is shown only when the promise confirms.
    * Anything else is unknown. Stopping does not ask for a passkey.
    */
-  onStop?: () => Promise<{ confirmed: boolean } | void>;
+  onStop?: () => Promise<StopHostResult | void>;
 
   /** High-stakes resume. Requires `passkey`. */
   onResume?: () => void;

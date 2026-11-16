@@ -74,7 +74,7 @@ export interface TransactionReceiptProps {
    * Later payment states. Each one is a separate receipt the host already built.
    * This component only displays them.
    */
-  followUps?: readonly { state: 'held' | 'voided' | 'refunded'; at: string }[];
+  followUps?: readonly { state: 'held' | 'voided' | 'refunded' | 'unknown'; at: string }[];
 
   /** Additional CSS class */
   className?: string;

@@ -111,14 +111,42 @@ export function assertRevokeNotice(value: RevokeNotice): void {
 }
 
 /** A later payment state. It lives on a new receipt, never on a signed one. */
-export type PaymentFollowUpState = 'held' | 'voided' | 'refunded';
+export type PaymentFollowUpState = 'held' | 'voided' | 'refunded' | 'unknown';
 
 export interface PaymentFollowUp {
   state: PaymentFollowUpState;
   at: string;
 }
 
-const PAYMENT_FOLLOW_UPS = new Set<PaymentFollowUpState>(['held', 'voided', 'refunded']);
+const PAYMENT_FOLLOW_UPS = new Set<PaymentFollowUpState>(['held', 'voided', 'refunded', 'unknown']);
+
+/** One action the host reports after a stop. The outcome is declared. */
+export interface StopOutcomeItem {
+  id: string;
+  label: string;
+}
+
+/** What a stop did not undo. Every list is declared by the host. */
+export interface StopReport {
+  pending?: StopOutcomeItem[];
+  completedFinal?: StopOutcomeItem[];
+  mayHaveRun?: StopOutcomeItem[];
+}
+
+function assertStopItems(items: readonly StopOutcomeItem[] | undefined, name: string): void {
+  if (items === undefined) return;
+  for (const item of items) {
+    if (typeof item.id !== 'string' || item.id.trim() === '' || typeof item.label !== 'string' || item.label.trim() === '') {
+      throw new Error(`Each ${name} item needs an id and a label.`);
+    }
+  }
+}
+
+export function assertStopReport(value: StopReport): void {
+  assertStopItems(value.pending, 'pending');
+  assertStopItems(value.completedFinal, 'completedFinal');
+  assertStopItems(value.mayHaveRun, 'mayHaveRun');
+}
 
 export function assertPaymentFollowUp(value: PaymentFollowUp): void {
   if (!PAYMENT_FOLLOW_UPS.has(value.state)) throw new Error('payment follow-up state is not recognized.');
@@ -383,6 +411,8 @@ export interface ApprovalReceipt {
   termsShown?: TermsShown;
   /** Set only on a follow-up receipt. The earlier receipt is not rewritten. */
   payment?: PaymentFollowUp;
+  /** Set only when `kind` is `stop`. The lists are what the host reported. */
+  stop?: StopReport;
   /** Set only when `kind` is `revoke`. Confirmation is what the host reported. */
   revoke?: RevokeRecord;
   /**
@@ -415,6 +445,7 @@ export interface ReceiptDraft {
   expiresAt?: string;
   termsShown?: TermsShown;
   payment?: PaymentFollowUp;
+  stop?: StopReport;
   revoke?: RevokeRecord;
   notice?: RevokeNotice;
   attestations?: ReceiptAttestation[];
@@ -455,6 +486,7 @@ export interface DecisionReceiptInput {
   expiresAtMs?: number;
   termsShown?: TermsShown;
   previousReceiptHash?: string;
+  stop?: StopReport;
   fallbackId: string;
 }
 
@@ -661,6 +693,10 @@ export function buildReceipt(draft: ReceiptDraft): ApprovalReceipt {
   if (draft.kind === 'revoke' && !draft.revoke && !draft.notice) {
     throw new Error('A revoke receipt needs a revoke record or a notice.');
   }
+  if (draft.stop) {
+    if (draft.kind !== 'stop') throw new Error('A stop report needs kind stop.');
+    assertStopReport(draft.stop);
+  }
   const payloadHash = sha256(canonicalize(draft.payload));
   const unsigned = {
     version: '1' as const,
@@ -682,6 +718,7 @@ export function buildReceipt(draft: ReceiptDraft): ApprovalReceipt {
     expiresAt: draft.expiresAt,
     termsShown: draft.termsShown,
     payment: draft.payment,
+    stop: draft.stop,
     revoke: draft.revoke,
     notice: draft.notice,
     attestations: draft.attestations,
@@ -833,6 +870,7 @@ export function buildDecisionReceipt(input: DecisionReceiptInput): ApprovalRecei
     expiresAt: deadline.expiresAt,
     termsShown: input.termsShown,
     previousReceiptHash: input.previousReceiptHash,
+    stop: input.stop,
   });
 }
 

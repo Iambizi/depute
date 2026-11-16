@@ -92,6 +92,10 @@
           "$ref": "#/definitions/PaymentFollowUp",
           "description": "Set only on a follow-up receipt. The earlier receipt is not rewritten."
         },
+        "stop": {
+          "$ref": "#/definitions/StopReport",
+          "description": "Set only when `kind` is `stop`. The lists are what the host reported."
+        },
         "revoke": {
           "$ref": "#/definitions/RevokeRecord",
           "description": "Set only when `kind` is `revoke`. Confirmation is what the host reported."
@@ -616,9 +620,52 @@
       "enum": [
         "held",
         "voided",
-        "refunded"
+        "refunded",
+        "unknown"
       ],
       "description": "A later payment state. It lives on a new receipt, never on a signed one."
+    },
+    "StopReport": {
+      "type": "object",
+      "properties": {
+        "pending": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/StopOutcomeItem"
+          }
+        },
+        "completedFinal": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/StopOutcomeItem"
+          }
+        },
+        "mayHaveRun": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/StopOutcomeItem"
+          }
+        }
+      },
+      "additionalProperties": false,
+      "description": "What a stop did not undo. Every list is declared by the host."
+    },
+    "StopOutcomeItem": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "label"
+      ],
+      "additionalProperties": false,
+      "description": "One action the host reports after a stop. The outcome is declared."
     },
     "RevokeRecord": {
       "type": "object",
