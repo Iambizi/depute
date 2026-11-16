@@ -25,7 +25,7 @@ import {
   channelWarningText,
   reachabilityLabel,
 } from '../../utils/channel';
-import { DEFAULT_APPROVAL_EXPIRY_MS, actorWarning, buildDecisionReceipt, buildSignedDecisionReceipt, requirementsNeedCheck } from '../../utils/receipt';
+import { DEFAULT_APPROVAL_EXPIRY_MS, actorWarning, bindingStatusText, buildDecisionReceipt, buildSignedDecisionReceipt, requirementsNeedCheck } from '../../utils/receipt';
 import type { ReceiptMethod, ReceiptOutcome } from '../../utils/receipt';
 import { changeKindLabel, justificationLength, requiredJustificationLength } from '../../utils/triggers';
 import type { ApprovalGateProps, HandoffContext, StagedStep } from './ApprovalGate.types';
@@ -192,6 +192,7 @@ export function ApprovalGate({
   actor,
   requirements,
   termsShown,
+  bindingStatus,
   onReceipt,
   appSigner,
   passkey,
@@ -250,6 +251,7 @@ export function ApprovalGate({
   const approvalFiredRef = useRef(false);
   const [approvalLeft, setApprovalLeft] = useState(() => Math.ceil((approvalDeadlineMs - (now ?? Date.now())) / 1000));
   const approvalExpired = approvalLeft <= 0;
+  const bindingBlocked = bindingStatus === 'voided' || bindingStatus === 'used';
   const paymentPaintedAtRef = useRef<number | null>(null);
   const [reviewClock, setReviewClock] = useState<number | null>(null);
   const paymentFields = presentedPayload?.payee != null && presentedPayload.amount != null;
@@ -571,11 +573,11 @@ export function ApprovalGate({
       announce('Confirm to proceed with approval');
       return;
     }
-    if (!whyReady || !reviewReady || channelBlocked || !requirementsReady || approvalExpired) return;
+    if (!whyReady || !reviewReady || channelBlocked || !requirementsReady || approvalExpired || bindingBlocked) return;
     void decide('approved', 'click', () => {
       onApprove?.();
     });
-  }, [effectiveMode, stagedStep, onApprove, announce, decide, whyReady, reviewReady, channelBlocked, requirementsReady, approvalExpired]);
+  }, [effectiveMode, stagedStep, onApprove, announce, decide, whyReady, reviewReady, channelBlocked, requirementsReady, approvalExpired, bindingBlocked]);
 
   const handleReject = useCallback(() => {
     void decide('rejected', isHandoffPending ? 'handoff' : 'click', () => {
@@ -672,6 +674,9 @@ export function ApprovalGate({
           <p className={approvalExpired ? styles.channelWarning : styles.provenanceNote} role="status">
             {approvalExpired ? 'Expired' : `Expires in ${formatTime(Math.max(approvalLeft, 0))}`}
           </p>
+        )}
+        {isPending && bindingBlocked && bindingStatus && (
+          <p className={styles.channelWarning} role="status">{bindingStatusText(bindingStatus)}</p>
         )}
         {shownProvenance && (
           <div
@@ -883,7 +888,7 @@ export function ApprovalGate({
             className={`${styles.btn} ${styles.btnApprove}`}
             onClick={handleApprove}
             type="button"
-            disabled={signing || approvalExpired || ((effectiveMode !== 'staged' || stagedStep === 'confirming') && !whyReady) || (paymentFloor && stagedStep === 'confirming' && !reviewReady) || (channelBlocked && !(effectiveMode === 'staged' && stagedStep === 'previewing')) || (!requirementsReady && !(effectiveMode === 'staged' && stagedStep === 'previewing'))}
+            disabled={signing || approvalExpired || bindingBlocked || ((effectiveMode !== 'staged' || stagedStep === 'confirming') && !whyReady) || (paymentFloor && stagedStep === 'confirming' && !reviewReady) || (channelBlocked && !(effectiveMode === 'staged' && stagedStep === 'previewing')) || (!requirementsReady && !(effectiveMode === 'staged' && stagedStep === 'previewing'))}
             aria-describedby={[
               whyMinimum > 0 ? `${whyId}-count` : null,
               paymentFloor && !reviewReady ? reviewStatusId : null,

@@ -2,6 +2,8 @@ import { describe, expect, it } from 'vitest';
 import {
   DEFAULT_APPROVAL_EXPIRY_MS,
   approvalDeadline,
+  approvalUsable,
+  executionMatches,
   buildPaymentFollowUp,
   buildRevokeNotice,
   buildRevokeReceipt,
@@ -321,6 +323,28 @@ describe('buildPaymentFollowUp', () => {
     expect(followUp.payment).toEqual({ state: 'refunded', at: '2026-11-09T12:10:00.000Z' });
     expect(followUp.receiptHash).not.toBe(original.receiptHash);
     expect((await verify(followUp)).valid).toBe(true);
+  });
+});
+
+describe('payload binding', () => {
+  it('matches only the exact presented payload and treats a second use as declared', async () => {
+    const receipt = buildDecisionReceipt({
+      title: 'Pay vendor',
+      payload,
+      presentedAtMs: Date.parse('2026-11-09T12:00:00.000Z'),
+      decidedAtMs: Date.parse('2026-11-09T12:00:01.000Z'),
+      fallbackId: 'local',
+      outcome: 'approved',
+    });
+    expect(executionMatches(receipt, payload)).toBe(true);
+    expect(executionMatches(receipt, { ...payload, amount: { value: '4.00', currency: 'USD' } })).toBe(false);
+    expect(executionMatches(receipt, { ...payload, description: 'extra' })).toBe(false);
+    const now = Date.parse('2026-11-09T12:05:00.000Z');
+    expect(approvalUsable(receipt, { nowMs: now }).usable).toBe(true);
+    expect(approvalUsable(receipt, { nowMs: now, consumed: true })).toEqual({ usable: false, reason: 'consumed' });
+    expect(approvalUsable(receipt, { nowMs: Date.parse(receipt.expiresAt ?? '') }).reason).toBe('expired');
+    expect((await verify(receipt)).valid).toBe(true);
+    expect(receipt.presented.payload).toEqual(payload);
   });
 });
 

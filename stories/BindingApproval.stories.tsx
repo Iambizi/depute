@@ -164,3 +164,12 @@ export const LiabilityNotice: Story = {
     ],
   },
 };
+
+export const VoidedPayload: Story = {
+  name: 'Voided payload',
+  args: {
+    title: 'Wire Transfer Authorization',
+    description: 'The arguments no longer match the approval.',
+    bindingStatus: 'voided',
+  },
+};

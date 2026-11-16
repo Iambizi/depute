@@ -450,3 +450,27 @@ export const AgentRequestedChange: Story = {
     },
   },
 };
+
+export const VoidedPayload: Story = {
+  name: 'Voided payload',
+  args: {
+    status: 'pending',
+    mode: 'simple',
+    title: 'Pay vendor',
+    description: 'The arguments no longer match the approval.',
+    now: STORY_NOW,
+    bindingStatus: 'voided',
+  },
+};
+
+export const UsedApproval: Story = {
+  name: 'Already used',
+  args: {
+    status: 'pending',
+    mode: 'simple',
+    title: 'Pay vendor',
+    description: 'This approval was already used.',
+    now: STORY_NOW,
+    bindingStatus: 'used',
+  },
+};

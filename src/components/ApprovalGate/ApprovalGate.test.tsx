@@ -801,6 +801,21 @@ describe('ApprovalGate', () => {
     });
   });
 
+  describe('payload binding', () => {
+    it('disables approve when the host says the arguments changed or the approval was used', () => {
+      const { rerender } = render(<ApprovalGate title="Pay" bindingStatus="voided" />);
+      expect(screen.getByText('Voided. The arguments changed. Ask again.')).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: 'Approve' })).toBeDisabled();
+      expect(screen.getByRole('button', { name: 'Reject' })).toBeEnabled();
+      rerender(<ApprovalGate title="Pay" bindingStatus="used" />);
+      expect(screen.getByText('Already used.')).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: 'Approve' })).toBeDisabled();
+      rerender(<ApprovalGate title="Pay" />);
+      expect(screen.queryByText('Already used.')).not.toBeInTheDocument();
+      expect(screen.getByRole('button', { name: 'Approve' })).toBeEnabled();
+    });
+  });
+
   describe('approval expiry', () => {
     const issued = Date.parse('2026-11-09T12:00:00.000Z');
 

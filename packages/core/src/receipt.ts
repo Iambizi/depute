@@ -142,6 +142,44 @@ export function approvalDeadline(issuedAtMs: number, expiresAtMs?: number): { is
   };
 }
 
+/** True when the execution payload is the exact presented payload. A difference voids the approval. */
+export function executionMatches(receipt: ApprovalReceipt, executionPayload: PresentedPayload): boolean {
+  try {
+    return sha256(canonicalize(executionPayload)) === receipt.presented.payloadHash;
+  } catch {
+    return false;
+  }
+}
+
+export type ApprovalUseReason = 'ok' | 'consumed' | 'expired';
+
+/**
+ * Whether the host should still run this approval.
+ * `consumed` is declared by the host. depute does not store it.
+ * The deadline check reads `expiresAt`. The backend still enforces it.
+ */
+export function approvalUsable(
+  receipt: ApprovalReceipt,
+  input: { nowMs: number; consumed?: boolean },
+): { usable: boolean; reason: ApprovalUseReason } {
+  if (input.consumed === true) return { usable: false, reason: 'consumed' };
+  if (receipt.expiresAt !== undefined) {
+    const expires = Date.parse(receipt.expiresAt);
+    if (!Number.isFinite(expires) || input.nowMs >= expires) {
+      return { usable: false, reason: 'expired' };
+    }
+  }
+  return { usable: true, reason: 'ok' };
+}
+
+export type BindingDisplay = 'usable' | 'voided' | 'used';
+
+export function bindingStatusText(status: Exclude<BindingDisplay, 'usable'>): string {
+  return status === 'voided'
+    ? 'Voided. The arguments changed. Ask again.'
+    : 'Already used.';
+}
+
 export type LimitEnforcement = 'server' | 'client' | 'agent-instruction' | 'unknown';
 
 /** A limit the integrator says someone enforces. depute does not check that claim. */

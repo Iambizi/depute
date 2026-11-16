@@ -92,6 +92,7 @@ This primitive replaces `ApprovalGate` in high-stakes nodes. The internal state 
 | `timeoutSeconds` | `number` | — | Signing window timeout. Separate from `expiresAt`. |
 | `issuedAt` | `number` | `presentedAt` | Unix milliseconds the approval was issued. |
 | `expiresAt` | `number` | 10 minutes later | Display deadline. The backend enforces it. |
+| `bindingStatus` | `'usable' \| 'voided' \| 'used'` | — | Host check against the action about to run. Voided or used keeps Sign off. Reject stays available. Consumption is declared. |
 | `triggers` | `string[]` | — | Policy reasons that opened the gate. A payment trigger requires a why of 100 characters. |
 | `minJustificationLength` | `number` | — | Overrides that length. `0` turns the field off. |
 | `onSign` | `() => void` | — | Called when the user confirms. Your backend records the intent. |
@@ -102,7 +103,7 @@ This primitive replaces `ApprovalGate` in high-stakes nodes. The internal state 
 
 ## Design rationale
 
-A binding approval is the high-stakes case of the [approval record](/docs/approval-record). The app key can attest every receipt. The passkey is reserved for a new payee, a purpose change, an untrusted source, an irreversible flag, or an amount above the host's own cutoff. Spending a biometric on every click trains people to dismiss it. The same 100-character why applies when a payment trigger opened this gate.
+A binding approval is the high-stakes case of the [approval record](/docs/approval-record). The app key can attest every receipt. The passkey is reserved for a new payee, a purpose change, an untrusted source, an irreversible flag, or an amount above the host's own cutoff. Spending a biometric on every click trains people to dismiss it. The same 100-character why applies when a payment trigger opened this gate. `bindingStatus` of `voided` or `used` keeps Sign off. Reject stays available. The host supplies that status, and a second use is declared.
 
 **When to use `ApprovalGate` vs `BindingApproval`:**
 
